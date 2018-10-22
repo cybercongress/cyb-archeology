@@ -1,0 +1,138 @@
+.home {
+  width: 770px;
+  margin: 0 auto;
+}
+
+
+.items {
+  display: flex;
+  height: 356px;
+  margin-top: -140px;
+  position: relative;
+  box-shadow: 0px 2px 12px 0px rgba(0,0,0,0.21);
+  margin-bottom: 100px;
+}
+
+.item {
+  width: 34%;
+  background-color: #fff;
+  cursor: pointer;
+  border-right: 1px solid #d6d6d6;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 50px;
+  padding-top: 30px;
+  font-size: 14px;
+  color: #000;
+  text-decoration: none;
+}
+
+.arrow {
+  width: 16px;
+  height: 13px;
+  background: url('./arrow.svg') no-repeat center center;
+  display: block;
+}
+
+.itemTitle {
+  font-size: 24px;
+  color: #438cef;
+  font-weight: bold;
+  text-align: center;
+}
+
+.itemTitleGray {
+  color: #979797;
+  font-size: 26px;
+}
+
+.item:last-child {
+  border-right: none;
+}
+
+[disabled].item * {
+  opacity: 0.3;
+}
+
+.item:hover:not([disabled]) {
+  transform: scale(1.1);
+  box-shadow: 0px 2px 12px 0px rgba(0,0,0,0.21);
+  background-color: #eff3f6;
+  border-right: none;
+}
+
+.image {
+  width: 174px;
+  height: 155px;
+  margin-top: 10px;
+  flex-shrink: 0;
+  background-color: red;
+}
+
+.imageappStore {
+  background: url('./appStore.svg') no-repeat center center;
+}
+
+.imagecreateRegistry {
+  background: url('./createRegistry.svg') no-repeat center center;
+}
+
+.imagecreateApp {
+  background: url('./createApp.svg') no-repeat center center;
+}
+
+
+
+.linkList {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 100px;
+}
+
+.linkItem {
+  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #000;
+  box-sizing: content-box;
+  text-decoration: none;
+}
+
+.linkItem::before {
+  display: block;
+  content: '';
+  width: 35px;
+  height: 35px;
+  padding-bottom: 12px;
+}
+
+.linkItemgithub::before {
+  background: url('./github.svg') no-repeat center center;
+}
+
+.linkItemroadmap::before {
+  background: url('./route.svg') no-repeat center center;
+}
+
+.linkItemcybernode::before {
+  background: url('./startup.svg') no-repeat center center;
+}
+
+.linkItemdashboard::before {
+  background: url('./projection.svg') no-repeat center center;
+}
+
+.linkItemknowledge::before {
+  background: url('./brain.svg') no-repeat center center;
+}
+
+.linkItemblog::before {
+  background: url('./contract.svg') no-repeat center center;
+}

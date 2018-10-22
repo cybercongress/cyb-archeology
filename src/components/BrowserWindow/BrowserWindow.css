@@ -1,0 +1,41 @@
+
+.browser {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+}
+
+
+.browser__webview {
+	flex: 1 auto;
+	height: 100%;
+}
+
+.browser__webview--loading {
+}
+
+.browser__loading {
+	position: absolute;
+	display: none;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	align-items: center;
+	justify-content: center;
+	background: rgba(0, 0, 0, 0.4);
+}
+
+.browser__loading--show {
+	display: flex;
+}
+
+.browser__loading-inner {
+	background: #fff;
+	width: 200px;
+	height: 100px;
+	padding-top: 20px;
+	text-align: center;
+	font-size: 40px;
+}

@@ -1,0 +1,35 @@
+.menuContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 200px;
+    background: #ccc;
+    transition: 0.3s;
+}
+
+.menuContainer--hide {
+    left: -200px;
+}
+
+.appMenu {
+    display: flex;
+    flex-direction: column;
+}
+
+.AppMenuItem {
+    padding: 0.5em;
+    background-color: #979797;
+    display: inline-flex;
+    cursor: pointer;
+}
+
+.removeButton {
+    margin: 0 0 0 auto;
+    padding: 0.5em;
+    background-color: #979797;
+}
+
+.addMenuItem {
+    background-color: #979797;
+}

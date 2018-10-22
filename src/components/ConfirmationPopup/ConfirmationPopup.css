@@ -1,0 +1,27 @@
+
+
+.confirmation-popup {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	display: flex;
+	background: rgba(0, 0, 0, 0.4);
+	align-items: center;
+	justify-content: center;
+}
+
+.confirmation-popup__popup {
+	background: #fff;
+	padding: 20px;
+}
+
+.confirmation-popup__content {
+	padding-bottom: 50px;
+}
+
+.confirmation-popup__buttons {
+	display: flex;
+	justify-content: space-between;
+}
