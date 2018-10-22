@@ -31,7 +31,8 @@ class Application extends Component {
     }
 
     approve = () => {
-        this.props.approve();
+        const gas = this.refs.gas.value;
+        this.props.approve(gas);
     }
 
     reject = () => {
@@ -41,15 +42,37 @@ class Application extends Component {
 
     render() {
         const {
-            dura, defaultAccount, pendingRequest, canBack, goBack,
+            dura, defaultAccount, canBack, goBack,
+            pendingRequest,
+            request,
             openMenu, cyberDefaultAccount
         } = this.props;
         const homePage = dura === '';
+        let _from;
+        let _to;
+        if (request) {
+            _from = request.params[0].from
+            _to = request.params[0].to;
+        }
+        // const pendingRequest = true;
 
         return (
             <App openMenu={openMenu}>
                 <AppMenu openMenu={openMenu} />
-                {pendingRequest && <ConfirmationPopup>
+                {pendingRequest && <ConfirmationPopup
+                      content={<div>  
+                        <div>
+                        gas: <input ref='gas' placeholder='gas' defaultValue={72000}/>
+                        </div>
+                        <div>
+                        from:{_from}
+                        </div>
+                        <div>
+                        to:{_to}
+                        </div>
+                    </div>}
+                    >
+                    
                     <ApproveButton onClick={this.approve}>approve</ApproveButton>
                     <ApproveButton onClick={this.reject}>reject</ApproveButton>
                 </ConfirmationPopup>}
@@ -100,6 +123,7 @@ export default connect(
         canBack: !!state.browser.backDura,
         pendingRequest: state.wallet.pendingRequest,
         defaultAccount: state.wallet.defaultAccount,
+        request: state.wallet.request,
         openMenu: state.appMenu.openMenu,
         cyberDefaultAccount: state.cyber.defaultAccount,
     }),

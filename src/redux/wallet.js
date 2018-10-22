@@ -8,7 +8,8 @@ import axios from 'axios';
 const initState = {
     accounts: [],
     defaultAccount: '',
-    pendingRequest: false
+    pendingRequest: false,
+    request: null
 }
 
 export const reducer = (state = initState, action) => {
@@ -30,14 +31,16 @@ export const reducer = (state = initState, action) => {
         case 'SHOW_PENDING': {
             return {
                 ...state,
-                pendingRequest: true
+                pendingRequest: true,
+                request: action.payload
             }
         }
 
         case 'HIDE_PENDING': {
             return {
                 ...state,
-                pendingRequest: false
+                pendingRequest: false,
+                request: null
             }
         }
 
@@ -144,13 +147,16 @@ export const setDefaultAccount = (_address = '') => (dispatch, getState) => {
     })
 }
 
-const showPending = () => ({type: 'SHOW_PENDING'});
+const showPending = (payload) => ({type: 'SHOW_PENDING', payload: payload });
 const hidePending = () => ({type: 'HIDE_PENDING'});
 
 let wv = null;
 let web3Reqest = null;
 
-export const approve = () => (dispatch, getState) => {
+export const approve = (gas) => (dispatch, getState) => {
+
+    web3Reqest.params[0].gas = gas;
+
     provider.sendAsync(web3Reqest, (e, result) => {
         if (!wv) {
             return
@@ -214,7 +220,7 @@ export const receiveMessage = (e) => (dispatch, getState) => {
 
         if (payload.method == 'eth_sendTransaction') {
             web3Reqest = payload;
-            dispatch(showPending());
+            dispatch(showPending(payload));
         } else {
             provider.sendAsync(payload, (e, result) => {
                 wv.send('web3_eth_call', {...payload, ...result});

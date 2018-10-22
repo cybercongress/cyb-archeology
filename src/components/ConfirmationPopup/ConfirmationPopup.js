@@ -2,11 +2,12 @@ import React from 'react';
 
 import './ConfirmationPopup.css';
 
-const ConfirmationPopup = ({children}) => (
+const ConfirmationPopup = ({children, content }) => (
 	<div className='confirmation-popup'>
 		<div className='confirmation-popup__popup'>
 			<div className='confirmation-popup__content'>
 				confirm transactions?
+				{content}
 			</div>
 			<div className='confirmation-popup__buttons'>
 				{children}
