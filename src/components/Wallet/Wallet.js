@@ -1,21 +1,26 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Container from "../Container/Container";
+const style = require('./wallet.css');
 
-export const WalletAccountsList = ({accounts, setDefaultCallback, forgetCallback}) => {
-    return accounts.map(account =>
-        <WalletAccount
+export const WalletAccountsList = ({accounts, defaultAccountAddress, setDefaultCallback, forgetCallback}) => {
+    return accounts.map(account => {
+        const isDefaultAccount = account.address === defaultAccountAddress;
+
+        return <WalletAccount
             key={account.address}
             address={account.address}
             balance={account.balance}
             clickCallback={() => setDefaultCallback(account.address)}
             forgetCallback={(e) => forgetCallback(account.address, e)}
+            isDefaultAccount={isDefaultAccount}
         />
-    )
+    })
 };
 
-export const WalletAccount = ({address, balance, clickCallback, forgetCallback}) => {
-    return <div onClick={clickCallback}>
+export const WalletAccount = ({address, balance, clickCallback, forgetCallback, isDefaultAccount}) => {
+    const className = isDefaultAccount ? 'default-account' : '';
+
+    return <div onClick={clickCallback} className={className}>
         <div>
             Address: {address}
         </div>
@@ -68,8 +73,19 @@ export class SendFunds extends React.Component {
         })
     };
 
-    render() {
+    send = () => {
         const defaultAddress = this.props.defaultAddress;
+        const recipientAddress = this.refs.recipientAddress.value;
+        const amount = this.refs.amount.value;
+
+        this.props.sendCallback(defaultAddress, recipientAddress, amount);
+
+        this.setState({
+            showSendPanel: false
+        })
+    };
+
+    render() {
         const {showSendPanel} = this.state;
 
         return <div>
@@ -86,7 +102,7 @@ export class SendFunds extends React.Component {
                 <div>
                     <input ref='amount' placeholder='Amount'/>
                 </div>
-                <button onClick={this.sendMoney}>send</button>
+                <button onClick={this.send}>send</button>
                 <button onClick={this.cancelSend}>cancel</button>
             </div>
             }
@@ -95,5 +111,6 @@ export class SendFunds extends React.Component {
 }
 
 SendFunds.propTypes = {
-    defaultAddress: PropTypes.string
+    defaultAddress: PropTypes.string,
+    sendCallback: PropTypes.func
 };

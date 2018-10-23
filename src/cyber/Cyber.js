@@ -34,7 +34,7 @@ function Cyber(nodeUrl) {
                     resolve([])
                 )
         })
-    }
+    };
 
 
     self.link = function (from, to, address = '') {
@@ -66,16 +66,16 @@ function Cyber(nodeUrl) {
                 console.log('Cannot link', error)
             )
         })
-    }
+    };
 
     self.claimFunds = function (address, amount) {
         return axios({
             method: 'get',
             url: claimNodeUrl + '/claim?address=' + address + '&amount=' + amount
         }).then(response => {
-            console.log('Claimed ' + amount + ' for address ' + address);
+            console.log('Claimed ' + amount + ' for address ' + address, response);
         })
-    }
+    };
 
     let __setDefaultAddress;
 
@@ -89,7 +89,7 @@ function Cyber(nodeUrl) {
     self.setDefaultAccount = function (_address) {
         defaultAccount = _address;
         if (__setDefaultAddress) __setDefaultAddress(defaultAccount);
-    }
+    };
 
     self.getAccounts = function () {
         return new Promise(resolve => {
@@ -116,7 +116,7 @@ function Cyber(nodeUrl) {
                 resolve(accounts)
             });
         })
-    }
+    };
 
     self.restoreAccount = function (seedPhrase) {
         return new Promise(resolve => {
@@ -140,7 +140,7 @@ function Cyber(nodeUrl) {
 
             resolve();
         })
-    }
+    };
 
     self.createAccount = function () {
         return new Promise(resolve => {
@@ -154,7 +154,7 @@ function Cyber(nodeUrl) {
 
             resolve();
         })
-    }
+    };
 
     self.forgetAccount = function (address) {
         return new Promise(resolve => {
@@ -164,6 +164,10 @@ function Cyber(nodeUrl) {
 
             resolve();
         })
+    };
+
+    self.sendFunds = function (defaultAddress, recipientAddress, amount) {
+        //TODO: @arturalbov send funds implementation should be here
     }
 
 }

@@ -92,7 +92,7 @@ export const loadAccounts = () => (dispatch, getState) => {
                 eth.getBalance(address)
                     .then(balance => resolve({
                         balance: web3.utils.fromWei(balance, 'ether'),
-                        address
+                        address: address.toLowerCase()
                     }))
             }))
         ).then(accounts => {
@@ -169,9 +169,9 @@ export const approve = (gas) => (dispatch, getState) => {
     })
 }
 
-export const sendMony = (_from, to, amount, _confirmationNumber = 3) => (dispatch, getState) => new Promise(resolve => {
-    console.log('send mony');
-    console.log(_from, to, amount, web3.utils.toWei(amount, "ether"))
+export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => (dispatch, getState) => new Promise(resolve => {
+    console.log('send eth');
+    console.log(_from, to, amount, web3.utils.toWei(amount, "ether"));
     eth.sendTransaction({
         from: _from,
         to,
@@ -236,6 +236,5 @@ export const receiveMessage = (e) => (dispatch, getState) => {
         window.cyber[method].apply(window.cyber, params).then((result) => {
             wvCyber.send('cyber_'+method, result);
         });
-        console.log('e---->', e);
     }
 }

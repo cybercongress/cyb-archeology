@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import * as cyberActions from "../../redux/cyber";
-import {AddAccount, ClaimCyberFunds, WalletAccountsList} from "../../components/Wallet/Wallet";
+import {AddAccount, ClaimCyberFunds, SendFunds, WalletAccountsList} from "../../components/Wallet/Wallet";
 import Container from "../../components/Container/Container";
 
 class CyberWallet extends Component {
@@ -30,21 +30,29 @@ class CyberWallet extends Component {
         this.props.claimFunds(address, amount)
     };
 
+    sendFunds = (defaultAddress, recipientAddress, amount) => {
+        this.props.sendFunds(defaultAddress, recipientAddress, amount)
+    };
+
     render() {
-        const defaultAccount = this.props.defaultAccount;
+        const defaultAccountAddress = this.props.defaultAccount;
         const accounts = this.props.accounts;
 
         return (
             <Container>
                 <h3>Current account</h3>
-                {defaultAccount}
+                {defaultAccountAddress}
+                <SendFunds
+                    defaultAddress={defaultAccountAddress}
+                    sendCallback={this.sendFunds}
+                />
                 <hr/>
-
 
                 <h3>Accounts</h3>
 
                 <WalletAccountsList
                     accounts={accounts}
+                    defaultAccountAddress={defaultAccountAddress}
                     setDefaultCallback={this.setDefaultAccount}
                     forgetCallback={this.forgetAccount}
                 />
