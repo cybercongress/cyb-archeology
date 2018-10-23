@@ -1,7 +1,11 @@
 {
-  "name": "browser",
-  "version": "0.0.11",
+  "name": "cyb",
   "main": "public/electron.js",
+  "version": "0.0.13",
+  "author": {
+    "name": "cybercongress",
+    "email": "cybercongress42@gmail.com"
+  },
   "private": true,
   "homepage": "./",
   "dependencies": {
@@ -32,7 +36,7 @@
     "build": "react-scripts build",
     "build:preload": "webpack --config webpack/preload",
     "test": "react-scripts test",
-    "release": "rimraf dist && rimraf build && yarn run build && yarn run build:preload && electron-builder --config electron/config.json",
+    "release": "rimraf dist && rimraf build && yarn run build && yarn run build:preload && electron-builder --publish always",
     "start": "concurrently \"BROWSER=none yarn run react-dev\" \"wait-on http://localhost:3000 && electron .\""
   },
   "browserslist": [
