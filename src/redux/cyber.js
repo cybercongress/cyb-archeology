@@ -69,3 +69,7 @@ export const forgetCyberAccount = (address) => (dispatch, getState) => {
         dispatch(init())
     )
 };
+
+export const claimFunds = (address, amount) => (dispatch, getState) => {
+    window.cyber.claimFunds(address, amount)
+};

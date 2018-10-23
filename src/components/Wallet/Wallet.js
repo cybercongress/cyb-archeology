@@ -1,4 +1,6 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
+import Container from "../Container/Container";
 
 export const WalletAccountsList = ({accounts, setDefaultCallback, forgetCallback}) => {
     return accounts.map(account =>
@@ -33,7 +35,7 @@ export class AddAccount extends React.Component {
         this.props.addCallback(inputValue);
     };
 
-    render () {
+    render() {
         return <div>
             <p>{this.props.addMethodName}</p>
             <input ref='addAccountInput' placeholder={this.props.placeholder}/>
@@ -41,3 +43,57 @@ export class AddAccount extends React.Component {
         </div>
     }
 }
+
+AddAccount.propTypes = {
+    addCallback: PropTypes.func,
+    addMethodName: PropTypes.string,
+    placeholder: PropTypes.string
+};
+
+export class SendFunds extends React.Component {
+
+    state = {
+        showSendPanel: false
+    };
+
+    startSend = () => {
+        this.setState({
+            showSendPanel: true
+        })
+    };
+
+    cancelSend = () => {
+        this.setState({
+            showSendPanel: false
+        })
+    };
+
+    render() {
+        const defaultAddress = this.props.defaultAddress;
+        const {showSendPanel} = this.state;
+
+        return <div>
+            {!showSendPanel &&
+            <div>
+                <button onClick={this.startSend}>Send</button>
+            </div>
+            }
+            {showSendPanel &&
+            <div>
+                <div>
+                    <input ref='recipientAddress' placeholder='Recipient Address'/>
+                </div>
+                <div>
+                    <input ref='amount' placeholder='Amount'/>
+                </div>
+                <button onClick={this.sendMoney}>send</button>
+                <button onClick={this.cancelSend}>cancel</button>
+            </div>
+            }
+        </div>
+    }
+}
+
+SendFunds.propTypes = {
+    defaultAddress: PropTypes.string
+};

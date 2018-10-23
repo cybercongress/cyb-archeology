@@ -7,7 +7,9 @@ import {
 
 import builder from './builder';
 
-const chainId = 'test-chain-fbqPMq';
+const chainId = 'test-chain-gRXWCL';
+const claimNodeUrl = 'http://earth.cybernode.ai:34666';
+const defaultAmount = 10000;
 
 let __accounts = {};
 
@@ -31,7 +33,6 @@ function Cyber(nodeUrl) {
                 .catch(error =>
                     resolve([])
                 )
-
         })
     }
 
@@ -67,6 +68,15 @@ function Cyber(nodeUrl) {
         })
     }
 
+    self.claimFunds = function (address, amount) {
+        return axios({
+            method: 'get',
+            url: claimNodeUrl + '/claim?address=' + address + '&amount=' + amount
+        }).then(response => {
+            console.log('Claimed ' + amount + ' for address ' + address);
+        })
+    }
+
     let __setDefaultAddress;
 
     self.getDefaultAddress = function () {
@@ -91,8 +101,8 @@ function Cyber(nodeUrl) {
                         url: nodeUrl + '/account?address=' + address
                     }).then(data => {
                         let balance = 0;
-                        if (!data.data.error) {
-                            const account = data.data.result.account;
+                        const account = data.data.result.account;
+                        if (account.account_number >= 0) {
                             balance = account.coins[0].amount;
                         }
 
@@ -139,6 +149,8 @@ function Cyber(nodeUrl) {
             __accounts[account.address] = account.privateKey;
 
             localStorage.setItem('cyberAccounts', JSON.stringify(__accounts));
+
+            this.claimFunds(account.address, defaultAmount);
 
             resolve();
         })

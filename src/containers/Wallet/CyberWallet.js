@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import * as cyberActions from "../../redux/cyber";
-import {AddAccount, WalletAccountsList} from "../../components/Wallet/Wallet";
+import {AddAccount, ClaimCyberFunds, WalletAccountsList} from "../../components/Wallet/Wallet";
 import Container from "../../components/Container/Container";
 
 class CyberWallet extends Component {
@@ -26,6 +26,10 @@ class CyberWallet extends Component {
         this.props.forgetCyberAccount(address)
     };
 
+    claimFunds = (address, amount) => {
+        this.props.claimFunds(address, amount)
+    };
+
     render() {
         const defaultAccount = this.props.defaultAccount;
         const accounts = this.props.accounts;
@@ -34,6 +38,8 @@ class CyberWallet extends Component {
             <Container>
                 <h3>Current account</h3>
                 {defaultAccount}
+                <hr/>
+
 
                 <h3>Accounts</h3>
 
@@ -46,6 +52,7 @@ class CyberWallet extends Component {
 
                 <h3>Management</h3>
                 <button onClick={this.createCyberAccount}>Create new account</button>
+
                 <AddAccount
                     addMethodName='Recover'
                     placeholder='seed phrase'

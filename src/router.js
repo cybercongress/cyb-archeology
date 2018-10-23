@@ -7,7 +7,7 @@ import Wallet from "./containers/Wallet";
 import NotFound from "./NotFound";
 import Browser from "./Browser";
 import Home from "./Home";
-import AppStore from './containers/AppStore';
+import AppStore from './containers/AppStore/AppStore';
 
 const AppRouter = () => (<Router history={hashHistory}>
     <Route path='/' component={Application}>

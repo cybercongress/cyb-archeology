@@ -68,25 +68,7 @@ class EthWallet extends Component {
             <Container>
                 <h3>Current account</h3>
                 {defaultAccount}
-                <div>
-                    {!showSendPanel &&
-                        <div>
-                            <button onClick={this.startSend}>Send ETH</button>
-                        </div>
-                    }
-                    {showSendPanel &&
-                        <div>
-                            <div>
-                                <input ref='recipientAddress' placeholder='Recipient Address'/>
-                            </div>
-                            <div>
-                                <input ref='amount' placeholder='Amount'/>
-                            </div>
-                            <button onClick={this.sendMoney}>send</button>
-                            <button onClick={this.cancelSend}>cancel</button>
-                        </div>
-                    }
-                </div>
+                <hr/>
 
                 <h3>Accounts</h3>
 

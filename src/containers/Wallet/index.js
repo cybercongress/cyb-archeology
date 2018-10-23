@@ -7,7 +7,7 @@ import CyberWallet from "./CyberWallet"
 class Page extends Component {
 
     state = {
-        tab: 'eth'
+        tab: 'cyb'
     };
 
     select = (tab) => {

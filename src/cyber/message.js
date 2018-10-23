@@ -26,6 +26,58 @@ class Coin {
     }
 }
 
+/*class Input {
+
+    constructor(address, coins) {
+        this.address = address;
+        this.coins = coins;
+    }
+
+    getSignObject() {
+        return utils.sortObjectKeys(this);
+    }
+}
+
+class Output {
+
+    constructor(address, coins) {
+        this.address = address;
+        this.coins = coins;
+    }
+
+    getSignObject() {
+        return utils.sortObjectKeys(this);
+    }
+}
+
+class MsgSend extends Msg {
+
+    constructor(from, to, amount) {
+        super();
+
+        this.address = from
+        this.cid1 = fromCid
+        this.cid2 = toCid
+    }
+
+    getSignObject() {
+        return amino.marshalJSON(this.type(), utils.sortObjectKeys(this));
+    }
+
+    validateBasic() {
+        if (utils.isEmpty(this.cid1)) {
+            throw new Error("from cid is empty");
+        }
+        if (utils.isEmpty(this.cid2)) {
+            throw new Error("to cid is empty");
+        }
+    }
+
+    type() {
+        return "cyberd/Link";
+    }
+}*/
+
 class MsgLink extends Msg {
 
     constructor(from, fromCid, toCid) {
