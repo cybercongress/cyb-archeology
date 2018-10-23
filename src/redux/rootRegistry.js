@@ -27,7 +27,7 @@ const initState = {
             protocol: 'ipfs'
         }
     },
-}
+};
 
 export const reducer = (state = initState, action) => {
     switch (action.type) {
@@ -41,13 +41,16 @@ export const reducer = (state = initState, action) => {
         default:
             return state;
     }
-}
+};
 
 export const init = () => (dispatch, getState) => new Promise(resolve => {
-    let registryItems = JSON.parse(localStorage.getItem(localStorageItemName) || '{}');
+    let registryItems;
+    let registryItemsJson = localStorage.getItem(localStorageItemName);
 
-    if (Object.keys(registryItems).length === 0) {
+    if (registryItemsJson == null) {
         registryItems = initState.items;
+    } else {
+        registryItems = JSON.parse(registryItemsJson);
     }
 
     dispatch({
@@ -57,7 +60,7 @@ export const init = () => (dispatch, getState) => new Promise(resolve => {
     dispatch(saveRootRegistryItemsInLs());
 
     resolve(registryItems);
-})
+});
 
 export const deleteRegistryItem = (itemName) => (dispatch, getState) => {
     let registryItems = getState().rootRegistry.items;
@@ -68,7 +71,7 @@ export const deleteRegistryItem = (itemName) => (dispatch, getState) => {
         payload: registryItems
     });
     dispatch(saveRootRegistryItemsInLs());
-}
+};
 
 export const getRegistryItemsAsArray = (state) => {
     const registryItems = state.rootRegistry.items;
@@ -79,11 +82,11 @@ export const getRegistryItemsAsArray = (state) => {
     }));
 
     return registryItemsArray;
-}
+};
 
 export const getRegistryItems = (state) => {
     return state.rootRegistry.items
-}
+};
 
 export const addRegistryItem = (name, hash, protocol) => (dispatch, getState) => new Promise(resolve => {
     let registryItems = getState().rootRegistry.items;
@@ -100,9 +103,9 @@ export const addRegistryItem = (name, hash, protocol) => (dispatch, getState) =>
     dispatch(saveRootRegistryItemsInLs());
 
     resolve(registryItems);
-})
+});
 
 const saveRootRegistryItemsInLs = () => (dispatch, getState) => {
     const registryItems = getState().rootRegistry.items;
     localStorage.setItem(localStorageItemName, JSON.stringify(registryItems));
-}
+};
