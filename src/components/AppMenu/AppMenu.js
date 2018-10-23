@@ -22,10 +22,10 @@ class AppMenu extends Component {
     rejectFavorite = () => {
         this.refs.input.value = 'New App';
         this.hideInput();
-    }
+    };
 
     render() {
-        const { openMenu } = this.props;
+        const {openMenu} = this.props;
 
         const deleteAppFromMenu = (rootDura) => {
             this.props.deleteMenuItem(rootDura);
@@ -48,7 +48,7 @@ class AppMenu extends Component {
                     {appMenuItems}
                 </div>
                 {pendingAddToFavorites &&
-                    <span className='addMenuItem'>
+                <span className='addMenuItem'>
                         <input
                             ref='input'
                             defaultValue='New App'

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import CybLink from "../components/CybLink";
 import Container from '../components/Container/Container';
 
 

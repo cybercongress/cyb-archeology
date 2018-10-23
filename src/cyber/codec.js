@@ -46,7 +46,7 @@ const bech32 = {
     },
 
     isBech32(prefix, str) {
-        if (!prefix || prefix.length == 0) {
+        if (!prefix || prefix.length === 0) {
             return false
         }
 

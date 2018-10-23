@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {navigate, goBack} from './redux/browser';
 import {approve, reject} from './redux/wallet';
-import { toggleMenu } from './redux/appMenu';
+import {toggleMenu} from './redux/appMenu';
 
 import AppMenu from './components/AppMenu/AppMenu';
 import AddToAppMenuButton, {Container} from "./components/AddToAppMenuButton/AddToAppMenuButton";
@@ -11,7 +11,7 @@ import Navigation, {NavigationLeft, NavigationRight, NavigationCenter} from './c
 import SearchInput from './components/SearchInput/SearchInput';
 import Logo from './components/Logo/Logo';
 import IdBar, {SettingsLink, WalletLink, CurrentUser} from './components/IdBar/IdBar';
-import ConfirmationPopup, {ApproveButton, RejectButton} from './components/ConfirmationPopup/ConfirmationPopup';
+import ConfirmationPopup, {ApproveButton} from './components/ConfirmationPopup/ConfirmationPopup';
 
 import CybLink from './components/CybLink';
 
@@ -58,24 +58,27 @@ class Application extends Component {
 
         return (
             <App openMenu={openMenu}>
-                <AppMenu openMenu={openMenu} />
-                {pendingRequest && <ConfirmationPopup
-                      content={<div>  
-                        <div>
-                        gas: <input ref='gas' placeholder='gas' defaultValue={72000}/>
-                        </div>
-                        <div>
-                        from:{_from}
-                        </div>
-                        <div>
-                        to:{_to}
-                        </div>
-                    </div>}
+                <AppMenu openMenu={openMenu}/>
+                {pendingRequest &&
+                    <ConfirmationPopup
+                        content={
+                            <div>
+                                <div>
+                                    gas: <input ref='gas' placeholder='gas' defaultValue={72000}/>
+                                </div>
+                                <div>
+                                    from:{_from}
+                                </div>
+                                <div>
+                                    to:{_to}
+                                </div>
+                            </div>
+                        }
                     >
-                    
-                    <ApproveButton onClick={this.approve}>approve</ApproveButton>
-                    <ApproveButton onClick={this.reject}>reject</ApproveButton>
-                </ConfirmationPopup>}
+                        <ApproveButton onClick={this.approve}>approve</ApproveButton>
+                        <ApproveButton onClick={this.reject}>reject</ApproveButton>
+                    </ConfirmationPopup>
+                }
                 <AppHeader isHome={homePage}>
                     <Navigation isHome={homePage}>
                         <NavigationLeft>
@@ -93,7 +96,7 @@ class Application extends Component {
                                 />
                                 <button disabled={!canBack} onClick={goBack}>back</button>
                                 <button disabled>forward</button>
-                                {(!!dura && dura.indexOf('.dev') !== -1) && <div style={{ display: 'inline-block'}}>
+                                {(!!dura && dura.indexOf('.dev') !== -1) && <div style={{display: 'inline-block'}}>
                                     <button>deploy</button>
                                     <CybLink dura='.help/#/deploy'>how to deploy app</CybLink>
                                 </div>}
@@ -104,7 +107,7 @@ class Application extends Component {
                             <IdBar>
                                 <SettingsLink/>
                                 <WalletLink/>
-                                <CurrentUser defaultAccount={defaultAccount} cyberDefaultAccount={cyberDefaultAccount} />
+                                <CurrentUser defaultAccount={defaultAccount} cyberDefaultAccount={cyberDefaultAccount}/>
                             </IdBar>
                         </NavigationRight>
                     </Navigation>

@@ -8,7 +8,7 @@ export const Container = ({children}) => (
     <div className='favoritesContainer'>
         {children}
     </div>
-)
+);
 
 class AddToAppMenuButton extends Component {
 
@@ -27,7 +27,7 @@ class AddToAppMenuButton extends Component {
         return menuItems.find(item => {
             return item.rootDura === currentDura
         })
-    }
+    };
 
     render() {
         const className = this.isFavoritedPage() ? 'favoritedPage' : 'addAppButton';
@@ -39,8 +39,6 @@ class AddToAppMenuButton extends Component {
         )
     }
 }
-
-
 
 export default connect(
     state => ({

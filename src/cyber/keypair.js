@@ -136,7 +136,7 @@ const hd = {
         } else {
             const pubKey = Secp256k1.publicKeyCreate(privKeyBytes);
             // TODO
-            if (index == 0) {
+            if (index === 0) {
                 indexBuffer = Buffer.from([0, 0, 0, 0]);
             }
             data = pubKey

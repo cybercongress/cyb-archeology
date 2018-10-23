@@ -18,7 +18,7 @@ class Utils {
                 } else if (obj[k] != null && typeof(obj[k]) === "function") {
                     tmp[k] = eval(obj[k].toString())
                 } else {
-                    tmp[k] = new String(obj[k]).toString();
+                    tmp[k] = String(obj[k]).toString();
                 }
             });
             return tmp;
@@ -45,6 +45,9 @@ class Utils {
                 } else {
                     return Object.keys(obj).length === 0
                 }
+            }
+            default: {
+
             }
         }
     }

@@ -218,7 +218,7 @@ export const receiveMessage = (e) => (dispatch, getState) => {
         const payload = e.args[0]
         wv = e.target;
 
-        if (payload.method == 'eth_sendTransaction') {
+        if (payload.method === 'eth_sendTransaction') {
             web3Reqest = payload;
             dispatch(showPending(payload));
         } else {

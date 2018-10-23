@@ -31,7 +31,7 @@ class CyberWallet extends Component {
         const accounts = this.props.accounts;
 
         return (
-            <div>
+            <Container>
                 <h3>Current account</h3>
                 {defaultAccount}
 
@@ -56,7 +56,7 @@ class CyberWallet extends Component {
                     placeholder='private key'
                     addCallback={this.importAccount}
                 />
-            </div>
+            </Container>
         );
     }
 }

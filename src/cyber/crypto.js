@@ -7,7 +7,7 @@ const constants = require('./constants').CyberdNetConfig;
 
 function encode(acc) {
     if (!utils.isEmpty(acc)) {
-        let defaultCoding = constants.DEFAULT_ENCODING
+        let defaultCoding = constants.DEFAULT_ENCODING;
         switch (defaultCoding) {
             case constants.ENCODING_BECH32: {
                 if (codec.hex.isHex(acc.address)) {
@@ -16,6 +16,10 @@ function encode(acc) {
                 if (codec.hex.isHex(acc.publicKey)) {
                     acc.publicKey = codec.bech32.toBech32(constants.PREFIX_BECH32_ACCPUB, acc.publicKey)
                 }
+                break;
+            }
+            default: {
+
             }
         }
         return acc
