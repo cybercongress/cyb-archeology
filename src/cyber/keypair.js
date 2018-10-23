@@ -1,13 +1,11 @@
-Buffer = require('buffer').Buffer;
 const codec = require("./codec");
 const Sha256 = require("sha256");
 const RIPEMD160 = require('ripemd160');
 const bip39 = require('bip39');
 const Random = require('randombytes');
 const Secp256k1 = require('secp256k1');
-const BN = window.require("bn.js");
+const BN = require("bn.js");
 const constants = require('./constants');
-
 
 module.exports = {
 
@@ -130,7 +128,7 @@ const hd = {
         let indexBuffer = Buffer.from([index]);
         if (harden) {
             var c = new BN(index).or(new BN(0x80000000));
-            indexBuffer = c.toBuffer();
+            indexBuffer = this.bnToBuffer(c);
 
             let privKeyBuffer = Buffer.from(privKeyBytes);
             data = Buffer.from([0]);
@@ -150,7 +148,7 @@ const hd = {
         let x = hd.addScalars(aInt, bInt);
 
         return {
-            data: x.toBuffer(),
+            data: this.bnToBuffer(x),
             chainCode: i64P.chainCode
         }
     },
@@ -168,9 +166,23 @@ const hd = {
         const SignatureFun = require('elliptic/lib/elliptic/ec/signature');
         let signature = new SignatureFun(sigObj);
         return signature.toDER();
+    },
+
+    bnToBuffer(bn) {
+        return this.stripZeros(new Buffer(this.padToEven(bn.toString(16)), 'hex'));
+    },
+
+    stripZeros(buffer) {
+        var i = 0; // eslint-disable-line
+        for (i = 0; i < buffer.length; i++) {
+            if (buffer[i] !== 0) {
+                break;
+            }
+        }
+        return (i > 0) ? buffer.slice(i) : buffer;
+    },
+
+    padToEven(str) {
+        return str.length % 2 ? `0${str}` : str;
     }
 }
-
-window.assert = function deepEqual(actual, expected, message) {
-    // disable
-};

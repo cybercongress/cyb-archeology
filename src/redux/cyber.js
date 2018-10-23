@@ -28,10 +28,7 @@ export const init = () => (dispatch, getState) => {
     window.cyber.getAccounts().then(accounts => {
 
         if (!getState().cyber.defaultAccount && accounts.length > 0) {
-            dispatch({
-                type: 'SET_CYBER_DEFAULT_ACCOUNT',
-                payload: accounts[0].address
-            })
+            dispatch(setDefaultCyberAccount(accounts[0].address))
         }
 
         dispatch({
@@ -59,4 +56,16 @@ export const setDefaultCyberAccount = (address) => (dispatch, getState) => {
         type: 'SET_CYBER_DEFAULT_ACCOUNT',
         payload: address
     })
+};
+
+export const createCyberAccount = () => (dispatch, getState) => {
+    window.cyber.createAccount().then(account =>
+        dispatch(init())
+    )
+};
+
+export const forgetCyberAccount = (address) => (dispatch, getState) => {
+    window.cyber.forgetAccount(address).then(() =>
+        dispatch(init())
+    )
 };

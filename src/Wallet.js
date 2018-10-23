@@ -130,6 +130,14 @@ class CyberWallet extends Component {
         this.props.setDefaultCyberAccount(account.address);
     }
 
+    createCyberAccount = () => {
+        this.props.createCyberAccount();
+    }
+
+    forgetCyberAccount = (address) => {
+        this.props.forgetCyberAccount(address)
+    }
+
     render() {
         return (
             <div>
@@ -142,10 +150,13 @@ class CyberWallet extends Component {
                             <div>
                                 balance: {account.balance}
                             </div>
+                            <div>
+                                <button onClick={() => this.forgetCyberAccount(account.address)}>Forget</button>
+                            </div>
                         </div>)
                     }
                     <hr/>
-                    <button onClick={this.createAccount}>Create new account</button>
+                    <button onClick={this.createCyberAccount}>Create new account</button>
                     <div>
                         <p>Recover</p>
                         <input ref='recoverInput' placeholder='seed for recover'/>
