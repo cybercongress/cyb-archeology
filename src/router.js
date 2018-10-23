@@ -3,7 +3,7 @@ import {hashHistory, IndexRoute, Route, Router} from "react-router";
 import Application from "./Application";
 import RootRegistry from "./RootRegistry";
 import Settings from "./Settings";
-import Wallet from "./Wallet";
+import Wallet from "./containers/Wallet";
 import NotFound from "./NotFound";
 import Browser from "./Browser";
 import Home from "./Home";
