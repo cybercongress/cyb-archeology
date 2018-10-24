@@ -62,15 +62,21 @@ window.cyber = null;
 export const init = (endpoint) => (dispatch, getState) => {
     __accounts = JSON.parse(localStorage.getItem('accounts') || '{}');
 
+    // const http = new Web3.providers.HttpProvider(endpoint)
+
     provider = new SignerProvider(endpoint, {
         signTransaction: (rawTx, cb) => {
-            const privateKey = __accounts[rawTx.from];
+            const privateKey = __accounts[rawTx.from.toLowerCase()];
             cb(null, sign(rawTx, privateKey))
         },
         accounts: (cb) => {
             cb(null, Object.keys(__accounts))
         },
     });
+
+    // provider.send = function(payload) {
+    //     return http.send(payload);
+    // }
 
     web3 = new Web3(provider);
     eth = web3.eth;
@@ -151,23 +157,7 @@ const showPending = (payload) => ({type: 'SHOW_PENDING', payload: payload });
 const hidePending = () => ({type: 'HIDE_PENDING'});
 
 let wv = null;
-let web3Reqest = null;
 
-export const approve = (gas) => (dispatch, getState) => {
-
-    web3Reqest.params[0].gas = gas;
-
-    provider.sendAsync(web3Reqest, (e, result) => {
-        if (!wv) {
-            return
-        }
-        wv.send('web3_eth_call', {
-            ...web3Reqest,
-            ...result
-        });
-        dispatch(hidePending())
-    })
-}
 
 export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => (dispatch, getState) => new Promise(resolve => {
     console.log('send eth');
@@ -210,6 +200,25 @@ export const reject = () => (dispatch, getState) => {
     dispatch(hidePending())
 }
 
+let web3Reqest = null;
+
+export const approve = (gas, _gasLimit) => (dispatch, getState) => {
+    const gasLimit = web3.toWei(_gasLimit, 'Gwei');
+    web3Reqest.params[0].gas = gas;
+    web3Reqest.params[0].gasPrice = gasLimit;
+
+    provider.sendAsync(web3Reqest, (e, result) => {
+        if (!wv) {
+            return
+        }
+        wv.send('web3_eth_call', {
+            ...web3Reqest,
+            ...result
+        });
+        dispatch(hidePending())
+    })
+}
+
 export const receiveMessage = (e) => (dispatch, getState) => {
 
     if (!provider) return;
@@ -220,10 +229,15 @@ export const receiveMessage = (e) => (dispatch, getState) => {
 
         if (payload.method === 'eth_sendTransaction') {
             web3Reqest = payload;
+            // payload.params[0].gas = 21000;
+            // TODO: estimateGas
+            // web3.eth.estimateGas(payload, (e, dd) => {
+            //     debugger
+            // })
             dispatch(showPending(payload));
         } else {
             provider.sendAsync(payload, (e, result) => {
-                wv.send('web3_eth_call', {...payload, ...result});
+                wv.send('web3_eth_call', result);
             })
         }
     }

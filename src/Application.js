@@ -32,7 +32,8 @@ class Application extends Component {
 
     approve = () => {
         const gas = this.refs.gas.value;
-        this.props.approve(gas);
+        const gasPrice = this.refs.gasPrice.value;
+        this.props.approve(gas, gasPrice);
     }
 
     reject = () => {
@@ -58,22 +59,21 @@ class Application extends Component {
 
         return (
             <App openMenu={openMenu}>
-                <AppMenu openMenu={openMenu}/>
-                {pendingRequest &&
-                    <ConfirmationPopup
-                        content={
-                            <div>
-                                <div>
-                                    gas: <input ref='gas' placeholder='gas' defaultValue={72000}/>
-                                </div>
-                                <div>
-                                    from:{_from}
-                                </div>
-                                <div>
-                                    to:{_to}
-                                </div>
-                            </div>
-                        }
+
+                <AppMenu openMenu={openMenu} />
+                {pendingRequest && <ConfirmationPopup
+                      content={<div>  
+                        <div>
+                        gas limit: <input ref='gas' placeholder='gas' defaultValue={7200000}/>
+                        gas price: <input ref='gasPrice' placeholder='gas price' defaultValue={12}/>
+                        </div>
+                        <div>
+                        from:{_from}
+                        </div>
+                        <div>
+                        to:{_to}
+                        </div>
+                    </div>}
                     >
                         <ApproveButton onClick={this.approve}>approve</ApproveButton>
                         <ApproveButton onClick={this.reject}>reject</ApproveButton>

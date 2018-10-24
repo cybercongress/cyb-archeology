@@ -42,8 +42,12 @@ function Cyber(nodeUrl) {
             method: 'get',
             url: nodeUrl + '/account?address=' + address
         }).then(response => {
+            if (!response.data.result) return false;
+
             return response.data.result.account;
         }).then((account) => {
+            if (!account) return;
+            
             const acc = {
                 address: account.address,
                 chain_id: chainId, //todo: get from node
@@ -101,9 +105,8 @@ function Cyber(nodeUrl) {
                         url: nodeUrl + '/account?address=' + address
                     }).then(data => {
                         let balance = 0;
-                        const account = data.data.result.account;
-                        if (account.account_number >= 0) {
-                            balance = account.coins[0].amount;
+                        if (data.data.result && data.data.result.account && data.data.result.account.account_number >= 0) {
+                            balance = data.data.result.account.coins[0].amount;
                         }
 
                         return {
