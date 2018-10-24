@@ -9,6 +9,9 @@ class CybLink extends Component {
 
 	onLinkClick = (e) => {
   		e.preventDefault();
+  		
+  		if (this.props.onClick) this.props.onClick(e);
+
   		this.props.navigate(this.props.dura);
 	}
 

@@ -95,7 +95,7 @@ export const navigate = (_dura, init = false) => (dispatch, getState) => {
     }
 
     if (dura === 'notfound.cyb') {
-        hashHistory.push('/notfound');
+        hashHistory.push('/notfound?dura=' + _dura);
         dispatch(updateDURA(_dura));
         return;
     }

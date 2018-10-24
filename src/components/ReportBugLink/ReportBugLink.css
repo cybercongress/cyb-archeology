@@ -1,0 +1,8 @@
+.ReportBugLink {
+	position: fixed;
+	z-index: 1;
+	bottom: 10px;
+	left: 40%;
+	text-decoration: none;
+	color: #438cef;
+}

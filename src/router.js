@@ -1,6 +1,6 @@
 import React from "react";
 import {hashHistory, IndexRoute, Route, Router} from "react-router";
-import Application from "./Application";
+import Application from "./containers/Application/Application";
 import RootRegistry from "./RootRegistry";
 import Settings from "./Settings";
 import Wallet from "./containers/Wallet";

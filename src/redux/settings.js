@@ -71,6 +71,7 @@ export const init = () => (dispatch, getState) => new Promise(resolve => {
         type: 'INIT_SETTINGS',
         payload: __settings
     })
+    dispatch(checkStatus());
     resolve(__settings);
 })
 

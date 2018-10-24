@@ -55,29 +55,39 @@ class Settings extends Component {
 		return (
 			<Container>
 				<div>
+					<h2>/Settings</h2>
 					<div>
-						<div>IPFS:</div>
-						<input className='form-input' ref='IPFS_END_POINT' defaultValue={IPFS_END_POINT}/>
-						<button onClick={this.updateIPFS}>update</button>
-						<Indecator status={pending ? null : ipfsStatus} />
+						<h3>Connection</h3>
+						<div>
+							<div>IPFS node:</div>
+							<input className='form-input' ref='IPFS_END_POINT' defaultValue={IPFS_END_POINT}/>
+							<button onClick={this.updateIPFS}>update</button>
+						</div>
+						<div>
+							<div>paritty node:</div>
+							<input className='form-input' ref='PARITTY_END_POINT' defaultValue={PARITTY_END_POINT}/>
+							<button onClick={this.updateParitty}>update</button>
+						</div>
+						<div>
+							<div>cyberd node:</div>
+							<input className='form-input' ref='SEARCH_END_POINT' defaultValue={SEARCH_END_POINT}/>
+							<button onClick={this.updateSearch}>update</button>
+						</div>
 					</div>
 					<div>
-						<div>paritty:</div>
-						<input className='form-input' ref='PARITTY_END_POINT' defaultValue={PARITTY_END_POINT}/>
-						<button onClick={this.updateParitty}>update</button>
-						<Indecator status={pending ? null : ethNodeStatus}/>
+						<h3>Status:</h3>
+						<div>
+							<Indecator status='local'>Local</Indecator>
+						</div>
+						<div>
+							<Indecator status='remote'>Remote</Indecator>
+						</div>
+						<div>
+							<Indecator status='fail'>No connection</Indecator>
+						</div>
 					</div>
 					<div>
-						<div>search:</div>
-						<input className='form-input' ref='SEARCH_END_POINT' defaultValue={SEARCH_END_POINT}/>
-						<button onClick={this.updateSearch}>update</button>
-						<Indecator status={pending ? null : cyberNodeStatus}/>
-					</div>
-					<div>
-						<CybLink dura='.help'>how to configure local nodes</CybLink>
-					</div>
-					<div>
-						<CybLink dura='rr.cyb'>root registry</CybLink>					
+						<CybLink dura='rr.cyb'>cyb root registry</CybLink>					
 					</div>
 					<div>
 						<button onClick={resetAllSettings}>reset all settings</button>

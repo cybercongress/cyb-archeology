@@ -1,87 +1,62 @@
 import React, {Component} from 'react';
-import {connect} from "react-redux";
-import CybLink from "../CybLink";
-import * as actions from "../../redux/appMenu"
+import CybLink from "../../components/CybLink";
+import Logo from './../Logo/Logo';
 
-const styles = require("./AppMenu.css");
+import './AppMenu.css';
 
-class AppMenu extends Component {
 
-    addToFavorites = () => {
-        const dura = this.props.currentDura;
-        const name = this.refs.input.value;
+export const LogoLink = () => (
+	<div className='menu-logo'>
+		<Logo dura=''  />
+	</div>
+)
 
-        this.props.addMenuItem(name, dura);
-        this.hideInput();
-    };
+export const AppStoreLink = () => (
+	<CybLink dura='apps.cyb' className='app-store-link'>
+		App Store
+	</CybLink>
+);
 
-    hideInput = () => {
-        this.props.hideInput();
-    };
+const Items = ({ item, deleteAppFromMenu }) => (
+	<span className='bookmarks__item' key={item.rootDura}>
+        <CybLink dura={item.rootDura}>
+            {item.name}
+        </CybLink>
+        <div className='bookmarks__remove-btn' onClick={() => deleteAppFromMenu(item.rootDura)}>&#128465;</div>
+    </span>
+)
 
-    rejectFavorite = () => {
-        this.refs.input.value = 'New App';
-        this.hideInput();
-    };
+export const Bookmarks = ({ items, deleteMenuItem }) => (
+	<div className='bookmarks'>
+		{items.map(item => (
+			<Items
+			  item={item}
+			  deleteAppFromMenu={deleteMenuItem}
+			/>
+		))}
+	</div>
+);
 
-    render() {
-        const {openMenu} = this.props;
 
-        const deleteAppFromMenu = (rootDura) => {
-            this.props.deleteMenuItem(rootDura);
-        };
+const MenuContainer = ({ children, openMenu }) => (
+	<div className={`menuContainer ${!openMenu ? 'menuContainer--hide' : ''}`}>
+		{children}
+	</div>
+);
 
-        const appMenuItems = this.props.menuItems.map(item => {
-            return <span className='AppMenuItem' key={item.rootDura}>
-                <CybLink dura={item.rootDura}>
-                    <AppMenuItem name={item.name}/>
-                </CybLink>
-                <div className='removeButton' onClick={() => deleteAppFromMenu(item.rootDura)}>&#128465;</div>
-            </span>
-        });
 
-        const pendingAddToFavorites = this.props.pendingAddToFavorites;
+export const AddMenuItem = ({ children }) => (
+	<span className='AddMenuItem'>
+		{children}
+	</span>
+);
 
-        return (
-            <div className={`menuContainer ${!openMenu ? 'menuContainer--hide' : ''}`}>
-                <div className='appMenu'>
-                    {appMenuItems}
-                </div>
-                {pendingAddToFavorites &&
-                <span className='addMenuItem'>
-                        <input
-                            ref='input'
-                            defaultValue='New App'
-                        />
-                        <div onClick={this.rejectFavorite} className='AppMenuItem'>
-                            &#10006;
-                        </div>
-                        <div onClick={this.addToFavorites} className='AppMenuItem'>
-                            &#10004;
-                        </div>
-                    </span>
-                }
-            </div>
-        );
-    }
-}
+export const AddMenuItemApprove = ({ onClick }) => (
+	<button onClick={onClick} className='AddMenuItem__approve'>&#10006;</button>
+);
 
-class AppMenuItem extends Component {
+export const AddMenuItemReject = ({ onClick }) => (
+	<button onClick={onClick} className='AddMenuItem__reject'>&#10004;</button>
+);
 
-    render() {
-        return (
-            <div className='AppMenuItem'>
-                {this.props.name}
-            </div>
-        )
-    }
-}
-
-export default connect(
-    state => ({
-        menuItems: state.appMenu.items,
-        currentDura: state.browser.dura,
-        pendingAddToFavorites: state.appMenu.pendingAddToFavorites
-    }),
-    actions
-)(AppMenu);
+export default MenuContainer;

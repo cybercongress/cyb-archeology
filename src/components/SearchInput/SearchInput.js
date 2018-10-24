@@ -7,4 +7,18 @@ const SearchInput = ({ inputRef, ...props }) => (
 );
 
 
+export const BackButton = (props) => (
+	<button {...props} className='BackButton' />
+);
+
+export const ForwardButton = (props) => (
+	<button {...props} className='ForwardButton' />
+);
+
+export const NavigationContainer = ({ children }) => (
+	<div className='NavigationContainer'>
+		{children}
+	</div>
+);
+
 export default SearchInput;
