@@ -1,4 +1,4 @@
-import {buildLinkSignMsg, buildSignature, buildTxRequest} from './message';
+import {buildLinkSignMsg, buildSendSignMsg, buildSignature, buildTxRequest} from './message';
 const constants = require('./constants');
 const cyberdKeypair = require('./keypair');
 const codec = require("./codec");
@@ -14,6 +14,10 @@ const builder = {
         switch (req.type) {
             case constants.TxType.LINK: {
                 msg = buildLinkSignMsg(req.acc, req.fromCid, req.toCid, chainId);
+                break;
+            }
+            case constants.TxType.SEND: {
+                msg = buildSendSignMsg(req.acc, req.from, req.to, req.amount, chainId);
                 break;
             }
             default: {

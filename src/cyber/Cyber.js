@@ -170,7 +170,42 @@ function Cyber(nodeUrl) {
     };
 
     self.sendFunds = function (defaultAddress, recipientAddress, amount) {
-        //TODO: @arturalbov send funds implementation should be here
+        return axios({
+            method: 'get',
+            url: nodeUrl + '/account?address=' + defaultAddress
+        }).then(response => {
+            if (!response.data.result) return false;
+
+            return response.data.result.account;
+        }).then((account) => {
+            if (!account) return;
+
+            const acc = {
+                address: account.address,
+                chain_id: chainId, //todo: get from node
+                account_number: parseInt(account.account_number, 10),
+                sequence: parseInt(account.sequence, 10)
+            };
+            const sendRequest = {
+                acc,
+                from: defaultAddress,
+                to: recipientAddress,
+                amount: amount,
+                type: 'send'
+            };
+
+            const tx = builder.buildAndSignTxRequest(sendRequest, __accounts[defaultAddress], chainId)
+            console.log(tx)
+            return axios({
+                method: 'post',
+                url: nodeUrl + '/send',
+                data: tx
+            }).then(data =>
+                console.log('Send results: ', data)
+            ).catch(error =>
+                console.log('Cannot send', error)
+            )
+        })
     }
 
 }

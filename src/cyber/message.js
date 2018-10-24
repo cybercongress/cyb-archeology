@@ -26,58 +26,6 @@ class Coin {
     }
 }
 
-/*class Input {
-
-    constructor(address, coins) {
-        this.address = address;
-        this.coins = coins;
-    }
-
-    getSignObject() {
-        return utils.sortObjectKeys(this);
-    }
-}
-
-class Output {
-
-    constructor(address, coins) {
-        this.address = address;
-        this.coins = coins;
-    }
-
-    getSignObject() {
-        return utils.sortObjectKeys(this);
-    }
-}
-
-class MsgSend extends Msg {
-
-    constructor(from, to, amount) {
-        super();
-
-        this.address = from
-        this.cid1 = fromCid
-        this.cid2 = toCid
-    }
-
-    getSignObject() {
-        return amino.marshalJSON(this.type(), utils.sortObjectKeys(this));
-    }
-
-    validateBasic() {
-        if (utils.isEmpty(this.cid1)) {
-            throw new Error("from cid is empty");
-        }
-        if (utils.isEmpty(this.cid2)) {
-            throw new Error("to cid is empty");
-        }
-    }
-
-    type() {
-        return "cyberd/Link";
-    }
-}*/
-
 class MsgLink extends Msg {
 
     constructor(from, fromCid, toCid) {
@@ -103,6 +51,42 @@ class MsgLink extends Msg {
 
     type() {
         return "cyberd/Link";
+    }
+}
+
+class Input {
+
+    constructor(address, amount) {
+        this.address = address
+        this.coins = [new Coin(amount, "CBD")]
+    }
+}
+
+class Output {
+
+    constructor(address, amount) {
+        this.address = address
+        this.coins = [new Coin(amount, "CBD")]
+    }
+}
+
+class MsgSend extends Msg {
+
+    constructor(from, to, amount) {
+        super()
+        this.inputs = [new Input(from, amount)]
+        this.outputs = [new Output(to, amount)]
+    }
+
+    getSignObject() {
+        return utils.sortObjectKeys(this);
+    }
+
+    validateBasic() {
+    }
+
+    type() {
+        return "cosmos-sdk/Send";
     }
 }
 
@@ -193,6 +177,12 @@ class TxRequest {
 export const buildLinkSignMsg = (acc, cidTo, cidFrom, chainId) => {
     let fee = new Fee();
     let msg = new MsgLink(acc.address, cidTo, cidFrom);
+    return new SignMsg(chainId, acc.account_number, acc.sequence, fee, msg, '');
+}
+
+export const buildSendSignMsg = (acc, from, to, amount, chainId) => {
+    let fee = new Fee();
+    let msg = new MsgSend(from, to, amount);
     return new SignMsg(chainId, acc.account_number, acc.sequence, fee, msg, '');
 }
 

@@ -2,6 +2,7 @@ export class TxType {
 }
 
 TxType.LINK = "link";
+TxType.SEND = "send";
 
 export class CyberdNetConfig {
 }
