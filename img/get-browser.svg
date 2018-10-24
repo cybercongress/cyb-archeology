@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="215" height="78" viewBox="0 0 215 78">
+    <defs>
+        <filter id="a" width="113.8%" height="146.2%" x="-6.9%" y="-23.1%" filterUnits="objectBoundingBox">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="4.31361607 0"/>
+        </filter>
+        <filter id="b" width="108.5%" height="128.6%" x="-4.3%" y="-14.3%" filterUnits="objectBoundingBox">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2.67299107 0"/>
+        </filter>
+        <path id="d" d="M0 0h187.759v56H0z"/>
+        <filter id="c" width="120.8%" height="169.6%" x="-9.9%" y="-24.1%" filterUnits="objectBoundingBox">
+            <feOffset dx="1" dy="6" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5.5"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.144842618 0"/>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <path fill="#E345D5" d="M7.492 9h187.759v56H7.492z" filter="url(#a)" transform="translate(8 1)"/>
+        <path fill="#53E1D9" d="M0 0h187.759v56H0z" filter="url(#b)" transform="translate(8 1)"/>
+        <g>
+            <g transform="translate(11.654 5)">
+                <use fill="#000" filter="url(#c)" xlink:href="#d"/>
+                <use fill="#F2F2F2" xlink:href="#d"/>
+            </g>
+            <text fill="#2E2D2D" font-family="Play-Regular, Play" font-size="16.8" transform="translate(47.654 20)">
+                <tspan x="1.317" y="16">GET BROWSER</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

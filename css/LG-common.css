@@ -1,0 +1,187 @@
+html {
+  overflow-x: hidden;
+  width: 100vw;
+  height: 100%;
+}
+
+body {
+  width: 100vw;
+  height: 100%;
+  margin: 0;
+  font-family: Play;
+  background-color: #2b3239;
+  overflow-x: hidden;
+}
+
+.row-rel {
+  position: relative;
+  width: 100vw;
+}
+
+.sphere-lg {
+  width: 100vw;
+}
+
+.title-lg {
+  display: none;
+  position: absolute;
+  top: 27vh;
+  left: 53vw;
+}
+
+.loaded .title-lg {
+  display: block;
+}
+
+.title-txt-lg {
+  font-size: calc(1.5vw + 1.5vh + 2vmin);
+  color: #ffffff;
+  font-weight:
+}
+
+.logo-lg {
+  display: none;
+  width: 17vw;
+  position: absolute;
+  top: 30vh;
+  left: 33vw;
+}
+
+.loaded .logo-lg {
+  display: block;
+}
+
+.head-box {
+  top: -98vw;
+}
+
+.btn-lg {
+  width: 30.33333%;
+  padding: 2.3%;
+  margin-top: 2vw;
+  margin-left: -1%;
+  border-radius: 0;
+  color: #2e2d2d;
+  font-size: calc(0.5vw + 0.5vh + 0.25vmin);
+  line-height: 1.5;
+  border: none;
+  z-index: 1;
+}
+
+.btn-get {
+  position: absolute;
+  top: 18vh;
+  left: 1.5vw;
+}
+
+.k-feat-lg {
+  display: none;
+  color: #ffffff;
+  font-size: calc(1.5vw + 1.5vh + 2vmin);
+  z-index: 2;
+}
+
+.loaded .k-feat-lg {
+  display: block;
+}
+
+.k-feat-lg-2 {
+  display: none;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  color: #51dcd4;
+  font-size: calc(1.5vw + 1.5vh + 2vmin);
+}
+
+.loaded .k-feat-lg-2 {
+  display: block;
+}
+
+.k-feat-lg-3 {
+  display: none;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  color: #c73dbc;
+  font-size: calc(1.5vw + 1.5vh + 2vmin);
+}
+
+.loaded .k-feat-lg-3 {
+  display: block;
+}
+
+.features {
+  margin-top: 20vw;
+  display: none;
+  width: 100vw;
+}
+
+.loaded .features {
+  display: block;
+}
+
+.feat-box {
+  display: none;
+  margin-top: 10vw;
+}
+
+.loaded .feat-box {
+  display: block;
+}
+
+.feat-img {
+  width: 100%;
+}
+
+.feat-name {
+  padding-bottom: 3vw;
+  font-size: calc(1vw + 1vh + 2vmin);
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #ffffff;
+}
+
+.feat-text {
+  padding-bottom: 1vw;
+  font-size: calc(0.6vw + 0.6vh + 0.1vmin);
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.56;
+  letter-spacing: normal;
+  color: #ffffff;
+}
+
+.dapp-st {
+  margin-top: 6vw;
+}
+
+.web3 {
+  margin-top: 2vw;
+  padding-left: 9vw;
+}
+
+.dapp-dev {
+  margin-top: 5vw;
+  padding-right: 3vw;
+}
+
+.ipfs {
+  margin-top: 3.5vw;
+}
+
+.footer {
+  display: none;
+  color: #ffffff;
+  margin-top: 10vw;
+  margin-bottom: 2vw;
+  font-size: calc(0.4vw + 0.4vh + 0.2vmin);
+}
+
+.loaded .footer {
+  display: block;
+}

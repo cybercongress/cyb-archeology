@@ -1,0 +1,138 @@
+.head-box-xs {
+  position: absolute;
+  top: 0vw;
+}
+
+.sphere-xs {
+  padding-top: 10vw;
+}
+
+.title-web3-xs {
+  position: absolute;
+  top: -18vw;
+  left: 18vw;
+  font-size: 5vw;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+
+}
+
+.title-browser-xs {
+  position: absolute;
+  top: -5vw;
+  left: 24vw;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+
+}
+
+.title-txt-xs {
+  font-size: calc(2vw + 2vh + 6vmin);
+  color: #ffffff;
+}
+
+.logo-xs {
+  margin: 0;
+  position: absolute;
+  top: -60vw;
+  left: 25vw;
+  width: 50vw;
+
+}
+
+.btn-xs {
+  width: 30.33333%;
+  padding: 2.3%;
+  margin-top: 1.4%;
+  margin-left: -1%;
+  border-radius: 0;
+  color: #2e2d2d;
+  font-size: calc(0.8vw + 0.8vh + 0.8vmin);
+  line-height: 1.5;
+  border: none;
+  z-index: 1;
+}
+
+.btn-get-xs {
+  position: absolute;
+  top: 30vw;
+  left: 36vw;
+}
+
+.k-feat-xs {
+  position: absolute;
+  color: #ffffff;
+  font-size: calc(1.5vw + 1.5vh + 2vmin);
+  z-index: 2;
+  font-weight: bold;
+}
+
+.k-feat-xs-2 {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  color: #51dcd4;
+  font-size: calc(1.5vw + 1.5vh + 2vmin);
+  font-weight: bold;
+}
+
+.k-feat-xs-3 {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  color: #c73dbc;
+  font-size: calc(1.5vw + 1.5vh + 2vmin);
+  font-weight: bold;
+}
+
+.features-xs {
+  margin-top: 60vw;
+}
+
+.feat-box-xs {
+  margin-top: 20vw;
+}
+
+.feat-name-xs {
+  padding-bottom: 3vw;
+  font-size: calc(1vw + 1vh + 1vmin);
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #ffffff;
+}
+
+.feat-text-xs {
+  padding-bottom: 1vw;
+  font-size: calc(0.8vw + 0.8vh + 0.8vmin);
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.56;
+  letter-spacing: normal;
+  color: #ffffff;
+}
+
+
+.feat-xs {
+margin-top: 10vw;
+}
+
+.feat-img-xs {
+  width: 70%;
+  margin-bottom: -9vw;
+}
+
+.footer-xs {
+  color: #ffffff;
+  margin-top: 10vw;
+  font-size: calc(0.4vw + 0.4vh + 0.4vmin);
+}

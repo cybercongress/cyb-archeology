@@ -1,0 +1,14 @@
+yarn.lock
+node_modules
+npm-debug.log
+build
+dist
+docs
+test/tmp
+.build
+.coverage
+.dist
+.happypack
+.npmjs
+.eslintcache
+.DS_Store

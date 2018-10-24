@@ -1,0 +1,158 @@
+.sphere-sm {
+  padding: 10vw;
+}
+
+.title-web3-sm {
+  position: absolute;
+  top: -20vw;
+  left: 25vw;
+}
+
+.title-browser-sm {
+  position: absolute;
+  top: -14vw;
+  left: 34vw;
+}
+
+.title-txt-sm {
+  font-size: calc(2vw + 2vh + 2vmin);
+  color: #ffffff;
+}
+
+.logo-sm {
+  position: absolute;
+  top: -60vw;
+  left: 35vw;
+  width: 32vw;
+
+}
+
+.btn-sm {
+  width: 30.33333%;
+  padding: 2.3%;
+  margin-top: 1.4%;
+  margin-left: -1%;
+  border-radius: 0;
+  color: #2e2d2d;
+  font-size: calc(0.8vw + 0.8vh + 0.8vmin);
+  line-height: 1.5;
+  border: none;
+  z-index: 1;
+}
+
+.btn-get-sm {
+  position: absolute;
+  top: 8vw;
+  left: 36vw;
+}
+
+.k-feat-sm {
+  text-align: center;
+  color: #ffffff;
+  font-size: calc(1.4vw + 1.4vh + 1vmin);
+  z-index: 2;
+}
+
+.k-feat-sm-2 {
+  position: absolute;
+  left: -0.2vw;
+  top: -0.2vw;
+  color: #51dcd4;
+  font-size: calc(1.4vw + 1.4vh + 1vmin);
+}
+
+.k-feat-sm-3 {
+  position: absolute;
+  left: 0.2vw;
+  top: 0.2vw;
+  color: #c73dbc;
+  font-size: calc(1.4vw + 1.4vh + 1vmin);
+}
+
+.features-sm {
+  margin-top: 34vw;
+}
+
+.feat-box-sm {
+  margin-top: 15vw;
+  display: flex;
+}
+
+.feat-name-sm {
+  padding-bottom: 3vw;
+  font-size: calc(0.8vw + 0.8vh + 1vmin);
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #ffffff;
+}
+
+.feat-text-sm {
+  padding-bottom: 1vw;
+  font-size: calc(0.6vw + 0.6vh + 0.6vmin);
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.56;
+  letter-spacing: normal;
+  color: #ffffff;
+}
+
+
+.web3-sm {
+  margin: auto;
+}
+
+.web3-img-sm {
+  width: 53.1vw;
+  margin-left: 5vw;
+}
+
+.dapp-st-sm {
+  margin: auto;
+  padding-left: 10vw;
+}
+
+.dapp-st-img-sm {
+  width: 53.1vw;
+  margin-left: -16vw;
+}
+
+.dapp-dev-sm {
+  margin: auto;
+}
+
+.dapp-dev-img-sm {
+  width: 53.1vw;
+  margin-left: 5vw;
+
+}
+
+.ipfs-sm {
+  margin: auto;
+  padding-left: 7vw;
+}
+
+.ipfs-img-sm {
+  width: 53.1vw;
+  margin-left: -21vw;
+}
+
+.open-s-sm {
+  margin: auto;
+}
+
+.open-s-img-sm {
+  width: 53.1vw;
+  margin-left: 5vw;
+}
+
+.footer-sm {
+  color: #ffffff;
+  margin-top: 12vw;
+  margin-bottom: 5vw;
+  font-size: calc(0.4vw + 0.4vh + 0.2vmin);
+  object-fit: cover;
+}
