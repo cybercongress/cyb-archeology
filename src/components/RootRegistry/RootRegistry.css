@@ -13,11 +13,14 @@
 
 .rr__table th {
 	border-bottom: 1px solid #dedede;
-	padding-top: 20px;
-	padding-bottom: 20px;
+	padding: 20px;
 	color: #7c7c7c;
 	font-family: 14px;
 	text-align: left;
+}
+
+.rr__table td {
+	padding: 10px 20px;
 }
 
 .addRow td {

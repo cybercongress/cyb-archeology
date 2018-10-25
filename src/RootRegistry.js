@@ -40,7 +40,7 @@ class RootRegistryPage extends Component {
                 <td>{item.hash}</td>
                 <td>{item.protocol}</td>
                 <td>
-                    <Button onClick={() => this.deleteRegistryItem(item.name)}>REMOVE</Button>
+                    <Button fullWidth={true} onClick={() => this.deleteRegistryItem(item.name)}>REMOVE</Button>
                 </td>
             </tr>
         ))
@@ -71,7 +71,7 @@ class RootRegistryPage extends Component {
                                 </label>
                             </td>
                             <td>
-                                <Button color='turquoise' onClick={this.addRegistryItem}>ADD</Button>
+                                <Button fullWidth={true} color='turquoise' onClick={this.addRegistryItem}>ADD</Button>
                             </td>
                         </tr>
                         </tbody>

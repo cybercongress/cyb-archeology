@@ -17,3 +17,7 @@
 .button--turquoise {
 	background: #50e3c2;
 }
+
+.button--full-width {
+	width: 100%;
+}
