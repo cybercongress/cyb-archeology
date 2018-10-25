@@ -95,12 +95,14 @@ export const loadAccounts = () => (dispatch, getState) => {
     eth.getAccounts((err, _accounts) => {
         Promise.all(
             _accounts.map(address => new Promise(resolve => {
-                eth.getBalance(address)
-                    .then(balance => resolve({
-                        balance: web3.utils.fromWei(balance, 'ether'),
+                eth.getBalance(address, (e, balance) => {
+                    resolve({
+                        balance: web3.fromWei(balance, 'ether').toNumber(),
                         address: address.toLowerCase()
-                    }))
+                    })
+                })
             }))
+            
         ).then(accounts => {
             dispatch({
                 type: 'LOAD_ACCOUNTS',

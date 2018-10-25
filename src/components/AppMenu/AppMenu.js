@@ -29,7 +29,8 @@ const Items = ({ item, deleteAppFromMenu }) => (
 export const Bookmarks = ({ items, deleteMenuItem }) => (
 	<div className='bookmarks'>
 		{items.map(item => (
-			<Items key={item.rootDura}
+			<Items
+			  key={item.rootDura}
 			  item={item}
 			  deleteAppFromMenu={deleteMenuItem}
 			/>
