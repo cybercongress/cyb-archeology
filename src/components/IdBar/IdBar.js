@@ -38,9 +38,19 @@ class CurrentUser extends Component {
             <div className='user-popup__container'>
                 <div className='id-bar__user' onClick={this.toggle}/>
                 <div className={`user-popup ${open ? 'user-popup--open' : ''}`}>
-                    <div>ETH: {defaultEthAccount}</div>
+                    <div>
+                        <span className='tokenName'>
+                            ETH:
+                        </span>
+                        {defaultEthAccount}
+                    </div>
                     <hr className='separator'/>
-                    <div>CYBER: {defaultCyberAccount} </div>
+                    <div>
+                        <span className='tokenName'>
+                            CYBER:
+                        </span>
+                        {defaultCyberAccount}
+                    </div>
                 </div>
             </div>
         );

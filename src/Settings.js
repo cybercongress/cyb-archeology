@@ -1,113 +1,173 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import * as actions from './redux/settings';
 
 import Container from './components/Container/Container';
-import CybLink from './components/CybLink';
-import Indecator from './components/Indecator/Indecator';
+import Titile from "./components/Titile/Titile";
+import Button from "./components/Button/Button";
+import Block, {BlockRow, RowItem} from "./components/Settings/Block";
+import Input from "./components/Input/Input";
+import Indicator, {SettingsIndicator} from "./components/Indicator/Indicator";
+import {
+    ConnectionContainer,
+    NodeStatusContainer,
+    SettingLabel, SettingRow,
+    SettingsContainer
+} from "./components/Settings/Settings";
+import CybLink from "./components/CybLink";
 
+const IPFS_END_POINT = 'IPFS_END_POINT';
+const PARITY_END_POINT = 'PARITY_END_POINT';
+const CYBERD_END_POINT = 'CYBERD_END_POINT';
 
 class Settings extends Component {
 
-	updateIPFS = () => {
-		const value = this.refs.IPFS_END_POINT.value;
-		this.props.setIPFS(value)
-	}
+    updateIPFS = (endpoint) => {
+        this.props.setIPFS(endpoint)
+    };
 
-	updateParitty = () => {
-		const value = this.refs.PARITTY_END_POINT.value;
-		this.props.setParity(value)
-	}
+    updateParity = (endpoint) => {
+        this.props.setParity(endpoint)
+    };
 
-	updateSearch = () => {
-		const value = this.refs.SEARCH_END_POINT.value;
-		this.props.setSearch(value)
-	}
-	componentWillMount() {
+    updateCyberd = (endpoint) => {
+        this.props.setSearch(endpoint)
+    };
+
+    componentWillMount() {
         this.props.checkStatus();
-    }	
+    }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.IPFS_END_POINT !== nextProps.IPFS_END_POINT ||
-        	this.props.PARITTY_END_POINT !== nextProps.PARITTY_END_POINT ||
-        	this.props.SEARCH_END_POINT !== nextProps.SEARCH_END_POINT) {
+        if (this.props.ipfsDefault !== nextProps.ipfsDefault ||
+            this.props.parityDefault !== nextProps.parityDefault ||
+            this.props.cyberdDefault !== nextProps.cyberdDefault) {
 
-            this.refs.IPFS_END_POINT.value = nextProps.IPFS_END_POINT;
-            this.refs.PARITTY_END_POINT.value = nextProps.PARITTY_END_POINT;
-            this.refs.SEARCH_END_POINT.value = nextProps.SEARCH_END_POINT;
+            this.IPFS_END_POINT.value = nextProps.ipfsDefault;
+            this.PARITY_END_POINT.value = nextProps.parityDefault;
+            this.CYBERD_END_POINT.value = nextProps.cyberdDefault;
         }
     }
 
-	render() {
-		const {
-			IPFS_END_POINT,
-			PARITTY_END_POINT,
-			SEARCH_END_POINT,
+    updateEndpoint = (name) => {
+        let endpoint;
 
-			ipfsStatus,
-			ethNodeStatus,
-			cyberNodeStatus,
-			pending,
+        switch (name) {
+            case IPFS_END_POINT: {
+                endpoint = this.IPFS_END_POINT.value;
+                this.updateIPFS(endpoint);
+                break;
+            }
+            case PARITY_END_POINT: {
+                endpoint = this.PARITY_END_POINT.value;
+                this.updateParity(endpoint);
+                break;
+            }
+            case CYBERD_END_POINT: {
+                endpoint = this.CYBERD_END_POINT.value;
+                this.updateCyberd(endpoint);
+                break;
+            }
+            default: {
+            }
+        }
+    };
 
-			resetAllSettings
-		} = this.props;
+    render() {
+        const {
+            IPFS_END_POINT,
+            PARITY_END_POINT,
+            CYBERD_END_POINT,
 
-		return (
-			<Container>
-				<div>
-					<h2>/Settings</h2>
-					<div>
-						<h3>Connection</h3>
-						<div>
-							<div>IPFS node:</div>
-							<input className='form-input' ref='IPFS_END_POINT' defaultValue={IPFS_END_POINT}/>
-							<button onClick={this.updateIPFS}>update</button>
-						</div>
-						<div>
-							<div>paritty node:</div>
-							<input className='form-input' ref='PARITTY_END_POINT' defaultValue={PARITTY_END_POINT}/>
-							<button onClick={this.updateParitty}>update</button>
-						</div>
-						<div>
-							<div>cyberd node:</div>
-							<input className='form-input' ref='SEARCH_END_POINT' defaultValue={SEARCH_END_POINT}/>
-							<button onClick={this.updateSearch}>update</button>
-						</div>
-					</div>
-					<div>
-						<h3>Status:</h3>
-						<div>
-							<Indecator status='local'>Local</Indecator>
-						</div>
-						<div>
-							<Indecator status='remote'>Remote</Indecator>
-						</div>
-						<div>
-							<Indecator status='fail'>No connection</Indecator>
-						</div>
-					</div>
-					<div>
-						<CybLink dura='rr.cyb'>cyb root registry</CybLink>					
-					</div>
-					<div>
-						<button onClick={resetAllSettings}>reset all settings</button>
-					</div>
-				</div>
-			</Container>
-		);
-	}
+            ipfsStatus,
+            parityStatus,
+            cyberdStatus,
+
+            resetAllSettings
+        } = this.props;
+
+        return (
+            <Container>
+                <Titile>/ Settings</Titile>
+                <SettingsContainer>
+                    <ConnectionContainer>
+                        <Titile inline={true}>CONNECTION</Titile>
+                        <Block>
+
+                            <BlockRow>
+                                <SettingRow>
+                                    <SettingLabel>IPFS node:</SettingLabel>
+                                    <Input style={{width: 200}} inputRef={node => this.IPFS_END_POINT = node}
+                                           defaultValue={IPFS_END_POINT}/>
+                                    <Button onClick={() => this.updateEndpoint(IPFS_END_POINT)}>update</Button>
+                                </SettingRow>
+                            </BlockRow>
+
+                            <BlockRow>
+                                <SettingRow>
+
+                                    <SettingLabel>Parity node:</SettingLabel>
+                                    <Input style={{width: 200}} inputRef={node => this.PARITY_END_POINT = node}
+                                           defaultValue={PARITY_END_POINT}/>
+                                    <Button onClick={() => this.updateEndpoint(PARITY_END_POINT)}>update</Button>
+                                </SettingRow>
+                            </BlockRow>
+
+                            <BlockRow>
+                                <SettingRow>
+                                    <SettingLabel>cyberd node:</SettingLabel>
+                                    <Input style={{width: 200}} inputRef={node => this.CYBERD_END_POINT = node}
+                                           defaultValue={CYBERD_END_POINT}/>
+                                    <Button onClick={() => this.updateEndpoint(CYBERD_END_POINT)}>update</Button>
+                                </SettingRow>
+                            </BlockRow>
+
+                        </Block>
+                    </ConnectionContainer>
+                    <NodeStatusContainer>
+                        <Titile inline={true}>STATUS</Titile>
+                        <Block>
+                            <BlockRow>
+                                <SettingRow>
+                                    <SettingsIndicator status={ipfsStatus}/>
+                                </SettingRow>
+                            </BlockRow>
+                            <BlockRow>
+                                <SettingRow>
+                                    <SettingsIndicator status={parityStatus}/>
+                                </SettingRow>
+                            </BlockRow>
+                            <BlockRow>
+                                <SettingRow>
+                                    <SettingsIndicator status={cyberdStatus}/>
+                                </SettingRow>
+                            </BlockRow>
+                        </Block>
+                    </NodeStatusContainer>
+                </SettingsContainer>
+
+                <Block>
+                    <BlockRow>
+                        <SettingRow>
+                            <Button color='green' dura='rr.cyb'>CYB ROOT REGISTRY</Button>
+                            <Button onClick={resetAllSettings}>RESET ALL SETTINGS</Button>
+                        </SettingRow>
+                    </BlockRow>
+                </Block>
+            </Container>
+        );
+    }
 }
 
 export default connect(
-	({ settings }) => ({
-		IPFS_END_POINT: settings.IPFS_END_POINT,
-		PARITTY_END_POINT: settings.PARITTY_END_POINT,
-		SEARCH_END_POINT: settings.SEARCH_END_POINT,
+    ({settings}) => ({
+        IPFS_END_POINT: settings.IPFS_END_POINT,
+        PARITY_END_POINT: settings.PARITTY_END_POINT,
+        CYBERD_END_POINT: settings.SEARCH_END_POINT,
 
-		ipfsStatus: settings.ipfsStatus,
-		ethNodeStatus: settings.ethNodeStatus,
-		cyberNodeStatus: settings.cyberNodeStatus,
-		pending: settings.pending,
-	}),
-	actions
+        ipfsStatus: settings.ipfsStatus,
+        parityStatus: settings.ethNodeStatus,
+        cyberdStatus: settings.cyberNodeStatus,
+    }),
+    actions
 )(Settings);

@@ -20,9 +20,3 @@ body, html, #root {
 * {
     box-sizing: border-box;
 }
-
-.form-input {
-    width: 400px;
-    margin-bottom: 40px;
-}
-

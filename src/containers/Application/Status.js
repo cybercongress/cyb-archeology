@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Indecator, { StatusContainer } from './../../components/Indecator/Indecator';
+import Indicator, { StatusContainer } from './../../components/Indicator/Indicator';
 
 const Status = ({ pending, ipfsStatus, ethNodeStatus, cyberNodeStatus }) => (
 	<StatusContainer>
-        <Indecator status={pending ? null : ipfsStatus}>ipfs</Indecator>
-        <Indecator status={pending ? null : ethNodeStatus}>eth</Indecator>
-        <Indecator status={pending ? null : cyberNodeStatus}>cyber</Indecator>
+        <Indicator status={pending ? null : ipfsStatus}>ipfs</Indicator>
+        <Indicator status={pending ? null : ethNodeStatus}>eth</Indicator>
+        <Indicator status={pending ? null : cyberNodeStatus}>cyber</Indicator>
     </StatusContainer>
 );
 

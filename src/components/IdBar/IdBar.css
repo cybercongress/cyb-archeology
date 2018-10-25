@@ -47,7 +47,7 @@
 .user-popup {
     font-family: 'Play', sans-serif;
 	position: absolute;
-    width: 515px;
+    width: 525px;
 	background: white;
 	color: #000;
     border-radius: 5px;
@@ -73,4 +73,9 @@
 
 .user-popup--open {
 	display: block;
+}
+
+.tokenName {
+    display: inline-block;
+    width: 65px;
 }
