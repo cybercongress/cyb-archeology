@@ -43,7 +43,7 @@ class AppMenu extends Component {
 
         return (
             <MenuContainer openMenu={openMenu} >
-            	<LogoLink />
+            	<LogoLink onClick={this.clickLogo}/>
             	<AppStoreLink />
                 <Bookmarks
                   items={menuItems}

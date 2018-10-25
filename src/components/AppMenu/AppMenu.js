@@ -3,11 +3,12 @@ import CybLink from "../../components/CybLink";
 import Logo from './../Logo/Logo';
 import './AppMenu.css';
 
-export const LogoLink = () => (
-    <div className='menu-logo'>
-        <Logo dura=''/>
-    </div>
-);
+
+export const LogoLink = ({ onClick }) => (
+	<div className='menu-logo'>
+		<Logo dura='' onClick={onClick} />
+	</div>
+)
 
 export const AppStoreLink = () => (
     <CybLink dura='apps.cyb' className='app-store-link'>
