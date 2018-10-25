@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Play');
 
 .id-bar {
 	display: flex;
@@ -39,16 +40,30 @@
 }
 
 .user-popup {
+    font-family: 'Play', sans-serif;
 	position: absolute;
-	background: #ccc;
+    width: 495px;
+	background: white;
 	color: #000;
-	width: 440px;
-	height: 100px;
-	bottom: -100px;
-	right: 0;
+    border-radius: 5px;
+    box-shadow: 1px 5px 4px 0 rgba(0, 0, 0, 0.14);
+	bottom: -110px;
+	right: -5px;
 	display: none;
 	padding: 20px;
 	box-sizing: border-box;
+    z-index: 2;
+}
+
+.user-popup:before {
+    position: absolute;
+    bottom: 90px;
+    right: 15px;
+    content: '';
+    width: 0.73em;
+    height: 0.73em;
+    background: #FFFFFF;
+    transform: rotate(45deg);
 }
 
 .user-popup--open {

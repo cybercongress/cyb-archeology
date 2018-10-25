@@ -1,8 +1,11 @@
 .ReportBugLink {
-	position: fixed;
-	z-index: 1;
-	bottom: 10px;
-	left: 40%;
-	text-decoration: none;
-	color: #438cef;
+    text-decoration: none;
+    color: #438cef;
+}
+
+.ReportBugContainer {
+    position: fixed;
+    z-index: 1;
+    bottom: 0;
+    padding: 15px;
 }
