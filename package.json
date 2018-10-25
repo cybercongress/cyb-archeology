@@ -1,6 +1,6 @@
 {
   "name": "browser",
-  "version": "0.0.11",
+  "version": "0.0.14",
   "main": "public/electron.js",
   "private": true,
   "homepage": "./",
