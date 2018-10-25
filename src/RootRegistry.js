@@ -4,19 +4,26 @@ import {addRegistryItem, deleteRegistryItem, getRegistryItemsAsArray} from "./re
 
 import Container from './components/Container/Container';
 
-class RootRegistry extends Component {
+
+import Title from './components/Titile/Titile';
+import Button from './components/Button/Button'
+import Input from './components/Input/Input';
+import RootRegistry, { Table } from './components/RootRegistry/RootRegistry';
+
+
+class RootRegistryPage extends Component {
 
     addRegistryItem = () => {
-        const name = this.refs.name.value;
-        const hash = this.refs.hash.value;
+        const name = this.name.value;
+        const hash = this.hash.value;
         const isIpfs = !!this.refs.ipfs.checked;
         this.props.addRegistryItem(
             name,
             hash,
             isIpfs ? 'ipfs' : 'ipns'
         ).then(() => {
-            this.refs.name.value = '';
-            this.refs.hash.value = '';
+            this.name.value = '';
+            this.hash.value = '';
         });
     }
 
@@ -33,28 +40,28 @@ class RootRegistry extends Component {
                 <td>{item.hash}</td>
                 <td>{item.protocol}</td>
                 <td>
-                    <button onClick={() => this.deleteRegistryItem(item.name)}>remove</button>
+                    <Button onClick={() => this.deleteRegistryItem(item.name)}>REMOVE</Button>
                 </td>
             </tr>
         ))
         return (
-            <Container>
-                <h2>/Cyb root registry</h2>
+            <RootRegistry>
+                <Title>/Cyb root registry</Title>
                 <div>
-                    <table>
+                    <Table>
                         <thead>
                         <tr>
                             <th>Name</th>
                             <th>hash</th>
-                            <th>protocol</th>
+                            <th>Protocol</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {rows}
-                        <tr key='add_row'>
-                            <td>.<input ref='name' placeholder='name'/></td>
-                            <td><input ref='hash' placeholder='hash'/></td>
+                        <tr className='addRow' key='add_row'>
+                            <td><Input inputRef={node => { this.name = node; }} placeholder='name'/></td>
+                            <td><Input inputRef={node => { this.hash = node; }}  placeholder='hash'/></td>
                             <td>
                                 <label>
                                     <input type='radio' defaultChecked={true} ref='ipfs' name='protocol'/>ipfs
@@ -64,13 +71,13 @@ class RootRegistry extends Component {
                                 </label>
                             </td>
                             <td>
-                                <button onClick={this.addRegistryItem}>add</button>
+                                <Button color='turquoise' onClick={this.addRegistryItem}>ADD</Button>
                             </td>
                         </tr>
                         </tbody>
-                    </table>
+                    </Table>
                 </div>
-            </Container>
+            </RootRegistry>
         );
     }
 }
@@ -83,4 +90,4 @@ export default connect(
         addRegistryItem,
         deleteRegistryItem
     }
-)(RootRegistry);
+)(RootRegistryPage);

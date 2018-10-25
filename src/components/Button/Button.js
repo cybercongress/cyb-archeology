@@ -4,15 +4,20 @@ import CybLink from '../CybLink';
 
 import './Button.css';
 
-const Button = ({ dura, ...props }) => {
+const Button = ({ dura, color, ...props }) => {
+	let css = 'button';
+	if (color === 'green') css += ' button--green';
+	if (color === 'turquoise') css += ' button--turquoise';
+
+
 	if (dura) {
 		return (
-			<CybLink {...props} dura={dura} className='button' />
+			<CybLink {...props} dura={dura} className={css} />
 		);
 	}
 
 	return (
-		<button {...props} className='button' />
+		<button {...props} className={css} />
 	);
 }
 

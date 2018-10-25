@@ -18,7 +18,7 @@ class NotFound extends Component {
                     <Vitalick style={{ float: 'right'}}/>
                 	<p>Seems that Cyb doesn`t know <b>"{incorectDura}"</b> app</p>
                 	<p><b>Link this app in the root registry</b> and Cyb will understand it!</p>
-                    <Button dura='rr.cyb'>Go to Root Registry!</Button>
+                    <Button color='green' dura='rr.cyb'>Go to Root Registry!</Button>
                 </NotFoundPage>
             </Container>
         );
