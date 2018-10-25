@@ -25,7 +25,9 @@ class RootRegistry extends Component {
     }
 
     render() {
-        const rows = this.props.registryItems.map(item => (
+        const { registryItems } = this.props;
+
+        const rows = registryItems.map(item => (
             <tr key={item.name}>
                 <td>.{item.name}</td>
                 <td>{item.hash}</td>
@@ -37,6 +39,7 @@ class RootRegistry extends Component {
         ))
         return (
             <Container>
+                <h2>/Cyb root registry</h2>
                 <div>
                     <table>
                         <thead>
