@@ -32,7 +32,7 @@ WEB3 BROWSER
 
 * [Whitepaper](./docs/cyb.md)
 * [What is web3](docs/web3-vision.md)
-* [App development guidelines](./docs/app-guidelines)
+* [App development guidelines](./docs/app-guidelines.md)
 
 ## Issues
 
