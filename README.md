@@ -30,7 +30,7 @@ WEB3 BROWSER
 
 ## Getting Start Useful Links
 
-* [Whitepaper](./docs/whitepaper.md)
+* [Whitepaper](./docs/cyb.md)
 * [What is web3](docs/web3-vision.md)
 * [App development guidelines](./docs/app-guidelines)
 
