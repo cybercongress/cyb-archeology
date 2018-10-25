@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-const style = require('./wallet.css');
+import './wallet.css';
 
 export const WalletAccountsList = ({accounts, defaultAccountAddress, setDefaultCallback, forgetCallback}) => {
     return accounts.map(account => {

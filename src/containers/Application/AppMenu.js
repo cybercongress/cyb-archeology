@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import {connect} from "react-redux";
 import * as actions from "../../redux/appMenu"
 
-import {toggleMenu} from './../../redux/appMenu';
-
-import MenuContainer, { 
+import MenuContainer, {
 	Bookmarks,
 	AppStoreLink,
 	LogoLink,
@@ -35,10 +33,10 @@ class AppMenu extends Component {
 
     clickLogo = () => {
     	this.props.toggleMenu();
-    }
+    };
 
     render() {
-        const { 
+        const {
         	openMenu, deleteMenuItem, menuItems,
         	pendingAddToFavorites
         } = this.props;

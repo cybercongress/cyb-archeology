@@ -1,10 +1,15 @@
-@import url('https://fonts.googleapis.com/css?family=Play');
-
 .id-bar {
 	display: flex;
 	justify-content: space-between;
 	width: 150px;
 	align-items: center;
+}
+
+.separator {
+    border: 0;
+    height: 1px;
+    color: #d6d6d6;
+    background-color: #d6d6d6;
 }
 
 .id-bar__settings {
@@ -42,22 +47,22 @@
 .user-popup {
     font-family: 'Play', sans-serif;
 	position: absolute;
-    width: 495px;
+    width: 515px;
 	background: white;
 	color: #000;
     border-radius: 5px;
     box-shadow: 1px 5px 4px 0 rgba(0, 0, 0, 0.14);
-	bottom: -110px;
+	bottom: -128px;
 	right: -5px;
 	display: none;
-	padding: 20px;
+	padding: 30px;
 	box-sizing: border-box;
     z-index: 2;
 }
 
 .user-popup:before {
     position: absolute;
-    bottom: 90px;
+    bottom: 109px;
     right: 15px;
     content: '';
     width: 0.73em;

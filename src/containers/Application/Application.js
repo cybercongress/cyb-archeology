@@ -2,16 +2,12 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {navigate, goBack} from './../../redux/browser';
 import {toggleMenu} from './../../redux/appMenu';
-
 import AddToAppMenuButton, {Container} from "./../../components/AddToAppMenuButton/AddToAppMenuButton";
 import App, {AppHeader, AppContent} from './../../components/App/App';
 import Navigation, {NavigationLeft, NavigationRight, NavigationCenter, MenuButton } from './../../components/Navigation/Navigation';
 import SearchInput, { BackButton, ForwardButton, NavigationContainer  } from './../../components/SearchInput/SearchInput';
-import IdBar, {SettingsLink, WalletLink, CurrentUser} from './../../components/IdBar/IdBar';
-
-import CybLink from './../../components/CybLink';
-
-import ReportBugLink from './../../components/ReportBugLink/ReportBugLink'; 
+import IdBar from './../../components/IdBar/IdBar';
+import ReportBugLink from './../../components/ReportBugLink/ReportBugLink';
 
 import ConfirmationPopup from './ConfirmationPopup';
 import AppMenu from './AppMenu';
@@ -24,7 +20,7 @@ class Application extends Component {
             const value = this.input.value;
             this.props.navigate(value);
         }
-    }
+    };
 
     componentWillReceiveProps(nextProps) {
         if (this.props.dura !== nextProps.dura) {
@@ -32,12 +28,10 @@ class Application extends Component {
         }
     }
 
-
-
     render() {
         const {
-            dura, defaultAccount, canBack, goBack,
-            openMenu, cyberDefaultAccount
+            dura, defaultEthAccount, canBack, goBack,
+            openMenu, defaultCybertAccount
         } = this.props;
         const homePage = dura === '';
 
@@ -75,11 +69,10 @@ class Application extends Component {
                             </NavigationContainer>
                         </NavigationCenter>
                         <NavigationRight>
-                            <IdBar>
-                                <SettingsLink/>
-                                <WalletLink/>
-                                <CurrentUser defaultAccount={defaultAccount} cyberDefaultAccount={cyberDefaultAccount}/>
-                            </IdBar>
+                            <IdBar
+                                defaultEthAccount={defaultEthAccount}
+                                defaultCyberAccount={defaultCybertAccount}
+                            />
                         </NavigationRight>
                     </Navigation>
                 </AppHeader>
@@ -95,9 +88,9 @@ export default connect(
     state => ({
         dura: state.browser.dura,
         canBack: !!state.browser.backDura,
-        defaultAccount: state.wallet.defaultAccount,
+        defaultEthAccount: state.wallet.defaultAccount,
         openMenu: state.appMenu.openMenu,
-        cyberDefaultAccount: state.cyber.defaultAccount,
+        defaultCybertAccount: state.cyber.defaultAccount,
     }),
     {
         navigate,

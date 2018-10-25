@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import * as cyberActions from "../../redux/cyber";
-import {AddAccount, ClaimCyberFunds, SendFunds, WalletAccountsList} from "../../components/Wallet/Wallet";
+import {AddAccount, SendFunds, WalletAccountsList} from "../../components/Wallet/Wallet";
 import Container from "../../components/Container/Container";
 
 class CyberWallet extends Component {
