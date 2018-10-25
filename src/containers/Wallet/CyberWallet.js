@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import * as cyberActions from "../../redux/cyber";
-import {AddAccount, SendFunds, WalletAccountsList} from "../../components/Wallet/Wallet";
+import {AddAccount, SendFunds, WalletAccountsList, WalletContainer} from "../../components/Wallet/Wallet";
 import Container from "../../components/Container/Container";
+import Block, {BlockRow} from "../../components/Settings/Block";
+import Button from "../../components/Button/Button";
 
 class CyberWallet extends Component {
 
@@ -39,16 +41,16 @@ class CyberWallet extends Component {
         const accounts = this.props.accounts;
 
         return (
-            <Container>
-                <h3>Current account</h3>
-                {defaultAccountAddress}
-                <SendFunds
-                    defaultAddress={defaultAccountAddress}
-                    sendCallback={this.sendFunds}
-                />
+            <WalletContainer>
+                <Block>
+                    <BlockRow>
+                    {defaultAccountAddress}
+                    </BlockRow>
+                    <BlockRow>
+                        Balance:
+                    </BlockRow>
+                </Block>
                 <hr/>
-
-                <h3>Accounts</h3>
 
                 <WalletAccountsList
                     accounts={accounts}
@@ -56,10 +58,8 @@ class CyberWallet extends Component {
                     setDefaultCallback={this.setDefaultAccount}
                     forgetCallback={this.forgetAccount}
                 />
-                <hr/>
 
-                <h3>Management</h3>
-                <button onClick={this.createCyberAccount}>Create new account</button>
+                <Button onClick={this.createCyberAccount}>Create new account</Button>
 
                 <AddAccount
                     addMethodName='Recover'
@@ -71,7 +71,11 @@ class CyberWallet extends Component {
                     placeholder='private key'
                     addCallback={this.importAccount}
                 />
-            </Container>
+                <SendFunds
+                    defaultAddress={defaultAccountAddress}
+                    sendCallback={this.sendFunds}
+                />
+            </WalletContainer>
         );
     }
 }

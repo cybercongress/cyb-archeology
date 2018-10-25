@@ -1,3 +1,30 @@
 .default-account {
     background-color: #cccccc;
 }
+
+.avatar {
+    background: url(./robohash.jpg) no-repeat center center #fff;
+    background-size: 60px 60px;
+    width: 60px;
+    height: 60px;
+    z-index: 1;
+}
+
+.user-card {
+    display: flex;
+    align-items: center;
+}
+
+.user-card__avatar {
+    width: 100px;
+}
+
+.WalletContainer {
+    background: #eff3f6;
+}
+
+.WalletContainer__inner {
+    width: 770px;
+    margin: 0 auto;
+
+}

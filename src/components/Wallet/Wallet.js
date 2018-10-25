@@ -1,6 +1,18 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import './wallet.css';
+import Block, {BlockRow} from "../Settings/Block";
+import Button from "../Button/Button";
+
+export const WalletContainer = (props) => (
+    <div  className='WalletContainer'>
+        <div {...props} className='WalletContainer__inner'/>
+    </div>
+);
+
+export const Avatar = () => {
+    return <div className='avatar' />
+};
 
 export const WalletAccountsList = ({accounts, defaultAccountAddress, setDefaultCallback, forgetCallback}) => {
     return accounts.map(account => {
@@ -20,16 +32,22 @@ export const WalletAccountsList = ({accounts, defaultAccountAddress, setDefaultC
 export const WalletAccount = ({address, balance, clickCallback, forgetCallback, isDefaultAccount}) => {
     const className = isDefaultAccount ? 'default-account' : '';
 
-    return <div onClick={clickCallback} className={className}>
-        <div>
-            Address: {address}
+    return <div className='user-card'>
+        <div className='user-card__avatar'>
+            <Avatar/>
+            <Button onClick={clickCallback} color='yellow'>MAKE MAIN</Button>
         </div>
-        <div>
-            Balance: {balance}
-        </div>
-        <div>
-            <button onClick={forgetCallback}>Forget</button>
-        </div>
+        <Block className={className}>
+            <BlockRow>
+                Address: {address}
+            </BlockRow>
+            <BlockRow>
+                Balance: {balance}
+            </BlockRow>
+            <BlockRow>
+                <Button onClick={forgetCallback}>Remove</Button>
+            </BlockRow>
+        </Block>
     </div>
 };
 
