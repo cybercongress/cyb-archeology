@@ -1,0 +1,10 @@
+
+.NotFound {
+	padding-top: 150px;
+	color: #7c7c7c;
+}
+
+.NotFound p:first-of-type {
+	margin-top: 100px;
+	margin-bottom: 20px;
+}
