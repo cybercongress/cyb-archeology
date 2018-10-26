@@ -7,7 +7,7 @@ const initState = {
             protocol: 'ipfs'
         },
         'cyber': {
-            hash: 'QmasW6oqdknYWnMnEyw9xkPNB87y3ex1Yb6Ce1bLgjDCE5',
+            hash: 'QmdMpwHAz4i5nuJK3rdY1U5DBw52Unkh7G163fzXZKTBZn',
             protocol: 'ipfs'
         },
         'wiki': {

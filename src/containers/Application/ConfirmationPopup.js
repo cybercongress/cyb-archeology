@@ -30,7 +30,6 @@ class ConfirmationPopupContainer extends Component {
         let _gasPrice;
         let _amount;
 
-        debugger;
 
         if (request) {
             const value = request.params[0].value;
