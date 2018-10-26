@@ -50,6 +50,18 @@ You are invited to contribute new features, fixes, or updates, large or small; W
 requests, and do our best to process them as fast as We can. You can find detailed information in our
 [contribution guide](./CONTRIBUTION.md).
 
+## How to release
+Build local release
+```
+yarn run release
+```
+
+Run release on travis CI
+```
+git tag -s 'v0.0.20' -m 'version 20'
+git push origin <branch_name> --tags
+```
+
 ## Roadmap & Changelog
 
 Stay tuned with our [Changelog](./CHANGELOG.md) and [Roadmap](https://github.com/orgs/cybercongress/projects/1).
