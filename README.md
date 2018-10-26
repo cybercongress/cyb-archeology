@@ -34,6 +34,18 @@ WEB3 BROWSER
 * [What is web3](docs/web3-vision.md)
 * [App development guidelines](./docs/app-guidelines.md)
 
+## How to release
+Build local release
+```
+yarn run release
+```
+
+Run release on travis CI
+```
+git tag -s 'v0.0.20' -m 'version 20'
+git push origin <branch_name> --tags
+```
+
 ## Issues
 
 If you have any problems with or questions about CYB, please contact us through a
@@ -49,18 +61,6 @@ If you have any problems with or questions about CYB, please contact us through 
 You are invited to contribute new features, fixes, or updates, large or small; We are always thrilled to receive pull
 requests, and do our best to process them as fast as We can. You can find detailed information in our
 [contribution guide](./CONTRIBUTION.md).
-
-## How to release
-Build local release
-```
-yarn run release
-```
-
-Run release on travis CI
-```
-git tag -s 'v0.0.20' -m 'version 20'
-git push origin <branch_name> --tags
-```
 
 ## Roadmap & Changelog
 
