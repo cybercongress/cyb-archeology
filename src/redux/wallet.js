@@ -92,12 +92,30 @@ export const init = (endpoint) => (dispatch, getState) => {
 export const loadAccounts = () => (dispatch, getState) => {
     if (!eth) return;
 
+    // eth.getAccounts((err, _accounts) => {
+    //     Promise.all(
+    //         _accounts.map(address => new Promise(resolve => {
+    //             eth.getBalance(address, (e, balance) => {
+    //                 resolve({
+    //                     balance: web3.fromWei(balance, 'ether').toNumber(),
+    //                     address: address.toLowerCase()
+    //                 })
+    //             })
+    //         }))
+            
+    //     ).then(accounts => {
+    //         dispatch({
+    //             type: 'LOAD_ACCOUNTS',
+    //             payload: accounts,
+    //         })
+    //     })
+    // })
     eth.getAccounts((err, _accounts) => {
         Promise.all(
             _accounts.map(address => new Promise(resolve => {
-                eth.getBalance(address, (e, balance) => {
+                eth.getBalance(address).then(_balance => {
                     resolve({
-                        balance: web3.fromWei(balance, 'ether').toNumber(),
+                        balance: web3.utils.fromWei(_balance, 'ether'),
                         address: address.toLowerCase()
                     })
                 })

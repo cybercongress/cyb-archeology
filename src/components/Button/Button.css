@@ -22,6 +22,10 @@
     background: #50e3c2;
 }
 
+.button--red {
+    background: #D0021B;
+}
+
 .button--full-width {
     width: 100%;
 }

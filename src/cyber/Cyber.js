@@ -105,12 +105,17 @@ function Cyber(nodeUrl) {
                         url: nodeUrl + '/account?address=' + address
                     }).then(data => {
                         let balance = 0;
+                        let publicKey = '';
                         if (data.data.result && data.data.result.account && data.data.result.account.account_number >= 0) {
                             balance = data.data.result.account.coins[0].amount;
+                            // console.log(data.data.result.account.)
+                            // publicKey = data.data.result.account.public_key.value; 
+                            publicKey = 'TODO'; // save when create
                         }
 
                         return {
                             address: address,
+                            publicKey,
                             balance
                         }
                     })

@@ -21,6 +21,12 @@ export const BlockRow = ({children}) => {
     </div>
 };
 
+export const Row = ({children}) => {
+    return <div className='row'>
+        {children}
+    </div>
+};
+
 export const RowItem = ({children, ...props}) => (
     <div className='block__row__item' {...props} >
         {children}

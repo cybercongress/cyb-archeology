@@ -6,7 +6,7 @@ import Container from "../../components/Container/Container";
 import Block, {BlockRow} from "../../components/Settings/Block";
 import Button from "../../components/Button/Button";
 
-class CyberWallet extends Component {
+class CyberImport extends Component {
 
     importAccount = (privateKey) => {
         this.props.importAccount(privateKey);
@@ -16,25 +16,6 @@ class CyberWallet extends Component {
         this.props.restoreAccount(seedPhrase);
     };
 
-    setDefaultAccount = (address) => {
-        this.props.setDefaultCyberAccount(address);
-    };
-
-    createCyberAccount = () => {
-        this.props.createCyberAccount();
-    };
-
-    forgetAccount = (address) => {
-        this.props.forgetCyberAccount(address)
-    };
-
-    claimFunds = (address, amount) => {
-        this.props.claimFunds(address, amount)
-    };
-
-    sendFunds = (defaultAddress, recipientAddress, amount) => {
-        this.props.sendFunds(defaultAddress, recipientAddress, amount)
-    };
 
     render() {
         const defaultAccountAddress = this.props.defaultAccount;
@@ -42,25 +23,6 @@ class CyberWallet extends Component {
 
         return (
             <WalletContainer>
-                <Block>
-                    <BlockRow>
-                    {defaultAccountAddress}
-                    </BlockRow>
-                    <BlockRow>
-                        Balance:
-                    </BlockRow>
-                </Block>
-                <hr/>
-
-                <WalletAccountsList
-                    accounts={accounts}
-                    defaultAccountAddress={defaultAccountAddress}
-                    setDefaultCallback={this.setDefaultAccount}
-                    forgetCallback={this.forgetAccount}
-                />
-
-                <Button onClick={this.createCyberAccount}>Create new account</Button>
-
                 <AddAccount
                     addMethodName='Recover'
                     placeholder='seed phrase'
@@ -70,10 +32,6 @@ class CyberWallet extends Component {
                     addMethodName='Import'
                     placeholder='private key'
                     addCallback={this.importAccount}
-                />
-                <SendFunds
-                    defaultAddress={defaultAccountAddress}
-                    sendCallback={this.sendFunds}
                 />
             </WalletContainer>
         );
@@ -86,5 +44,5 @@ export default connect(
         defaultAccount: cyber.defaultAccount
     }),
     cyberActions
-)(CyberWallet);
+)(CyberImport);
 

@@ -9,6 +9,7 @@ const Button = ({dura, color, fullWidth, ...props}) => {
     if (color === 'green') css += ' button--green';
     if (color === 'yellow') css += ' button--yellow';
     if (color === 'turquoise') css += ' button--turquoise';
+    if (color === 'red') css += ' button--red';
     if (fullWidth === true) css += ' button--full-width';
 
 
