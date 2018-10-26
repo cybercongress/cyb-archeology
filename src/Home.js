@@ -37,7 +37,7 @@ class HomePage extends Component {
                     <LinkItem target="_blank" to='https://github.com/cybercongress' icon='github'>GitHub</LinkItem>
                     <LinkItem target="_blank" to='https://github.com/orgs/cybercongress/projects/1'
                               icon='roadmap'>Roadmap</LinkItem>
-                    <LinkItem target="_blank" to='http://cybersearch.live' icon='cybernode'>Cybernode</LinkItem>
+                    {/*<LinkItem target="_blank" to='http://cybersearch.live' icon='cybernode'>Cybernode</LinkItem>*/}
                     <LinkItem target="_blank" to='https://wiki.cybercongress.ai' icon='knowledge'>Knowledge</LinkItem>
                     <LinkItem target="_blank" to='https://medium.com/@cybercongress' icon='blog'>Blog</LinkItem>
 

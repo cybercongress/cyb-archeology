@@ -4,9 +4,9 @@
 
 .avatar {
     background: url(./robohash.jpg) no-repeat center center #fff;
-    background-size: 60px 60px;
-    width: 60px;
-    height: 60px;
+    background-size: 80px 80px;
+    width: 90px;
+    height: 90px;
     z-index: 1;
 }
 
@@ -24,7 +24,7 @@
 }
 
 .WalletContainer__inner {
-    width: 770px;
+    width: 840px;
     margin: 0 auto;
 
 }

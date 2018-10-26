@@ -132,3 +132,8 @@ SendFunds.propTypes = {
     defaultAddress: PropTypes.string,
     sendCallback: PropTypes.func
 };
+
+
+
+
+
