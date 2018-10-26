@@ -15,7 +15,7 @@
 
 .confirmation-popup__popup {
     background: #fff;
-    padding: 20px;
+    padding: 10px;
 }
 
 .confirmation-popup__content {
@@ -23,6 +23,7 @@
 }
 
 .confirmation-popup__buttons {
+    padding-top: 15px;
     display: flex;
     justify-content: space-around;
 }
@@ -36,5 +37,9 @@
 .tx-details-container {
     display: flex;
     justify-content: space-between;
+}
+
+.address {
+    color: #438cef;
 }
 

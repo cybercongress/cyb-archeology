@@ -4,7 +4,7 @@ import ConfirmationPopup, {ApproveButton} from './../../components/ConfirmationP
 import {approve, reject} from './../../redux/wallet';
 import Input from "../../components/Input/Input";
 import {TxDetailsContainer} from "../../components/ConfirmationPopup/ConfirmationPopup";
-import web3utils from 'web3-utils';
+import web3 from 'web3';
 
 
 class ConfirmationPopupContainer extends Component {
@@ -35,9 +35,9 @@ class ConfirmationPopupContainer extends Component {
             const value = request.params[0].value;
             _from = request.params[0].from;
             _to = request.params[0].to;
-            _gasLimit = web3utils.hexToNumber(request.params[0].gas);
-            _gasPrice = web3utils.hexToNumber(request.params[0].gasPrice);
-            _amount = value ? web3utils.hexToNumber(value) : 0;
+            _gasLimit = web3.utils.hexToNumber(request.params[0].gas);
+            _gasPrice = web3.utils.hexToNumber(request.params[0].gasPrice);
+            _amount = value ? web3.utils.hexToNumber(value) : 0;
         }
 
         return (
