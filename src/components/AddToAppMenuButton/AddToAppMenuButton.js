@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import * as actions from '../../redux/appMenu'
-
-const styles = require('./AddToAppMenuButton.css');
+import './AddToAppMenuButton.css'
 
 export const Container = ({children}) => (
     <div className='favoritesContainer'>

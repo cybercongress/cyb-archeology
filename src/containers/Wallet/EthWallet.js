@@ -2,13 +2,9 @@ import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import * as actions from "../../redux/wallet";
 import Container from '../../components/Container/Container';
-import {AddAccount, WalletAccountsList} from "../../components/Wallet/Wallet";
+import {AddAccount, SendFunds, WalletAccountsList} from "../../components/Wallet/Wallet";
 
 class EthWallet extends Component {
-
-    state = {
-        showSendPanel: false
-    };
 
     loadAccounts = () => {
         this.props.loadAccounts()
@@ -35,63 +31,31 @@ class EthWallet extends Component {
         this.props.setDefaultAccount(address);
     };
 
-    startSend = () => {
-        this.setState({
-            showSendPanel: true
-        })
-    };
-
-    cancelSend = () => {
-        this.setState({
-            showSendPanel: false
-        })
-    };
-
-    sendMoney = () => {
-        const {defaultAccount} = this.props;
-        const recipientAddress = this.refs.recipientAddress.value;
-        const amount = this.refs.amount.value;
-        this.props.sendMony(defaultAccount, recipientAddress, amount)
+    sendFunds = (defaultAddress, recipientAddress, amount) => {
+        this.props.sendFunds(defaultAddress, recipientAddress, amount)
             .then(() => {
                 this.props.loadAccounts();
             });
-        this.setState({
-            showSendPanel: false
-        })
     };
 
     render() {
         const {accounts, defaultAccount} = this.props;
-        const {showSendPanel} = this.state;
 
         return (
             <Container>
                 <h3>Current account</h3>
                 {defaultAccount}
-                <div>
-                    {!showSendPanel &&
-                        <div>
-                            <button onClick={this.startSend}>Send ETH</button>
-                        </div>
-                    }
-                    {showSendPanel &&
-                        <div>
-                            <div>
-                                <input ref='recipientAddress' placeholder='Recipient Address'/>
-                            </div>
-                            <div>
-                                <input ref='amount' placeholder='Amount'/>
-                            </div>
-                            <button onClick={this.sendMoney}>send</button>
-                            <button onClick={this.cancelSend}>cancel</button>
-                        </div>
-                    }
-                </div>
+                <SendFunds
+                    defaultAddress={defaultAccount}
+                    sendCallback={this.sendFunds}
+                />
+                <hr/>
 
                 <h3>Accounts</h3>
 
                 <WalletAccountsList
                     accounts={accounts}
+                    defaultAccountAddress={defaultAccount}
                     setDefaultCallback={this.setDefaultAccount}
                     forgetCallback={this.forgetAccount}
                 />
@@ -112,7 +76,7 @@ class EthWallet extends Component {
 }
 
 export default connect(
-    ({ wallet }) => ({
+    ({wallet}) => ({
         accounts: wallet.accounts,
         defaultAccount: wallet.defaultAccount
     }),

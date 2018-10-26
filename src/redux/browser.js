@@ -59,43 +59,46 @@ export const navigate = (_dura, init = false) => (dispatch, getState) => {
     const apps = getRegistryItems(getState());
     const ipfsEndpoint = getIpfsEndpoint(getState());
     const {url, dura} = DURAToURL(_dura, apps, ipfsEndpoint);
+
     if (_dura === 'rr.cyb') {
-        if (!init)
+        // if (!init)
             hashHistory.push('/rootregistry');
         dispatch(updateDURA(_dura));
         return;
     }
 
     if (_dura === 'settings.cyb') {
-        if (!init)
+        // if (!init)
             hashHistory.push('/settings');
         dispatch(updateDURA(_dura));
         return;
     }
 
     if (_dura === 'wallet.cyb') {
-        if (!init)
+        // if (!init)
             hashHistory.push('/wallet');
         dispatch(updateDURA(_dura));
         return;
     }
 
     if (_dura === 'apps.cyb') {
-        if (!init)
+        // if (!init)
             hashHistory.push('/appstore');
         dispatch(updateDURA(_dura));
         return;
     }
 
+
+
     if (_dura === '') { //App not found
-        if (!init)
+        // if (!init)
             hashHistory.push('/');
         dispatch(updateDURA(_dura));
         return;
     }
 
     if (dura === 'notfound.cyb') {
-        hashHistory.push('/notfound');
+        hashHistory.push('/notfound?dura=' + _dura);
         dispatch(updateDURA(_dura));
         return;
     }

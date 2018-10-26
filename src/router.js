@@ -1,13 +1,13 @@
 import React from "react";
 import {hashHistory, IndexRoute, Route, Router} from "react-router";
-import Application from "./Application";
+import Application from "./containers/Application/Application";
 import RootRegistry from "./RootRegistry";
 import Settings from "./Settings";
 import Wallet from "./containers/Wallet";
 import NotFound from "./NotFound";
 import Browser from "./Browser";
 import Home from "./Home";
-import AppStore from './containers/AppStore';
+import AppStore from './containers/AppStore/AppStore';
 
 const AppRouter = () => (<Router history={hashHistory}>
     <Route path='/' component={Application}>

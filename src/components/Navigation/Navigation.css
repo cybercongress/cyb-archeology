@@ -37,3 +37,34 @@
     flex-grow: 1;
     max-width: 770px;
 }
+
+.MenuButton {
+	text-indent: -99999px;
+	border: none;
+	background: none;
+	width: 24px;
+	height: 17px;
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	justify-content: space-between;
+	cursor: pointer;
+}
+
+.MenuButton_line1 {
+	background: #fff;
+	width: 24px;
+	height: 2px;
+}
+
+.MenuButton_line2 {
+	background: #fff;
+	width: 24px;
+	height: 2px;
+}
+
+.MenuButton_line3 {
+	background: #fff;
+	width: 24px;
+	height: 2px;
+}

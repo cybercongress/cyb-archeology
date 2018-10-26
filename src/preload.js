@@ -1,33 +1,31 @@
 const {ipcRenderer} = require('electron')
 
 
-const __providerCallbacks = {}
-
-
 const ElectronProvider = {
     send: function(payload, callback) {
-        console.log(' send ');
-        console.log(payload.method);
-        console.log(' callback ', callback);
-        ipcRenderer.sendToHost('web3_eth', payload);
-        __providerCallbacks[payload.id + payload.method] = callback        
+        console.log('Sync calls are not anymore supported')
     },
     sendAsync: function (payload, callback) {
-        console.log(' sendAsync ');
-        console.log(payload.method );
-        console.log(' callback ', callback);
         ipcRenderer.sendToHost('web3_eth', payload);
-        __providerCallbacks[payload.id + payload.method] = callback
+        ipcRenderer.once('web3_eth_call', (_, payload) => {
+            try {
+                callback(null, payload)
+            } catch(e) {
+                console.log('error')
+                console.log(e)
+                console.log(JSON.stringify(payload))
+            }
+        });
     }
 }
 
-ipcRenderer.on('web3_eth_call', (_, payload) => {
-    console.log('web3_eth_call');
-    console.log(JSON.stringify(payload));
-    if (__providerCallbacks[payload.id + payload.method]) {
-        __providerCallbacks[payload.id + payload.method](null, payload);
-    }
-});
+// ipcRenderer.on('web3_eth_call', (_, payload) => {
+//     console.log('web3_eth_call');
+//     console.log(JSON.stringify(payload));
+//     if (payload.method && __providerCallbacks[payload.id + payload.method]) {
+//         __providerCallbacks[payload.id + payload.method](null, payload);
+//     }
+// });
 
 window.cyber = {
     search: function (q) {

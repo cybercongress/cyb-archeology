@@ -54,6 +54,42 @@ class MsgLink extends Msg {
     }
 }
 
+class Input {
+
+    constructor(address, amount) {
+        this.address = address
+        this.coins = [new Coin(amount, "CBD")]
+    }
+}
+
+class Output {
+
+    constructor(address, amount) {
+        this.address = address
+        this.coins = [new Coin(amount, "CBD")]
+    }
+}
+
+class MsgSend extends Msg {
+
+    constructor(from, to, amount) {
+        super()
+        this.inputs = [new Input(from, amount)]
+        this.outputs = [new Output(to, amount)]
+    }
+
+    getSignObject() {
+        return utils.sortObjectKeys(this);
+    }
+
+    validateBasic() {
+    }
+
+    type() {
+        return "cosmos-sdk/Send";
+    }
+}
+
 class Fee {
     constructor(amount, gas) {
         this.amount = amount;
@@ -141,6 +177,12 @@ class TxRequest {
 export const buildLinkSignMsg = (acc, cidTo, cidFrom, chainId) => {
     let fee = new Fee();
     let msg = new MsgLink(acc.address, cidTo, cidFrom);
+    return new SignMsg(chainId, acc.account_number, acc.sequence, fee, msg, '');
+}
+
+export const buildSendSignMsg = (acc, from, to, amount, chainId) => {
+    let fee = new Fee();
+    let msg = new MsgSend(from, to, amount);
     return new SignMsg(chainId, acc.account_number, acc.sequence, fee, msg, '');
 }
 

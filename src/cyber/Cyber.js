@@ -7,7 +7,9 @@ import {
 
 import builder from './builder';
 
-const chainId = 'test-chain-fbqPMq';
+const chainId = 'test-chain-gRXWCL';
+const claimNodeUrl = 'http://earth.cybernode.ai:34666';
+const defaultAmount = 10000;
 
 let __accounts = {};
 
@@ -31,9 +33,8 @@ function Cyber(nodeUrl) {
                 .catch(error =>
                     resolve([])
                 )
-
         })
-    }
+    };
 
 
     self.link = function (from, to, address = '') {
@@ -41,8 +42,12 @@ function Cyber(nodeUrl) {
             method: 'get',
             url: nodeUrl + '/account?address=' + address
         }).then(response => {
+            if (!response.data.result) return false;
+
             return response.data.result.account;
         }).then((account) => {
+            if (!account) return;
+            
             const acc = {
                 address: account.address,
                 chain_id: chainId, //todo: get from node
@@ -65,7 +70,16 @@ function Cyber(nodeUrl) {
                 console.log('Cannot link', error)
             )
         })
-    }
+    };
+
+    self.claimFunds = function (address, amount) {
+        return axios({
+            method: 'get',
+            url: claimNodeUrl + '/claim?address=' + address + '&amount=' + amount
+        }).then(response => {
+            console.log('Claimed ' + amount + ' for address ' + address, response);
+        })
+    };
 
     let __setDefaultAddress;
 
@@ -79,7 +93,7 @@ function Cyber(nodeUrl) {
     self.setDefaultAccount = function (_address) {
         defaultAccount = _address;
         if (__setDefaultAddress) __setDefaultAddress(defaultAccount);
-    }
+    };
 
     self.getAccounts = function () {
         return new Promise(resolve => {
@@ -91,9 +105,8 @@ function Cyber(nodeUrl) {
                         url: nodeUrl + '/account?address=' + address
                     }).then(data => {
                         let balance = 0;
-                        if (!data.data.error) {
-                            const account = data.data.result.account;
-                            balance = account.coins[0].amount;
+                        if (data.data.result && data.data.result.account && data.data.result.account.account_number >= 0) {
+                            balance = data.data.result.account.coins[0].amount;
                         }
 
                         return {
@@ -106,7 +119,7 @@ function Cyber(nodeUrl) {
                 resolve(accounts)
             });
         })
-    }
+    };
 
     self.restoreAccount = function (seedPhrase) {
         return new Promise(resolve => {
@@ -130,7 +143,7 @@ function Cyber(nodeUrl) {
 
             resolve();
         })
-    }
+    };
 
     self.createAccount = function () {
         return new Promise(resolve => {
@@ -140,9 +153,11 @@ function Cyber(nodeUrl) {
 
             localStorage.setItem('cyberAccounts', JSON.stringify(__accounts));
 
+            this.claimFunds(account.address, defaultAmount);
+
             resolve();
         })
-    }
+    };
 
     self.forgetAccount = function (address) {
         return new Promise(resolve => {
@@ -151,6 +166,45 @@ function Cyber(nodeUrl) {
             localStorage.setItem('cyberAccounts', JSON.stringify(__accounts));
 
             resolve();
+        })
+    };
+
+    self.sendFunds = function (defaultAddress, recipientAddress, amount) {
+        return axios({
+            method: 'get',
+            url: nodeUrl + '/account?address=' + defaultAddress
+        }).then(response => {
+            if (!response.data.result) return false;
+
+            return response.data.result.account;
+        }).then((account) => {
+            if (!account) return;
+
+            const acc = {
+                address: account.address,
+                chain_id: chainId, //todo: get from node
+                account_number: parseInt(account.account_number, 10),
+                sequence: parseInt(account.sequence, 10)
+            };
+            const sendRequest = {
+                acc,
+                from: defaultAddress,
+                to: recipientAddress,
+                amount: amount,
+                type: 'send'
+            };
+
+            const tx = builder.buildAndSignTxRequest(sendRequest, __accounts[defaultAddress], chainId)
+            console.log(tx)
+            return axios({
+                method: 'post',
+                url: nodeUrl + '/send',
+                data: tx
+            }).then(data =>
+                console.log('Send results: ', data)
+            ).catch(error =>
+                console.log('Cannot send', error)
+            )
         })
     }
 

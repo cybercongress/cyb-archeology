@@ -7,7 +7,7 @@ const initState = {
             protocol: 'ipfs'
         },
         'cyber': {
-            hash: 'QmQx6Kvezww3ZLjDuwKQ68aBjNWsYEHeMPi1Ho6uPQB6xT',
+            hash: 'QmasW6oqdknYWnMnEyw9xkPNB87y3ex1Yb6Ce1bLgjDCE5',
             protocol: 'ipfs'
         },
         'wiki': {
@@ -19,7 +19,7 @@ const initState = {
             protocol: 'ipfs'
         },
         'test': {
-            hash: 'Qma2CP6cRe8K6QExZ2MwGW5XYC76r9CZYxbbWEtnMzcZ6g',
+            hash: 'QmW9VJVjio3tgDsRRrkpW5mfMi1frDeC1tY177x2gZNgB5',
             protocol: 'ipfs'
         },
         'chaingear': {

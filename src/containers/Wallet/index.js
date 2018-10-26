@@ -1,13 +1,14 @@
 import React, {Component} from "react";
-import Container from "../../components/Container/Container";
 import EthWallet from "./EthWallet"
 import CyberWallet from "./CyberWallet"
+import Titile from "../../components/Titile/Titile";
+import {WalletContainer} from "../../components/Wallet/Wallet";
 
 
 class Page extends Component {
 
     state = {
-        tab: 'eth'
+        tab: 'cyb'
     };
 
     select = (tab) => {
@@ -17,16 +18,13 @@ class Page extends Component {
     render() {
         const {tab} = this.state;
         return (
-            <div>
-                <Container>
+            <WalletContainer>
+                <Titile>/Wallet</Titile>
                     <button onClick={() => this.select('eth')}>Ethereum</button>
                     <button onClick={() => this.select('cyb')}>Cyberd</button>
-                </Container>
-                <Container>
                     {tab === 'eth' && <EthWallet/>}
                     {tab === 'cyb' && <CyberWallet/>}
-                </Container>
-            </div>
+            </WalletContainer>
         );
     }
 }

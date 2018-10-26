@@ -1,4 +1,8 @@
 
+.NavigationContainer {
+	display: flex;
+}
+
 .SearchInput {
 
 	width: 100%;
@@ -9,10 +13,20 @@
 	color: #fff;
 	padding: 14px 20px;
 	/*padding-right: 60px;*/
-	margin-bottom: 5px;
 	box-sizing: border-box;
 	font-family: 'Play', sans-serif;
 	font-weight: bold;
   text-align: center;
 }
 
+.BackButton {
+	width: 40px;
+	padding: 0;
+	margin-right: 10px;
+}
+
+.ForwardButton {
+	width: 40px;
+	padding: 0;
+	margin-left: 10px;
+}

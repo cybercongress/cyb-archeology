@@ -28,4 +28,12 @@ export const NavigationCenter = ({ children }) => (
 	</div>
 );
 
+export const MenuButton = (props) => (
+	<button {...props} className='MenuButton'>
+		<span className='MenuButton_line1' />
+		<span className='MenuButton_line2' />
+		<span className='MenuButton_line3' />
+	</button>
+);
+
 export default Navigation;

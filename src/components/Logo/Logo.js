@@ -4,8 +4,8 @@ import CybLink from '../CybLink';
 
 import './Logo.css';
 
-const Logo = () => (
-	<CybLink dura='' className='logo'>logo</CybLink>
+const Logo = (props) => (
+	<CybLink {...props} className='logo' onClick={props.onClick} >logo</CybLink>
 )
 
 

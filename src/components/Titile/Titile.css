@@ -1,0 +1,15 @@
+
+.title {
+    font-weight: normal;
+    color: #7c7c7c;
+    font-size: 20px;
+    margin-top: 65px;
+    margin-bottom: 60px;
+    margin-left: 40px;
+    text-transform: uppercase;
+}
+
+.title-inline {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

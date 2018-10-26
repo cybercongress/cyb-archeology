@@ -22,9 +22,8 @@ module.exports = {
 
         let prikeyArr = Buffer.from(new Uint8Array(codec.hex.hexToBytes(private_key)));
         let sig = Secp256k1.sign(sig32, prikeyArr);
-        let signature = Buffer.from(hd.serialize(sig.signature));
 
-        return Array.from(signature)
+        return Array.from(sig.signature)
     },
 
     getAddress(publicKey) {
@@ -159,13 +158,6 @@ const hd = {
         let n = bn.n.toBuffer();
         let x = c.mod(new BN(n));
         return x
-    },
-
-    serialize(sig) {
-        var sigObj = {r: sig.slice(0, 32), s: sig.slice(32, 64)};
-        const SignatureFun = require('elliptic/lib/elliptic/ec/signature');
-        let signature = new SignatureFun(sigObj);
-        return signature.toDER();
     },
 
     bnToBuffer(bn) {

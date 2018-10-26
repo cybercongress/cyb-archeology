@@ -4,32 +4,112 @@
     left: 0;
     bottom: 0;
     width: 200px;
-    background: #ccc;
+    background: #2e3842;
+    color: #fff;
     transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .menuContainer--hide {
     left: -200px;
 }
 
-.appMenu {
+
+.menu-logo {
+    margin: 40px;
+}
+
+.app-store-link {
+    color: #fff;
+    text-decoration: none;
+    border: 1px solid #979797;    
+    padding: 10px 20px;
+}
+
+
+.bookmarks {
     display: flex;
     flex-direction: column;
+    width: 150px;
+    margin-top: 20px;
 }
 
-.AppMenuItem {
+.bookmarks__item {
     padding: 0.5em;
-    background-color: #979797;
     display: inline-flex;
     cursor: pointer;
+    align-items: center;
 }
 
-.removeButton {
+.bookmarks__item a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.bookmarks__remove-btn {
     margin: 0 0 0 auto;
     padding: 0.5em;
-    background-color: #979797;
+    text-indent: -9999px;
+    border: 1px solid #979797;
+    width: 10px;
+    height: 10px;
+    position: relative;
 }
 
-.addMenuItem {
-    background-color: #979797;
+.bookmarks__remove-btn::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 1px;
+    background: #979797;
+    left: 3px;
+    top: 7px;    
+    transform: rotate(-45deg);
+    transform-origin: center; ;
+}
+
+.bookmarks__remove-btn::before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 1px;
+    background: #979797;
+    left: 3px;
+    top: 7px;    
+    transform: rotate(45deg);
+    transform-origin: center ;
+}
+
+
+.AddMenuItem {
+    /*background-color: #979797;*/
+    position: relative;
+    margin-top: 20px;
+}
+
+.AddMenuItem input {
+    border: none;
+    padding: 10px;
+    padding-right: 40px;
+    box-sizing: border-box;
+    width: 150px;
+}
+
+.AddMenuItem__approve {
+    position: absolute;
+    top: 7px;
+    right: 0;
+    border: none;
+    color: red;
+}
+
+.AddMenuItem__reject {
+    position: absolute;
+    top: 7px;
+    right: 20px;
+    border: none;
+    color: green;
 }
