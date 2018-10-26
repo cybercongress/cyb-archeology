@@ -1,0 +1,46 @@
+{
+  "appId": "cyb",
+  "productName": "cyb",
+  "compression": "normal",
+  "directories": {
+    "output": "dist",
+    "buildResources": "./",
+    "app": "."
+  },
+  "publish": {
+    "provider": "github",
+    "releaseType": "release"
+  },
+  "mac": {
+    "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
+    "category": "public.app-category.productivity",
+    "icon": "./assets/icon/logo_cyb_512x512.png",
+    "target": [
+      "dmg",
+      "tar.xz"
+    ]
+  },
+  "linux": {
+    "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
+    "icon": "./assets/icon/logo_cyb_512x512.png",
+    "synopsis": "cyb",
+    "description": "Web 3 Browser",
+    "category": "WebBrowser",
+    "target": [
+      "deb",
+      "tar.gz"
+    ]
+  },
+  "win": {
+    "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
+    "icon": "./icons/icon-512x512.png",
+    "target": [
+      "nsis"
+    ]
+  },
+  "nsis": {
+    "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
+    "oneClick": true,
+    "perMachine": true
+  }
+}

@@ -37,7 +37,7 @@
     "build": "react-scripts build",
     "build:preload": "webpack --config webpack/preload",
     "test": "react-scripts test",
-    "release": "rimraf dist && rimraf build && yarn run build && yarn run build:preload && electron-builder --publish always",
+    "release": "rimraf dist && rimraf build && yarn run build && yarn run build:preload && electron-builder --config electron/config.json",
     "start": "concurrently \"BROWSER=none yarn run react-dev\" \"wait-on http://localhost:3000 && electron .\""
   },
   "browserslist": [
