@@ -7,10 +7,6 @@
     margin: 18px;
 }
 
-.block__inline {
-    display: inline-block;
-}
-
 .block__row {
     border-bottom: 1px solid #cccccc;
     padding: 15px;

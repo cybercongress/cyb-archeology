@@ -1,28 +1,40 @@
 
-
 .confirmation-popup {
-	position: fixed;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	top: 0;
-	display: flex;
-	background: rgba(0, 0, 0, 0.4);
-	align-items: center;
-	justify-content: center;
-	z-index: 1;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: flex;
+    background: rgba(0, 0, 0, 0.4);
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    flex-direction: column;
 }
 
 .confirmation-popup__popup {
-	background: #fff;
-	padding: 20px;
+    background: #fff;
+    padding: 20px;
 }
 
 .confirmation-popup__content {
-	padding-bottom: 50px;
+    padding-bottom: 50px;
 }
 
 .confirmation-popup__buttons {
-	display: flex;
-	justify-content: space-between;
+    display: flex;
+    justify-content: space-around;
 }
+
+.popup-label {
+    text-transform: uppercase;
+    color: #2e3842;
+    font-size: 14px;
+}
+
+.tx-details-container {
+    display: flex;
+    justify-content: space-between;
+}
+
