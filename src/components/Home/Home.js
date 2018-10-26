@@ -62,7 +62,7 @@ export const LinkList = ({children}) => (
 // );
 
 export const LinkItem = ({ children, to, icon, ...props}) => (
-    <a to={to} className={`linkItem linkItem${icon}`} {...props}>
+    <a href={to} className={`linkItem linkItem${icon}`} {...props}>
         {children}
     </a>
 );
