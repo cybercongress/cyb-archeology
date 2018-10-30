@@ -154,7 +154,7 @@ export const checkStatus = () => (dispatch, getState) => {
 export const resetAllSettings = () => (dispatch, getState) => {
     localStorage.removeItem('settings');
     localStorage.removeItem('rootRegistry');
-    localStorage.removeItem('appMenu');
+    // localStorage.removeItem('appMenu');
     dispatch(init());
     dispatch(checkStatus());
 }

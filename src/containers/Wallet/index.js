@@ -98,7 +98,7 @@ class Page extends Component {
                             <WalletTab
                               onClick={() => this.selectMenu('import')}
                               isActive={menu === 'import'}
-                            >impot account</WalletTab>
+                            >import account</WalletTab>
                             <WalletTab
                               onClick={() => this.selectMenu('send')}
                               isActive={menu === 'send'}

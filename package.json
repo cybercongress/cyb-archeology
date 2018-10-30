@@ -1,5 +1,6 @@
 {
   "name": "cyb",
+
   "main": "public/electron.js",
   "version": "0.0.21",
   "author": {

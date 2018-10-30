@@ -16,9 +16,9 @@ import {
 } from "./components/Settings/Settings";
 import CybLink from "./components/CybLink";
 
-const IPFS_END_POINT = 'IPFS_END_POINT';
-const PARITY_END_POINT = 'PARITY_END_POINT';
-const CYBERD_END_POINT = 'CYBERD_END_POINT';
+const _IPFS_END_POINT = 'IPFS_END_POINT';
+const _PARITY_END_POINT = 'PARITY_END_POINT';
+const _CYBERD_END_POINT = 'CYBERD_END_POINT';
 
 class Settings extends Component {
 
@@ -39,31 +39,30 @@ class Settings extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.ipfsDefault !== nextProps.ipfsDefault ||
-            this.props.parityDefault !== nextProps.parityDefault ||
-            this.props.cyberdDefault !== nextProps.cyberdDefault) {
+        if (this.props.IPFS_END_POINT !== nextProps.IPFS_END_POINT ||
+            this.props.PARITY_END_POINT !== nextProps.PARITY_END_POINT ||
+            this.props.CYBERD_END_POINT !== nextProps.CYBERD_END_POINT) {
 
-            this.IPFS_END_POINT.value = nextProps.ipfsDefault;
-            this.PARITY_END_POINT.value = nextProps.parityDefault;
-            this.CYBERD_END_POINT.value = nextProps.cyberdDefault;
+            this.IPFS_END_POINT.value = nextProps.IPFS_END_POINT;
+            this.PARITY_END_POINT.value = nextProps.PARITY_END_POINT;
+            this.CYBERD_END_POINT.value = nextProps.CYBERD_END_POINT;
         }
     }
 
     updateEndpoint = (name) => {
         let endpoint;
-
         switch (name) {
-            case IPFS_END_POINT: {
+            case _IPFS_END_POINT: {
                 endpoint = this.IPFS_END_POINT.value;
                 this.updateIPFS(endpoint);
                 break;
             }
-            case PARITY_END_POINT: {
+            case _PARITY_END_POINT: {
                 endpoint = this.PARITY_END_POINT.value;
                 this.updateParity(endpoint);
                 break;
             }
-            case CYBERD_END_POINT: {
+            case _CYBERD_END_POINT: {
                 endpoint = this.CYBERD_END_POINT.value;
                 this.updateCyberd(endpoint);
                 break;
@@ -99,7 +98,7 @@ class Settings extends Component {
                                     <SettingLabel>IPFS node:</SettingLabel>
                                     <Input style={{width: 200}} inputRef={node => this.IPFS_END_POINT = node}
                                            defaultValue={IPFS_END_POINT}/>
-                                    <Button onClick={() => this.updateEndpoint(IPFS_END_POINT)}>update</Button>
+                                    <Button onClick={() => this.updateEndpoint(_IPFS_END_POINT)}>update</Button>
                                 </SettingRow>
                             </BlockRow>
 
@@ -109,7 +108,7 @@ class Settings extends Component {
                                     <SettingLabel>Parity node:</SettingLabel>
                                     <Input style={{width: 200}} inputRef={node => this.PARITY_END_POINT = node}
                                            defaultValue={PARITY_END_POINT}/>
-                                    <Button onClick={() => this.updateEndpoint(PARITY_END_POINT)}>update</Button>
+                                    <Button onClick={() => this.updateEndpoint(_PARITY_END_POINT)}>update</Button>
                                 </SettingRow>
                             </BlockRow>
 
@@ -118,7 +117,7 @@ class Settings extends Component {
                                     <SettingLabel>cyberd node:</SettingLabel>
                                     <Input style={{width: 200}} inputRef={node => this.CYBERD_END_POINT = node}
                                            defaultValue={CYBERD_END_POINT}/>
-                                    <Button onClick={() => this.updateEndpoint(CYBERD_END_POINT)}>update</Button>
+                                    <Button onClick={() => this.updateEndpoint(_CYBERD_END_POINT)}>update</Button>
                                 </SettingRow>
                             </BlockRow>
 
