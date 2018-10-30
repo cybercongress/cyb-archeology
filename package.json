@@ -2,7 +2,7 @@
   "name": "cyb",
 
   "main": "public/electron.js",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "author": {
     "name": "cybercongress",
     "email": "cybercongress42@gmail.com"
