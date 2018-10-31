@@ -66,7 +66,9 @@ export const init = (endpoint) => (dispatch, getState) => {
 
     provider = new SignerProvider(endpoint, {
         signTransaction: (rawTx, cb) => {
+            debugger
             const privateKey = __accounts[rawTx.from.toLowerCase()];
+            debugger
             cb(null, sign(rawTx, privateKey))
         },
         accounts: (cb) => {
@@ -223,7 +225,7 @@ export const reject = () => (dispatch, getState) => {
 let web3Reqest = null;
 
 export const approve = (gas, _gasLimit) => (dispatch, getState) => {
-    const gasLimit = web3.toWei(_gasLimit, 'Gwei');
+    const gasLimit = web3.utils.toWei(_gasLimit, 'Gwei');
     web3Reqest.params[0].gas = gas;
     web3Reqest.params[0].gasPrice = gasLimit;
 
