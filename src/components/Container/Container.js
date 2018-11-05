@@ -1,9 +1,9 @@
 import React from 'react';
 
-import './Container.css';
+const styles = require('./Container.css');
 
 const Container = ({ children }) => (
-	<div className='container'>
+	<div className={styles.container}>
 		{children}
 	</div>
 );

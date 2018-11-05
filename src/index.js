@@ -13,7 +13,8 @@ appStart(store).then(() => {
 	    <Provider store={store}>
 	        <AppRouter/>
 	    </Provider>
-	    , document.getElementById('root'));	
+	    , document.getElementById('root'));
 });
 
+module.hot.accept();
 
