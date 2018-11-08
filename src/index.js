@@ -1,15 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import {Provider} from "react-redux";
 import {store, appStart} from './redux/store';
 import AppRouter from "./router";
 
-
-
+const styles = require("./index.css");
 
 appStart(store).then(() => {
-	ReactDOM.render(
+    ReactDOM.render(
 	    <Provider store={store}>
 	        <AppRouter/>
 	    </Provider>
@@ -17,4 +15,3 @@ appStart(store).then(() => {
 });
 
 module.hot.accept();
-

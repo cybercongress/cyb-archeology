@@ -1,0 +1,32 @@
+{
+  "extends": ["standard-react"],
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "globals": {
+    "expect": true,
+    "FileReader": true
+  },
+  "rules": {
+    "curly": ["warn", "all"],
+    "jsx-quotes": ["warn", "prefer-single"],
+    "newline-after-var": ["warn", "always"],
+    "no-alert": "warn",
+    "no-debugger": "warn",
+    "no-duplicate-imports": ["warn", {
+      "includeExports": true
+    }],
+    "object-curly-spacing": ["warn", "always"],
+    "object-property-newline": 0,
+    "one-var-declaration-per-line": ["warn", "always"],
+    "padded-blocks": ["warn", {
+      "blocks": "never",
+      "classes": "never",
+      "switches": "never"
+    }],
+    "react/jsx-closing-bracket-location": "warn",
+    "react/jsx-curly-spacing": ["warn", "always"]
+  }
+}

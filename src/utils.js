@@ -56,20 +56,21 @@ export const parseURL = (url) => {
         app = 'cyber';
     }
 
-    return {q, app, path};
+    return { q, app, path };
 }
 
 export const DURAToURL = (dura, apps = {}, IPFS_END_POINT = 'http://localhost:8080') => {
-    if (dura === '')
+    if (dura === '') {
         return {
             url: `${IPFS_END_POINT}/ipfs/QmZfSNpHVzTNi9gezLcgq64Wbj1xhwi9wk4AxYyxMZgtCG/`,
             dura: ''
         };
+    }
 
-    const {q, app, path} = parseURL(dura);
+    const { q, app, path } = parseURL(dura);
 
     if (apps[app]) {
-        const {hash, protocol} = apps[app];
+        const { hash, protocol } = apps[app];
         return {
             url: `${IPFS_END_POINT}/${protocol}/${hash}/${path}${q ? '?query=' + q : ''}`,
             dura: `${q || ''}.${app}${path ? '/' + path : ''}`
@@ -102,7 +103,7 @@ export const DURAToURL = (dura, apps = {}, IPFS_END_POINT = 'http://localhost:80
 
 export const getPreloadPath = () => {
     const isDev = window.require('electron-is-dev');
-    const {remote} = window.require('electron');
+    const { remote } = window.require('electron');
 
     // // Condition necessary for store.spec.js
     // const basePath = remote.app.getPath('userData');
@@ -122,8 +123,9 @@ export const getPreloadPath = () => {
 
     console.log('>>> ', remote.getGlobal('dirname'));
 
-    if (isDev)
+    if (isDev) {
         return 'file://' + path.join(remote.app.getAppPath(), 'src', 'preload.js');
+    }
 
     return 'file://' + path.join(remote.app.getAppPath(), './build/preload.js');
 }

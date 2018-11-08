@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
-import {connect} from "react-redux";
-import {didNavigateInPage, willNavigate} from "./redux/browser";
-import {receiveMessage} from './redux/wallet';
-import {getPreloadPath} from "./utils";
+import { connect } from "react-redux";
+import { didNavigateInPage, willNavigate } from "./redux/browser";
+import { receiveMessage } from './redux/wallet';
+import { getPreloadPath } from "./utils";
 import BrowserWindow, { BrowserContainer, Loading } from './components/BrowserWindow/BrowserWindow';
 
 class Browser extends Component {
@@ -44,7 +44,7 @@ class Browser extends Component {
 
 
     render() {
-        const { url} = this.props;
+        const { url } = this.props;
         const { loading } = this.state;
         return (
             <BrowserContainer>
@@ -62,7 +62,7 @@ class Browser extends Component {
 
 
 export default connect(
-    ({browser}) => ({
+    ({ browser }) => ({
         dura: browser.dura,
         url: browser.url,
         loading: browser.loading
