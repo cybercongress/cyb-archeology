@@ -1,5 +1,5 @@
 {
-  "extends": ["standard-react"],
+  "extends": ["standard-react", "airbnb"],
   "parser": "babel-eslint",
   "env": {
     "browser": true,
@@ -10,6 +10,7 @@
     "FileReader": true
   },
   "rules": {
+    "no-unused-vars": ["error", { "vars": "all", "args": "none", "ignoreRestSiblings": false }],
     "curly": ["warn", "all"],
     "jsx-quotes": ["warn", "prefer-single"],
     "newline-after-var": ["warn", "always"],
@@ -27,6 +28,9 @@
       "switches": "never"
     }],
     "react/jsx-closing-bracket-location": "warn",
-    "react/jsx-curly-spacing": ["warn", "always"]
+    "react/jsx-curly-spacing": ["warn", "always"],
+    "react/prop-types": 0,
+    "react/jsx-indent": ["warn", 4],
+    "indent": ["warn", 4]
   }
 }
