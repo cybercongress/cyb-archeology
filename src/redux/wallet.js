@@ -1,9 +1,11 @@
+
 import Web3 from "web3";
 import SignerProvider from 'ethjs-provider-signer';
 import {sign} from 'ethjs-signer';
 import Cyber from '../cyber/Cyber'
 
 import axios from 'axios';
+// var Buffer = require('buffer/').Buffer
 
 const initState = {
     accounts: [],
@@ -59,34 +61,71 @@ let __accounts = {};
 
 window.cyber = null;
 
+const ZeroClientProvider = require('./zero.js')
+
 export const init = (endpoint) => (dispatch, getState) => {
     __accounts = JSON.parse(localStorage.getItem('accounts') || '{}');
 
     // const http = new Web3.providers.HttpProvider(endpoint)
 
-    provider = new SignerProvider(endpoint, {
-        signTransaction: (rawTx, cb) => {
-            debugger
-            const privateKey = __accounts[rawTx.from.toLowerCase()];
-            debugger
-            cb(null, sign(rawTx, privateKey))
-        },
-        accounts: (cb) => {
+    // provider = new SignerProvider(endpoint, {
+    //     signTransaction: (rawTx, cb) => {
+    //         debugger
+    //         const privateKey = __accounts[rawTx.from.toLowerCase()];
+    //         debugger
+    //         cb(null, sign(rawTx, privateKey))
+    //     },
+    //     accounts: (cb) => {
+    //         cb(null, Object.keys(__accounts))
+    //     },
+    // });
+
+    // // provider.send = function(payload) {
+    // //     return http.send(payload);
+    // // }
+
+    // web3 = new Web3(provider);
+    // eth = web3.eth;
+
+    // if (Object.keys(__accounts).length > 0) {
+    //     const address = Object.keys(__accounts)[0];
+    //     dispatch(setDefaultAccount(address))
+    // }
+    
+    //endpoint
+
+
+    provider = new ZeroClientProvider({
+        rpcUrl: 'wss://rinkeby.infura.io/ws',
+        getAccounts: function(cb){ 
             cb(null, Object.keys(__accounts))
         },
+
+        getPrivateKey: function(address, cb) {
+            const pk = __accounts[address.toLowerCase()];
+
+            const privateKey = new Buffer(pk.substr(2), 'hex');
+            cb(null, privateKey)
+        } 
     });
-
-    // provider.send = function(payload) {
-    //     return http.send(payload);
-    // }
-
     web3 = new Web3(provider);
     eth = web3.eth;
+    provider.start();
 
-    if (Object.keys(__accounts).length > 0) {
-        const address = Object.keys(__accounts)[0];
-        dispatch(setDefaultAccount(address))
-    }
+    // function fn(event, cb) {
+    //     debugger
+    // }
+    
+    // provider.on(fn);
+
+    provider.on('data', (e, payload) => {
+        const message = payload;
+        const { id, method, error, result } = message;
+        if (wv && method && method.indexOf('_subscription') > -1) {
+          // Emit subscription notification
+          wv.send('web3_eth_event_data', payload);
+        }
+    })
 
     window.cyber = new Cyber(getState().settings.SEARCH_END_POINT)
 }
@@ -225,9 +264,10 @@ export const reject = () => (dispatch, getState) => {
 let web3Reqest = null;
 
 export const approve = (gas, _gasLimit) => (dispatch, getState) => {
-    const gasLimit = web3.utils.toWei(_gasLimit, 'Gwei');
-    web3Reqest.params[0].gas = gas;
-    web3Reqest.params[0].gasPrice = gasLimit;
+    // const gasLimit = web3.utils.toWei(_gasLimit, 'Gwei');
+    // web3Reqest.params[0].gas = gas;
+    // web3Reqest.params[0].gasPrice = gasLimit;
+    // web3Reqest.params[0].value = '0x00';
 
     provider.sendAsync(web3Reqest, (e, result) => {
         if (!wv) {
@@ -242,7 +282,6 @@ export const approve = (gas, _gasLimit) => (dispatch, getState) => {
 }
 
 export const receiveMessage = (e) => (dispatch, getState) => {
-
     if (!provider) return;
     if (e.channel === 'web3_eth') {
 
@@ -251,16 +290,25 @@ export const receiveMessage = (e) => (dispatch, getState) => {
 
         if (payload.method === 'eth_sendTransaction') {
             web3Reqest = payload;
-            // payload.params[0].gas = 21000;
-            // TODO: estimateGas
-            // web3.eth.estimateGas(payload, (e, dd) => {
-            //     debugger
-            // })
+            debugger
+        //     // web3Reqest.id = web3Reqest.id + 1;
+        //     // payload.params[0].gas = 21000;
+        //     // TODO: estimateGas
+        //     // web3.eth.estimateGas(payload, (e, dd) => {
+        //     //     debugger
+        //     // })
             dispatch(showPending(payload));
         } else {
             provider.sendAsync(payload, (e, result) => {
-                wv.send('web3_eth_call', result);
+                wv.send('web3_eth_call', { ...payload, ...result });
             })
+
+                // const message = payload;
+                // const { id, method, error, result } = message;
+                // if (method && method.indexOf('_subscription') > -1) {
+                //   // Emit subscription notification
+                //   provider.emit('notification', message.params);
+                // }
         }
     }
     if (e.channel === 'cyber') {
