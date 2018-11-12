@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 
-import { connect } from "react-redux";
-import { didNavigateInPage, willNavigate } from "./redux/browser";
+import { connect } from 'react-redux';
+import { didNavigateInPage, willNavigate } from './redux/browser';
 import { receiveMessage } from './redux/wallet';
-import { getPreloadPath } from "./utils";
+import { getPreloadPath } from './utils';
 import BrowserWindow, { BrowserContainer, Loading } from './components/BrowserWindow/BrowserWindow';
 
 class Browser extends Component {
     state = {
-        loading: false
+        loading: false,
     }
-    handleWebview = webview => {
+
+    handleWebview = (webview) => {
         if (!webview) {
             return;
         }
@@ -20,12 +21,12 @@ class Browser extends Component {
             this.props.didNavigateInPage(e.url);
         });
 
-        webview.addEventListener('will-navigate', event => {
+        webview.addEventListener('will-navigate', (event) => {
             event.preventDefault();
             this.props.willNavigate(event.url);
         });
 
-        webview.addEventListener('console-message', e => {
+        webview.addEventListener('console-message', (e) => {
             console.log('[DAPP]', e.message);
         });
 
@@ -34,11 +35,11 @@ class Browser extends Component {
         });
 
         webview.addEventListener('did-start-loading', (e) => {
-            this.setState({ loading: true })
+            this.setState({ loading: true });
         });
 
         webview.addEventListener('did-stop-loading', (e) => {
-            this.setState({ loading: false })
+            this.setState({ loading: false });
         });
     }
 
@@ -46,15 +47,16 @@ class Browser extends Component {
     render() {
         const { url } = this.props;
         const { loading } = this.state;
+
         return (
             <BrowserContainer>
                 <BrowserWindow
-                    preload={`${getPreloadPath()}`}
-                    src={url}
-                    refFn={this.handleWebview}
-                    loading={loading}
+                    preload={ `${getPreloadPath()}` }
+                    src={ url }
+                    refFn={ this.handleWebview }
+                    loading={ loading }
                 />
-                <Loading loading={loading}/>
+                <Loading loading={ loading } />
             </BrowserContainer>
         );
     }
@@ -65,11 +67,11 @@ export default connect(
     ({ browser }) => ({
         dura: browser.dura,
         url: browser.url,
-        loading: browser.loading
+        loading: browser.loading,
     }),
     {
         willNavigate,
         didNavigateInPage,
-        receiveMessage
-    }
+        receiveMessage,
+    },
 )(Browser);

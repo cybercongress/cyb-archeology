@@ -1,13 +1,10 @@
-import React, {Component} from 'react';
-import connect from "react-redux/es/connect/connect";
-import * as actions from "../../redux/wallet";
+import React, { Component } from 'react';
+import connect from 'react-redux/es/connect/connect';
+import * as actions from '../../redux/wallet';
 import Container from '../../components/Container/Container';
-import {AddAccount, SendFunds, WalletAccountsList} from "../../components/Wallet/Wallet";
+import { AddAccount, SendFunds, WalletAccountsList } from '../../components/Wallet/Wallet';
 
 class EthSend extends Component {
-
-
-
     sendFunds = (defaultAddress, recipientAddress, amount) => {
         this.props.sendFunds(defaultAddress, recipientAddress, amount)
             .then(() => {
@@ -16,14 +13,14 @@ class EthSend extends Component {
     };
 
     render() {
-        const {accounts, defaultAccount} = this.props;
+        const { accounts, defaultAccount } = this.props;
 
         return (
             <Container>
 
                 <SendFunds
-                    defaultAddress={defaultAccount}
-                    sendCallback={this.sendFunds}
+                    defaultAddress={ defaultAccount }
+                    sendCallback={ this.sendFunds }
                 />
             </Container>
         );
@@ -31,9 +28,9 @@ class EthSend extends Component {
 }
 
 export default connect(
-    ({wallet}) => ({
+    ({ wallet }) => ({
         accounts: wallet.accounts,
-        defaultAccount: wallet.defaultAccount
+        defaultAccount: wallet.defaultAccount,
     }),
-    actions
+    actions,
 )(EthSend);

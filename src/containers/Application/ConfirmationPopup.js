@@ -1,16 +1,17 @@
-import React, {Component} from 'react';
-import {connect} from "react-redux";
-import ConfirmationPopup, {ApproveButton} from './../../components/ConfirmationPopup/ConfirmationPopup';
-import {approve, reject} from './../../redux/wallet';
-import Input from "../../components/Input/Input";
-import {TxDetailsContainer} from "../../components/ConfirmationPopup/ConfirmationPopup";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import web3 from 'web3';
+import ConfirmationPopup, { ApproveButton } from '../../components/ConfirmationPopup/ConfirmationPopup';
+import { approve, reject } from '../../redux/wallet';
+import Input from '../../components/Input/Input';
+import { TxDetailsContainer } from '../../components/ConfirmationPopup/ConfirmationPopup';
 
 
 class ConfirmationPopupContainer extends Component {
     approve = () => {
         const gasLimit = this.gasLimit.value;
         const gasPrice = this.gasPrice.value;
+
         this.props.approve(gasLimit, gasPrice);
     };
 
@@ -33,6 +34,7 @@ class ConfirmationPopupContainer extends Component {
 
         if (request) {
             const value = request.params[0].value;
+
             _from = request.params[0].from;
             _to = request.params[0].to;
             _gasLimit = web3.utils.hexToNumber(request.params[0].gas);
@@ -42,43 +44,46 @@ class ConfirmationPopupContainer extends Component {
 
         return (
             <div>
-                {pendingRequest &&
-                <ConfirmationPopup
-                    from={_from}
-                    to={_to}
-                    approveCallback={this.approve}
-                    rejectCallback={this.reject}
-                    content={
-                        <TxDetailsContainer>
-                            <span>
-                                <div className='popup-label'>Amount (ETH):</div>
-                                <Input
-                                    defaultValue={_amount}
-                                    inputRef={node => {this.ethAmount = node}}
-                                    style={{width: 100}}
-                                />
-                            </span>
-                            <span>
-                                <div className='popup-label'>Gas price (GWEI):</div>
-                                <Input
-                                    defaultValue={_gasPrice}
-                                    inputRef={node => {this.gasPrice = node}}
-                                    style={{width: 100}}
-                                />
-                            </span>
-                            <span>
-                                <div className='popup-label'>Gas limit:</div>
-                                <Input
-                                    defaultValue={_gasLimit}
-                                    inputRef={node => {this.gasLimit = node}}
-                                    style={{width: 100}}/>
-                            </span>
-                        </TxDetailsContainer>
-                    }
-                />
+                {pendingRequest
+                && (
+                    <ConfirmationPopup
+                      from={ _from }
+                        to={ _to }
+                      approveCallback={ this.approve }
+                      rejectCallback={ this.reject }
+                      content={ (
+                            <TxDetailsContainer>
+                              <span>
+                                    <div className='popup-label'>Amount (ETH):</div>
+                                    <Input
+                                    defaultValue={ _amount }
+                                        inputRef={ (node) => { this.ethAmount = node; } }
+                                        style={ { width: 100 } }
+                                  />
+                                </span>
+                              <span>
+                                    <div className='popup-label'>Gas price (GWEI):</div>
+                                    <Input
+                                    defaultValue={ _gasPrice }
+                                    inputRef={ (node) => { this.gasPrice = node; } }
+                                    style={ { width: 100 } }
+                                  />
+                                </span>
+                              <span>
+                                    <div className='popup-label'>Gas limit:</div>
+                                    <Input
+                                    defaultValue={ _gasLimit }
+                                    inputRef={ (node) => { this.gasLimit = node; } }
+                                        style={ { width: 100 } }
+                                  />
+                                </span>
+                          </TxDetailsContainer>
+                        ) }
+                    />
+                )
                 }
             </div>
-        )
+        );
     }
 }
 
@@ -90,6 +95,5 @@ export default connect(
     {
         approve,
         reject,
-    }
+    },
 )(ConfirmationPopupContainer);
-

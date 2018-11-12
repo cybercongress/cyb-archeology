@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './IdBar.css';
 import CybLink from '../CybLink';
 
-const IdBar = ({defaultEthAccount, defaultCyberAccount}) => (
+const IdBar = ({ defaultEthAccount, defaultCyberAccount }) => (
     <div className='id-bar'>
-        <SettingsLink/>
-        <WalletLink/>
-        <CurrentUser defaultEthAccount={defaultEthAccount} defaultCyberAccount={defaultCyberAccount}/>
+        <SettingsLink />
+        <WalletLink />
+        <CurrentUser defaultEthAccount={ defaultEthAccount } defaultCyberAccount={ defaultCyberAccount } />
     </div>
 );
 
@@ -19,32 +19,31 @@ export const WalletLink = () => (
 );
 
 class CurrentUser extends Component {
-
     state = {
-        open: false
+        open: false,
     };
 
     toggle = () => {
         this.setState({
-            open: !this.state.open
-        })
+            open: !this.state.open,
+        });
     };
 
     render() {
-        const {open} = this.state;
-        const {defaultEthAccount, defaultCyberAccount} = this.props;
+        const { open } = this.state;
+        const { defaultEthAccount, defaultCyberAccount } = this.props;
 
         return (
             <div className='user-popup__container'>
-                <div className='id-bar__user' onClick={this.toggle}/>
-                <div className={`user-popup ${open ? 'user-popup--open' : ''}`}>
+                <div className='id-bar__user' onClick={ this.toggle } />
+                <div className={ `user-popup ${open ? 'user-popup--open' : ''}` }>
                     <div>
                         <span className='tokenName'>
                             ETH:
                         </span>
                         {defaultEthAccount}
                     </div>
-                    <hr className='separator'/>
+                    <hr className='separator' />
                     <div>
                         <span className='tokenName'>
                             CYBER:
@@ -57,6 +56,6 @@ class CurrentUser extends Component {
     }
 }
 
-export {CurrentUser}
+export { CurrentUser };
 
 export default IdBar;

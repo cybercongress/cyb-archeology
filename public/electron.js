@@ -1,4 +1,5 @@
 const electron = require('electron');
+
 const { app, Menu, BrowserWindow } = electron;
 const path = require('path');
 const isDev = require('electron-is-dev');
@@ -78,7 +79,7 @@ function createMenu() {
         ];
     }
 
-    Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
 function createWindow() {
@@ -92,8 +93,6 @@ function createWindow() {
     if (isDev) {
         mainWindow.webContents.openDevTools();
     }
-
-
 }
 
 app.on('ready', createWindow);

@@ -1,8 +1,8 @@
 module.exports = {
     marshalJSON(key, message) {
         return {
-            "type": key,
-            "value": message
-        }
-    }
+            type: key,
+            value: message,
+        };
+    },
 };
