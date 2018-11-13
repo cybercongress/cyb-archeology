@@ -3,7 +3,7 @@ import axios from 'axios';
 
 let initState = {
     IPFS_END_POINT: 'http://earth.cybernode.ai:34402',
-    PARITTY_END_POINT: 'http://earth.cybernode.ai:34645',
+    PARITTY_END_POINT: 'wss://rinkeby.infura.io/ws',
     SEARCH_END_POINT: 'http://earth.cybernode.ai:34660',
 
     pending: false,
