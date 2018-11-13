@@ -96,7 +96,7 @@ export const init = endpoint => (dispatch, getState) => {
 
 
     provider = new ZeroClientProvider({
-        rpcUrl: 'wss://rinkeby.infura.io/ws',
+        rpcUrl: endpoint,
         getAccounts(cb) {
             cb(null, Object.keys(__accounts));
         },
@@ -298,13 +298,6 @@ export const receiveMessage = e => (dispatch, getState) => {
 
         if (payload.method === 'eth_sendTransaction') {
             web3Reqest = payload;
-            debugger;
-            //     // web3Reqest.id = web3Reqest.id + 1;
-            //     // payload.params[0].gas = 21000;
-            //     // TODO: estimateGas
-            //     // web3.eth.estimateGas(payload, (e, dd) => {
-            //     //     debugger
-            //     // })
             dispatch(showPending(payload));
         } else {
             provider.sendAsync(payload, (e, result) => {

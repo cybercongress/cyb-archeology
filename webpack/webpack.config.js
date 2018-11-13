@@ -14,15 +14,18 @@ function getPlugins(isProduction) {
             favicon: path.resolve(__dirname, '../', 'public', 'favicon.ico'),
         }),
         new BundleAnalyzerPlugin({
-            analyzerMode: 'disabled',
+            analyzerMode: isProduction ? 'disabled' : 'server',
             openAnalyzer: false,
         }),
-        new CopyWebpackPlugin([
+        new CopyWebpackPlugin(
             // Copy directory contents to {output}/
-            { from: '../public/electron.js' },
-            { from: '../public/favicon.ico' },
-            { from: '../public/manifest.json' },
-        ]),
+            isProduction
+                ? [{ from: '../public/electron.js' }]
+                : [
+                    { from: '../public/favicon.ico' },
+                    { from: '../public/manifest.json' },
+                ],
+        ),
     ];
 
     if (!isProduction) {
@@ -45,7 +48,6 @@ module.exports = (env = {}, argv = {}) => {
         output: {
             path: path.join(__dirname, '../', 'build'),
             filename: '[name].bundle.[hash:10].js',
-            publicPath: './',
         },
         module: {
             rules: [
@@ -102,6 +104,8 @@ module.exports = (env = {}, argv = {}) => {
         optimization: {
             runtimeChunk: 'single',
             splitChunks: {
+                minSize: 220000,
+                maxSize: 440000,
                 cacheGroups: {
                     commons: {
                         test: /[\\/]node_modules[\\/]/,
@@ -112,9 +116,13 @@ module.exports = (env = {}, argv = {}) => {
             },
         },
         devServer: {
-            contentBase: './build',
             port: 3000,
             hot: true,
+            before(app, server) {
+                app.head('/', (req, res) => {
+                    res.json({ custom: 'response' });
+                });
+            },
         },
     };
 };

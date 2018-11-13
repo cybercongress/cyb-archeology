@@ -2,7 +2,7 @@ const electron = require('electron');
 
 const { app, Menu, BrowserWindow } = electron;
 const path = require('path');
-const isDev = require('electron-is-dev');
+const isDev = process.argv[2] === '--dev';
 
 let mainWindow;
 
