@@ -102,8 +102,8 @@ export const DURAToURL = (dura, apps = {}, IPFS_END_POINT = 'http://localhost:80
 }
 
 export const getPreloadPath = () => {
-    const isDev = window.require('electron-is-dev');
     const { remote } = window.require('electron');
+    const isDev = remote.process.argv[2] === '--dev';
 
     // // Condition necessary for store.spec.js
     // const basePath = remote.app.getPath('userData');
