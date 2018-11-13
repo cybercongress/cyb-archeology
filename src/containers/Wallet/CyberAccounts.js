@@ -1,21 +1,21 @@
-import React, {Component} from 'react';
-import connect from "react-redux/es/connect/connect";
-import * as cyberActions from "../../redux/cyber";
-import {AddAccount, SendFunds, WalletAccountsList, WalletContainer, Avatar} from "../../components/Wallet/Wallet";
-import Container from "../../components/Container/Container";
-import Block, {BlockRow} from "../../components/Settings/Block";
-import Button from "../../components/Button/Button";
+import React, { Component } from 'react';
+import connect from 'react-redux/es/connect/connect';
+import * as cyberActions from '../../redux/cyber';
+import {
+    AddAccount, SendFunds, WalletAccountsList, WalletContainer, Avatar,
+} from '../../components/Wallet/Wallet';
+import Container from '../../components/Container/Container';
+import Block, { BlockRow } from '../../components/Settings/Block';
+import Button from '../../components/Button/Button';
 
-import AccountCard, { 
-    AccountCardLeft, AccountCardRight, 
+import AccountCard, {
+    AccountCardLeft, AccountCardRight,
     AccountCardContent, AccountCardContentItem,
-    MainIndecator, SelectButton, CreateButtonContainer
-} from "../../components/Wallet/AccountCard/AccountCard";
+    MainIndecator, SelectButton, CreateButtonContainer,
+} from '../../components/Wallet/AccountCard/AccountCard';
 
 
 class CyberAccounts extends Component {
-
-
     setDefaultAccount = (address) => {
         this.props.setDefaultCyberAccount(address);
     };
@@ -25,11 +25,11 @@ class CyberAccounts extends Component {
     };
 
     forgetAccount = (address) => {
-        this.props.forgetCyberAccount(address)
+        this.props.forgetCyberAccount(address);
     };
 
     claimFunds = (address, amount) => {
-        this.props.claimFunds(address, amount)
+        this.props.claimFunds(address, amount);
     };
 
 
@@ -43,23 +43,33 @@ class CyberAccounts extends Component {
         const defaultAccountComponent = (
             <AccountCard>
                 <AccountCardLeft>
-                    
+
                     <Avatar />
                     <MainIndecator />
                 </AccountCardLeft>
                 <AccountCardRight>
                     <AccountCardContent>
-                    <AccountCardContentItem>
-                        address: {defaultAccount}
-                    </AccountCardContentItem>
-                    <AccountCardContentItem>
-                        public key: {key}
-                    </AccountCardContentItem>
-                    <AccountCardContentItem>
-                        <div>balance: {balabnce} CYBERD</div>
-                        <div><Button>COPY PRIVATE KEY</Button>
-                        </div>
-                    </AccountCardContentItem>
+                        <AccountCardContentItem>
+                        address:
+                            {' '}
+                            {defaultAccount}
+                        </AccountCardContentItem>
+                        <AccountCardContentItem>
+                        public key:
+                            {' '}
+                            {key}
+                        </AccountCardContentItem>
+                        <AccountCardContentItem>
+                            <div>
+balance:
+                                {balabnce}
+                                {' '}
+CYBERD
+                            </div>
+                            <div>
+                                <Button>COPY PRIVATE KEY</Button>
+                            </div>
+                        </AccountCardContentItem>
                     </AccountCardContent>
                 </AccountCardRight>
             </AccountCard>
@@ -69,45 +79,58 @@ class CyberAccounts extends Component {
         const accountsItem = accounts.map(account => (
             <AccountCard>
                 <AccountCardLeft>
-                    <Avatar/>
+                    <Avatar />
                     <SelectButton
-                      onClick={() => this.setDefaultAccount(account.address)}
-                    >MAKE MAIN</SelectButton>
+                      onClick={ () => this.setDefaultAccount(account.address) }
+                    >
+MAKE MAIN
+                    </SelectButton>
                 </AccountCardLeft>
                 <AccountCardRight>
                     <AccountCardContent>
-                    <AccountCardContentItem>
-                        address: {account.address}
-                    </AccountCardContentItem>
-                    <AccountCardContentItem>
-                        public key: {account.publicKey}
-                    </AccountCardContentItem>
-                    <AccountCardContentItem>
-                        <div>balance: {account.balance} CYBERD</div>
-                        <div>
-                            <Button 
-                              onClick={() => this.forgetAccount(account.address)} 
-                              style={{ marginRight: 10 }}
-                              color='red'
-                            >REMOVE</Button>
-                            <Button>COPY PRIVATE KEY</Button>
-                        </div>
-                    </AccountCardContentItem>
+                        <AccountCardContentItem>
+                        address:
+                            {' '}
+                            {account.address}
+                        </AccountCardContentItem>
+                        <AccountCardContentItem>
+                        public key:
+                            {' '}
+                            {account.publicKey}
+                        </AccountCardContentItem>
+                        <AccountCardContentItem>
+                            <div>
+balance:
+                                {account.balance}
+                                {' '}
+CYBERD
+                            </div>
+                            <div>
+                                <Button
+                                  onClick={ () => this.forgetAccount(account.address) }
+                                  style={ { marginRight: 10 } }
+                                  color='red'
+                                >
+REMOVE
+                                </Button>
+                                <Button>COPY PRIVATE KEY</Button>
+                            </div>
+                        </AccountCardContentItem>
                     </AccountCardContent>
                 </AccountCardRight>
             </AccountCard>
-        ))
+        ));
 
         return (
             <div>
                 {defaultAccountComponent}
 
-                <hr/>
+                <hr />
 
                 {accountsItem}
 
                 <CreateButtonContainer>
-                    <Button onClick={this.createCyberAccount}>CREATE NEW</Button>
+                    <Button onClick={ this.createCyberAccount }>CREATE NEW</Button>
                 </CreateButtonContainer>
             </div>
         );
@@ -115,10 +138,9 @@ class CyberAccounts extends Component {
 }
 
 export default connect(
-    ({cyber}) => ({
+    ({ cyber }) => ({
         accounts: cyber.accounts,
-        defaultAccount: cyber.defaultAccount
+        defaultAccount: cyber.defaultAccount,
     }),
-    cyberActions
+    cyberActions,
 )(CyberAccounts);
-

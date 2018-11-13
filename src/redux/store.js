@@ -1,29 +1,29 @@
-import {createStore, applyMiddleware, combineReducers} from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 
 import {
     reducer as browserReducer,
-    init as initBrowser
+    init as initBrowser,
 } from './browser';
 
 import {
     reducer as walletReducer,
-    init as initWallet
+    init as initWallet,
 } from './wallet';
 
 import {
     reducer as settingReducer,
-    init as initSettings
+    init as initSettings,
 } from './settings';
 
 import {
     reducer as rootRegistryReducer,
-    init as initRootRegistry
+    init as initRootRegistry,
 } from './rootRegistry';
 
 import {
     reducer as appMenuReducer,
-    init as initAppMenu
+    init as initAppMenu,
 } from './appMenu';
 
 import {
@@ -42,15 +42,15 @@ const rootReducer = combineReducers({
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
 
-export const appStart = () => new Promise( resolve => {
-    store.dispatch(initSettings()).then(({IPFS_END_POINT, PARITTY_END_POINT}) => {
+export const appStart = () => new Promise((resolve) => {
+    store.dispatch(initSettings()).then(({ IPFS_END_POINT, PARITTY_END_POINT }) => {
         store.dispatch(initRootRegistry());
         store.dispatch(initWallet(PARITTY_END_POINT));
         store.dispatch(initAppMenu());
         store.dispatch(initBrowser(IPFS_END_POINT));
         store.dispatch(initCyber());
         resolve();
-    })
-})
+    });
+});
 
-export {store};
+export { store };

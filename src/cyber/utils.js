@@ -1,65 +1,66 @@
 class Utils {
-     static sortObjectKeys(obj) {
-        let sort = function (obj) {
-            let tmp = {};
-            Object.keys(obj).sort().forEach(function (k) {
+    static sortObjectKeys(obj) {
+        const sort = function (obj) {
+            const tmp = {};
+
+            Object.keys(obj).sort().forEach((k) => {
                 if (Array.isArray(obj[k])) {
-                    let p = [];
-                    obj[k].forEach(function (item) {
-                        if (item != null && typeof(item) === "object") {
+                    const p = [];
+
+                    obj[k].forEach((item) => {
+                        if (item != null && typeof (item) === 'object') {
                             p.push(sort(item));
                         } else {
                             p.push(item);
                         }
                     });
                     tmp[k] = p;
-                } else if (obj[k] != null && typeof(obj[k]) === "object") {
+                } else if (obj[k] != null && typeof (obj[k]) === 'object') {
                     tmp[k] = sort(obj[k]);
-                } else if (obj[k] != null && typeof(obj[k]) === "function") {
-                    tmp[k] = eval(obj[k].toString())
+                } else if (obj[k] != null && typeof (obj[k]) === 'function') {
+                    tmp[k] = eval(obj[k].toString());
                 } else {
                     tmp[k] = String(obj[k]).toString();
                 }
             });
             return tmp;
         };
-        return sort(obj)
+
+        return sort(obj);
     }
 
     static isEmpty(obj) {
         switch (typeof obj) {
-            case "undefined": {
-                return true
+        case 'undefined': {
+            return true;
+        }
+        case 'string': {
+            return obj.length === 0;
+        }
+        case 'number': {
+            return obj === 0;
+        }
+        case 'object': {
+            if (obj == null) {
+                return true;
+            } if (Array.isArray(obj)) {
+                return obj.length === 0;
             }
-            case "string": {
-                return obj.length === 0
-            }
-            case "number": {
-                return obj === 0
-            }
-            case "object": {
-                if (obj == null) {
-                    return true
-                } else if (Array.isArray(obj)) {
-                    return obj.length === 0
-                } else {
-                    return Object.keys(obj).length === 0
-                }
-            }
-            default: {
+            return Object.keys(obj).length === 0;
+        }
+        default: {
 
-            }
+        }
         }
     }
 
     static toString(str) {
-        if (typeof str === "number") {
-            return str + ""
-        } else if (this.isEmpty(str)) {
-            return ""
-        } else {
-            return str.toString()
+        if (typeof str === 'number') {
+            return `${str}`;
+        } if (this.isEmpty(str)) {
+            return '';
         }
+        return str.toString();
     }
 }
 

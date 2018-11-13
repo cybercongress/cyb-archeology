@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-import {connect} from "react-redux";
-import * as actions from "../../redux/appMenu"
+import { connect } from 'react-redux';
+import * as actions from '../../redux/appMenu';
 
 import MenuContainer, {
-	Bookmarks,
-	AppStoreLink,
-	LogoLink,
-	AddMenuItem,
-	AddMenuItemApprove,
-	AddMenuItemReject
-} from './../../components/AppMenu/AppMenu';
+    Bookmarks,
+    AppStoreLink,
+    LogoLink,
+    AddMenuItem,
+    AddMenuItemApprove,
+    AddMenuItemReject,
+} from '../../components/AppMenu/AppMenu';
 
 
 class AppMenu extends Component {
-
     addToFavorites = () => {
         const dura = this.props.currentDura;
         const name = this.refs.input.value;
@@ -38,26 +37,28 @@ class AppMenu extends Component {
     render() {
         const {
         	openMenu, deleteMenuItem, menuItems,
-        	pendingAddToFavorites
+        	pendingAddToFavorites,
         } = this.props;
 
         return (
-            <MenuContainer openMenu={openMenu} >
-            	<LogoLink onClick={this.clickLogo}/>
-            	<AppStoreLink />
+            <MenuContainer openMenu={ openMenu }>
+                <LogoLink onClick={ this.clickLogo } />
+                <AppStoreLink />
                 <Bookmarks
-                  items={menuItems}
-                  deleteMenuItem={deleteMenuItem}
+                  items={ menuItems }
+                  deleteMenuItem={ deleteMenuItem }
                 />
-                {pendingAddToFavorites &&
-                <AddMenuItem>
+                {pendingAddToFavorites
+                && (
+                    <AddMenuItem>
                         <input
-                            ref='input'
-                            defaultValue='New App'
+                          ref='input'
+                          defaultValue='New App'
                         />
-                        <AddMenuItemApprove onClick={this.rejectFavorite} />
-                        <AddMenuItemReject onClick={this.addToFavorites} />
+                        <AddMenuItemApprove onClick={ this.rejectFavorite } />
+                        <AddMenuItemReject onClick={ this.addToFavorites } />
                     </AddMenuItem>
+                )
                 }
             </MenuContainer>
         );
@@ -67,10 +68,10 @@ class AppMenu extends Component {
 
 export default connect(
     state => ({
-		openMenu: state.appMenu.openMenu,
+        openMenu: state.appMenu.openMenu,
         menuItems: state.appMenu.items,
         currentDura: state.browser.dura,
-        pendingAddToFavorites: state.appMenu.pendingAddToFavorites
+        pendingAddToFavorites: state.appMenu.pendingAddToFavorites,
     }),
-    actions
+    actions,
 )(AppMenu);

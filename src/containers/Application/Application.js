@@ -1,23 +1,25 @@
-import React, {Component} from 'react';
-import {connect} from "react-redux";
-import {navigate, goBack} from './../../redux/browser';
-import {toggleMenu} from './../../redux/appMenu';
-import AddToAppMenuButton, {Container} from "./../../components/AddToAppMenuButton/AddToAppMenuButton";
-import App, {AppHeader, AppContent} from './../../components/App/App';
-import Navigation, {NavigationLeft, NavigationRight, NavigationCenter, MenuButton } from './../../components/Navigation/Navigation';
-import SearchInput, { BackButton, ForwardButton, NavigationContainer  } from './../../components/SearchInput/SearchInput';
-import IdBar from './../../components/IdBar/IdBar';
-import ReportBugLink from './../../components/ReportBugLink/ReportBugLink';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { navigate, goBack } from '../../redux/browser';
+import { toggleMenu } from '../../redux/appMenu';
+import AddToAppMenuButton, { Container } from '../../components/AddToAppMenuButton/AddToAppMenuButton';
+import App, { AppHeader, AppContent } from '../../components/App/App';
+import Navigation, {
+    NavigationLeft, NavigationRight, NavigationCenter, MenuButton,
+} from '../../components/Navigation/Navigation';
+import SearchInput, { BackButton, ForwardButton, NavigationContainer } from '../../components/SearchInput/SearchInput';
+import IdBar from '../../components/IdBar/IdBar';
+import ReportBugLink from '../../components/ReportBugLink/ReportBugLink';
 
 import ConfirmationPopup from './ConfirmationPopup';
 import AppMenu from './AppMenu';
 import Status from './Status';
 
 class Application extends Component {
-
     _handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             const value = this.input.value;
+
             this.props.navigate(value);
         }
     };
@@ -31,47 +33,47 @@ class Application extends Component {
     render() {
         const {
             dura, defaultEthAccount, canBack, goBack,
-            openMenu, defaultCybertAccount
+            openMenu, defaultCybertAccount,
         } = this.props;
         const homePage = dura === '';
 
 
         return (
-            <App openMenu={openMenu}>
+            <App openMenu={ openMenu }>
 
                 <AppMenu />
                 <ConfirmationPopup />
                 {!homePage && <Status />}
                 {!homePage && <ReportBugLink />}
-                <AppHeader isHome={homePage}>
-                    <Navigation isHome={homePage}>
+                <AppHeader isHome={ homePage }>
+                    <Navigation isHome={ homePage }>
                         <NavigationLeft>
-                            <MenuButton onClick={this.props.toggleMenu} />
+                            <MenuButton onClick={ this.props.toggleMenu } />
                         </NavigationLeft>
                         <NavigationCenter>
                             <NavigationContainer>
-                                {!homePage && <BackButton  disabled={!canBack} onClick={goBack}>&#8592;</BackButton>}
+                                {!homePage && <BackButton disabled={ !canBack } onClick={ goBack }>&#8592;</BackButton>}
                                 <Container>
                                     <SearchInput
-                                        inputRef={node => {
+                                        inputRef={ (node) => {
                                             this.input = node;
-                                        }}
-                                        defaultValue={dura}
-                                        onKeyPress={this._handleKeyPress}
+                                        } }
+                                        defaultValue={ dura }
+                                        onKeyPress={ this._handleKeyPress }
                                     />
-                                    <AddToAppMenuButton/>
+                                    <AddToAppMenuButton />
                                 </Container>
                                 {!homePage && <ForwardButton disabled>&#8594;</ForwardButton>}
-                                {/*(!!dura && dura.indexOf('.dev') !== -1) && <div style={{display: 'inline-block'}}>
+                                {/* (!!dura && dura.indexOf('.dev') !== -1) && <div style={{display: 'inline-block'}}>
                                     <button>deploy</button>
                                     <CybLink dura='.help/#/deploy'>how to deploy app</CybLink>
-                                </div>*/}
+                                </div> */}
                             </NavigationContainer>
                         </NavigationCenter>
                         <NavigationRight>
                             <IdBar
-                                defaultEthAccount={defaultEthAccount}
-                                defaultCyberAccount={defaultCybertAccount}
+                                defaultEthAccount={ defaultEthAccount }
+                                defaultCyberAccount={ defaultCybertAccount }
                             />
                         </NavigationRight>
                     </Navigation>
@@ -95,6 +97,6 @@ export default connect(
     {
         navigate,
         goBack,
-        toggleMenu
-    }
+        toggleMenu,
+    },
 )(Application);

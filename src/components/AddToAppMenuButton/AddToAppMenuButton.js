@@ -1,21 +1,20 @@
-import React, {Component} from 'react';
-import {connect} from "react-redux";
-import * as actions from '../../redux/appMenu'
-import './AddToAppMenuButton.css'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../redux/appMenu';
+import './AddToAppMenuButton.css';
 
-export const Container = ({children}) => (
+export const Container = ({ children }) => (
     <div className='favoritesContainer'>
         {children}
     </div>
 );
 
 class AddToAppMenuButton extends Component {
-
     _onclick = () => {
         if (!this.isFavoritedPage()) {
             this.props.showInput();
         } else {
-            this.props.deleteMenuItem(this.props.currentDura)
+            this.props.deleteMenuItem(this.props.currentDura);
         }
     };
 
@@ -23,19 +22,17 @@ class AddToAppMenuButton extends Component {
         const menuItems = this.props.menuItems;
         const currentDura = this.props.currentDura;
 
-        return menuItems.find(item => {
-            return item.rootDura === currentDura
-        })
+        return menuItems.find(item => item.rootDura === currentDura);
     };
 
     render() {
         const className = this.isFavoritedPage() ? 'favoritedPage' : 'addAppButton';
 
         return (
-            <div onClick={this._onclick} className={className}>
+            <div onClick={ this._onclick } className={ className }>
                 &#9734;
             </div>
-        )
+        );
     }
 }
 
@@ -44,5 +41,5 @@ export default connect(
         menuItems: state.appMenu.items,
         currentDura: state.browser.dura,
     }),
-    actions
+    actions,
 )(AddToAppMenuButton);

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Container from '../../components/Container/Container';
 
 /*
@@ -12,7 +12,6 @@ const entryCoreAddress = '0x4e91c59388667e74ba6266da292ecbb4483fe279';
 */
 
 class AppStore extends Component {
-
     /*
     loadApps = () => {
         const web3 = new Web3(window.web3.currentProvider);

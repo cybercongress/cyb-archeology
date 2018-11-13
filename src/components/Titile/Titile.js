@@ -2,14 +2,14 @@ import React from 'react';
 
 import './Titile.css';
 
-const Titile = ({inline, ...props}) => {
+const Titile = ({ inline, ...props }) => {
     let css = 'title';
 
     if (inline) {
-        css += ' title-inline'
+        css += ' title-inline';
     }
 
-    return <h2 {...props} className={css}/>
+    return <h2 { ...props } className={ css } />;
 };
 
 

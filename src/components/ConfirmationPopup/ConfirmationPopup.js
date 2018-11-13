@@ -1,14 +1,16 @@
 import React from 'react';
 
 import './ConfirmationPopup.css';
-import Block, {BlockRow, Row} from "../Settings/Block";
-import Title from "../Titile/Titile";
-import Button from "../Button/Button";
+import Block, { BlockRow, Row } from '../Settings/Block';
+import Title from '../Titile/Titile';
+import Button from '../Button/Button';
 
-const ConfirmationPopup = ({from, to, approveCallback, rejectCallback, children, content}) => (
+const ConfirmationPopup = ({
+    from, to, approveCallback, rejectCallback, children, content,
+}) => (
     <div className='confirmation-popup'>
         <span>
-            <Title inline={true} style={{color: 'black'}}>Transaction confirmation</Title>
+            <Title inline style={ { color: 'black' } }>Transaction confirmation</Title>
             <Block>
                 <BlockRow>
                     <div className='confirmation-popup__popup'>
@@ -23,8 +25,8 @@ const ConfirmationPopup = ({from, to, approveCallback, rejectCallback, children,
                         {content}
                     </div>
                     <div className='confirmation-popup__buttons'>
-                        <Button style={{width: 150}} color='green' onClick={approveCallback}>CONFIRM</Button>
-                        <Button style={{width: 150}} color='red' onClick={rejectCallback}>REJECT</Button>
+                        <Button style={ { width: 150 } } color='green' onClick={ approveCallback }>CONFIRM</Button>
+                        <Button style={ { width: 150 } } color='red' onClick={ rejectCallback }>REJECT</Button>
                     </div>
                 </BlockRow>
             </Block>
@@ -32,7 +34,7 @@ const ConfirmationPopup = ({from, to, approveCallback, rejectCallback, children,
     </div>
 );
 
-export const TxDetailsContainer = ({children}) => (
+export const TxDetailsContainer = ({ children }) => (
     <div className='tx-details-container'>
         {children}
     </div>

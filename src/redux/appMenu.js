@@ -5,48 +5,48 @@ const initState = {
         {
             name: 'Wallet',
             rootDura: 'wallet.cyb',
-            subItems: {}
+            subItems: {},
         },
         {
             name: 'Chaingear',
             rootDura: '.chaingear/#/',
-            subItems: {}
+            subItems: {},
         },
         {
             name: 'Settings',
             rootDura: 'settings.cyb',
-            subItems: {}
+            subItems: {},
         },
         {
             name: 'Root registry',
             rootDura: 'rr.cyb',
-            subItems: {}
+            subItems: {},
         },
         {
             name: 'Help',
             rootDura: '.help/#/',
-            subItems: {}
+            subItems: {},
         },
         {
             name: 'Cyber Search',
             rootDura: '.cyber',
-            subItems: {}
+            subItems: {},
         },
         {
             name: 'Wiki',
             rootDura: '.wiki/wiki/',
-            subItems: {}
+            subItems: {},
         },
         {
             name: 'Turkish Wiki',
             rootDura: '.ewiki/wiki/Anasayfa.html',
-            subItems: {}
+            subItems: {},
         },
         {
             name: 'test',
             rootDura: '.test',
-            subItems: {}
-        }
+            subItems: {},
+        },
     ],
     openMenu: false,
     pendingAddToFavorites: false,
@@ -54,36 +54,36 @@ const initState = {
 
 export const reducer = (state = initState, action) => {
     switch (action.type) {
-        case 'SET_MENU_ITEMS': {
-            return {
-                ...state,
-                items: [...action.payload],
-            }
-        }
+    case 'SET_MENU_ITEMS': {
+        return {
+            ...state,
+            items: [...action.payload],
+        };
+    }
 
-        case 'SET_PENDING_ADD_TO_BOOKMARKS': {
-            return {
-                ...state,
-                pendingAddToFavorites: action.payload,
-                openMenu: action.payload
-            }
-        }
+    case 'SET_PENDING_ADD_TO_BOOKMARKS': {
+        return {
+            ...state,
+            pendingAddToFavorites: action.payload,
+            openMenu: action.payload,
+        };
+    }
 
-        case 'TOGGLE_MENU': {
-            return {
-                ...state,
-                openMenu: !state.openMenu
-            }
-        }
+    case 'TOGGLE_MENU': {
+        return {
+            ...state,
+            openMenu: !state.openMenu,
+        };
+    }
 
-        default:
-            return state;
+    default:
+        return state;
     }
 };
 
 export const init = () => (dispatch, getState) => {
     let menuItems;
-    let menuItemsJson = localStorage.getItem(localStorageItemName);
+    const menuItemsJson = localStorage.getItem(localStorageItemName);
 
     if (menuItemsJson == null) {
         menuItems = initState.items;
@@ -93,7 +93,7 @@ export const init = () => (dispatch, getState) => {
 
     dispatch({
         type: 'SET_MENU_ITEMS',
-        payload: menuItems
+        payload: menuItems,
     });
     dispatch(saveMenuItemsInLs());
 };
@@ -102,54 +102,52 @@ export const showInput = () => (dispatch, getState) => {
     dispatch({
         type: 'SET_PENDING_ADD_TO_BOOKMARKS',
         payload: true,
-    })
+    });
 };
 
 export const hideInput = () => (dispatch, getState) => {
     dispatch({
         type: 'SET_PENDING_ADD_TO_BOOKMARKS',
         payload: false,
-    })
+    });
+};
+const saveMenuItemsInLs = () => (dispatch, getState) => {
+    const registryItems = getState().appMenu.items;
+
+    localStorage.setItem(localStorageItemName, JSON.stringify(registryItems));
 };
 
-export const toggleMenu = () => ({type: 'TOGGLE_MENU'});
+export const toggleMenu = () => ({ type: 'TOGGLE_MENU' });
 
-export const deleteMenuItem = (rootDura) => (dispatch, getState) => {
+export const deleteMenuItem = rootDura => (dispatch, getState) => {
     let menuItems = getState().appMenu.items;
 
-    menuItems = menuItems.filter(item => {
+    menuItems = menuItems.filter((item) => {
         console.log(item.rootDura !== rootDura);
         return item.rootDura !== rootDura;
     });
 
     dispatch({
         type: 'SET_MENU_ITEMS',
-        payload: menuItems
+        payload: menuItems,
     });
     dispatch(saveMenuItemsInLs());
 };
 
-export const getMenuItems = (state) => {
-    return state.appMenu.items
-};
+export const getMenuItems = state => state.appMenu.items;
 
 export const addMenuItem = (name, dura) => (dispatch, getState) => {
-    let menuItems = getState().appMenu.items;
+    const menuItems = getState().appMenu.items;
 
     menuItems.push({
-        name: name,
+        name,
         rootDura: dura,
-        subItems: {}
+        subItems: {},
     });
 
     dispatch({
         type: 'SET_MENU_ITEMS',
-        payload: menuItems
+        payload: menuItems,
     });
     dispatch(saveMenuItemsInLs());
-};
-
-const saveMenuItemsInLs = () => (dispatch, getState) => {
-    const registryItems = getState().appMenu.items;
-    localStorage.setItem(localStorageItemName, JSON.stringify(registryItems));
 };

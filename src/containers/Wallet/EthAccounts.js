@@ -1,27 +1,25 @@
-import React, {Component} from 'react';
-import connect from "react-redux/es/connect/connect";
-import * as actions from "../../redux/wallet";
+import React, { Component } from 'react';
+import connect from 'react-redux/es/connect/connect';
+import * as actions from '../../redux/wallet';
 import Container from '../../components/Container/Container';
-import { Avatar } from "../../components/Wallet/Wallet";
-import Button from "../../components/Button/Button";
+import { Avatar } from '../../components/Wallet/Wallet';
+import Button from '../../components/Button/Button';
 
-import AccountCard, { 
-    AccountCardLeft, AccountCardRight, 
+import AccountCard, {
+    AccountCardLeft, AccountCardRight,
     AccountCardContent, AccountCardContentItem,
-    MainIndecator, SelectButton, CreateButtonContainer
-} from "../../components/Wallet/AccountCard/AccountCard";
-
+    MainIndecator, SelectButton, CreateButtonContainer,
+} from '../../components/Wallet/AccountCard/AccountCard';
 
 
 class EthAccounts extends Component {
-
     loadAccounts = () => {
-        this.props.loadAccounts()
+        this.props.loadAccounts();
     };
 
     componentWillMount() {
         this.loadAccounts();
-    };
+    }
 
     forgetAccount = (address, e) => {
         e.stopPropagation();
@@ -38,7 +36,6 @@ class EthAccounts extends Component {
     };
 
 
-
     render() {
         const { accounts, defaultAccount } = this.props;
 
@@ -49,21 +46,30 @@ class EthAccounts extends Component {
         const defaultAccountComponent = (
             <AccountCard>
                 <AccountCardLeft>
-                    
+
                     <Avatar />
                     <MainIndecator />
                 </AccountCardLeft>
                 <AccountCardRight>
                     <AccountCardContent>
-                    <AccountCardContentItem>
-                        address: {defaultAccount}
-                    </AccountCardContentItem>
-                    <AccountCardContentItem>
-                        public key: {key}
-                    </AccountCardContentItem>
-                    <AccountCardContentItem>
-                        <div>balance: {balabnce} CYBERD</div>
-                    </AccountCardContentItem>
+                        <AccountCardContentItem>
+                        address:
+                            {' '}
+                            {defaultAccount}
+                        </AccountCardContentItem>
+                        <AccountCardContentItem>
+                        public key:
+                            {' '}
+                            {key}
+                        </AccountCardContentItem>
+                        <AccountCardContentItem>
+                            <div>
+balance:
+                                {balabnce}
+                                {' '}
+CYBERD
+                            </div>
+                        </AccountCardContentItem>
                     </AccountCardContent>
                 </AccountCardRight>
             </AccountCard>
@@ -73,41 +79,52 @@ class EthAccounts extends Component {
         const accountsItem = accounts.map(account => (
             <AccountCard>
                 <AccountCardLeft>
-                    <Avatar/>
+                    <Avatar />
                     <SelectButton
-                      onClick={() => this.setDefaultAccount(account.address)}
-                    >MAKE MAIN</SelectButton>
+                      onClick={ () => this.setDefaultAccount(account.address) }
+                    >
+MAKE MAIN
+                    </SelectButton>
                 </AccountCardLeft>
                 <AccountCardRight>
                     <AccountCardContent>
-                    <AccountCardContentItem>
-                        address: {account.address}
-                    </AccountCardContentItem>
-                    <AccountCardContentItem>
-                        <div>balance: {account.balance} CYBERD</div>
-                        <div>
-                            <Button 
-                              color='red'
-                              onClick={(e) => this.forgetAccount(account.address, e)} 
-                              style={{ marginRight: 10 }}
-                            >REMOVE</Button>
-                        </div>
-                    </AccountCardContentItem>
+                        <AccountCardContentItem>
+                        address:
+                            {' '}
+                            {account.address}
+                        </AccountCardContentItem>
+                        <AccountCardContentItem>
+                            <div>
+balance:
+                                {account.balance}
+                                {' '}
+CYBERD
+                            </div>
+                            <div>
+                                <Button
+                                  color='red'
+                                  onClick={ e => this.forgetAccount(account.address, e) }
+                                  style={ { marginRight: 10 } }
+                                >
+REMOVE
+                                </Button>
+                            </div>
+                        </AccountCardContentItem>
                     </AccountCardContent>
                 </AccountCardRight>
             </AccountCard>
-        ))
+        ));
 
         return (
             <div>
                 {defaultAccountComponent}
 
-                <hr/>
+                <hr />
 
                 {accountsItem}
 
                 <CreateButtonContainer>
-                    <Button onClick={this.create}>CREATE NEW</Button>
+                    <Button onClick={ this.create }>CREATE NEW</Button>
                 </CreateButtonContainer>
             </div>
         );
@@ -115,9 +132,9 @@ class EthAccounts extends Component {
 }
 
 export default connect(
-    ({wallet}) => ({
+    ({ wallet }) => ({
         accounts: wallet.accounts,
-        defaultAccount: wallet.defaultAccount
+        defaultAccount: wallet.defaultAccount,
     }),
-    actions
+    actions,
 )(EthAccounts);
