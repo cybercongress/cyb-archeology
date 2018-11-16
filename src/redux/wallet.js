@@ -281,10 +281,7 @@ export const approve = (gas, _gasLimit) => (dispatch, getState) => {
         if (!wv) {
             return;
         }
-        wv.send('web3_eth_call', {
-            ...web3Reqest,
-            ...result,
-        });
+        wv.send('web3_eth_call', result);
         dispatch(hidePending());
     });
 };
@@ -301,7 +298,7 @@ export const receiveMessage = e => (dispatch, getState) => {
             dispatch(showPending(payload));
         } else {
             provider.sendAsync(payload, (e, result) => {
-                wv.send('web3_eth_call', { ...payload, ...result });
+                wv.send('web3_eth_call', result);
             });
 
             // const message = payload;

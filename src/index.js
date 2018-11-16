@@ -5,6 +5,7 @@ import { store, appStart } from './redux/store';
 import AppRouter from './router';
 
 import './index.css';
+import '@cybercongress/ui/lib/styles.css';
 
 appStart(store).then(() => {
     ReactDOM.render(

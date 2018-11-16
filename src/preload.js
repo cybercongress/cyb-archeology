@@ -8,16 +8,15 @@ class ElectronProvider extends EventEmitter {
 
         this._providerCallbacks = {};
         ipcRenderer.on('web3_eth_call', (_, payload) => {
-            console.log('web3_eth_call');
-            console.log(JSON.stringify(payload));
-            if (this._providerCallbacks[payload.id]) {
-                this._providerCallbacks[payload.id](null, payload);
+            const id = payload.id || payload[0].id;
+            const _payload = payload.id ? payload : payload[0];
+
+            if (this._providerCallbacks[id]) {
+                this._providerCallbacks[id](null, payload);
             }
         });
 
         ipcRenderer.on('web3_eth_event_data', (_, payload) => {
-            console.log('web3_eth_event_data');
-            console.log(JSON.stringify(payload));
             this.emit('data', payload);
         });
     }
@@ -27,13 +26,11 @@ class ElectronProvider extends EventEmitter {
     }
 
     sendAsync(payload, callback) {
-        console.log('>>');
-        console.log(JSON.stringify(payload));
-        console.log();
+        // if (!payload) { return; }
 
-        if (!payload) { return; }
+        const id = payload.id || payload[0].id;
 
-        this._providerCallbacks[payload.id] = callback;
+        this._providerCallbacks[id] = callback;
         ipcRenderer.sendToHost('web3_eth', payload);
     }
 }

@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
+import { Title } from '@cybercongress/ui';
 import { addRegistryItem, deleteRegistryItem, getRegistryItemsAsArray } from './redux/rootRegistry';
 
-import Container from './components/Container/Container';
-
-
-import Title from './components/Titile/Titile';
 import Button from './components/Button/Button';
 import Input from './components/Input/Input';
 import RootRegistry, { Table } from './components/RootRegistry/RootRegistry';
@@ -50,7 +47,9 @@ class RootRegistryPage extends Component {
 
         return (
             <RootRegistry>
+
                 <Title>/Cyb root registry</Title>
+
                 <div>
                     <Table>
                         <thead>
