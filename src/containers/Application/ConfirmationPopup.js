@@ -34,22 +34,24 @@ class ConfirmationPopupContainer extends Component {
         let _gasPriceGwei;
         let _amount;
         let totalAmount;
+        let value;
 
         if (request) {
-            const value = request.params[0].value;
-
-            _from = request.params[0].from;
-            _to = request.params[0].to;
-            _gasLimit = utils.hexToNumber(request.params[0].gas);
-            _gasPrice = utils.hexToNumber(request.params[0].gasPrice);
-            _gasPriceGwei = utils.fromWei(`${_gasPrice}`, 'Gwei');
-            _amount = value ? utils.fromWei(value, 'ether') : 0;
-
-            totalAmount = utils
-                .toBN(_gasPrice)
-                .mul(utils.toBN(_gasLimit))
-                .add(utils.toBN(value));
-            totalAmount = utils.fromWei(totalAmount, 'ether');
+            try {
+                value = request.params[0].value;
+                _from = request.params[0].from;
+                _to = request.params[0].to;
+                _gasLimit = utils.hexToNumber(request.params[0].gas);
+                _gasPrice = utils.hexToNumber(request.params[0].gasPrice);
+                _gasPriceGwei = utils.fromWei(`${_gasPrice}`, 'Gwei');
+                _amount = value ? utils.fromWei(value, 'ether') : 0;
+                totalAmount = utils
+                    .toBN(_gasPrice)
+                    .mul(utils.toBN(_gasLimit))
+                    .add(utils.toBN(value));
+                totalAmount = utils.fromWei(totalAmount, 'ether');
+            } catch (e) {
+            }
         }
 
         return (
@@ -59,7 +61,7 @@ class ConfirmationPopupContainer extends Component {
                     <ConfirmationPopup
                         from={ _from }
                         to={ _to }
-                        totalAmount={totalAmount}
+                        totalAmount={ totalAmount }
                         approveCallback={ this.approve }
                         rejectCallback={ this.reject }
                         txHash={ lastTransactionId }
@@ -68,18 +70,18 @@ class ConfirmationPopupContainer extends Component {
                                 <span>
                                   <div className='popup-label'>Amount (ETH):</div>
                                   <Input
-                                      defaultValue={ _amount }
-                                      inputRef={ (node) => {
+                                        defaultValue={ _amount }
+                                        inputRef={ (node) => {
                                             this.ethAmount = node;
                                         } }
-                                      style={ { width: 100 } }
-                                        disabled
+                                        style={ { width: 100 } }
+                                      disabled
                                     />
                               </span>
                                 <span>
                                   <div className='popup-label'>Gas price (GWEI):</div>
                                   <Input
-                                      defaultValue={ _gasPriceGwei }
+                                        defaultValue={ _gasPriceGwei }
                                       inputRef={ (node) => {
                                             this.gasPrice = node;
                                         } }
