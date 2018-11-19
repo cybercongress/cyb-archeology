@@ -16,46 +16,46 @@ const initState = {
 
 export const reducer = (state = initState, action) => {
     switch (action.type) {
-        case 'LOAD_ACCOUNTS': {
-            return {
-                ...state,
-                accounts: action.payload,
-            };
-        }
+    case 'LOAD_ACCOUNTS': {
+        return {
+            ...state,
+            accounts: action.payload,
+        };
+    }
 
-        case 'SET_DEFAULT_ACCOUNT': {
-            return {
-                ...state,
-                defaultAccount: action.payload,
-            };
-        }
+    case 'SET_DEFAULT_ACCOUNT': {
+        return {
+            ...state,
+            defaultAccount: action.payload,
+        };
+    }
 
-        case 'SHOW_PENDING': {
-            return {
-                ...state,
-                pendingRequest: true,
-                request: action.payload,
-                lastTransactionId: null,
-            };
-        }
+    case 'SHOW_PENDING': {
+        return {
+            ...state,
+            pendingRequest: true,
+            request: action.payload,
+            lastTransactionId: null,
+        };
+    }
 
-        case 'HIDE_PENDING': {
-            return {
-                ...state,
-                pendingRequest: false,
-                request: null,
-            };
-        }
+    case 'HIDE_PENDING': {
+        return {
+            ...state,
+            pendingRequest: false,
+            request: null,
+        };
+    }
 
-        case 'SHOW_TRANSACTION': {
-            return {
-                ...state,
-                lastTransactionId: action.payload,
-            };
-        }
+    case 'SHOW_TRANSACTION': {
+        return {
+            ...state,
+            lastTransactionId: action.payload,
+        };
+    }
 
-        default:
-            return state;
+    default:
+        return state;
     }
 };
 
@@ -269,8 +269,8 @@ export const getStatus = url => new Promise((resolve) => {
                 resolve('remote');
             }
         }).catch((e) => {
-        resolve('fail');
-    });
+            resolve('fail');
+        });
     // return eth.getProtocolVersion();
 });
 
@@ -280,11 +280,15 @@ export const reject = () => (dispatch, getState) => {
 
 let web3Reqest = null;
 
-export const approve = (gas, _gasLimit) => (dispatch, getState) => {
-    // const gasLimit = web3.utils.toWei(_gasLimit, 'Gwei');
-    // web3Reqest.params[0].gas = gas;
-    // web3Reqest.params[0].gasPrice = gasLimit;
-    // web3Reqest.params[0].value = '0x00';
+export const approve = (gasLimit, gasPrice) => (dispatch, getState) => {
+    // todo: refactor
+    if (gasLimit) {
+        web3Reqest.params[0].gas = web3.utils.numberToHex(+gasLimit);
+    }
+
+    if (gasPrice) {
+        web3Reqest.params[0].gasPrice = web3.utils.numberToHex(+web3.utils.toWei(gasPrice, 'Gwei'));
+    }
 
     provider.sendAsync(web3Reqest, (e, result) => {
         if (!wv) {
@@ -313,8 +317,9 @@ export const receiveMessage = e => (dispatch, getState) => {
             web3Reqest = payload;
 
             const params = payload.params[0];
+            const initialGasPrice = params.gas ? web3.utils.fromWei(params.gas, 'Gwei') : 0;
 
-            let gasPricePromise = Promise.resolve(web3.utils.fromWei(params.gas, 'Gwei'));
+            let gasPricePromise = Promise.resolve(initialGasPrice);
             let gasLimitPromise = Promise.resolve(params.gasLimit);
 
             if (!params.gas) {
@@ -328,8 +333,7 @@ export const receiveMessage = e => (dispatch, getState) => {
             if (!params.gasLimit) {
                 gasLimitPromise = new Promise((resolve) => {
                     web3.eth.estimateGas({
-                        data: params.data,
-                        to: params.to,
+                        ...params,
                     }, (error, gasLimitValue) => {
                         resolve(gasLimitValue);
                     });
@@ -339,7 +343,7 @@ export const receiveMessage = e => (dispatch, getState) => {
             Promise.all([gasPricePromise, gasLimitPromise]).then(([gasPrice, gasLimit]) => {
                 console.log('GAZY: ', gasPrice, gasLimit);
                 payload.params[0].gas = gasLimit;
-                payload.params[0].gasPrice = gasPrice;
+                payload.params[0].gasPrice = web3.utils.toWei(gasPrice, 'gwei');
                 dispatch(showPending(payload));
             });
         } else {
