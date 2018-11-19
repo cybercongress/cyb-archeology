@@ -23,6 +23,7 @@ class ConfirmationPopupContainer extends Component {
         const {
             pendingRequest,
             request,
+            lastTransactionId,
         } = this.props;
 
         let _from;
@@ -47,38 +48,45 @@ class ConfirmationPopupContainer extends Component {
                 {pendingRequest
                 && (
                     <ConfirmationPopup
-                      from={ _from }
-                        to={ _to }
-                      approveCallback={ this.approve }
-                      rejectCallback={ this.reject }
-                      content={ (
+                        from={_from}
+                        to={_to}
+                        approveCallback={this.approve}
+                        rejectCallback={this.reject}
+                        txHash={lastTransactionId}
+                        content={(
                             <TxDetailsContainer>
                               <span>
                                     <div className='popup-label'>Amount (ETH):</div>
                                     <Input
-                                    defaultValue={ _amount }
-                                        inputRef={ (node) => { this.ethAmount = node; } }
-                                        style={ { width: 100 } }
-                                  />
+                                        defaultValue={_amount}
+                                        inputRef={(node) => {
+                                            this.ethAmount = node;
+                                        }}
+                                        style={{ width: 100 }}
+                                    />
+                              </span>
+                                <span>
+                                <div className='popup-label'>Gas price (GWEI):</div>
+                                <Input
+                                    defaultValue={_gasPrice}
+                                    inputRef={(node) => {
+                                        this.gasPrice = node;
+                                    }}
+                                    style={{ width: 100 }}
+                                />
                                 </span>
-                              <span>
-                                    <div className='popup-label'>Gas price (GWEI):</div>
-                                    <Input
-                                    defaultValue={ _gasPrice }
-                                    inputRef={ (node) => { this.gasPrice = node; } }
-                                    style={ { width: 100 } }
-                                  />
-                                </span>
-                              <span>
+                                <span>
                                     <div className='popup-label'>Gas limit:</div>
                                     <Input
-                                    defaultValue={ _gasLimit }
-                                    inputRef={ (node) => { this.gasLimit = node; } }
-                                        style={ { width: 100 } }
-                                  />
+                                        defaultValue={_gasLimit}
+                                        inputRef={(node) => {
+                                            this.gasLimit = node;
+                                        }}
+                                        style={{ width: 100 }}
+                                    />
                                 </span>
-                          </TxDetailsContainer>
-                        ) }
+                            </TxDetailsContainer>
+                        )}
                     />
                 )
                 }
@@ -91,6 +99,7 @@ export default connect(
     state => ({
         pendingRequest: state.wallet.pendingRequest,
         request: state.wallet.request,
+        lastTransactionId: state.wallet.lastTransactionId
     }),
     {
         approve,

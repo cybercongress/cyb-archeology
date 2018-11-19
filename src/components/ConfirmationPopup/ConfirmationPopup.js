@@ -1,12 +1,12 @@
 import React from 'react';
 
+import { Title } from '@cybercongress/ui';
 import './ConfirmationPopup.css';
 import Block, { BlockRow, Row } from '../Settings/Block';
-import Title from '../Titile/Titile';
 import Button from '../Button/Button';
 
 const ConfirmationPopup = ({
-    from, to, approveCallback, rejectCallback, children, content,
+    from, to, approveCallback, rejectCallback, children, content, txHash
 }) => (
     <div className='confirmation-popup'>
         <span>
@@ -24,6 +24,16 @@ const ConfirmationPopup = ({
                         </Row>
                         {content}
                     </div>
+                    { txHash && (
+                        <div>
+                            <div>
+                                Tx hash:
+                            </div>
+                            <div>
+                                {txHash}
+                            </div>
+                        </div>
+                    )}
                     <div className='confirmation-popup__buttons'>
                         <Button style={ { width: 150 } } color='green' onClick={ approveCallback }>CONFIRM</Button>
                         <Button style={ { width: 150 } } color='red' onClick={ rejectCallback }>REJECT</Button>

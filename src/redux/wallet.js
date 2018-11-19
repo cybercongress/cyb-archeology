@@ -1,4 +1,3 @@
-
 import Web3 from 'web3';
 import SignerProvider from 'ethjs-provider-signer';
 import { sign } from 'ethjs-signer';
@@ -12,42 +11,51 @@ const initState = {
     defaultAccount: '',
     pendingRequest: false,
     request: null,
+    lastTransactionId: null,
 };
 
 export const reducer = (state = initState, action) => {
     switch (action.type) {
-    case 'LOAD_ACCOUNTS': {
-        return {
-            ...state,
-            accounts: action.payload,
-        };
-    }
+        case 'LOAD_ACCOUNTS': {
+            return {
+                ...state,
+                accounts: action.payload,
+            };
+        }
 
-    case 'SET_DEFAULT_ACCOUNT': {
-        return {
-            ...state,
-            defaultAccount: action.payload,
-        };
-    }
+        case 'SET_DEFAULT_ACCOUNT': {
+            return {
+                ...state,
+                defaultAccount: action.payload,
+            };
+        }
 
-    case 'SHOW_PENDING': {
-        return {
-            ...state,
-            pendingRequest: true,
-            request: action.payload,
-        };
-    }
+        case 'SHOW_PENDING': {
+            return {
+                ...state,
+                pendingRequest: true,
+                request: action.payload,
+                lastTransactionId: null,
+            };
+        }
 
-    case 'HIDE_PENDING': {
-        return {
-            ...state,
-            pendingRequest: false,
-            request: null,
-        };
-    }
+        case 'HIDE_PENDING': {
+            return {
+                ...state,
+                pendingRequest: false,
+                request: null,
+            };
+        }
 
-    default:
-        return state;
+        case 'SHOW_TRANSACTION': {
+            return {
+                ...state,
+                lastTransactionId: action.payload,
+            };
+        }
+
+        default:
+            return state;
     }
 };
 
@@ -135,7 +143,9 @@ export const init = endpoint => (dispatch, getState) => {
 };
 
 export const loadAccounts = () => (dispatch, getState) => {
-    if (!eth) { return; }
+    if (!eth) {
+        return;
+    }
 
     // eth.getAccounts((err, _accounts) => {
     //     Promise.all(
@@ -165,7 +175,6 @@ export const loadAccounts = () => (dispatch, getState) => {
                     });
                 });
             })),
-
         ).then((accounts) => {
             dispatch({
                 type: 'LOAD_ACCOUNTS',
@@ -260,8 +269,8 @@ export const getStatus = url => new Promise((resolve) => {
                 resolve('remote');
             }
         }).catch((e) => {
-            resolve('fail');
-        });
+        resolve('fail');
+    });
     // return eth.getProtocolVersion();
 });
 
@@ -282,12 +291,19 @@ export const approve = (gas, _gasLimit) => (dispatch, getState) => {
             return;
         }
         wv.send('web3_eth_call', result);
-        dispatch(hidePending());
+
+        dispatch({
+            type: 'SHOW_TRANSACTION',
+            payload: result.result,
+        });
+        // dispatch(hidePending());
     });
 };
 
 export const receiveMessage = e => (dispatch, getState) => {
-    if (!provider) { return; }
+    if (!provider) {
+        return;
+    }
     if (e.channel === 'web3_eth') {
         const payload = e.args[0];
 
@@ -295,9 +311,39 @@ export const receiveMessage = e => (dispatch, getState) => {
 
         if (payload.method === 'eth_sendTransaction') {
             web3Reqest = payload;
-            dispatch(showPending(payload));
+
+            const params = payload.params[0];
+
+            let gasPricePromise = Promise.resolve(web3.utils.fromWei(params.gas, 'Gwei'));
+            let gasLimitPromise = Promise.resolve(params.gasLimit);
+
+            if (!params.gas) {
+                gasPricePromise = new Promise((resolve) => {
+                    web3.eth.getGasPrice((error, value) => {
+                        resolve(web3.utils.fromWei(value, 'Gwei'));
+                    });
+                });
+            }
+
+            if (!params.gasLimit) {
+                gasLimitPromise = new Promise((resolve) => {
+                    web3.eth.estimateGas({
+                        data: params.data,
+                        to: params.to,
+                    }, (error, gasLimitValue) => {
+                        resolve(gasLimitValue);
+                    });
+                });
+            }
+
+            Promise.all([gasPricePromise, gasLimitPromise]).then(([gasPrice, gasLimit]) => {
+                console.log('GAZY: ', gasPrice, gasLimit);
+                payload.params[0].gas = gasLimit;
+                payload.params[0].gasPrice = gasPrice;
+                dispatch(showPending(payload));
+            });
         } else {
-            provider.sendAsync(payload, (e, result) => {
+            provider.sendAsync(payload, (error, result) => {
                 wv.send('web3_eth_call', result);
             });
 

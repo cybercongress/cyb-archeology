@@ -9,7 +9,6 @@ class ElectronProvider extends EventEmitter {
         this._providerCallbacks = {};
         ipcRenderer.on('web3_eth_call', (_, payload) => {
             const id = payload.id || payload[0].id;
-            const _payload = payload.id ? payload : payload[0];
 
             if (this._providerCallbacks[id]) {
                 this._providerCallbacks[id](null, payload);
