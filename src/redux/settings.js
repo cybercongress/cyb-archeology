@@ -3,7 +3,7 @@ import { init as initWallet, getStatus } from './wallet';
 
 const initState = {
     IPFS_END_POINT: 'http://earth.cybernode.ai:34402',
-    PARITTY_END_POINT: 'wss://rinkeby.infura.io/ws',
+    PARITTY_END_POINT: 'http://earth.cybernode.ai:34645',
     SEARCH_END_POINT: 'http://earth.cybernode.ai:34660',
 
     pending: false,

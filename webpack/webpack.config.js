@@ -38,7 +38,7 @@ function getPlugins(isProduction) {
 module.exports = (env = {}, argv = {}) => {
     const ENV = argv.mode || 'development';
     const isProduction = ENV === 'production';
-    const SOURCE_MAP = env.SOURCE_MAP || '';
+    const SOURCE_MAP = env.SOURCE_MAP || 'eval-source-map';
 
     return {
         context: path.join(__dirname, '../', 'src'),
