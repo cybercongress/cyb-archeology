@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
 import * as actions from '../../redux/wallet';
-import Container from '../../components/Container/Container';
 import { Avatar } from '../../components/Wallet/Wallet';
 import Button from '../../components/Button/Button';
 
@@ -27,7 +26,7 @@ class EthAccounts extends Component {
     };
 
     create = () => {
-        this.props.createAccount().then(this.loadAccounts);
+        this.props.createAccount();
     };
 
 
@@ -37,13 +36,9 @@ class EthAccounts extends Component {
 
 
     render() {
-        const { accounts, defaultAccount } = this.props;
+        const { accounts, defaultAccount, defaultAccountBalance } = this.props;
 
-        const key = 'TODO';
-        const balabnce = 'TODO';
-
-
-        const defaultAccountComponent = (
+        const defaultAccountComponent = defaultAccount && (
             <AccountCard>
                 <AccountCardLeft>
 
@@ -58,16 +53,11 @@ class EthAccounts extends Component {
                             {defaultAccount}
                         </AccountCardContentItem>
                         <AccountCardContentItem>
-                        public key:
-                            {' '}
-                            {key}
-                        </AccountCardContentItem>
-                        <AccountCardContentItem>
                             <div>
 balance:
-                                {balabnce}
+                                {defaultAccountBalance}
                                 {' '}
-CYBERD
+ETH
                             </div>
                         </AccountCardContentItem>
                     </AccountCardContent>
@@ -77,11 +67,11 @@ CYBERD
 
 
         const accountsItem = accounts.map(account => (
-            <AccountCard>
+            <AccountCard key={account.address}>
                 <AccountCardLeft>
                     <Avatar />
                     <SelectButton
-                      onClick={ () => this.setDefaultAccount(account.address) }
+                      onClick={ () => this.setDefaultAccount(account) }
                     >
 MAKE MAIN
                     </SelectButton>
@@ -98,7 +88,7 @@ MAKE MAIN
 balance:
                                 {account.balance}
                                 {' '}
-CYBERD
+ETH
                             </div>
                             <div>
                                 <Button
@@ -119,7 +109,7 @@ REMOVE
             <div>
                 {defaultAccountComponent}
 
-                <hr />
+                {defaultAccount && <hr />}
 
                 {accountsItem}
 
@@ -135,6 +125,7 @@ export default connect(
     ({ wallet }) => ({
         accounts: wallet.accounts,
         defaultAccount: wallet.defaultAccount,
+        defaultAccountBalance: wallet.defaultAccountBalance
     }),
     actions,
 )(EthAccounts);

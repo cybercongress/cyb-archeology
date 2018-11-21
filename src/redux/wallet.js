@@ -1,14 +1,11 @@
 import Web3 from 'web3';
-import SignerProvider from 'ethjs-provider-signer';
-import { sign } from 'ethjs-signer';
 import axios from 'axios';
 import Cyber from '../cyber/Cyber';
-
-// var Buffer = require('buffer/').Buffer
 
 const initState = {
     accounts: [],
     defaultAccount: '',
+    defaultAccountBalance: '',
     pendingRequest: false,
     request: null,
     lastTransactionId: null,
@@ -24,9 +21,11 @@ export const reducer = (state = initState, action) => {
     }
 
     case 'SET_DEFAULT_ACCOUNT': {
+        const { address, balance } = action.payload;
         return {
             ...state,
-            defaultAccount: action.payload,
+            defaultAccount: address,
+            defaultAccountBalance: balance,
         };
     }
 
@@ -62,109 +61,22 @@ export const reducer = (state = initState, action) => {
 let eth;
 let provider;
 let web3;
-
+let wv = null;
+let web3Reqest = null;
 let __accounts = {};
 
-// let cyber;
 
 window.cyber = null;
 
-const ZeroClientProvider = require('./zero.js');
-
-export const init = endpoint => (dispatch, getState) => {
-    __accounts = JSON.parse(localStorage.getItem('accounts') || '{}');
-
-    // const http = new Web3.providers.HttpProvider(endpoint)
-
-    // provider = new SignerProvider(endpoint, {
-    //     signTransaction: (rawTx, cb) => {
-    //         debugger
-    //         const privateKey = __accounts[rawTx.from.toLowerCase()];
-    //         debugger
-    //         cb(null, sign(rawTx, privateKey))
-    //     },
-    //     accounts: (cb) => {
-    //         cb(null, Object.keys(__accounts))
-    //     },
-    // });
-
-    // // provider.send = function(payload) {
-    // //     return http.send(payload);
-    // // }
-
-    // web3 = new Web3(provider);
-    // eth = web3.eth;
-
-    // if (Object.keys(__accounts).length > 0) {
-    //     const address = Object.keys(__accounts)[0];
-    //     dispatch(setDefaultAccount(address))
-    // }
-
-    // endpoint
+const ZeroClientProvider = require('../preload/zero.js');
 
 
-    provider = new ZeroClientProvider({
-        rpcUrl: endpoint,
-        getAccounts(cb) {
-            cb(null, Object.keys(__accounts));
-        },
 
-        getPrivateKey(address, cb) {
-            const pk = __accounts[address.toLowerCase()];
-
-            const privateKey = new Buffer(pk.substr(2), 'hex');
-
-            cb(null, privateKey);
-        },
-    });
-    web3 = new Web3(provider);
-    eth = web3.eth;
-    provider.start();
-
-    // function fn(event, cb) {
-    //     debugger
-    // }
-
-    // provider.on(fn);
-
-    provider.on('data', (e, payload) => {
-        const message = payload;
-        const {
-            id, method, error, result,
-        } = message;
-
-        if (wv && method && method.indexOf('_subscription') > -1) {
-            // Emit subscription notification
-            wv.send('web3_eth_event_data', payload);
-        }
-    });
-
-    window.cyber = new Cyber(getState().settings.SEARCH_END_POINT);
-};
-
-export const loadAccounts = () => (dispatch, getState) => {
+export const loadAccounts = () => (dispatch, getState) => new Promise((resolve) => {
     if (!eth) {
         return;
     }
 
-    // eth.getAccounts((err, _accounts) => {
-    //     Promise.all(
-    //         _accounts.map(address => new Promise(resolve => {
-    //             eth.getBalance(address, (e, balance) => {
-    //                 resolve({
-    //                     balance: web3.fromWei(balance, 'ether').toNumber(),
-    //                     address: address.toLowerCase()
-    //                 })
-    //             })
-    //         }))
-
-    //     ).then(accounts => {
-    //         dispatch({
-    //             type: 'LOAD_ACCOUNTS',
-    //             payload: accounts,
-    //         })
-    //     })
-    // })
     eth.getAccounts((err, _accounts) => {
         Promise.all(
             _accounts.map(address => new Promise((resolve) => {
@@ -180,17 +92,12 @@ export const loadAccounts = () => (dispatch, getState) => {
                 type: 'LOAD_ACCOUNTS',
                 payload: accounts,
             });
+            resolve(accounts);
         });
     });
-};
-
-export const createAccount = () => (dispatch, getState) => new Promise((resolve) => {
-    const data = web3.eth.accounts.create();
-
-    __accounts[data.address.toLowerCase()] = data.privateKey;
-    localStorage.setItem('accounts', JSON.stringify(__accounts));
-    resolve(data);
 });
+
+
 
 export const importAccount = privateKey => (dispatch, getState) => new Promise((resolve) => {
     const data = web3.eth.accounts.privateKeyToAccount(`0x${privateKey}`);
@@ -199,6 +106,49 @@ export const importAccount = privateKey => (dispatch, getState) => new Promise((
     localStorage.setItem('accounts', JSON.stringify(__accounts));
     resolve(data);
 });
+
+export const setDefaultAccount = account => (dispatch) => {
+    let address;
+    let balance;
+    if (!account) {
+        if (Object.keys(__accounts).length > 0) {
+            ([address] = Object.keys(__accounts));
+            balance = eth.getBalance(address);
+        }
+    } else {
+        ({ address, balance } = account);
+    }
+
+    web3.eth.defaultAccount = address;
+
+    if (balance && balance.then) {
+        balance.then(_balance => {
+            dispatch({
+                type: 'SET_DEFAULT_ACCOUNT',
+                payload: { address, balance: _balance },
+            });
+        });
+    } else {
+        dispatch({
+            type: 'SET_DEFAULT_ACCOUNT',
+            payload: { address, balance },
+        });
+    }
+
+};
+
+export const createAccount = () => (dispatch, getState) => {
+    const data = web3.eth.accounts.create();
+debugger
+    __accounts[data.address.toLowerCase()] = data.privateKey;
+    localStorage.setItem('accounts', JSON.stringify(__accounts));
+
+    dispatch(loadAccounts()).then((accounts) => {
+        if (accounts.length === 1) {
+            dispatch(setDefaultAccount());
+        }
+    });
+}
 
 export const deleteAccount = address => (dispatch, getState) => new Promise((resolve) => {
     delete __accounts[address.toLowerCase()];
@@ -213,29 +163,11 @@ export const deleteAccount = address => (dispatch, getState) => new Promise((res
     resolve(address);
 });
 
-export const setDefaultAccount = (_address = '') => (dispatch, getState) => {
-    let address = _address;
-
-    if (_address === '') {
-        if (Object.keys(__accounts).length > 0) {
-            address = Object.keys(__accounts)[0];
-        }
-    }
-
-    web3.eth.defaultAccount = address;
-    dispatch({
-        type: 'SET_DEFAULT_ACCOUNT',
-        payload: address,
-    });
-};
-
 const showPending = payload => ({ type: 'SHOW_PENDING', payload });
 const hidePending = () => ({ type: 'HIDE_PENDING' });
 
-let wv = null;
 
-
-export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => (dispatch, getState) => new Promise((resolve) => {
+export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => () => new Promise((resolve) => {
     console.log('send eth');
     console.log(_from, to, amount, web3.utils.toWei(amount, 'ether'));
     eth.sendTransaction({
@@ -271,14 +203,12 @@ export const getStatus = url => new Promise((resolve) => {
         }).catch((e) => {
             resolve('fail');
         });
-    // return eth.getProtocolVersion();
 });
 
 export const reject = () => (dispatch, getState) => {
     dispatch(hidePending());
 };
 
-let web3Reqest = null;
 
 export const approve = (gasLimit, gasPrice) => (dispatch, getState) => {
     // todo: refactor
@@ -341,7 +271,6 @@ export const receiveMessage = e => (dispatch, getState) => {
             }
 
             Promise.all([gasPricePromise, gasLimitPromise]).then(([gasPrice, gasLimit]) => {
-                console.log('GAZY: ', gasPrice, gasLimit);
                 payload.params[0].gas = gasLimit;
                 payload.params[0].gasPrice = web3.utils.toWei(gasPrice, 'gwei');
                 dispatch(showPending(payload));
@@ -350,13 +279,6 @@ export const receiveMessage = e => (dispatch, getState) => {
             provider.sendAsync(payload, (error, result) => {
                 wv.send('web3_eth_call', result);
             });
-
-            // const message = payload;
-            // const { id, method, error, result } = message;
-            // if (method && method.indexOf('_subscription') > -1) {
-            //   // Emit subscription notification
-            //   provider.emit('notification', message.params);
-            // }
         }
     }
     if (e.channel === 'cyber') {
@@ -369,4 +291,42 @@ export const receiveMessage = e => (dispatch, getState) => {
             wvCyber.send(`cyber_${method}`, result);
         });
     }
+};
+
+export const init = endpoint => (dispatch, getState) => {
+    __accounts = JSON.parse(localStorage.getItem('accounts') || '{}');
+
+    provider = new ZeroClientProvider({
+        rpcUrl: endpoint,
+        getAccounts(cb) {
+            cb(null, Object.keys(__accounts));
+        },
+
+        getPrivateKey(address, cb) {
+            const pk = __accounts[address.toLowerCase()];
+
+            const privateKey = new Buffer(pk.substr(2), 'hex');
+
+            cb(null, privateKey);
+        },
+    });
+    web3 = new Web3(provider);
+    ({ eth } = web3);
+    provider.start();
+
+    provider.on('data', (e, payload) => {
+        const message = payload;
+        const {
+            method,
+        } = message;
+
+        if (wv && method && method.indexOf('_subscription') > -1) {
+            // Emit subscription notification
+            wv.send('web3_eth_event_data', payload);
+        }
+    });
+
+    window.cyber = new Cyber(getState().settings.SEARCH_END_POINT);
+
+    dispatch(setDefaultAccount());
 };

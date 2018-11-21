@@ -17,7 +17,7 @@ import WalletTabs, { WalletTab } from '../../components/Wallet/WalletTabs/Wallet
 
 class Page extends Component {
     state = {
-        tab: 'eth',
+        tab: 'cyb',
         menu: 'accounts',
     };
 

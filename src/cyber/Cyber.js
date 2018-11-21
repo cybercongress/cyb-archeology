@@ -62,7 +62,7 @@ function Cyber(nodeUrl) {
             return axios({
                 method: 'post',
                 url: `${nodeUrl}/link`,
-                data: builder.buildAndSignTxRequest(linkRequest, __accounts[address], chainId),
+                data: builder.buildAndSignTxRequest(linkRequest, __accounts[address].privateKey, chainId),
             }).then(data => console.log('Link results: ', data)).catch(error => console.log('Cannot link', error));
         });
     };
@@ -106,7 +106,7 @@ function Cyber(nodeUrl) {
                         balance = data.data.result.account.coins[0].amount;
                         // console.log(data.data.result.account.)
                         // publicKey = data.data.result.account.public_key.value;
-                        publicKey = 'TODO'; // save when create
+                        publicKey = __accounts[address].publicKey; // save when create
                     }
 
                     return {
@@ -125,7 +125,7 @@ function Cyber(nodeUrl) {
         return new Promise((resolve) => {
             const account = recoverCyberdAccount(seedPhrase);
 
-            __accounts[account.address] = account.privateKey;
+            __accounts[account.address] = account;
 
             localStorage.setItem('cyberAccounts', JSON.stringify(__accounts));
 
@@ -137,7 +137,7 @@ function Cyber(nodeUrl) {
         return new Promise((resolve) => {
             const account = importCyberdAccount(privateKey);
 
-            __accounts[account.address] = privateKey;
+            __accounts[account.address] = account;
 
             localStorage.setItem('cyberAccounts', JSON.stringify(__accounts));
 
@@ -149,7 +149,8 @@ function Cyber(nodeUrl) {
         return new Promise((resolve) => {
             const account = createCyberdAccount();
 
-            __accounts[account.address] = account.privateKey;
+            debugger
+            __accounts[account.address] = account;
 
             localStorage.setItem('cyberAccounts', JSON.stringify(__accounts));
 

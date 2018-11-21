@@ -125,6 +125,8 @@ const getCyberStatus = url => new Promise((resolve) => {
         });
 });
 
+
+
 export const checkStatus = () => (dispatch, getState) => {
     const {
         IPFS_END_POINT,

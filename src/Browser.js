@@ -43,7 +43,6 @@ class Browser extends Component {
         });
     }
 
-
     render() {
         const { url } = this.props;
         const { loading } = this.state;

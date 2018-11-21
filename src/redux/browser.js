@@ -42,19 +42,12 @@ export const reducer = (state = initState, action) => {
     }
 };
 
-export const init = _IPFS_END_POINT => (dispatch, getState) => {
-    const dura = localStorage.getItem('LAST_DURA') || '';
-
-    dispatch(navigate(dura, true));
-};
-
-export const goBack = () => (dispatch, getState) => {
-    const { backDura } = getState().browser;
-
-    if (backDura) {
-        dispatch(navigate(backDura));
-        dispatch({ type: 'MOVE_BACK' });
-    }
+export const updateDURA = dura => (dispatch, getState) => {
+    localStorage.setItem('LAST_DURA', dura);
+    dispatch({
+        type: 'UPDATE_DURA',
+        payload: dura,
+    });
 };
 
 export const navigate = (_dura, init = false) => (dispatch, getState) => {
@@ -156,10 +149,17 @@ export const didNavigateInPage = url => (dispatch, getState) => {
     dispatch(updateDURA(dura));
 };
 
-export const updateDURA = dura => (dispatch, getState) => {
-    localStorage.setItem('LAST_DURA', dura);
-    dispatch({
-        type: 'UPDATE_DURA',
-        payload: dura,
-    });
+export const init = _IPFS_END_POINT => (dispatch, getState) => {
+    const dura = localStorage.getItem('LAST_DURA') || '';
+
+    dispatch(navigate(dura, true));
+};
+
+export const goBack = () => (dispatch, getState) => {
+    const { backDura } = getState().browser;
+
+    if (backDura) {
+        dispatch(navigate(backDura));
+        dispatch({ type: 'MOVE_BACK' });
+    }
 };

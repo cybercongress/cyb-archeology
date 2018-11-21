@@ -16,8 +16,8 @@ import AccountCard, {
 
 
 class CyberAccounts extends Component {
-    setDefaultAccount = (address) => {
-        this.props.setDefaultCyberAccount(address);
+    setDefaultAccount = (account) => {
+        this.props.setDefaultCyberAccount(account);
     };
 
     createCyberAccount = () => {
@@ -34,13 +34,9 @@ class CyberAccounts extends Component {
 
 
     render() {
-        const { accounts, defaultAccount } = this.props;
-
-        const key = 'TODO';
-        const balabnce = 'TODO';
-
-
-        const defaultAccountComponent = (
+        const { accounts, defaultAccount, defaultAccountPublicKey, defaultAccountBalance } = this.props;
+        
+        const defaultAccountComponent = defaultAccount && (
             <AccountCard>
                 <AccountCardLeft>
 
@@ -57,12 +53,12 @@ class CyberAccounts extends Component {
                         <AccountCardContentItem>
                         public key:
                             {' '}
-                            {key}
+                            {defaultAccountPublicKey}
                         </AccountCardContentItem>
                         <AccountCardContentItem>
                             <div>
 balance:
-                                {balabnce}
+                                {defaultAccountBalance}
                                 {' '}
 CYBERD
                             </div>
@@ -75,13 +71,12 @@ CYBERD
             </AccountCard>
         );
 
-
         const accountsItem = accounts.map(account => (
             <AccountCard>
                 <AccountCardLeft>
                     <Avatar />
                     <SelectButton
-                      onClick={ () => this.setDefaultAccount(account.address) }
+                      onClick={ () => this.setDefaultAccount(account) }
                     >
 MAKE MAIN
                     </SelectButton>
@@ -125,7 +120,7 @@ REMOVE
             <div>
                 {defaultAccountComponent}
 
-                <hr />
+                {defaultAccount && <hr />}
 
                 {accountsItem}
 
@@ -141,6 +136,8 @@ export default connect(
     ({ cyber }) => ({
         accounts: cyber.accounts,
         defaultAccount: cyber.defaultAccount,
+        defaultAccountPublicKey: cyber.defaultAccountPublicKey,
+        defaultAccountBalance: cyber.defaultAccountBalance
     }),
     cyberActions,
 )(CyberAccounts);
