@@ -28,7 +28,7 @@
 .account-card__content-item {
 	padding-top: 10px;
 	padding-bottom: 10px;
-	text-transform: uppercase;
+	/*text-transform: uppercase;*/
 	color: #4a4a4a;
 	font-size: 12px;
 	border-bottom: 1px solid #dedede;
@@ -46,7 +46,7 @@
 	background: #7ed321;
 	color: #fff;
 	padding: 5px;
-	border-radius: 2px; 
+	border-radius: 2px;
 	font-size: 14px;
 	text-transform: uppercase;
 }
@@ -56,9 +56,9 @@
 	background: #f5a623;
 	color: #fff;
 	padding: 5px;
-	border-radius: 2px; 
+	border-radius: 2px;
 	font-size: 14px;
-	text-transform: uppercase;	
+	text-transform: uppercase;
 	box-shadow: 0 0 0 rgba(0,0,0,0.14);
 }
 

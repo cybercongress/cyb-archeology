@@ -83,7 +83,7 @@ export const loadAccounts = () => (dispatch, getState) => new Promise((resolve) 
                 eth.getBalance(address).then((_balance) => {
                     resolve({
                         balance: web3.utils.fromWei(_balance, 'ether'),
-                        address: address.toLowerCase(),
+                        address: address,
                     });
                 });
             })),
@@ -102,7 +102,7 @@ export const loadAccounts = () => (dispatch, getState) => new Promise((resolve) 
 export const importAccount = privateKey => (dispatch, getState) => new Promise((resolve) => {
     const data = web3.eth.accounts.privateKeyToAccount(`0x${privateKey}`);
 
-    __accounts[data.address.toLowerCase()] = data.privateKey;
+    __accounts[data.address] = data.privateKey;
     localStorage.setItem('accounts', JSON.stringify(__accounts));
     resolve(data);
 });
@@ -140,7 +140,7 @@ export const setDefaultAccount = account => (dispatch) => {
 export const createAccount = () => (dispatch, getState) => {
     const data = web3.eth.accounts.create();
 debugger
-    __accounts[data.address.toLowerCase()] = data.privateKey;
+    __accounts[data.address] = data.privateKey;
     localStorage.setItem('accounts', JSON.stringify(__accounts));
 
     dispatch(loadAccounts()).then((accounts) => {
@@ -151,7 +151,8 @@ debugger
 }
 
 export const deleteAccount = address => (dispatch, getState) => new Promise((resolve) => {
-    delete __accounts[address.toLowerCase()];
+    debugger
+    delete __accounts[address];
     localStorage.setItem('accounts', JSON.stringify(__accounts));
 
     const { defaultAccount } = getState().wallet;
@@ -303,7 +304,7 @@ export const init = endpoint => (dispatch, getState) => {
         },
 
         getPrivateKey(address, cb) {
-            const pk = __accounts[address.toLowerCase()];
+            const pk = __accounts[address];
 
             const privateKey = new Buffer(pk.substr(2), 'hex');
 

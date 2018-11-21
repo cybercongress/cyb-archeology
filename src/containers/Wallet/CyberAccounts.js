@@ -35,7 +35,7 @@ class CyberAccounts extends Component {
 
     render() {
         const { accounts, defaultAccount, defaultAccountPublicKey, defaultAccountBalance } = this.props;
-        
+
         const defaultAccountComponent = defaultAccount && (
             <AccountCard>
                 <AccountCardLeft>
