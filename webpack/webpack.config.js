@@ -13,10 +13,6 @@ function getPlugins(isProduction) {
             template: path.resolve(__dirname, '../', 'public', 'index.html'),
             favicon: path.resolve(__dirname, '../', 'public', 'favicon.ico'),
         }),
-        new BundleAnalyzerPlugin({
-            analyzerMode: isProduction ? 'disabled' : 'server',
-            openAnalyzer: false,
-        }),
         new CopyWebpackPlugin(
             // Copy directory contents to {output}/
             isProduction
@@ -30,6 +26,9 @@ function getPlugins(isProduction) {
 
     if (!isProduction) {
         plugins.push(new webpack.HotModuleReplacementPlugin());
+        plugins.push(new BundleAnalyzerPlugin({
+            openAnalyzer: false,
+        }));
     }
 
     return plugins;
@@ -101,7 +100,7 @@ module.exports = (env = {}, argv = {}) => {
         },
         devtool: SOURCE_MAP,
         plugins: getPlugins(isProduction),
-        optimization: {
+/*        optimization: {
             runtimeChunk: 'single',
             splitChunks: {
                 minSize: 220000,
@@ -114,7 +113,7 @@ module.exports = (env = {}, argv = {}) => {
                     },
                 },
             },
-        },
+        },*/
         devServer: {
             port: 3000,
             hot: true,

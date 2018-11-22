@@ -99,10 +99,10 @@ export const loadAccounts = () => (dispatch, getState) => new Promise((resolve) 
 
 
 export const setDefaultAccount = account => (dispatch) => {
-    let address;
+    let address = '';
     let balance;
     if (!account) {
-        const defaultAccount = localStorage.getItem('defaultEthAccount');
+        const defaultAccount = localStorage.getItem('defaultEthAccount') || '';
         if (Object.keys(__accounts).length > 0) {
             if (defaultAccount) {
                 address = defaultAccount;
