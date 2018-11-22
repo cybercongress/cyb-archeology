@@ -103,7 +103,10 @@ export const setDefaultAccount = account => (dispatch) => {
     let balance;
     if (!account) {
         if (Object.keys(__accounts).length > 0) {
-            ([address] = Object.keys(__accounts));
+
+            Object.keys(__accounts).forEach(_address => {
+                address = __accounts[_address].address;
+            });
             balance = eth.getBalance(address);
         }
     } else {
@@ -130,8 +133,8 @@ export const setDefaultAccount = account => (dispatch) => {
 
 export const importAccount = privateKey => (dispatch, getState) => new Promise((resolve) => {
     const data = web3.eth.accounts.privateKeyToAccount(`0x${privateKey}`);
-    debugger
-    __accounts[data.address] = data.privateKey;
+
+    __accounts[data.address.toLowerCase()] = data;
     localStorage.setItem('accounts', JSON.stringify(__accounts));
 
     dispatch(loadAccounts()).then((accounts) => {
@@ -147,7 +150,7 @@ export const importAccount = privateKey => (dispatch, getState) => new Promise((
 export const createAccount = () => (dispatch, getState) => {
     const data = web3.eth.accounts.create();
 
-    __accounts[data.address] = data.privateKey;
+    __accounts[data.address.toLowerCase()] = data;
     localStorage.setItem('accounts', JSON.stringify(__accounts));
 
     dispatch(loadAccounts()).then((accounts) => {
@@ -158,7 +161,8 @@ export const createAccount = () => (dispatch, getState) => {
 }
 
 export const deleteAccount = address => (dispatch, getState) => new Promise((resolve) => {
-    delete __accounts[address];
+
+    delete __accounts[address.toLowerCase()];
     localStorage.setItem('accounts', JSON.stringify(__accounts));
 
     const { defaultAccount } = getState().wallet;
@@ -182,7 +186,7 @@ export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => () => n
         from: _from,
         to,
         value: web3.utils.toWei(amount, 'ether'),
-        gas: 21000,
+        gas: 2100000,
     }).on('transactionHash', (hash) => {
         console.log('transactionHash', hash);
     })
@@ -307,11 +311,13 @@ export const init = endpoint => (dispatch, getState) => {
     provider = new ZeroClientProvider({
         rpcUrl: endpoint,
         getAccounts(cb) {
-            cb(null, Object.keys(__accounts));
+            //show address with low and upper literal
+            const accounts = Object.keys(__accounts).map(address => __accounts[address].address)
+            cb(null, accounts);
         },
 
         getPrivateKey(address, cb) {
-            const pk = __accounts[address];
+            const pk = __accounts[address].privateKey;
             if (pk) {
                 const privateKey = new Buffer(pk.substr(2), 'hex');
                 cb(null, privateKey);
