@@ -36,7 +36,7 @@ class CurrentUser extends Component {
         return (
             <div className='user-popup__container'>
                 {/*<div className='id-bar__user' onClick={ this.toggle } />*/}
-                <img className='id-bar__user' src={`https://robohash.org/${defaultEthAccount}`} />
+                <img className='id-bar__user' onClick={ this.toggle } src={`https://robohash.org/${defaultEthAccount}`} />
                 <div className={ `user-popup ${open ? 'user-popup--open' : ''}` }>
                     <div>
                         <span className='tokenName'>
