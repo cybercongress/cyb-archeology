@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import web3 from 'web3';
-import ConfirmationPopup, { ApproveButton } from '../../components/ConfirmationPopup/ConfirmationPopup';
+import ConfirmationPopup, { TxDetailsContainer } from '../../components/ConfirmationPopup/ConfirmationPopup';
 import { approve, reject } from '../../redux/wallet';
 import Input from '../../components/Input/Input';
-import { TxDetailsContainer } from '../../components/ConfirmationPopup/ConfirmationPopup';
-
 
 class ConfirmationPopupContainer extends Component {
     approve = () => {
         const gasLimit = this.gasLimit.value;
         const gasPrice = this.gasPrice.value;
+
         this.props.approve(gasLimit, gasPrice);
     };
 
@@ -23,6 +22,7 @@ class ConfirmationPopupContainer extends Component {
             pendingRequest,
             request,
             lastTransactionId,
+            defaultAccountBalance,
         } = this.props;
 
         const utils = web3.utils;
@@ -51,6 +51,7 @@ class ConfirmationPopupContainer extends Component {
                     .add(utils.toBN(value));
                 totalAmount = utils.fromWei(totalAmount, 'ether');
             } catch (e) {
+                console.log('Something wrong on total amount calculating');
             }
         }
 
@@ -62,42 +63,44 @@ class ConfirmationPopupContainer extends Component {
                         from={ _from }
                         to={ _to }
                         totalAmount={ totalAmount }
+                        accountBalance={ defaultAccountBalance }
+                        insufficientFunds={ totalAmount > defaultAccountBalance }
                         approveCallback={ this.approve }
                         rejectCallback={ this.reject }
                         txHash={ lastTransactionId }
                         content={ (
-                          <TxDetailsContainer>
+                            <TxDetailsContainer>
                                 <span>
-                                  <div className='popup-label'>Amount (ETH):</div>
-                                  <Input
+                                    <div className='popup-label'>Amount (ETH):</div>
+                                    <Input
                                         defaultValue={ _amount }
                                         inputRef={ (node) => {
                                             this.ethAmount = node;
                                         } }
                                         style={ { width: 100 } }
-                                      disabled
+                                        disabled
                                     />
-                              </span>
+                                </span>
                                 <span>
-                                  <div className='popup-label'>Gas price (GWEI):</div>
-                                  <Input
+                                    <div className='popup-label'>Gas price (GWEI):</div>
+                                    <Input
                                         defaultValue={ _gasPriceGwei }
-                                      inputRef={ (node) => {
+                                        inputRef={ (node) => {
                                             this.gasPrice = node;
                                         } }
-                                      style={ { width: 100 } }
+                                        style={ { width: 100 } }
                                     />
-                              </span>
+                                </span>
                                 <span>
-                                  <div className='popup-label'>Gas limit:</div>
-                                  <Input
+                                    <div className='popup-label'>Gas limit:</div>
+                                    <Input
                                         defaultValue={ _gasLimit }
                                         inputRef={ (node) => {
                                             this.gasLimit = node;
                                         } }
                                         style={ { width: 100 } }
                                     />
-                              </span>
+                                </span>
                             </TxDetailsContainer>
                         ) }
                     />
@@ -113,6 +116,7 @@ export default connect(
         pendingRequest: state.wallet.pendingRequest,
         request: state.wallet.request,
         lastTransactionId: state.wallet.lastTransactionId,
+        defaultAccountBalance: state.wallet.defaultAccountBalance,
     }),
     {
         approve,

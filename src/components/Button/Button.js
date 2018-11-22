@@ -1,6 +1,6 @@
 import React from 'react';
-
 import CybLink from '../CybLink';
+
 
 import './Button.css';
 
@@ -9,12 +9,16 @@ const Button = ({
 }) => {
     let css = 'button';
 
-    if (color === 'green') { css += ' button--green'; }
-    if (color === 'yellow') { css += ' button--yellow'; }
-    if (color === 'turquoise') { css += ' button--turquoise'; }
-    if (color === 'red') { css += ' button--red'; }
-    if (fullWidth === true) { css += ' button--full-width'; }
+    if (props.disabled) {
+        css += ' button--disabled';
+    } else {
+        if (color === 'green') { css += ' button--green'; }
+        if (color === 'yellow') { css += ' button--yellow'; }
+        if (color === 'turquoise') { css += ' button--turquoise'; }
+        if (color === 'red') { css += ' button--red'; }
+    }
 
+    if (fullWidth === true) { css += ' button--full-width'; }
 
     if (dura) {
         return (

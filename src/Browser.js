@@ -41,7 +41,11 @@ class Browser extends Component {
         webview.addEventListener('did-stop-loading', (e) => {
             this.setState({ loading: false });
         });
-    }
+
+        webview.addEventListener('dom-ready', (e) => {
+            webview.openDevTools();
+        });
+    };
 
     render() {
         const { url } = this.props;

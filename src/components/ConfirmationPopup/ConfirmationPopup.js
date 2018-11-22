@@ -1,14 +1,17 @@
 import React from 'react';
 
-import { Title } from '@cybercongress/ui';
+import { Title, Message } from '@cybercongress/ui';
 import './ConfirmationPopup.css';
 import Block, { BlockRow, Row } from '../Settings/Block';
 import Button from '../Button/Button';
 
-const ConfirmationPopup = ({ from, to, approveCallback, rejectCallback, children, content, txHash, totalAmount }) => (
+const ConfirmationPopup = ({
+    from, to, approveCallback, rejectCallback, children,
+    content, txHash, totalAmount, accountBalance, insufficientFunds,
+}) => (
     <div className='confirmation-popup'>
         <span>
-            <Title inline style={{ color: 'black' }}>Transaction confirmation</Title>
+            <Title inline style={ { color: 'black' } }>Transaction confirmation</Title>
             <Block>
                 <BlockRow>
                     <div className='confirmation-popup__popup'>
@@ -21,29 +24,42 @@ const ConfirmationPopup = ({ from, to, approveCallback, rejectCallback, children
                             <span className='address'>{to}</span>
                         </Row>
                         <Row>
+                            <div className='popup-label'>Account balance (ETH):</div>
+                            <span className='address'>{accountBalance}</span>
+                        </Row>
+                        <Row>
                             <div className='popup-label'>Total amount (ETH):</div>
                             <span className='address'>{totalAmount}</span>
                         </Row>
+                        {insufficientFunds
+                            && (
+                                <Row>
+                                    <Message type='error'>You have insufficient funds</Message>
+                                </Row>
+                            )
+                        }
                         {content}
                     </div>
                     {txHash ? (
                         <div>
                             <div>
-                                Tx hash:
                             </div>
                             <div>
-                                {txHash}
+                                <Message type='info'>
+                                    <span>Tx hash:</span>
+                                    {txHash}
+                                </Message>
                             </div>
                             <div className='confirmation-popup__buttons'>
-                                <Button style={{ width: 250 }} color='turquoise' onClick={rejectCallback}>
+                                <Button style={ { width: 250 } } color='turquoise' onClick={ rejectCallback }>
                                     Close window
                                 </Button>
                             </div>
                         </div>
                     ) : (
                         <div className='confirmation-popup__buttons'>
-                            <Button style={{ width: 150 }} color='green' onClick={approveCallback}>CONFIRM</Button>
-                            <Button style={{ width: 150 }} color='red' onClick={rejectCallback}>REJECT</Button>
+                            <Button style={ { width: 150 } } color='green' onClick={ approveCallback } disabled={insufficientFunds}>CONFIRM</Button>
+                            <Button style={ { width: 150 } } color='red' onClick={ rejectCallback }>REJECT</Button>
                         </div>
                     )}
                 </BlockRow>

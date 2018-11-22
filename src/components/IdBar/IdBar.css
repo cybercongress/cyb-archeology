@@ -36,7 +36,7 @@
   background: #eff3f6;
   border-radius: 50%;
   cursor: pointer;
-  background: url(./robohash.jpg) no-repeat center center #eff3f6;
+  /*background: no-repeat center center #eff3f6;*/
   background-size: 30px 30px;
 }
 

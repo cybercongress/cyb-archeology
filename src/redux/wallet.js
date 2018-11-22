@@ -77,23 +77,23 @@ export const loadAccounts = () => (dispatch, getState) => new Promise((resolve) 
         return;
     }
 
-    eth.getAccounts((err, _accounts) => {
-        Promise.all(
-            _accounts.map(address => new Promise((resolve) => {
-                eth.getBalance(address).then((_balance) => {
-                    resolve({
-                        balance: web3.utils.fromWei(_balance, 'ether'),
-                        address: address,
-                    });
+    const _accounts = Object.keys(__accounts).map(address => __accounts[address].address);
+
+    Promise.all(
+        _accounts.map(address => new Promise((resolve) => {
+            eth.getBalance(address).then((_balance) => {
+                resolve({
+                    balance: web3.utils.fromWei(_balance, 'ether'),
+                    address: address,
                 });
-            })),
-        ).then((accounts) => {
-            dispatch({
-                type: 'LOAD_ACCOUNTS',
-                payload: accounts,
             });
-            resolve(accounts);
+        })),
+    ).then((accounts) => {
+        dispatch({
+            type: 'LOAD_ACCOUNTS',
+            payload: accounts,
         });
+        resolve(accounts);
     });
 });
 
@@ -102,11 +102,15 @@ export const setDefaultAccount = account => (dispatch) => {
     let address;
     let balance;
     if (!account) {
+        const defaultAccount = localStorage.getItem('defaultEthAccount');
         if (Object.keys(__accounts).length > 0) {
-
-            Object.keys(__accounts).forEach(_address => {
-                address = __accounts[_address].address;
-            });
+            if (defaultAccount) {
+                address = defaultAccount;
+            } else {
+                Object.keys(__accounts).forEach(_address => {
+                    address = __accounts[_address].address;
+                });
+            }
             balance = eth.getBalance(address);
         }
     } else {
@@ -129,6 +133,7 @@ export const setDefaultAccount = account => (dispatch) => {
         });
     }
 
+    localStorage.setItem('defaultEthAccount', address);
 };
 
 export const importAccount = privateKey => (dispatch, getState) => new Promise((resolve) => {
@@ -311,8 +316,10 @@ export const init = endpoint => (dispatch, getState) => {
     provider = new ZeroClientProvider({
         rpcUrl: endpoint,
         getAccounts(cb) {
-            //show address with low and upper literal
-            const accounts = Object.keys(__accounts).map(address => __accounts[address].address)
+            // show address with low and upper literal
+            // const accounts = Object.keys(__accounts).map(address => __accounts[address].address.toLowerCase());
+            const accounts = getState().wallet.defaultAccount ? [getState().wallet.defaultAccount.toLowerCase()] : [];
+
             cb(null, accounts);
         },
 

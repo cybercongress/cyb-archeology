@@ -29,3 +29,7 @@
 .button--full-width {
     width: 100%;
 }
+
+.button--disabled {
+    background: #e0e0e0;
+}
