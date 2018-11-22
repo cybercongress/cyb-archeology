@@ -3,7 +3,7 @@
 }
 
 .avatar {
-    background: url(./robohash.jpg) no-repeat center center #fff;
+    /*background: url(./robohash.jpg) no-repeat center center #fff;*/
     background-size: 80px 80px;
     width: 90px;
     height: 90px;

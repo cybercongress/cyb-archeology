@@ -2,20 +2,18 @@ import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
 import * as actions from '../../redux/wallet';
 import Container from '../../components/Container/Container';
-import { AddAccount, SendFunds, WalletAccountsList } from '../../components/Wallet/Wallet';
+import { AddAccount } from '../../components/Wallet/Wallet';
 
 class ETHImport extends Component {
     importAccount = (privatekey) => {
-        this.props.importAccount(privatekey).then(this.loadAccounts);
+        this.props.importAccount(privatekey)
+            .then(this.props.importCompleted);
     };
 
 
     render() {
-        const { accounts, defaultAccount } = this.props;
-
         return (
             <Container>
-
                 <AddAccount
                     addMethodName='Import'
                     placeholder='private key'

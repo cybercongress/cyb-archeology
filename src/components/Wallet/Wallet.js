@@ -10,7 +10,11 @@ export const WalletContainer = props => (
     </div>
 );
 
-export const Avatar = () => <div className='avatar' />;
+export const Avatar = ({ hash }) => {
+    return (
+        <img className='avatar' src={`https://robohash.org/${hash}`} />
+    );
+}
 
 export const WalletAccountsList = ({
     accounts, defaultAccountAddress, setDefaultCallback, forgetCallback,

@@ -98,15 +98,6 @@ export const loadAccounts = () => (dispatch, getState) => new Promise((resolve) 
 });
 
 
-
-export const importAccount = privateKey => (dispatch, getState) => new Promise((resolve) => {
-    const data = web3.eth.accounts.privateKeyToAccount(`0x${privateKey}`);
-
-    __accounts[data.address] = data.privateKey;
-    localStorage.setItem('accounts', JSON.stringify(__accounts));
-    resolve(data);
-});
-
 export const setDefaultAccount = account => (dispatch) => {
     let address;
     let balance;
@@ -125,7 +116,7 @@ export const setDefaultAccount = account => (dispatch) => {
         balance.then(_balance => {
             dispatch({
                 type: 'SET_DEFAULT_ACCOUNT',
-                payload: { address, balance: _balance },
+                payload: { address, balance: web3.utils.fromWei(_balance, 'ether') },
             });
         });
     } else {
@@ -137,9 +128,25 @@ export const setDefaultAccount = account => (dispatch) => {
 
 };
 
+export const importAccount = privateKey => (dispatch, getState) => new Promise((resolve) => {
+    const data = web3.eth.accounts.privateKeyToAccount(`0x${privateKey}`);
+    debugger
+    __accounts[data.address] = data.privateKey;
+    localStorage.setItem('accounts', JSON.stringify(__accounts));
+
+    dispatch(loadAccounts()).then((accounts) => {
+        if (accounts.length === 1) {
+            dispatch(setDefaultAccount());
+        }
+        resolve(data);
+    });
+});
+
+
+
 export const createAccount = () => (dispatch, getState) => {
     const data = web3.eth.accounts.create();
-debugger
+
     __accounts[data.address] = data.privateKey;
     localStorage.setItem('accounts', JSON.stringify(__accounts));
 
@@ -151,7 +158,6 @@ debugger
 }
 
 export const deleteAccount = address => (dispatch, getState) => new Promise((resolve) => {
-    debugger
     delete __accounts[address];
     localStorage.setItem('accounts', JSON.stringify(__accounts));
 
@@ -169,6 +175,7 @@ const hidePending = () => ({ type: 'HIDE_PENDING' });
 
 
 export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => () => new Promise((resolve) => {
+
     console.log('send eth');
     console.log(_from, to, amount, web3.utils.toWei(amount, 'ether'));
     eth.sendTransaction({
@@ -305,10 +312,12 @@ export const init = endpoint => (dispatch, getState) => {
 
         getPrivateKey(address, cb) {
             const pk = __accounts[address];
-
-            const privateKey = new Buffer(pk.substr(2), 'hex');
-
-            cb(null, privateKey);
+            if (pk) {
+                const privateKey = new Buffer(pk.substr(2), 'hex');
+                cb(null, privateKey);
+            } else {
+                cb('pk not found');
+            }
         },
     });
     web3 = new Web3(provider);

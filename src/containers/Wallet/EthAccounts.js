@@ -41,8 +41,7 @@ class EthAccounts extends Component {
         const defaultAccountComponent = defaultAccount && (
             <AccountCard>
                 <AccountCardLeft>
-
-                    <Avatar />
+                    <Avatar hash={defaultAccount} />
                     <MainIndecator />
                 </AccountCardLeft>
                 <AccountCardRight>
@@ -69,7 +68,7 @@ ETH
         const accountsItem = accounts.map(account => (
             <AccountCard key={account.address}>
                 <AccountCardLeft>
-                    <Avatar />
+                    <Avatar hash={account.address}/>
                     <SelectButton
                       onClick={ () => this.setDefaultAccount(account) }
                     >

@@ -17,7 +17,7 @@ import WalletTabs, { WalletTab } from '../../components/Wallet/WalletTabs/Wallet
 
 class Page extends Component {
     state = {
-        tab: 'cyb',
+        tab: 'eth',
         menu: 'accounts',
     };
 
@@ -36,7 +36,7 @@ class Page extends Component {
 
         if (tab === 'eth' && menu === 'import') {
             content = (
-                <ETHImport />
+                <ETHImport importCompleted={() => this.selectMenu('accounts')}/>
             );
         }
 
