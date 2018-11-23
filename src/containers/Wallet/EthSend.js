@@ -8,6 +8,7 @@ import AccountCard, {
     AccountCardLeft, AccountCardRight,
     MainIndecator
 } from '../../components/Wallet/AccountCard/AccountCard';
+import Button from '../../components/Button/Button';
 
 class EthSend extends Component {
     sendFunds = (defaultAddress, recipientAddress, amount) => {
@@ -39,6 +40,9 @@ class EthSend extends Component {
                                 {defaultAccountBalance}
                                 {' '}
                                 ETH
+                            </div>
+                            <div>
+                                <Button onClick={() => this.props.onCopyKey(defaultAccount)}>COPY PRIVATE KEY</Button>
                             </div>
                         </AccountCardContentItem>
                     </AccountCardContent>

@@ -353,3 +353,15 @@ export const init = endpoint => (dispatch, getState) => {
 
     dispatch(setDefaultAccount());
 };
+
+
+
+export const onCopyKey = (address) => (dispatch, getState) => {
+    const account = __accounts[address.toLowerCase()];
+    const { privateKey } = account;
+    navigator.clipboard.writeText(privateKey).then(function() {
+        // console.log('Async: Copying to clipboard was successful!');
+    }, function(err) {
+        console.error('Async: Could not copy text: ', err);
+    });
+}

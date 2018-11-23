@@ -58,6 +58,9 @@ balance:
                                 {' '}
 ETH
                             </div>
+                            <div>
+                                <Button onClick={() => this.props.onCopyKey(defaultAccount)}>COPY PRIVATE KEY</Button>
+                            </div>
                         </AccountCardContentItem>
                     </AccountCardContent>
                 </AccountCardRight>
@@ -90,14 +93,18 @@ balance:
 ETH
                             </div>
                             <div>
-                                <Button
-                                  color='red'
-                                  onClick={ e => this.forgetAccount(account.address, e) }
-                                  style={ { marginRight: 10 } }
-                                >
-REMOVE
-                                </Button>
+                                <div>
+                                    <Button
+                                      color='red'
+                                      onClick={ e => this.forgetAccount(account.address, e) }
+                                      style={ { marginRight: 10 } }
+                                    >
+    REMOVE
+                                    </Button>
+                                    <Button onClick={() => this.props.onCopyKey(account.address)}>COPY PRIVATE KEY</Button>
+                                </div>
                             </div>
+
                         </AccountCardContentItem>
                     </AccountCardContent>
                 </AccountCardRight>

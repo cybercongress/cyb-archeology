@@ -77,3 +77,15 @@ export const restoreAccount = text => (dispatch, getState) => {
         return window.cyber.importAccount(text).then(account => dispatch(init()));
     }
 };
+
+
+export const onCopyKey = (address) => (dispatch, getState) => {
+    window.cyber.getAccount(address).then(account => {
+        const { privateKey } = account;
+        navigator.clipboard.writeText(privateKey).then(function() {
+            // console.log('Async: Copying to clipboard was successful!');
+        }, function(err) {
+            console.error('Async: Could not copy text: ', err);
+        });
+    });
+}

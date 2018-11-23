@@ -124,6 +124,7 @@ function Cyber(nodeUrl) {
     self.restoreAccount = function (seedPhrase) {
         return new Promise((resolve) => {
             const account = recoverCyberdAccount(seedPhrase);
+
             __accounts[account.address] = account;
 
             localStorage.setItem('cyberAccounts', JSON.stringify(__accounts));
@@ -167,6 +168,10 @@ function Cyber(nodeUrl) {
             resolve();
         });
     };
+
+    self.getAccount = (address) => new Promise(resolve => {
+        resolve(__accounts[address]);
+    })
 
     self.sendFunds = function (defaultAddress, recipientAddress, amount) {
         return axios({

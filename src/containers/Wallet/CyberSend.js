@@ -48,7 +48,7 @@ class CyberSend extends Component {
                                 CYBERD
                             </div>
                             <div>
-                                <Button>COPY PRIVATE KEY</Button>
+                                <Button onClick={() => this.props.onCopyKey(defaultAccountAddress)}>COPY PRIVATE KEY</Button>
                             </div>
                         </AccountCardContentItem>
                     </AccountCardContent>
