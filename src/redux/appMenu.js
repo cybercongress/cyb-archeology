@@ -23,6 +23,11 @@ const initState = {
             subItems: {},
         },
         {
+            name: 'Dragons',
+            rootDura: '.dragons',
+            subItems: {},
+        },
+        {
             name: 'Help',
             rootDura: '.help/#/',
             subItems: {},

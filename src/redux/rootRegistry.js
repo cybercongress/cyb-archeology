@@ -26,6 +26,10 @@ const initState = {
             hash: 'QmNUfwVQoZsXoFVQCaxszm1AEEyx1i5eZRw1Jcvs53rfQB',
             protocol: 'ipfs',
         },
+        dragons: {
+            hash: 'QmZt8EytibMPGur5TaVxv2JwzeMP1X6tGDbp9KpwhvFKNm',
+            protocol: 'ipfs',
+        },
     },
 };
 

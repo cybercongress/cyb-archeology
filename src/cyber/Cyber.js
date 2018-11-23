@@ -124,7 +124,6 @@ function Cyber(nodeUrl) {
     self.restoreAccount = function (seedPhrase) {
         return new Promise((resolve) => {
             const account = recoverCyberdAccount(seedPhrase);
-debugger
             __accounts[account.address] = account;
 
             localStorage.setItem('cyberAccounts', JSON.stringify(__accounts));

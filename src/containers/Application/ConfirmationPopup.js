@@ -34,11 +34,11 @@ class ConfirmationPopupContainer extends Component {
         let _gasPriceGwei;
         let _amount;
         let totalAmount;
-        let value;
+        let value = 0;
 
         if (request) {
             try {
-                value = request.params[0].value;
+                value = request.params[0].value || 0;
                 _from = request.params[0].from;
                 _to = request.params[0].to;
                 if (request.params[0].gas) {
