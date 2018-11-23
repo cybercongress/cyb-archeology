@@ -105,10 +105,13 @@ export const DURAToURL = (dura, apps = {}, IPFS_END_POINT = 'http://localhost:80
     };
 };
 
-export const getPreloadPath = () => {
+export const isDevMode = () => {
     const { remote } = window.require('electron');
-    const isDev = remote.process.argv[2] === '--dev';
 
+    return remote.process.argv[2] === '--dev';
+};
+
+export const getPreloadPath = () => {
     // // Condition necessary for store.spec.js
     // const basePath = remote.app.getPath('userData');
 
@@ -125,9 +128,11 @@ export const getPreloadPath = () => {
 
     // return buildPath;
 
+    const { remote } = window.require('electron');
+
     console.log('>>> ', remote.getGlobal('dirname'));
 
-    if (isDev) {
+    if (isDevMode()) {
         return `file://${path.join(remote.app.getAppPath(), 'src', 'preload.js')}`;
     }
 

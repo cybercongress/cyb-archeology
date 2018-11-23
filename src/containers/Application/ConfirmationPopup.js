@@ -29,7 +29,7 @@ class ConfirmationPopupContainer extends Component {
 
         let _from;
         let _to;
-        let _gasLimit;
+        let _gasLimit = 0;
         let _gasPrice;
         let _gasPriceGwei;
         let _amount;
@@ -41,7 +41,9 @@ class ConfirmationPopupContainer extends Component {
                 value = request.params[0].value;
                 _from = request.params[0].from;
                 _to = request.params[0].to;
-                _gasLimit = utils.hexToNumber(request.params[0].gas);
+                if (request.params[0].gas) {
+                    _gasLimit = utils.hexToNumber(request.params[0].gas);
+                }
                 _gasPrice = utils.hexToNumber(request.params[0].gasPrice);
                 _gasPriceGwei = utils.fromWei(`${_gasPrice}`, 'Gwei');
                 _amount = value ? utils.fromWei(value, 'ether') : 0;

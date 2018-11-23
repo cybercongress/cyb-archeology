@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { didNavigateInPage, willNavigate } from './redux/browser';
 import { receiveMessage } from './redux/wallet';
-import { getPreloadPath } from './utils';
+import { getPreloadPath, isDevMode } from './utils';
 import BrowserWindow, { BrowserContainer, Loading } from './components/BrowserWindow/BrowserWindow';
 
 class Browser extends Component {
@@ -42,9 +42,11 @@ class Browser extends Component {
             this.setState({ loading: false });
         });
 
-        webview.addEventListener('dom-ready', (e) => {
-            webview.openDevTools();
-        });
+        if (isDevMode()) {
+            webview.addEventListener('dom-ready', (e) => {
+                webview.openDevTools();
+            });
+        }
     };
 
     render() {
