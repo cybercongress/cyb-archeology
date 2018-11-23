@@ -9,12 +9,8 @@ import Block, { BlockRow } from '../../components/Settings/Block';
 import Button from '../../components/Button/Button';
 
 class CyberImport extends Component {
-    importAccount = (privateKey) => {
-        this.props.importAccount(privateKey);
-    };
-
     restoreAccount = (seedPhrase) => {
-        this.props.restoreAccount(seedPhrase);
+        this.props.restoreAccount(seedPhrase).then(this.props.importCompleted);
     };
 
 
@@ -26,13 +22,8 @@ class CyberImport extends Component {
             <WalletContainer>
                 <AddAccount
                     addMethodName='Recover'
-                    placeholder='seed phrase'
+                    placeholder='seed phrase or private key'
                     addCallback={ this.restoreAccount }
-                />
-                <AddAccount
-                    addMethodName='Import'
-                    placeholder='private key'
-                    addCallback={ this.importAccount }
                 />
             </WalletContainer>
         );

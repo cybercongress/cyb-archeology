@@ -124,7 +124,7 @@ function Cyber(nodeUrl) {
     self.restoreAccount = function (seedPhrase) {
         return new Promise((resolve) => {
             const account = recoverCyberdAccount(seedPhrase);
-
+debugger
             __accounts[account.address] = account;
 
             localStorage.setItem('cyberAccounts', JSON.stringify(__accounts));
@@ -149,7 +149,6 @@ function Cyber(nodeUrl) {
         return new Promise((resolve) => {
             const account = createCyberdAccount();
 
-            debugger
             __accounts[account.address] = account;
 
             localStorage.setItem('cyberAccounts', JSON.stringify(__accounts));
@@ -195,7 +194,7 @@ function Cyber(nodeUrl) {
                 type: 'send',
             };
 
-            const tx = builder.buildAndSignTxRequest(sendRequest, __accounts[defaultAddress], chainId);
+            const tx = builder.buildAndSignTxRequest(sendRequest, __accounts[defaultAddress].privateKey, chainId);
 
             console.log(tx);
             return axios({

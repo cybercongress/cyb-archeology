@@ -60,7 +60,7 @@ class Page extends Component {
 
         if (tab === 'cyb' && menu === 'import') {
             content = (
-                <CyberImport />
+                <CyberImport importCompleted={() => this.selectMenu('accounts')}/>
             );
         }
 

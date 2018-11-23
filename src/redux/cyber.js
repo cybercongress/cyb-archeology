@@ -28,15 +28,6 @@ export const reducer = (state = initState, action) => {
 };
 
 
-
-export const restoreAccount = seedPhrase => (dispatch, getState) => {
-    window.cyber.restoreAccount(seedPhrase).then(account => dispatch(init()));
-};
-
-export const importAccount = privateKey => (dispatch, getState) => {
-    window.cyber.importAccount(privateKey).then(account => dispatch(init()));
-};
-
 export const setDefaultCyberAccount = acount => (dispatch, getState) => {
     window.cyber.setDefaultAccount(acount.address);
     dispatch({
@@ -55,7 +46,7 @@ export const sendFunds = (defaultAddress, recipientAddress, amount) => (dispatch
 
 
 export const init = () => (dispatch, getState) => {
-    window.cyber.getAccounts().then((accounts) => {
+    return window.cyber.getAccounts().then((accounts) => {
         if (!getState().cyber.defaultAccount && accounts.length > 0) {
             dispatch(setDefaultCyberAccount(accounts[0]));
         }
@@ -77,4 +68,12 @@ export const createCyberAccount = () => (dispatch, getState) => {
 
 export const forgetCyberAccount = address => (dispatch, getState) => {
     window.cyber.forgetAccount(address).then(() => dispatch(init()));
+};
+
+export const restoreAccount = text => (dispatch, getState) => {
+    if (text.indexOf(' ') !== -1) {
+        return window.cyber.restoreAccount(text).then(account => dispatch(init()));
+    } else {
+        return window.cyber.importAccount(text).then(account => dispatch(init()));
+    }
 };
