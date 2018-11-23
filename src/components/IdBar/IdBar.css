@@ -40,6 +40,11 @@
   background-size: 30px 30px;
 }
 
+.id-bar__user--default {
+    background: url(./robohash.jpg) no-repeat center center #eff3f6;
+    background-size: 40px;
+}
+
 .user-popup__container {
 	position: relative;
 }
