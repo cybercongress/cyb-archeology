@@ -1,6 +1,6 @@
 
 <h1 align="center">
-WEB3 BROWSER
+pure web3 browser
 </h1>
 
 <div align="center">
