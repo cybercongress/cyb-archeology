@@ -25,7 +25,7 @@ class Page extends Component {
         this.setState({ tab });
     };
 
-    selectMenu = (menu) => {
+    selectMenu = (menu) => {        
         this.setState({ menu });
     }
 
@@ -47,9 +47,9 @@ class Page extends Component {
         }
 
         if (tab === 'eth' && menu === 'send') {
-            content = (
-                <EthSend />
-            );
+            // content = (
+            //     <EthSend />
+            // );
         }
 
         if (tab === 'cyb' && menu === 'accounts') {

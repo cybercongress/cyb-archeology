@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
-import * as actions from '../../redux/wallet';
+import {
+    getDefaultAccountBalance,
+    deleteAccount,
+    loadAccounts,
+    createAccount,
+    onCopyKey,
+    setDefaultAccount
+} from '../../redux/wallet';
 import { Avatar } from '../../components/Wallet/Wallet';
 import Button from '../../components/Button/Button';
 
@@ -68,7 +75,7 @@ ETH
         );
 
 
-        const accountsItem = accounts.map(account => (
+        const accountsItem = accounts.filter(a => a.address !== defaultAccount).map(account => (
             <AccountCard key={account.address}>
                 <AccountCardLeft>
                     <Avatar hash={account.address}/>
@@ -131,7 +138,13 @@ export default connect(
     ({ wallet }) => ({
         accounts: wallet.accounts,
         defaultAccount: wallet.defaultAccount,
-        defaultAccountBalance: wallet.defaultAccountBalance
+        defaultAccountBalance: getDefaultAccountBalance({ wallet })
     }),
-    actions,
+    {
+        deleteAccount,
+        loadAccounts,
+        createAccount,
+        onCopyKey,
+        setDefaultAccount
+    },
 )(EthAccounts);

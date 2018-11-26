@@ -78,8 +78,8 @@ export default connect(
     ({ cyber }) => ({
         accounts: cyber.accounts,
         defaultAccountAddress: cyber.defaultAccount,
-        defaultAccountPublicKey: cyber.defaultAccountPublicKey,
-        defaultAccountBalance: cyber.defaultAccountBalance
+        defaultAccountPublicKey: cyberActions.getDefaultAccountPublicKey({ cyber }),
+        defaultAccountBalance: cyberActions.getDefaultAccountBalance({ cyber })
     }),
     cyberActions,
 )(CyberSend);

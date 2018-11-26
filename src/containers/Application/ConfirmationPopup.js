@@ -21,8 +21,8 @@ class ConfirmationPopupContainer extends Component {
         const {
             pendingRequest,
             request,
-            lastTransactionId,
             defaultAccountBalance,
+            lastTransactionId
         } = this.props;
 
         const utils = web3.utils;

@@ -58,8 +58,8 @@ const ConfirmationPopup = ({
                         </div>
                     ) : (
                         <div className='confirmation-popup__buttons'>
-                            <Button style={ { width: 150 } } color='green' onClick={ approveCallback } disabled={insufficientFunds}>CONFIRM</Button>
                             <Button style={ { width: 150 } } color='red' onClick={ rejectCallback }>REJECT</Button>
+                            <Button style={ { width: 150 } } color='green' onClick={ approveCallback } disabled={insufficientFunds}>CONFIRM</Button>
                         </div>
                     )}
                 </BlockRow>

@@ -1,8 +1,6 @@
 const initState = {
     accounts: [],
     defaultAccount: '',
-    defaultAccountPublicKey: '',
-    defaultAccountBalance: '',
 };
 
 export const reducer = (state = initState, action) => {
@@ -18,8 +16,6 @@ export const reducer = (state = initState, action) => {
         return {
             ...state,
             defaultAccount: address,
-            defaultAccountPublicKey: publicKey,
-            defaultAccountBalance: balance
         };
 
     default:
@@ -78,6 +74,31 @@ export const restoreAccount = text => (dispatch, getState) => {
     }
 };
 
+export const getDefaultAccountBalance = (state) => {
+    const {
+        accounts,
+        defaultAccount
+    } = state.cyber;
+
+    const acc = accounts.find(a => a.address === defaultAccount);
+
+    if (!acc ) return 0;
+
+    return acc.balance;
+}
+
+export const getDefaultAccountPublicKey = (state) => {
+    const {
+        accounts,
+        defaultAccount
+    } = state.cyber;
+
+    const acc = accounts.find(a => a.address === defaultAccount);
+
+    if (!acc ) return 0;
+
+    return acc.publicKey;
+}
 
 export const onCopyKey = (address) => (dispatch, getState) => {
     window.cyber.getAccount(address).then(account => {

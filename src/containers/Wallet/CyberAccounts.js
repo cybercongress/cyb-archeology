@@ -71,7 +71,7 @@ CYBERD
             </AccountCard>
         );
 
-        const accountsItem = accounts.map(account => (
+        const accountsItem = accounts.filter(a => a.address !== defaultAccount).map(account => (
             <AccountCard key={account.address}>
                 <AccountCardLeft>
                     <Avatar hash={account.address} />
@@ -136,8 +136,8 @@ export default connect(
     ({ cyber }) => ({
         accounts: cyber.accounts,
         defaultAccount: cyber.defaultAccount,
-        defaultAccountPublicKey: cyber.defaultAccountPublicKey,
-        defaultAccountBalance: cyber.defaultAccountBalance
+        defaultAccountPublicKey: cyberActions.getDefaultAccountPublicKey({ cyber }),
+        defaultAccountBalance: cyberActions.getDefaultAccountBalance({ cyber })
     }),
     cyberActions,
 )(CyberAccounts);

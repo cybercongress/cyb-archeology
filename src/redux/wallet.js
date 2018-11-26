@@ -5,7 +5,6 @@ import Cyber from '../cyber/Cyber';
 const initState = {
     accounts: [],
     defaultAccount: '',
-    defaultAccountBalance: '',
     pendingRequest: false,
     request: null,
     lastTransactionId: null,
@@ -25,7 +24,6 @@ export const reducer = (state = initState, action) => {
         return {
             ...state,
             defaultAccount: address,
-            defaultAccountBalance: balance,
         };
     }
 
@@ -247,6 +245,7 @@ export const approve = (gasLimit, gasPrice) => (dispatch, getState) => {
             type: 'SHOW_TRANSACTION',
             payload: result.result,
         });
+
         // dispatch(hidePending());
     });
 };
@@ -354,11 +353,24 @@ export const init = endpoint => (dispatch, getState) => {
     dispatch(setDefaultAccount());
 };
 
+export const getDefaultAccountBalance = (state) => {
+    const {
+        accounts,
+        defaultAccount
+    } = state.wallet;
+
+    const acc = accounts.find(a => a.address === defaultAccount);
+
+    if (!acc ) return 0;
+
+    return acc.balance;
+}
 
 
 export const onCopyKey = (address) => (dispatch, getState) => {
     const account = __accounts[address.toLowerCase()];
     const { privateKey } = account;
+    debugger
     navigator.clipboard.writeText(privateKey).then(function() {
         // console.log('Async: Copying to clipboard was successful!');
     }, function(err) {
