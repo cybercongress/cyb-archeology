@@ -264,12 +264,12 @@ export const receiveMessage = e => (dispatch, getState) => {
             web3Reqest = payload;
 
             const params = payload.params[0];
-            const initialGasPrice = params.gas ? web3.utils.fromWei(params.gas, 'Gwei') : 0;
+            const initialGasPrice = params.gasPrice ? web3.utils.fromWei(params.gasPrice, 'Gwei') : 0;
 
             let gasPricePromise = Promise.resolve(initialGasPrice);
-            let gasLimitPromise = Promise.resolve(params.gasLimit);
+            let gasLimitPromise = Promise.resolve(params.gas);
 
-            if (!params.gas) {
+            if (!params.gasPrice) {
                 gasPricePromise = new Promise((resolve) => {
                     web3.eth.getGasPrice((error, value) => {
                         resolve(web3.utils.fromWei(value, 'Gwei'));
@@ -277,7 +277,7 @@ export const receiveMessage = e => (dispatch, getState) => {
                 });
             }
 
-            if (!params.gasLimit) {
+            if (!params.gas) {
                 gasLimitPromise = new Promise((resolve) => {
                     web3.eth.estimateGas({
                         ...params,

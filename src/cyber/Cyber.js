@@ -197,8 +197,8 @@ function Cyber(nodeUrl) {
                 amount,
                 type: 'send',
             };
-
-            const tx = builder.buildAndSignTxRequest(sendRequest, __accounts[defaultAddress].privateKey, chainId);
+            const { privateKey } = __accounts[defaultAddress];
+            const tx = builder.buildAndSignTxRequest(sendRequest, privateKey, chainId);
 
             console.log(tx);
             return axios({
