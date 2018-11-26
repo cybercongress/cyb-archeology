@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import web3 from 'web3';
 import ConfirmationPopup, { TxDetailsContainer } from '../../components/ConfirmationPopup/ConfirmationPopup';
-import { approve, reject } from '../../redux/wallet';
+import { approve, reject, getDefaultAccountBalance } from '../../redux/wallet';
 import Input from '../../components/Input/Input';
 
 class ConfirmationPopupContainer extends Component {
@@ -33,7 +33,7 @@ class ConfirmationPopupContainer extends Component {
         let _gasPrice;
         let _gasPriceGwei;
         let _amount;
-        let totalAmount;
+        let totalAmount = 0;
         let value = 0;
 
         if (request) {
@@ -57,6 +57,8 @@ class ConfirmationPopupContainer extends Component {
             }
         }
 
+        const insufficientFunds = Number(totalAmount) > Number(defaultAccountBalance);
+
         return (
             <div>
                 {pendingRequest
@@ -66,7 +68,7 @@ class ConfirmationPopupContainer extends Component {
                         to={ _to }
                         totalAmount={ totalAmount }
                         accountBalance={ defaultAccountBalance }
-                        insufficientFunds={ totalAmount > defaultAccountBalance }
+                        insufficientFunds={ insufficientFunds }
                         approveCallback={ this.approve }
                         rejectCallback={ this.reject }
                         txHash={ lastTransactionId }
@@ -118,7 +120,7 @@ export default connect(
         pendingRequest: state.wallet.pendingRequest,
         request: state.wallet.request,
         lastTransactionId: state.wallet.lastTransactionId,
-        defaultAccountBalance: state.wallet.defaultAccountBalance,
+        defaultAccountBalance: getDefaultAccountBalance(state),
     }),
     {
         approve,

@@ -350,7 +350,8 @@ export const init = endpoint => (dispatch, getState) => {
 
     window.cyber = new Cyber(getState().settings.SEARCH_END_POINT);
 
-    dispatch(setDefaultAccount());
+    dispatch(loadAccounts())
+        .then(() => dispatch(setDefaultAccount()));
 };
 
 export const getDefaultAccountBalance = (state) => {
@@ -370,7 +371,7 @@ export const getDefaultAccountBalance = (state) => {
 export const onCopyKey = (address) => (dispatch, getState) => {
     const account = __accounts[address.toLowerCase()];
     const { privateKey } = account;
-    debugger
+
     navigator.clipboard.writeText(privateKey).then(function() {
         // console.log('Async: Copying to clipboard was successful!');
     }, function(err) {
