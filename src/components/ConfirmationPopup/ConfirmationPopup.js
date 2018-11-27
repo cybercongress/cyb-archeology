@@ -8,6 +8,7 @@ import Button from '../Button/Button';
 const ConfirmationPopup = ({
     from, to, approveCallback, rejectCallback, children,
     content, txHash, totalAmount, accountBalance, insufficientFunds,
+    hidePending
 }) => (
     <div className='confirmation-popup'>
         <span>
@@ -51,7 +52,7 @@ const ConfirmationPopup = ({
                                 </Message>
                             </div>
                             <div className='confirmation-popup__buttons'>
-                                <Button style={ { width: 250 } } color='turquoise' onClick={ rejectCallback }>
+                                <Button style={ { width: 250 } } color='turquoise' onClick={ hidePending }>
                                     Close window
                                 </Button>
                             </div>

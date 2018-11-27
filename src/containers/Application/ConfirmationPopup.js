@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import web3 from 'web3';
 import ConfirmationPopup, { TxDetailsContainer } from '../../components/ConfirmationPopup/ConfirmationPopup';
-import { approve, reject, getDefaultAccountBalance } from '../../redux/wallet';
+import { approve, reject, getDefaultAccountBalance, hidePending } from '../../redux/wallet';
 import Input from '../../components/Input/Input';
 
 class ConfirmationPopupContainer extends Component {
@@ -71,6 +71,7 @@ class ConfirmationPopupContainer extends Component {
                         insufficientFunds={ insufficientFunds }
                         approveCallback={ this.approve }
                         rejectCallback={ this.reject }
+                        hidePending={() => this.props.hidePending()}
                         txHash={ lastTransactionId }
                         content={ (
                             <TxDetailsContainer>
@@ -125,5 +126,6 @@ export default connect(
     {
         approve,
         reject,
+        hidePending
     },
 )(ConfirmationPopupContainer);

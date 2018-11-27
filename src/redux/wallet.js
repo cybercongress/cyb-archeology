@@ -178,7 +178,7 @@ export const deleteAccount = address => (dispatch, getState) => new Promise((res
 });
 
 const showPending = payload => ({ type: 'SHOW_PENDING', payload });
-const hidePending = () => ({ type: 'HIDE_PENDING' });
+export const hidePending = () => ({ type: 'HIDE_PENDING' });
 
 
 export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => () => new Promise((resolve) => {
