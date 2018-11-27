@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Message } from '@cybercongress/ui';
 import * as actions from '../../redux/appMenu';
 
 import MenuContainer, {
@@ -10,7 +11,6 @@ import MenuContainer, {
     AddMenuItemApprove,
     AddMenuItemReject,
 } from '../../components/AppMenu/AppMenu';
-
 
 class AppMenu extends Component {
     addToFavorites = () => {
@@ -31,13 +31,13 @@ class AppMenu extends Component {
     };
 
     clickLogo = () => {
-    	this.props.toggleMenu();
+        this.props.toggleMenu();
     };
 
     render() {
         const {
-        	openMenu, deleteMenuItem, menuItems,
-        	pendingAddToFavorites,
+            openMenu, deleteMenuItem, menuItems,
+            pendingAddToFavorites,
         } = this.props;
 
         return (
@@ -60,6 +60,14 @@ class AppMenu extends Component {
                     </AddMenuItem>
                 )
                 }
+                <Message
+                    style={{
+                        margin: 15,
+                    }}
+                    type='error'
+                >
+                    Cyb in Ethereum Mainnet may not be secure yet. We recommend to operate accounts with small balance at your own risk.
+                </Message>
             </MenuContainer>
         );
     }
