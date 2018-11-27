@@ -92,11 +92,15 @@ export const loadAccounts = () => (dispatch, getState) => new Promise((resolve) 
         return;
     }
 
-    const _accounts = [];
-        //Object.keys(__accounts).map(address => __accounts[address].address);
-    for(let n = 0; n < web3.eth.accounts.wallet.length; n++) {
-        _accounts.push(web3.eth.accounts.wallet[n].address);
-    }
+    //     //Object.keys(__accounts).map(address => __accounts[address].address);
+    // for(let n = 0; n < web3.eth.accounts.wallet.length; n++) {
+    //     _accounts.push(web3.eth.accounts.wallet[n].address);
+    // }
+
+    var indexes = web3.eth.accounts.wallet._currentIndexes();
+    const _accounts = indexes.map(index => {
+        return web3.eth.accounts.wallet[index].address;
+    });
 
     Promise.all(
         _accounts.map(address => new Promise((resolve) => {
@@ -195,8 +199,13 @@ export const deleteAccount = address => (dispatch, getState) => new Promise((res
 
     // delete __accounts[address.toLowerCase()];
     // localStorage.setItem('accounts', JSON.stringify(__accounts));
-    web3.eth.accounts.wallet.remove(address.toLowerCase());
+
+    const _address = address.toLowerCase();
+
+    const index = web3.eth.accounts.wallet[_address].index;
+    web3.eth.accounts.wallet.remove(index);
     web3.eth.accounts.wallet.save(getState().wallet.password);
+    web3.eth.accounts.wallet.load(getState().wallet.password);
 
     const { defaultAccount } = getState().wallet;
 
