@@ -419,6 +419,9 @@ export const onCopyKey = (address) => (dispatch, getState) => {
 export const setPassword = (password) => (dispatch, getState) => {
     try {
         web3.eth.accounts.wallet.load(password);
+        if (web3.eth.accounts.wallet.length === 0) {
+            throw 'no accounts';
+        }
         dispatch({
             type: 'SET_ETH_PASSWORD',
             payload: password,
@@ -433,6 +436,11 @@ export const setPassword = (password) => (dispatch, getState) => {
 }
 
 export const createPassword = (password) => (dispatch, getState) => {
-    web3.eth.accounts.wallet.save(password);
-    dispatch(setPassword(password));
+    dispatch({
+        type: 'SET_ETH_PASSWORD',
+        payload: password,
+    });
+    dispatch(createAccount());
+    // dispatch(setPassword(password));
+    // web3.eth.accounts.wallet.save(password);
 }
