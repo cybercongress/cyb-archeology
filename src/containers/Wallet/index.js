@@ -47,9 +47,9 @@ class Page extends Component {
         }
 
         if (tab === 'eth' && menu === 'send') {
-            // content = (
-            //     <EthSend />
-            // );
+            content = (
+                <EthSend />
+            );
         }
 
         if (tab === 'cyb' && menu === 'accounts') {

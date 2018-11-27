@@ -71,7 +71,7 @@ class EthSend extends Component {
 export default connect(
     ({ wallet }) => ({
         defaultAccount: wallet.defaultAccount,
-        defaultAccountBalance: wallet.defaultAccountBalance,
+        defaultAccountBalance: actions.getDefaultAccountBalance({ wallet }),
     }),
     actions,
 )(EthSend);
