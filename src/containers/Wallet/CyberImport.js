@@ -19,13 +19,13 @@ class CyberImport extends Component {
         const accounts = this.props.accounts;
 
         return (
-            <WalletContainer>
+            <div>
                 <AddAccount
                     addMethodName='Import'
                     placeholder='seed phrase or private key'
                     addCallback={ this.restoreAccount }
                 />
-            </WalletContainer>
+            </div>
         );
     }
 }

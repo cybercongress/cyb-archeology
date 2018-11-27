@@ -11,8 +11,8 @@ export const Container = ({ children, isInline }) => {
     );
 };
 
-const Block = ({ children, ...props }) => (
-    <div { ...props } className='block'>
+const Block = ({ children, noMargin,  ...props }) => (
+    <div { ...props } className={`block ${noMargin ? 'block--no-margin' : ''}`}>
         {children}
     </div>
 );

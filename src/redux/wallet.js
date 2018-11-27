@@ -162,7 +162,8 @@ export const setDefaultAccount = account => (dispatch) => {
 };
 
 export const importAccount = privateKey => (dispatch, getState) => new Promise((resolve) => {
-    const data = web3.eth.accounts.privateKeyToAccount(`0x${privateKey}`);
+    const _privateKey = privateKey.startsWith('0x') ? privateKey : `0x${privateKey}`;
+    const data = web3.eth.accounts.privateKeyToAccount(_privateKey);
 
     // __accounts[data.address.toLowerCase()] = data;
     // localStorage.setItem('accounts', JSON.stringify(__accounts));

@@ -7,6 +7,10 @@
     margin: 18px;
 }
 
+.block.block--no-margin {
+    margin: 0;
+}
+
 .block__row {
     border-bottom: 1px solid #cccccc;
     padding: 15px;

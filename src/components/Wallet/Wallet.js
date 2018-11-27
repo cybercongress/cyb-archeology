@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './wallet.css';
 import Block, { BlockRow } from '../Settings/Block';
 import Button from '../Button/Button';
+import Input from '../Input/Input';
 
 export const WalletContainer = props => (
     <div className='WalletContainer'>
@@ -65,18 +66,21 @@ export const WalletAccount = ({
 
 export class AddAccount extends React.Component {
     _handleClick = () => {
-        const inputValue = this.refs.addAccountInput.value;
+        const inputValue = this.addAccountInput.value;
 
         this.props.addCallback(inputValue);
     };
 
     render() {
         return (
-            <div>
-                <p>{this.props.addMethodName}</p>
-                <input ref='addAccountInput' placeholder={ this.props.placeholder } />
-                <button onClick={ this._handleClick }>{this.props.addMethodName}</button>
-            </div>
+            <Block noMargin={true}>
+                <BlockRow>
+                    <Input inputRef={node => { this.addAccountInput = node; }} placeholder={ this.props.placeholder } />
+                </BlockRow>
+                <BlockRow>
+                    <Button onClick={ this._handleClick }>{this.props.addMethodName}</Button>
+                </BlockRow>
+            </Block>
         );
     }
 }
@@ -106,8 +110,8 @@ export class SendFunds extends React.Component {
 
     send = () => {
         const defaultAddress = this.props.defaultAddress;
-        const recipientAddress = this.refs.recipientAddress.value;
-        const amount = this.refs.amount.value;
+        const recipientAddress = this.recipientAddress.value;
+        const amount = this.amount.value;
 
         this.props.sendCallback(defaultAddress, recipientAddress, amount);
 
@@ -123,23 +127,29 @@ export class SendFunds extends React.Component {
             <div>
                 {!showSendPanel
             && (
-                <div>
-                    <button onClick={ this.startSend }>Send</button>
-                </div>
+                <Block noMargin={true}>
+                <BlockRow>
+                    <Button onClick={ this.startSend }>Send</Button>
+                </BlockRow>
+                </Block>
             )
                 }
                 {showSendPanel
             && (
-                <div>
-                    <div>
-                        <input ref='recipientAddress' placeholder='Recipient Address' />
+                <Block noMargin={true}>
+                <BlockRow>
+                        <Input inputRef={node => { this.recipientAddress = node; }} placeholder='Recipient Address' />
+                </BlockRow>
+                    <BlockRow>
+                        <Input inputRef={node => { this.amount = node; }} placeholder='Amount' />
+                </BlockRow>
+                <BlockRow>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Button onClick={ this.cancelSend }>cancel</Button>
+                        <Button color='green' onClick={ this.send }>send</Button>
                     </div>
-                    <div>
-                        <input ref='amount' placeholder='Amount' />
-                    </div>
-                    <button onClick={ this.send }>send</button>
-                    <button onClick={ this.cancelSend }>cancel</button>
-                </div>
+                </BlockRow>
+                </Block>
             )
                 }
             </div>

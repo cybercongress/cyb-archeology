@@ -13,13 +13,13 @@ class ETHImport extends Component {
 
     render() {
         return (
-            <Container>
+            <div>
                 <AddAccount
                     addMethodName='Import'
                     placeholder='private key'
                     addCallback={ this.importAccount }
                 />
-            </Container>
+            </div>
         );
     }
 }
