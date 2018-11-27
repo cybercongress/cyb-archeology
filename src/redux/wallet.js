@@ -8,6 +8,9 @@ const initState = {
     pendingRequest: false,
     request: null,
     lastTransactionId: null,
+
+    password: null,
+    incorrectPassord: false
 };
 
 export const reducer = (state = initState, action) => {
@@ -50,6 +53,20 @@ export const reducer = (state = initState, action) => {
             lastTransactionId: action.payload,
         };
     }
+    case 'SET_ETH_PASSWORD': {
+        return {
+            ...state,
+            password: action.payload,
+            incorrectPassword: false,
+        };
+    }
+
+        case 'SET_ETH_PASSWORD_FAIL': {
+            return {
+                ...state,
+                incorrectPassword: true
+            }
+        }
 
     default:
         return state;
@@ -75,7 +92,11 @@ export const loadAccounts = () => (dispatch, getState) => new Promise((resolve) 
         return;
     }
 
-    const _accounts = Object.keys(__accounts).map(address => __accounts[address].address);
+    const _accounts = [];
+        //Object.keys(__accounts).map(address => __accounts[address].address);
+    for(let n = 0; n < web3.eth.accounts.wallet.length; n++) {
+        _accounts.push(web3.eth.accounts.wallet[n].address);
+    }
 
     Promise.all(
         _accounts.map(address => new Promise((resolve) => {
@@ -137,8 +158,11 @@ export const setDefaultAccount = account => (dispatch) => {
 export const importAccount = privateKey => (dispatch, getState) => new Promise((resolve) => {
     const data = web3.eth.accounts.privateKeyToAccount(`0x${privateKey}`);
 
-    __accounts[data.address.toLowerCase()] = data;
-    localStorage.setItem('accounts', JSON.stringify(__accounts));
+    // __accounts[data.address.toLowerCase()] = data;
+    // localStorage.setItem('accounts', JSON.stringify(__accounts));
+
+    web3.eth.accounts.wallet.add(data);
+    web3.eth.accounts.wallet.save(getState().wallet.password);
 
     dispatch(loadAccounts()).then((accounts) => {
         if (accounts.length === 1) {
@@ -153,20 +177,25 @@ export const importAccount = privateKey => (dispatch, getState) => new Promise((
 export const createAccount = () => (dispatch, getState) => {
     const data = web3.eth.accounts.create();
 
-    __accounts[data.address.toLowerCase()] = data;
-    localStorage.setItem('accounts', JSON.stringify(__accounts));
+    // __accounts[data.address.toLowerCase()] = data;
+    // localStorage.setItem('accounts', JSON.stringify(__accounts));
+    web3.eth.accounts.wallet.add(data);
+    web3.eth.accounts.wallet.save(getState().wallet.password);
 
     dispatch(loadAccounts()).then((accounts) => {
         if (accounts.length === 1) {
             dispatch(setDefaultAccount());
         }
+
     });
 }
 
 export const deleteAccount = address => (dispatch, getState) => new Promise((resolve) => {
 
-    delete __accounts[address.toLowerCase()];
-    localStorage.setItem('accounts', JSON.stringify(__accounts));
+    // delete __accounts[address.toLowerCase()];
+    // localStorage.setItem('accounts', JSON.stringify(__accounts));
+    web3.eth.accounts.wallet.remove(address.toLowerCase());
+    web3.eth.accounts.wallet.save(getState().wallet.password);
 
     const { defaultAccount } = getState().wallet;
 
@@ -328,7 +357,9 @@ export const init = endpoint => (dispatch, getState) => {
         },
 
         getPrivateKey(address, cb) {
-            const pk = __accounts[address].privateKey;
+            // const pk = __accounts[address].privateKey;
+            const pk = web3.eth.accounts.wallet[address].privateKey;
+
             if (pk) {
                 const privateKey = new Buffer(pk.substr(2), 'hex');
                 cb(null, privateKey);
@@ -374,7 +405,8 @@ export const getDefaultAccountBalance = (state) => {
 
 
 export const onCopyKey = (address) => (dispatch, getState) => {
-    const account = __accounts[address.toLowerCase()];
+    // const account = __accounts[address.toLowerCase()];
+    const account = web3.eth.accounts.wallet[address.toLowerCase()];
     const { privateKey } = account;
 
     navigator.clipboard.writeText(privateKey).then(function() {
@@ -382,4 +414,19 @@ export const onCopyKey = (address) => (dispatch, getState) => {
     }, function(err) {
         console.error('Async: Could not copy text: ', err);
     });
+}
+
+export const setPassword = (password) => (dispatch, getState) => {
+    try {
+        web3.eth.accounts.wallet.load(password);
+        dispatch({
+            type: 'SET_ETH_PASSWORD',
+            payload: password,
+        });
+    } catch (e) {
+        dispatch({
+            type: 'SET_ETH_PASSWORD_FAIL',
+        });
+    }
+
 }
