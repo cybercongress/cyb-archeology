@@ -276,7 +276,7 @@ export const approve = (gasLimit, gasPrice) => (dispatch, getState) => {
     }
 
     if (gasPrice) {
-        web3Reqest.params[0].gasPrice = web3.utils.numberToHex(+web3.utils.toWei(gasPrice, 'Gwei'));
+        web3Reqest.params[0].gasPrice = web3.utils.numberToHex(+gasPrice);
     }
 
     provider.sendAsync(web3Reqest, (e, result) => {

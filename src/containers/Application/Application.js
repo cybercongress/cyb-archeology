@@ -33,7 +33,7 @@ class Application extends Component {
     render() {
         const {
             dura, defaultEthAccount, canBack, goBack,
-            openMenu, defaultCybertAccount,
+            openMenu, defaultCybertAccount, pendingRequest,
         } = this.props;
         const homePage = dura === '';
 
@@ -42,7 +42,7 @@ class Application extends Component {
             <App openMenu={ openMenu }>
 
                 <AppMenu />
-                <ConfirmationPopup />
+                {pendingRequest && <ConfirmationPopup />}
                 {!homePage && <Status />}
                 {!homePage && <ReportBugLink />}
                 <AppHeader isHome={ homePage }>
@@ -93,6 +93,7 @@ export default connect(
         defaultEthAccount: state.wallet.defaultAccount,
         openMenu: state.appMenu.openMenu,
         defaultCybertAccount: state.cyber.defaultAccount,
+        pendingRequest: state.wallet.pendingRequest,
     }),
     {
         navigate,

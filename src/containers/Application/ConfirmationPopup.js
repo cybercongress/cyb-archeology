@@ -6,111 +6,166 @@ import { approve, reject, getDefaultAccountBalance, hidePending } from '../../re
 import Input from '../../components/Input/Input';
 
 class ConfirmationPopupContainer extends Component {
-    approve = () => {
-        const gasLimit = this.gasLimit.value;
-        const gasPrice = this.gasPrice.value;
 
-        this.props.approve(gasLimit, gasPrice);
+    constructor(props) {
+        super(props);
+
+        const request = props.request;
+        const utils = web3.utils;
+
+        const from = request.params[0].from;
+        const to = request.params[0].to;
+
+        let gasLimit;
+        let gasPrice;
+
+        if (request.params[0].gas) {
+            gasLimit = utils.hexToNumber(request.params[0].gas);
+        }
+        if (request.params[0].gasPrice) {
+            gasPrice = utils.hexToNumber(request.params[0].gasPrice);
+            if (gasPrice < 1000000000) {
+                gasPrice = 1000000000;
+            }
+            gasPrice = web3.utils.fromWei(`${gasPrice}`, 'Gwei');
+        }
+
+        const value = request.params[0].value || 0;
+        const amount = value ? utils.fromWei(value, 'ether') : 0;
+
+        this.state = {
+            from,
+            to,
+            amount,
+            gasPrice,
+            gasLimit,
+        };
+    }
+
+    approve = () => {
+        const {
+            gasLimit,
+            gasPrice,
+        } = this.state;
+
+        this.props.approve(gasLimit, web3.utils.toWei(gasPrice, 'Gwei'));
     };
 
     reject = () => {
         this.props.reject();
     };
 
-    render() {
+    getTotalAmount = () => {
+        const { utils } = web3;
+
         const {
-            pendingRequest,
-            request,
-            defaultAccountBalance,
-            lastTransactionId
-        } = this.props;
+            gasPrice,
+            gasLimit,
+            amount,
+        } = this.state;
 
-        const utils = web3.utils;
+        let totalAmount = '0';
 
-        let _from;
-        let _to;
-        let _gasLimit = 0;
-        let _gasPrice;
-        let _gasPriceGwei;
-        let _amount;
-        let totalAmount = 0;
-        let value = 0;
-
-        if (request) {
-            try {
-                value = request.params[0].value || 0;
-                _from = request.params[0].from;
-                _to = request.params[0].to;
-                if (request.params[0].gas) {
-                    _gasLimit = utils.hexToNumber(request.params[0].gas);
-                }
-                _gasPrice = utils.hexToNumber(request.params[0].gasPrice);
-                _gasPriceGwei = utils.fromWei(`${_gasPrice}`, 'Gwei');
-                _amount = value ? utils.fromWei(value, 'ether') : 0;
-                totalAmount = utils
-                    .toBN(_gasPrice)
-                    .mul(utils.toBN(_gasLimit))
-                    .add(utils.toBN(value));
-                totalAmount = utils.fromWei(totalAmount, 'ether');
-            } catch (e) {
-                console.log('Something wrong on total amount calculating');
-            }
+        try {
+            totalAmount = utils
+                .toBN(gasPrice)
+                .mul(utils.toBN(gasLimit))
+                .add(utils.toBN(utils.toWei(`${amount}`, 'ether')));
+            totalAmount = utils.fromWei(totalAmount, 'ether');
+        } catch (e) {
+            console.log('Something wrong on total amount calculating');
         }
 
+        return totalAmount;
+    };
+
+    gasPriceChange = (e) => {
+        const { value } = e.target;
+
+        if (!Number.isNaN(value) && +value >= 1) {
+            this.setState({
+                gasPrice: value,
+            });
+        } else {
+            this.setState({
+                gasPrice: 1,
+            });
+        }
+    };
+
+    gasLimitChange = (e) => {
+        const { value } = e.target;
+
+        if (!Number.isNaN(value) && +value >= 21000) {
+            this.setState({
+                gasLimit: e.target.value,
+            });
+        } else {
+            this.setState({
+                gasLimit: 21000,
+            });
+        }
+    };
+
+    render() {
+
+        const {
+            from,
+            to,
+            gasLimit,
+            gasPrice,
+            amount,
+        } = this.state;
+
+        const {
+            defaultAccountBalance,
+            lastTransactionId,
+        } = this.props;
+
+        const totalAmount = Number.parseFloat(this.getTotalAmount()).toFixed(10);
         const insufficientFunds = Number(totalAmount) > Number(defaultAccountBalance);
 
         return (
             <div>
-                {pendingRequest
-                && (
-                    <ConfirmationPopup
-                        from={ _from }
-                        to={ _to }
-                        totalAmount={ totalAmount }
-                        accountBalance={ defaultAccountBalance }
-                        insufficientFunds={ insufficientFunds }
-                        approveCallback={ this.approve }
-                        rejectCallback={ this.reject }
-                        hidePending={() => this.props.hidePending()}
-                        txHash={ lastTransactionId }
-                        content={ (
-                            <TxDetailsContainer>
-                                <span>
-                                    <div className='popup-label'>Amount (ETH):</div>
-                                    <Input
-                                        defaultValue={ _amount }
-                                        inputRef={ (node) => {
-                                            this.ethAmount = node;
-                                        } }
-                                        style={ { width: 100 } }
-                                        disabled
-                                    />
-                                </span>
-                                <span>
-                                    <div className='popup-label'>Gas price (GWEI):</div>
-                                    <Input
-                                        defaultValue={ _gasPriceGwei }
-                                        inputRef={ (node) => {
-                                            this.gasPrice = node;
-                                        } }
-                                        style={ { width: 100 } }
-                                    />
-                                </span>
-                                <span>
-                                    <div className='popup-label'>Gas limit:</div>
-                                    <Input
-                                        defaultValue={ _gasLimit }
-                                        inputRef={ (node) => {
-                                            this.gasLimit = node;
-                                        } }
-                                        style={ { width: 100 } }
-                                    />
-                                </span>
-                            </TxDetailsContainer>
-                        ) }
-                    />
-                )
-                }
+                <ConfirmationPopup
+                    from={ from }
+                    to={ to }
+                    totalAmount={ totalAmount }
+                    accountBalance={ defaultAccountBalance }
+                    insufficientFunds={ insufficientFunds }
+                    approveCallback={ this.approve }
+                    rejectCallback={ this.reject }
+                    hidePending={() => this.props.hidePending()}
+                    txHash={ lastTransactionId }
+                    content={ (
+                        <TxDetailsContainer>
+                            <span>
+                                <div className='popup-label'>Amount (ETH):</div>
+                                <Input
+                                    value={ amount }
+                                    style={ { width: 100 } }
+                                    disabled
+                                />
+                            </span>
+                            <span>
+                                <div className='popup-label'>Gas price (GWEI):</div>
+                                <Input
+                                    value={ gasPrice }
+                                    style={ { width: 100 } }
+                                    onChange={this.gasPriceChange}
+                                />
+                            </span>
+                            <span>
+                                <div className='popup-label'>Gas limit:</div>
+                                <Input
+                                    value={ gasLimit }
+                                    style={ { width: 100 } }
+                                    onChange={this.gasLimitChange}
+                                />
+                            </span>
+                        </TxDetailsContainer>
+                    ) }
+                />
             </div>
         );
     }
@@ -118,7 +173,6 @@ class ConfirmationPopupContainer extends Component {
 
 export default connect(
     state => ({
-        pendingRequest: state.wallet.pendingRequest,
         request: state.wallet.request,
         lastTransactionId: state.wallet.lastTransactionId,
         defaultAccountBalance: getDefaultAccountBalance(state),
@@ -126,6 +180,6 @@ export default connect(
     {
         approve,
         reject,
-        hidePending
+        hidePending,
     },
 )(ConfirmationPopupContainer);
