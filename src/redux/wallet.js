@@ -100,7 +100,7 @@ export const loadAccounts = () => (dispatch, getState) => new Promise((resolve) 
 
     Promise.all(
         _accounts.map(address => new Promise((resolve) => {
-            eth.getBalance(address).then((_balance) => {
+            eth.getBalance(address.toLowerCase()).then((_balance) => {
                 resolve({
                     balance: web3.utils.fromWei(_balance, 'ether'),
                     address: address,
@@ -423,10 +423,16 @@ export const setPassword = (password) => (dispatch, getState) => {
             type: 'SET_ETH_PASSWORD',
             payload: password,
         });
+
     } catch (e) {
         dispatch({
             type: 'SET_ETH_PASSWORD_FAIL',
         });
     }
 
+}
+
+export const createPassword = (password) => (dispatch, getState) => {
+    web3.eth.accounts.wallet.save(password);
+    dispatch(setPassword(password));
 }
