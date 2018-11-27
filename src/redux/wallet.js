@@ -122,13 +122,14 @@ export const setDefaultAccount = account => (dispatch) => {
     let balance;
     if (!account) {
         const defaultAccount = localStorage.getItem('defaultEthAccount') || '';
-        if (Object.keys(__accounts).length > 0) {
+        if (web3.eth.accounts.wallet.length > 0) {
             if (defaultAccount) {
                 address = defaultAccount;
             } else {
-                Object.keys(__accounts).forEach(_address => {
-                    address = __accounts[_address].address;
-                });
+                address = web3.eth.accounts.wallet[0].address;
+                // Object.keys(__accounts).forEach(_address => {
+                //     address = __accounts[_address].address;
+                // });
             }
             balance = eth.getBalance(address);
         }
@@ -218,7 +219,7 @@ export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => () => n
         from: _from,
         to,
         value: web3.utils.toWei(amount, 'ether'),
-        gas: 2100000,
+        gas: 210000,
     }).on('transactionHash', (hash) => {
         console.log('transactionHash', hash);
     })
@@ -426,7 +427,8 @@ export const setPassword = (password) => (dispatch, getState) => {
             type: 'SET_ETH_PASSWORD',
             payload: password,
         });
-
+        dispatch(loadAccounts())
+            .then(() => dispatch(setDefaultAccount()));
     } catch (e) {
         dispatch({
             type: 'SET_ETH_PASSWORD_FAIL',
@@ -441,6 +443,7 @@ export const createPassword = (password) => (dispatch, getState) => {
         payload: password,
     });
     dispatch(createAccount());
+
     // dispatch(setPassword(password));
     // web3.eth.accounts.wallet.save(password);
 }
