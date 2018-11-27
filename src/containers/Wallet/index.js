@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { Message } from '@cybercongress/ui';
 import EthAccounts from './EthAccounts';
 import ETHImport from './ETHImport';
 import EthSend from './EthSend';
@@ -15,20 +16,12 @@ import { WalletContainer } from '../../components/Wallet/Wallet';
 import WalletLauout, { WalletSidebar, WalletContent } from '../../components/Wallet/WalletLauout/WalletLauout';
 import WalletTabs, { WalletTab } from '../../components/Wallet/WalletTabs/WalletTabs';
 
-import Block, { BlockRow, RowItem } from '../../components/Settings/Block';
-import {
-    SettingLabel, SettingRow,
-} from '../../components/Settings/Settings';
-import Input from '../../components/Input/Input';
-import Button from '../../components/Button/Button';
-import { setPassword, createPassword } from '../../redux/wallet';
-import { Message } from '@cybercongress/ui';
+import RequirePassword from '../Application/RequirePassword';
 
 class Page extends Component {
     state = {
         tab: 'eth',
         menu: 'accounts',
-        createPassword: false
     };
 
     select = (tab) => {
@@ -37,87 +30,16 @@ class Page extends Component {
 
     selectMenu = (menu) => {
         this.setState({ menu });
-    }
-
-    login = () => {
-        const password = this.password.value;
-        this.props.setPassword(password);
-    }
-
-    setPassord = () => {
-        this.setState({ createPassword: true });
-    }
-
-    cancel = () => {
-        this.setState({ createPassword: false });
-    }
-
-    createPassword = () => {
-        const password1 = this.password1.value;
-        const password2 = this.password2.value;
-        if (password1 === password2) {
-            this.props.createPassword(password1);
-        }
-    }
+    };
 
     render() {
-        const { password, incorrectPassword } = this.props;
-        const { createPassword } = this.state;
+        const { password } = this.props;
 
         if (!password) {
             return (
                 <WalletContainer>
                     <Titile>/Set passord</Titile>
-                    <Block style={{ width: 400 }}>
-                        {createPassword ? (
-                            <div>
-                                <BlockRow key={'create1'}>
-                                    <SettingRow>
-                                        <SettingLabel>password</SettingLabel>
-                                        <Input inputRef={ node => this.password1 = node }/>
-                                    </SettingRow>
-                                </BlockRow>
-                                <BlockRow key={'create2'}>
-                                    <SettingRow>
-                                        <SettingLabel>confirm password</SettingLabel>
-                                        <Input inputRef={ node => this.password2 = node }/>
-                                    </SettingRow>
-                                </BlockRow>
-                                <BlockRow>
-                                    <div style={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between'
-                                    }}>
-                                        <Button onClick={this.cancel}>cancel</Button>
-                                        <Button onClick={this.createPassword} color={'green'}>create</Button>
-                                    </div>
-                                </BlockRow>
-                            </div>
-                            ) : (
-                            <div>
-                                {incorrectPassword && (
-                                    <BlockRow>
-                                        <Message type={'error'}>incorrect password</Message>
-                                    </BlockRow>
-                                )}
-                                <BlockRow>
-                                    <SettingRow key={'login'}>
-                                        <SettingLabel>password</SettingLabel>
-                                        <Input inputRef={ node => this.password = node }/>
-                                    </SettingRow>
-                                </BlockRow>
-                                <BlockRow>
-                                    <div style={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between'
-                                    }}>
-                                        <Button onClick={this.setPassord}>set passord</Button>
-                                        <Button onClick={this.login} color={'green'}>login</Button>
-                                    </div>
-                                </BlockRow>
-                            </div>
-                            )}
-                    </Block>
+                    <RequirePassword />
                 </WalletContainer>
             );
         }
@@ -217,8 +139,6 @@ send tokens
     }
 }
 
-
 export default connect(state => ({
     password: state.wallet.password,
-    incorrectPassword: state.wallet.incorrectPassword
-}), { setPassword, createPassword })(Page);
+}))(Page);

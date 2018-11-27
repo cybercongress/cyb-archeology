@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Message } from '@cybercongress/ui';
 import { navigate, goBack } from '../../redux/browser';
 import { toggleMenu } from '../../redux/appMenu';
 import AddToAppMenuButton, { Container } from '../../components/AddToAppMenuButton/AddToAppMenuButton';
@@ -51,6 +52,17 @@ class Application extends Component {
                             <MenuButton onClick={ this.props.toggleMenu } />
                         </NavigationLeft>
                         <NavigationCenter>
+                            <Message
+                              style={{
+                                    position: 'fixed',
+                                    top: 10,
+                                    left: 75,
+                                    width: 340,
+                                }}
+                              type='info'
+                            >
+Cyb in Ethereum Mainnet may not be secure yet. We recommend to operate accounts with small balance at your own risk.
+                            </Message>
                             <NavigationContainer>
                                 {!homePage && <BackButton disabled={ !canBack } onClick={ goBack }>&#8592;</BackButton>}
                                 <Container>

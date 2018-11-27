@@ -1,6 +1,7 @@
 import Web3 from 'web3';
 import axios from 'axios';
 import Cyber from '../cyber/Cyber';
+import { navigate } from './browser';
 
 const initState = {
     accounts: [],
@@ -10,7 +11,7 @@ const initState = {
     lastTransactionId: null,
 
     password: null,
-    incorrectPassord: false
+    incorrectPassword: false,
 };
 
 export const reducer = (state = initState, action) => {
@@ -61,12 +62,12 @@ export const reducer = (state = initState, action) => {
         };
     }
 
-        case 'SET_ETH_PASSWORD_FAIL': {
-            return {
-                ...state,
-                incorrectPassword: true
-            }
-        }
+    case 'SET_ETH_PASSWORD_FAIL': {
+        return {
+            ...state,
+            incorrectPassword: true
+        };
+    }
 
     default:
         return state;
@@ -361,6 +362,11 @@ export const init = endpoint => (dispatch, getState) => {
         getAccounts(cb) {
             // show address with low and upper literal
             // const accounts = Object.keys(__accounts).map(address => __accounts[address].address.toLowerCase());
+
+            if (!getState().wallet.password) {
+                dispatch(navigate('wallet.cyb'));
+            }
+
             const accounts = getState().wallet.defaultAccount ? [getState().wallet.defaultAccount.toLowerCase()] : [];
 
             cb(null, accounts);
@@ -426,7 +432,7 @@ export const onCopyKey = (address) => (dispatch, getState) => {
     });
 }
 
-export const setPassword = (password) => (dispatch, getState) => {
+export const login = (password) => (dispatch, getState) => {
     try {
         web3.eth.accounts.wallet.load(password);
         if (web3.eth.accounts.wallet.length === 0) {
@@ -453,6 +459,6 @@ export const createPassword = (password) => (dispatch, getState) => {
     });
     dispatch(createAccount());
 
-    // dispatch(setPassword(password));
+    // dispatch(login(password));
     // web3.eth.accounts.wallet.save(password);
 }

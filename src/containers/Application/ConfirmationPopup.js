@@ -4,6 +4,7 @@ import web3 from 'web3';
 import ConfirmationPopup, { TxDetailsContainer } from '../../components/ConfirmationPopup/ConfirmationPopup';
 import { approve, reject, getDefaultAccountBalance, hidePending } from '../../redux/wallet';
 import Input from '../../components/Input/Input';
+import RequirePassword from './RequirePassword';
 
 class ConfirmationPopupContainer extends Component {
 
@@ -109,6 +110,12 @@ class ConfirmationPopupContainer extends Component {
 
     render() {
 
+        if (!this.props.password) {
+            return (
+                <RequirePassword />
+            );
+        }
+
         const {
             from,
             to,
@@ -176,6 +183,7 @@ export default connect(
         request: state.wallet.request,
         lastTransactionId: state.wallet.lastTransactionId,
         defaultAccountBalance: getDefaultAccountBalance(state),
+        password: state.wallet.password,
     }),
     {
         approve,
