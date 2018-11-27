@@ -18,12 +18,6 @@ matrix:
       services: docker
       language: generic
 
-before_script:
-  #install yarn globally
-  - npm install -g yarn
-  # yarn install is like npm install
-  - yarn install
-
 script:
   - |
     if [ "$TRAVIS_OS_NAME" == "linux" ]; then
@@ -35,7 +29,7 @@ script:
          electronuserland/builder:wine \
          /bin/bash -c ' CI=false yarn --link-duplicates --pure-lockfile && CI=false yarn run release --publish onTag --linux --win'
     else
-      CI=false yarn --link-duplicates --pure-lockfile run release --publish onTag
+      CI=false yarn run release --publish onTag
     fi
 before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
