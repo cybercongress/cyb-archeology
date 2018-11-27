@@ -25,7 +25,7 @@ class Page extends Component {
         this.setState({ tab });
     };
 
-    selectMenu = (menu) => {        
+    selectMenu = (menu) => {
         this.setState({ menu });
     }
 
@@ -87,7 +87,7 @@ eth
                                   onClick={ () => this.select('cyb') }
                                   isActive={ tab === 'cyb' }
                                 >
-cyber
+cyb
                                 </WalletTab>
                             </WalletTabs>
                         </div>

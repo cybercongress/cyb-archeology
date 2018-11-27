@@ -222,6 +222,11 @@ export const getStatus = url => new Promise((resolve) => {
 
 export const reject = () => (dispatch, getState) => {
     dispatch(hidePending());
+
+    if (!wv) {
+        return;
+    }
+    wv.send('web3_eth_call_reject', web3Reqest);
 };
 
 

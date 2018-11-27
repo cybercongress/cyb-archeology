@@ -60,7 +60,7 @@ class CyberAccounts extends Component {
 balance:
                                 {defaultAccountBalance}
                                 {' '}
-CYBERD
+CYB
                             </div>
                             <div>
                                 <Button onClick={() => this.props.onCopyKey(defaultAccount)}>COPY PRIVATE KEY</Button>
@@ -98,7 +98,7 @@ MAKE MAIN
 balance:
                                 {account.balance}
                                 {' '}
-CYBERD
+CYB
                             </div>
                             <div>
                                 <Button

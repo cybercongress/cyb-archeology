@@ -15,6 +15,15 @@ class ElectronProvider extends EventEmitter {
             }
         });
 
+        ipcRenderer.on('web3_eth_call_reject', (_, payload) => {
+            const id = payload.id || payload[0].id;
+
+            if (this._providerCallbacks[id]) {
+                this._providerCallbacks[id]('reject');
+            }
+        });
+
+
         ipcRenderer.on('web3_eth_event_data', (_, payload) => {
             this.emit('data', payload);
         });

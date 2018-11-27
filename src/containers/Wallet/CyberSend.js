@@ -45,7 +45,7 @@ class CyberSend extends Component {
                                 balance:
                                 {defaultAccountBalance}
                                 {' '}
-                                CYBERD
+                                CYB
                             </div>
                             <div>
                                 <Button onClick={() => this.props.onCopyKey(defaultAccountAddress)}>COPY PRIVATE KEY</Button>

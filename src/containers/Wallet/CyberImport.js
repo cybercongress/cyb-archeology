@@ -21,7 +21,7 @@ class CyberImport extends Component {
         return (
             <WalletContainer>
                 <AddAccount
-                    addMethodName='Recover'
+                    addMethodName='Import'
                     placeholder='seed phrase or private key'
                     addCallback={ this.restoreAccount }
                 />
