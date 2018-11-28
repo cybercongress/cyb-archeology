@@ -87,12 +87,23 @@
   background: url('./createApp.svg') no-repeat center center;
 }
 
+.imagechaingear {
+  background: url('./group-1.png') no-repeat center center;
+}
+
+.imagedragonereum {
+  background: url('./group-2.png') no-repeat center center;
+}
+
+.imagewallet {
+  background: url('./group-6.png') no-repeat center center;
+}
 
 
 .linkList {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 100px;
+  padding-bottom: 50px;
 }
 
 .linkItem {

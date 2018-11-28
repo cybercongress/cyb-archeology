@@ -38,4 +38,8 @@ export const FavoriteButton = ({ isFavorited, ...props }) => {
     );
 }
 
+export const SearchIcon = (props) => (
+    <div {...props} className={style.searchIcon}/>
+)
+
 export default SearchInput;

@@ -6,6 +6,7 @@ import SearchInput, {
     BackButton, ForwardButton, NavigationContainer,
     FavoriteButton,
     FavoriteButtonContainer,
+    SearchIcon,
 } from '../../components/SearchInput/SearchInput';
 import { isFavoritedPage, toggleFavorited } from '../../redux/appMenu';
 
@@ -35,6 +36,7 @@ class Navigation extends Component {
             <NavigationContainer>
                 {!homePage && <BackButton disabled={ !canBack } onClick={ this.props.goBack } />}
                 <FavoriteButtonContainer>
+                    {!!homePage && <SearchIcon />}
                     <SearchInput
                         inputRef={ (node) => {
                             this.input = node;
@@ -43,10 +45,10 @@ class Navigation extends Component {
                         defaultValue={ dura }
                         onKeyPress={ this._handleKeyPress }
                     />
-                    <FavoriteButton
+                    {!homePage && <FavoriteButton
                         isFavorited={isFavorited}
                         onClick={this.props.toggleFavorited}
-                    />
+                    />}
                 </FavoriteButtonContainer>
                 {!homePage && <ForwardButton disabled />}
             </NavigationContainer>

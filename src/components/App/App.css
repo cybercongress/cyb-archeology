@@ -24,7 +24,7 @@
 }
 
 .app__header.app__header--open {
-	min-height: 550px;
+	min-height: 450px;
 }
 
 .app__header-container {

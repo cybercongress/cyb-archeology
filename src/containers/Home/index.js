@@ -14,20 +14,21 @@ class HomePage extends Component {
         return (
             <Home>
                 <Items>
-                    <Item dura='wallet.cyb'>
-                        <ItemTitle>Wallet</ItemTitle>
-                        <Image type='appStore' />
+                    <Item dura='.chaingear'>
+                        <ItemTitle>Chaingear</ItemTitle>
+                        <Image type='chaingear' />
                         <Arrow />
                     </Item>
 
                     <Item dura='.dragons'>
                         <ItemTitle>Dragonereum</ItemTitle>
-                        <Image type='createRegistry' />
+                        <Image type='dragonereum' />
                         <Arrow />
                     </Item>
-                    <Item dura='.chaingear'>
-                        <ItemTitle>Chaingear</ItemTitle>
-                        <Image type='createApp' />
+
+                    <Item dura='wallet.cyb'>
+                        <ItemTitle>Wallet</ItemTitle>
+                        <Image type='wallet' />
                         <Arrow />
                     </Item>
                 </Items>
