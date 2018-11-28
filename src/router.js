@@ -8,7 +8,7 @@ import Settings from './Settings';
 import Wallet from './containers/Wallet';
 import NotFound from './NotFound';
 import Browser from './Browser';
-import Home from './Home';
+import Home from './containers/Home';
 import AppStore from './containers/AppStore/AppStore';
 
 const AppRouter = () => (
