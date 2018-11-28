@@ -12,8 +12,8 @@ const ConfirmationPopup = ({
 }) => (
     <div className='confirmation-popup'>
         <span>
-            <Title inline style={ { color: 'black' } }>Transaction confirmation</Title>
             <Block>
+            <Title inline style={ { color: 'black' } }>Transaction confirmation</Title>
                 <BlockRow>
                     <div className='confirmation-popup__popup'>
                         <Row>
