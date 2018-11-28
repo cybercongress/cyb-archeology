@@ -192,8 +192,6 @@ export const importAccount = privateKey => (dispatch, getState) => new Promise((
     });
 });
 
-
-
 export const createAccount = () => (dispatch, getState) => {
     const data = web3.eth.accounts.create();
 
@@ -208,7 +206,16 @@ export const createAccount = () => (dispatch, getState) => {
         }
 
     });
-}
+};
+
+export const changePassword = (newPassword) => (dispatch, getState) => {
+    web3.eth.accounts.wallet.save(newPassword);
+
+    dispatch({
+        type: 'SET_ETH_PASSWORD',
+        payload: newPassword,
+    });
+};
 
 export const deleteAccount = address => (dispatch, getState) => new Promise((resolve) => {
 

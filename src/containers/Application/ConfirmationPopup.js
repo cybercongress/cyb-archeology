@@ -4,7 +4,7 @@ import web3 from 'web3';
 import ConfirmationPopup, { TxDetailsContainer } from '../../components/ConfirmationPopup/ConfirmationPopup';
 import { approve, reject, getDefaultAccountBalance, hidePending } from '../../redux/wallet';
 import Input from '../../components/Input/Input';
-import RequirePassword from './RequirePassword';
+import RequirePassword from './Login';
 
 class ConfirmationPopupContainer extends Component {
 

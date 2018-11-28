@@ -9,7 +9,7 @@ import { createPassword, login, isLoginExist } from '../../redux/wallet';
 import Titile from '../../components/Titile/Titile';
 import LoginContainer from '../../components/LoginContainer/LoginContainer';
 
-class RequirePassword extends Component {
+class Login extends Component {
 
     login = () => {
         const password = this.password.value;
@@ -68,19 +68,9 @@ class RequirePassword extends Component {
                                     </BlockRow>
                                 )}
                                 <BlockRow>
-                                    <SettingRow key='login'>
-                                        <SettingLabel>password</SettingLabel>
-                                        <Input type='password' inputRef={ node => this.password = node } />
-                                    </SettingRow>
-                                </BlockRow>
-                                <BlockRow>
-                                    <div style={ {
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                    } }
-                                    >
-                                        <Button onClick={ this.login } color='green'>Login</Button>
-                                    </div>
+                                    <SettingLabel style={{ width: 90 }}>password</SettingLabel>
+                                    <Input style={{ width: 150 }} type='password' inputRef={ node => this.password = node } />
+                                    <Button style={{ marginLeft: 25 }} onClick={ this.login } color='green'>Login</Button>
                                 </BlockRow>
                             </div>
                         )}
@@ -94,4 +84,4 @@ class RequirePassword extends Component {
 export default connect(state => ({
     password: state.wallet.password,
     incorrectPassword: state.wallet.incorrectPassword,
-}), { setPassword: login, createPassword, isLoginExist })(RequirePassword);
+}), { setPassword: login, createPassword, isLoginExist })(Login);

@@ -16,7 +16,8 @@ import { WalletContainer } from '../../components/Wallet/Wallet';
 import WalletLauout, { WalletSidebar, WalletContent } from '../../components/Wallet/WalletLauout/WalletLauout';
 import WalletTabs, { WalletTab } from '../../components/Wallet/WalletTabs/WalletTabs';
 
-import RequirePassword from '../Application/RequirePassword';
+import RequirePassword from '../Application/Login';
+import ChangePassword from '../Application/ChangePassword';
 
 class Page extends Component {
     state = {
@@ -81,6 +82,12 @@ class Page extends Component {
             );
         }
 
+        if (menu === 'changePassword') {
+            content = (
+                <ChangePassword />
+            );
+        }
+
         return (
             <WalletContainer>
                 <Titile>/Wallet</Titile>
@@ -122,6 +129,12 @@ import account
                                   isActive={ menu === 'send' }
                                 >
 send tokens
+                                </WalletTab>
+                                <WalletTab
+                                    onClick={ () => this.selectMenu('changePassword') }
+                                    isActive={ menu === 'changePassword' }
+                                >
+                                    Change password
                                 </WalletTab>
                             </WalletTabs>
 
