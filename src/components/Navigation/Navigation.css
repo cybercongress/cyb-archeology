@@ -9,10 +9,10 @@
 }
 
 .navigation__left {
-	width: 150px;
+	width: 100px;
 	transition: visibility 1s, opacity 1s;
 	opacity: 1;
-	visibility:visible;	
+	visibility:visible;
 }
 
 .navigation--hide-lr .navigation__left {
@@ -21,11 +21,11 @@
 }
 
 .navigation__right {
-	width: 150px;
+	width: 100px;
 	flex-grow: 0;
 	transition: visibility 1s, opacity 1s;
 	opacity: 1;
-	visibility:visible;	
+	visibility:visible;
 }
 
 .navigation--hide-lr .navigation__right {
@@ -49,7 +49,11 @@
 	padding: 0;
 	justify-content: space-between;
 	cursor: pointer;
+	width: 24px;
+	align-items: center;
 }
+
+
 
 .MenuButton_line1 {
 	background: #fff;
@@ -67,4 +71,22 @@
 	background: #fff;
 	width: 24px;
 	height: 2px;
+}
+
+.MenuButton--open .MenuButton_line1 {
+	width: 2px;
+	border: 2px solid #fff;
+	border-radius: 50%;
+}
+
+.MenuButton--open .MenuButton_line2 {
+	width: 2px;
+	border: 2px solid #fff;
+	border-radius: 50%;
+}
+
+.MenuButton--open .MenuButton_line3 {
+	width: 2px;
+	border: 2px solid #fff;
+	border-radius: 50%;
 }
