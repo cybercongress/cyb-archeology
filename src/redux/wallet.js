@@ -488,3 +488,9 @@ export const createPassword = (password) => (dispatch, getState) => {
     // dispatch(login(password));
     // web3.eth.accounts.wallet.save(password);
 }
+
+export const isLoginExist = () => {
+    const cryptoWallet = localStorage.getItem('web3js_wallet');
+
+    return !!cryptoWallet;
+};
