@@ -169,7 +169,9 @@ export const setDefaultAccount = account => (dispatch) => {
         });
     }
 
-    localStorage.setItem('defaultEthAccount', address);
+    if (!!address) {
+        localStorage.setItem('defaultEthAccount', address);
+    }
 };
 
 export const importAccount = privateKey => (dispatch, getState) => new Promise((resolve) => {
