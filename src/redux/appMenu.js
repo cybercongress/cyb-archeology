@@ -156,3 +156,21 @@ export const addMenuItem = (name, dura) => (dispatch, getState) => {
     });
     dispatch(saveMenuItemsInLs());
 };
+
+
+export const isFavoritedPage = (state) => {
+    const menuItems = state.appMenu.items;
+    const currentDura = state.browser.dura;
+
+    return menuItems.find(item => item.rootDura === currentDura);
+}
+
+export const toggleFavorited = () => (dispatch, getState) => {
+    const state = getState();
+    if (!isFavoritedPage(state)) {
+        dispatch(showInput());
+    } else {
+        const currentDura = state.browser.dura;
+        dispatch(deleteMenuItem(currentDura));
+    }
+}

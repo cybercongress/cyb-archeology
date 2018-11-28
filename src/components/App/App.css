@@ -12,7 +12,7 @@
 
 
 .app__header {
-	min-height: 109px;
+	min-height: 60px;
 	flex-shrink: 0;
 	flex-grow: 0;
 	background: #438cef;
@@ -20,6 +20,7 @@
 	transition: min-height 1s;
 	display: flex;
 	align-items: center;
+	-webkit-app-region: drag;
 }
 
 .app__header.app__header--open {
