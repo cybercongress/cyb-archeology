@@ -27,7 +27,9 @@ class Login extends Component {
     };
 
     componentDidMount() {
-        this.password.focus();
+        if (this.password) {
+            this.password.focus();
+        }
     }
 
     render() {

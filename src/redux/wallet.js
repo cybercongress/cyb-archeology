@@ -2,6 +2,7 @@ import Web3 from 'web3';
 import axios from 'axios';
 import Cyber from '../cyber/Cyber';
 import { navigate } from './browser';
+import { setEthNetworkName } from './settings';
 
 const initState = {
     accounts: [],
@@ -432,6 +433,22 @@ export const init = endpoint => (dispatch, getState) => {
         if (wv && method && method.indexOf('_subscription') > -1) {
             // Emit subscription notification
             wv.send('web3_eth_event_data', payload);
+        }
+    });
+
+    web3.eth.net.getId((err, netId) => {
+        switch (netId) {
+            case 1:
+                dispatch(setEthNetworkName('Main'));
+                break;
+            case 42:
+                dispatch(setEthNetworkName('Kovan'));
+                break;
+            case 4:
+                dispatch(setEthNetworkName('Rinkeby'));
+                break;
+            default:
+                dispatch(setEthNetworkName(`ID: ${netId}`));
         }
     });
 

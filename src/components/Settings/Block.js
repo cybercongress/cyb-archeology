@@ -17,8 +17,8 @@ const Block = ({ children, noMargin,  ...props }) => (
     </div>
 );
 
-export const BlockRow = ({ children }) => (
-    <div className='block__row'>
+export const BlockRow = ({ children, ...props }) => (
+    <div {...props} className='block__row'>
         {children}
     </div>
 );

@@ -5,33 +5,17 @@ import * as actions from './redux/settings';
 import Container from './components/Container/Container';
 import Titile from './components/Titile/Titile';
 import Button from './components/Button/Button';
-import Block, { BlockRow, RowItem } from './components/Settings/Block';
+import Block, { BlockRow } from './components/Settings/Block';
 import Input from './components/Input/Input';
-import Indicator, { SettingsIndicator } from './components/Indicator/Indicator';
+import { SettingsIndicator } from './components/Indicator/Indicator';
 import {
     ConnectionContainer,
     NodeStatusContainer,
     SettingLabel, SettingRow,
     SettingsContainer,
 } from './components/Settings/Settings';
-import CybLink from './components/CybLink';
-
-const _IPFS_END_POINT = 'IPFS_END_POINT';
-const _PARITY_END_POINT = 'PARITY_END_POINT';
-const _CYBERD_END_POINT = 'CYBERD_END_POINT';
 
 class Settings extends Component {
-    updateIPFS = (endpoint) => {
-        this.props.setIPFS(endpoint);
-    };
-
-    updateParity = (endpoint) => {
-        this.props.setParity(endpoint);
-    };
-
-    updateCyberd = (endpoint) => {
-        this.props.setSearch(endpoint);
-    };
 
     componentWillMount() {
         this.props.checkStatus();
@@ -41,34 +25,38 @@ class Settings extends Component {
         if (this.props.IPFS_END_POINT !== nextProps.IPFS_END_POINT
             || this.props.PARITY_END_POINT !== nextProps.PARITY_END_POINT
             || this.props.CYBERD_END_POINT !== nextProps.CYBERD_END_POINT) {
-            this.IPFS_END_POINT.value = nextProps.IPFS_END_POINT;
-            this.PARITY_END_POINT.value = nextProps.PARITY_END_POINT;
-            this.CYBERD_END_POINT.value = nextProps.CYBERD_END_POINT;
+            this.ipfsInput.value = nextProps.IPFS_END_POINT;
+            this.ethInput.value = nextProps.PARITY_END_POINT;
+            this.cyberdInput.value = nextProps.CYBERD_END_POINT;
         }
     }
 
-    updateEndpoint = (name) => {
-        let endpoint;
+    updateIPFS = () => {
+        this.props.setIPFS(this.ipfsInput.value);
+    };
 
-        switch (name) {
-        case _IPFS_END_POINT: {
-            endpoint = this.IPFS_END_POINT.value;
-            this.updateIPFS(endpoint);
-            break;
-        }
-        case _PARITY_END_POINT: {
-            endpoint = this.PARITY_END_POINT.value;
-            this.updateParity(endpoint);
-            break;
-        }
-        case _CYBERD_END_POINT: {
-            endpoint = this.CYBERD_END_POINT.value;
-            this.updateCyberd(endpoint);
-            break;
-        }
-        default: {
-        }
-        }
+    updateCyberd = () => {
+        this.props.setSearch(this.cyberdInput.value);
+    };
+
+    updateEth = (endpoint) => {
+        this.props.setParity(endpoint);
+    };
+
+    setEthMain = () => {
+        this.updateEth('https://mainnet.infura.io');
+    };
+
+    setEthKovan = () => {
+        this.updateEth('https://kovan.infura.io');
+    };
+
+    setEthRinkeby = () => {
+        this.updateEth('https://rinkeby.infura.io');
+    };
+
+    setEthCustom = () => {
+        this.updateEth(this.ethInput.value)
     };
 
     render() {
@@ -96,22 +84,28 @@ class Settings extends Component {
                                 <SettingRow>
                                     <SettingLabel>IPFS node:</SettingLabel>
                                     <Input
-                                      style={ { width: 200 } } inputRef={ node => this.IPFS_END_POINT = node }
-                                      defaultValue={ IPFS_END_POINT }
+                                        inputRef={ node => this.ipfsInput = node }
+                                        defaultValue={ IPFS_END_POINT }
+                                        style={ { width: 200 } }
                                     />
-                                    <Button onClick={ () => this.updateEndpoint(_IPFS_END_POINT) }>update</Button>
+                                    <Button onClick={ this.updateIPFS }>update</Button>
                                 </SettingRow>
                             </BlockRow>
 
                             <BlockRow>
                                 <SettingRow>
-
-                                    <SettingLabel>Parity node:</SettingLabel>
+                                    <SettingLabel>ETH node:</SettingLabel>
                                     <Input
-                                        style={ { width: 200 } } inputRef={ node => this.PARITY_END_POINT = node }
+                                        inputRef={ node => this.ethInput = node }
                                         defaultValue={ PARITY_END_POINT }
+                                        style={ { width: 200 } }
                                     />
-                                    <Button onClick={ () => this.updateEndpoint(_PARITY_END_POINT) }>update</Button>
+                                    <Button onClick={ this.setEthCustom }>update</Button>
+                                </SettingRow>
+                                <SettingRow style={{marginTop: 20}}>
+                                    <Button onClick={this.setEthMain}>Main</Button>
+                                    <Button onClick={this.setEthRinkeby}>Rikenby</Button>
+                                    <Button onClick={this.setEthKovan}>Kovan</Button>
                                 </SettingRow>
                             </BlockRow>
 
@@ -119,10 +113,11 @@ class Settings extends Component {
                                 <SettingRow>
                                     <SettingLabel>cyberd node:</SettingLabel>
                                     <Input
-                                        style={ { width: 200 } } inputRef={ node => this.CYBERD_END_POINT = node }
-                                      defaultValue={ CYBERD_END_POINT }
+                                        inputRef={ node => this.cyberdInput = node }
+                                        defaultValue={ CYBERD_END_POINT }
+                                        style={ { width: 200 } }
                                     />
-                                    <Button onClick={ () => this.updateEndpoint(_CYBERD_END_POINT) }>update</Button>
+                                    <Button onClick={ this.updateCyberd }>update</Button>
                                 </SettingRow>
                             </BlockRow>
 
@@ -136,7 +131,7 @@ class Settings extends Component {
                                     <SettingsIndicator status={ ipfsStatus } />
                                 </SettingRow>
                             </BlockRow>
-                            <BlockRow>
+                            <BlockRow style={{ height: 110}}>
                                 <SettingRow>
                                     <SettingsIndicator status={ parityStatus } />
                                 </SettingRow>

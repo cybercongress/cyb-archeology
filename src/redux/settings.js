@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { init as initWallet, getStatus } from './wallet';
+import { init as initWallet, getStatus, login } from './wallet';
 
 const initState = {
     IPFS_END_POINT: 'http://earth.cybernode.ai:34402',
@@ -10,6 +10,7 @@ const initState = {
     ipfsStatus: 'fail',
     ethNodeStatus: 'fail',
     cyberNodeStatus: 'fail',
+    ethNetworkName: null,
 };
 
 export const reducer = (state = initState, action) => {
@@ -54,6 +55,13 @@ export const reducer = (state = initState, action) => {
         };
     }
 
+    case 'SET_ETH_NETWORK_NAME': {
+        return {
+            ...state,
+            ethNetworkName: action.payload,
+        };
+    }
+
     default:
         return state;
     }
@@ -91,6 +99,18 @@ export const setParity = PARITTY_END_POINT => (dispatch, getState) => {
     dispatch(saveSettingsInLS());
     dispatch(initWallet(PARITTY_END_POINT));
     dispatch(checkStatus());
+
+    const { password } = getState().wallet;
+    if (!!password) {
+        dispatch(login(password));
+    }
+};
+
+export const setEthNetworkName = ethNetworkName => (dispatch, getState) => {
+    dispatch({
+        type: 'SET_ETH_NETWORK_NAME',
+        payload: ethNetworkName,
+    });
 };
 
 export const setSearch = SEARCH_END_POINT => (dispatch, getState) => {
