@@ -26,6 +26,10 @@ class Login extends Component {
         }
     };
 
+    componentDidMount() {
+        this.password.focus();
+    }
+
     render() {
         const { incorrectPassword } = this.props;
         const isUserExist = isLoginExist();
@@ -68,9 +72,11 @@ class Login extends Component {
                                     </BlockRow>
                                 )}
                                 <BlockRow>
-                                    <SettingLabel style={{ width: 90 }}>password</SettingLabel>
-                                    <Input style={{ width: 150 }} type='password' inputRef={ node => this.password = node } />
-                                    <Button style={{ marginLeft: 25 }} onClick={ this.login } color='green'>Login</Button>
+                                    <form onSubmit={this.login}>
+                                        <SettingLabel style={{ width: 90 }}>password</SettingLabel>
+                                        <Input style={{ width: 150 }} type='password' inputRef={ node => this.password = node } />
+                                        <Button style={{ marginLeft: 25 }} onClick={ this.login } color='green'>Login</Button>
+                                    </form>
                                 </BlockRow>
                             </div>
                         )}

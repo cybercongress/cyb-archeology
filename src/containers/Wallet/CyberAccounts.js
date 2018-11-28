@@ -46,21 +46,22 @@ class CyberAccounts extends Component {
                 <AccountCardRight>
                     <AccountCardContent>
                         <AccountCardContentItem>
-                        address:
+                        Address:
                             {' '}
                             {defaultAccount}
                         </AccountCardContentItem>
                         <AccountCardContentItem>
-                        public key:
+                        Public key:
                             {' '}
                             {defaultAccountPublicKey}
                         </AccountCardContentItem>
                         <AccountCardContentItem>
                             <div>
-balance:
+                                Balance:
+                                {' '}
                                 {defaultAccountBalance}
                                 {' '}
-CYB
+                                CYB
                             </div>
                             <div>
                                 <Button onClick={() => this.props.onCopyKey(defaultAccount)}>COPY PRIVATE KEY</Button>
@@ -78,27 +79,28 @@ CYB
                     <SelectButton
                       onClick={ () => this.setDefaultAccount(account) }
                     >
-MAKE MAIN
+                        MAKE MAIN
                     </SelectButton>
                 </AccountCardLeft>
                 <AccountCardRight>
                     <AccountCardContent>
                         <AccountCardContentItem>
-                        address:
+                            Address:
                             {' '}
                             {account.address}
                         </AccountCardContentItem>
                         <AccountCardContentItem>
-                        public key:
+                            Public key:
                             {' '}
                             {account.publicKey}
                         </AccountCardContentItem>
                         <AccountCardContentItem>
                             <div>
-balance:
+                                Balance:
+                                {' '}
                                 {account.balance}
                                 {' '}
-CYB
+                                CYB
                             </div>
                             <div>
                                 <Button
@@ -106,7 +108,7 @@ CYB
                                   style={ { marginRight: 10 } }
                                   color='red'
                                 >
-REMOVE
+                                    REMOVE
                                 </Button>
                                 <Button onClick={() => this.props.onCopyKey(account.address)}>COPY PRIVATE KEY</Button>
                             </div>

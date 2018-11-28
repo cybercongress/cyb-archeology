@@ -54,16 +54,17 @@ class EthAccounts extends Component {
                 <AccountCardRight>
                     <AccountCardContent>
                         <AccountCardContentItem>
-                        address:
+                        Address:
                             {' '}
                             {defaultAccount}
                         </AccountCardContentItem>
                         <AccountCardContentItem>
                             <div>
-balance:
+                                Balance:
+                                {' '}
                                 {defaultAccountBalance}
                                 {' '}
-ETH
+                                ETH
                             </div>
                             <div>
                                 <Button onClick={() => this.props.onCopyKey(defaultAccount)}>COPY PRIVATE KEY</Button>
@@ -82,22 +83,23 @@ ETH
                     <SelectButton
                       onClick={ () => this.setDefaultAccount(account) }
                     >
-MAKE MAIN
+                    MAKE MAIN
                     </SelectButton>
                 </AccountCardLeft>
                 <AccountCardRight>
                     <AccountCardContent>
                         <AccountCardContentItem>
-                        address:
+                        Address:
                             {' '}
                             {account.address}
                         </AccountCardContentItem>
                         <AccountCardContentItem>
                             <div>
-balance:
+                                Balance:
+                                {' '}
                                 {account.balance}
                                 {' '}
-ETH
+                                ETH
                             </div>
                             <div>
                                 <div>
@@ -106,7 +108,7 @@ ETH
                                       onClick={ e => this.forgetAccount(account.address, e) }
                                       style={ { marginRight: 10 } }
                                     >
-    REMOVE
+                                        REMOVE
                                     </Button>
                                     <Button onClick={() => this.props.onCopyKey(account.address)}>COPY PRIVATE KEY</Button>
                                 </div>

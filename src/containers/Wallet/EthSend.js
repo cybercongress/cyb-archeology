@@ -41,9 +41,6 @@ class EthSend extends Component {
                                 {' '}
                                 ETH
                             </div>
-                            <div>
-                                <Button onClick={() => this.props.onCopyKey(defaultAccount)}>COPY PRIVATE KEY</Button>
-                            </div>
                         </AccountCardContentItem>
                     </AccountCardContent>
                 </AccountCardRight>

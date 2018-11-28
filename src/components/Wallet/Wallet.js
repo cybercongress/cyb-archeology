@@ -4,6 +4,7 @@ import './wallet.css';
 import Block, { BlockRow } from '../Settings/Block';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
+import { SettingLabel } from "../Settings/Settings";
 
 export const WalletContainer = props => (
     <div className='WalletContainer'>
@@ -92,21 +93,6 @@ AddAccount.propTypes = {
 };
 
 export class SendFunds extends React.Component {
-    state = {
-        showSendPanel: false,
-    };
-
-    startSend = () => {
-        this.setState({
-            showSendPanel: true,
-        });
-    };
-
-    cancelSend = () => {
-        this.setState({
-            showSendPanel: false,
-        });
-    };
 
     send = () => {
         const defaultAddress = this.props.defaultAddress;
@@ -114,34 +100,19 @@ export class SendFunds extends React.Component {
         const amount = this.amount.value;
 
         this.props.sendCallback(defaultAddress, recipientAddress, amount);
-
-        this.setState({
-            showSendPanel: false,
-        });
     };
 
     render() {
-        const { showSendPanel } = this.state;
 
         return (
-            <div>
-                {!showSendPanel
-            && (
-                <Block noMargin={true}>
+            <Block noMargin={true}>
                 <BlockRow>
-                    <Button onClick={ this.startSend }>Send</Button>
+                    <SettingLabel style={{ width: 160 }}>Recipient Address</SettingLabel>
+                    <Input style={{ width: 350 }} inputRef={node => { this.recipientAddress = node; }} />
                 </BlockRow>
-                </Block>
-            )
-                }
-                {showSendPanel
-            && (
-                <Block noMargin={true}>
                 <BlockRow>
-                        <Input inputRef={node => { this.recipientAddress = node; }} placeholder='Recipient Address' />
-                </BlockRow>
-                    <BlockRow>
-                        <Input inputRef={node => { this.amount = node; }} placeholder='Amount' />
+                    <SettingLabel style={{ width: 160 }}>Amount</SettingLabel>
+                    <Input style={{ width: 350 }} inputRef={node => { this.amount = node; }} />
                 </BlockRow>
                 <BlockRow>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -149,10 +120,7 @@ export class SendFunds extends React.Component {
                         <Button color='green' onClick={ this.send }>send</Button>
                     </div>
                 </BlockRow>
-                </Block>
-            )
-                }
-            </div>
+            </Block>
         );
     }
 }
