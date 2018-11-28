@@ -127,6 +127,7 @@ class ConfirmationPopupContainer extends Component {
         const {
             defaultAccountBalance,
             lastTransactionId,
+            txError,
         } = this.props;
 
         const totalAmount = Number.parseFloat(this.getTotalAmount()).toFixed(10);
@@ -144,6 +145,7 @@ class ConfirmationPopupContainer extends Component {
                     rejectCallback={ this.reject }
                     hidePending={() => this.props.hidePending()}
                     txHash={ lastTransactionId }
+                    txError={ txError }
                     content={ (
                         <TxDetailsContainer>
                             <span>
@@ -184,6 +186,7 @@ export default connect(
         lastTransactionId: state.wallet.lastTransactionId,
         defaultAccountBalance: getDefaultAccountBalance(state),
         password: state.wallet.password,
+        txError: state.wallet.txError,
     }),
     {
         approve,

@@ -9,6 +9,7 @@ const initState = {
     pendingRequest: false,
     request: null,
     lastTransactionId: null,
+    txError: null,
 
     password: null,
     incorrectPassword: false,
@@ -69,6 +70,20 @@ export const reducer = (state = initState, action) => {
         };
     }
 
+    case 'SHOW_TX_ERROR': {
+        return {
+            ...state,
+            txError: action.payload,
+        };
+    }
+
+    case 'HIDE_TX_ERROR': {
+        return {
+            ...state,
+            txError: null,
+        };
+    }
+
     default:
         return state;
     }
@@ -79,14 +94,10 @@ let provider;
 let web3;
 let wv = null;
 let web3Reqest = null;
-let __accounts = {};
-
 
 window.cyber = null;
 
 const ZeroClientProvider = require('../preload/zero.js');
-
-
 
 export const loadAccounts = () => (dispatch, getState) => new Promise((resolve) => {
     if (!eth) {
@@ -220,7 +231,7 @@ export const deleteAccount = address => (dispatch, getState) => new Promise((res
 
 const showPending = payload => ({ type: 'SHOW_PENDING', payload });
 export const hidePending = () => ({ type: 'HIDE_PENDING' });
-
+const hideTxError = () => ({ type: 'HIDE_TX_ERROR' });
 
 export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => () => new Promise((resolve) => {
 
@@ -263,6 +274,7 @@ export const getStatus = url => new Promise((resolve) => {
 
 export const reject = () => (dispatch, getState) => {
     dispatch(hidePending());
+    dispatch(hideTxError());
 
     if (!wv) {
         return;
@@ -287,11 +299,15 @@ export const approve = (gasLimit, gasPrice) => (dispatch, getState) => {
         }
         wv.send('web3_eth_call', result);
 
-        dispatch({
-            type: 'SHOW_TRANSACTION',
-            payload: result.result,
-        });
-
+        if (e) {
+            dispatch(hidePending());
+        } else {
+            dispatch({
+                type: 'SHOW_TRANSACTION',
+                payload: result.result,
+            });
+            dispatch(hidePending());
+        }
         // dispatch(hidePending());
     });
 };
@@ -327,7 +343,18 @@ export const receiveMessage = e => (dispatch, getState) => {
                     web3.eth.estimateGas({
                         ...params,
                     }, (error, gasLimitValue) => {
-                        resolve(gasLimitValue);
+                        if (error) {
+                            resolve('2000000');
+                            dispatch({
+                                type: 'SHOW_TX_ERROR',
+                                payload: {
+                                    type: 'error',
+                                    message: 'Problem with gas estimation',
+                                },
+                            });
+                        } else {
+                            resolve(gasLimitValue);
+                        }
                     });
                 });
             }
@@ -356,8 +383,6 @@ export const receiveMessage = e => (dispatch, getState) => {
 };
 
 export const init = endpoint => (dispatch, getState) => {
-    __accounts = JSON.parse(localStorage.getItem('accounts') || '{}');
-
     provider = new ZeroClientProvider({
         rpcUrl: endpoint,
         getAccounts(cb) {

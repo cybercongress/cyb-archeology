@@ -38,7 +38,7 @@ class Page extends Component {
         if (!password) {
             return (
                 <WalletContainer>
-                    <Titile>/Set passord</Titile>
+                    <Titile>/ Login</Titile>
                     <RequirePassword />
                 </WalletContainer>
             );

@@ -8,7 +8,7 @@ import Button from '../Button/Button';
 const ConfirmationPopup = ({
     from, to, approveCallback, rejectCallback, children,
     content, txHash, totalAmount, accountBalance, insufficientFunds,
-    hidePending
+    hidePending, txError,
 }) => (
     <div className='confirmation-popup'>
         <span>
@@ -32,12 +32,15 @@ const ConfirmationPopup = ({
                             <div className='popup-label'>Total amount (ETH):</div>
                             <span className='address'>{totalAmount}</span>
                         </Row>
-                        {insufficientFunds
-                            && (
-                                <Row>
-                                    <Message type='error'>You have insufficient funds</Message>
-                                </Row>
-                            )
+                        {insufficientFunds &&
+                            <Row>
+                                <Message type='error'>You have insufficient funds</Message>
+                            </Row>
+                        }
+                        { txError &&
+                            <Row>
+                                <Message type={txError.type}> { txError.message } </Message>
+                            </Row>
                         }
                         {content}
                     </div>
