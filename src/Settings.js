@@ -44,15 +44,15 @@ class Settings extends Component {
     };
 
     setEthMain = () => {
-        this.updateEth('https://mainnet.infura.io');
+        this.updateEth('http://earth.cybernode.ai:34545');
     };
 
     setEthKovan = () => {
-        this.updateEth('https://kovan.infura.io');
+        this.updateEth('http://earth.cybernode.ai:34645');
     };
 
     setEthRinkeby = () => {
-        this.updateEth('https://rinkeby.infura.io');
+        this.updateEth('http://earth.cybernode.ai:34745');
     };
 
     setEthCustom = () => {

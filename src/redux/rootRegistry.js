@@ -27,7 +27,7 @@ const initState = {
             protocol: 'ipfs',
         },
         dragons: {
-            hash: 'QmYgxz2Tb74yBeF5ms4rN3N2QFy7cd27iJpYKq2bv6BmCn',
+            hash: 'QmZG329N15rEt7c1RgZA4DNtSm79pKFWMvr4EErckrL1BR',
             protocol: 'ipfs',
         },
     },
