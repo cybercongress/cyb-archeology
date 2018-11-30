@@ -108,6 +108,11 @@ class ConfirmationPopupContainer extends Component {
         }
     };
 
+
+    viewHash = (txHash) => {
+        this.props.hidePending();
+    }
+
     render() {
 
         if (!this.props.password) {
@@ -145,6 +150,7 @@ class ConfirmationPopupContainer extends Component {
                     rejectCallback={ this.reject }
                     hidePending={() => this.props.hidePending()}
                     txHash={ lastTransactionId }
+                    viewHash={this.viewHash}
                     txError={ txError }
                     content={ (
                         <TxDetailsContainer>

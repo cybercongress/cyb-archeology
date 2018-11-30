@@ -14,6 +14,8 @@ const initState = {
 
     password: null,
     incorrectPassword: false,
+
+    transaction: null,
 };
 
 export const reducer = (state = initState, action) => {
@@ -83,6 +85,13 @@ export const reducer = (state = initState, action) => {
             ...state,
             txError: null,
         };
+    }
+
+    case 'SET_ETH_TX': {
+        return {
+            ...state,
+            transaction: action.payload
+        }
     }
 
     default:
@@ -310,13 +319,13 @@ export const approve = (gasLimit, gasPrice) => (dispatch, getState) => {
         wv.send('web3_eth_call', result);
 
         if (e) {
-            dispatch(hidePending());
+           // dispatch(hidePending());
         } else {
             dispatch({
                 type: 'SHOW_TRANSACTION',
                 payload: result.result,
             });
-            dispatch(hidePending());
+         //   dispatch(hidePending());
         }
         // dispatch(hidePending());
     });
@@ -519,4 +528,24 @@ export const isLoginExist = () => {
     const cryptoWallet = localStorage.getItem('web3js_wallet');
 
     return !!cryptoWallet;
+};
+
+
+export const getTransaction = (hash) => (dispatch, getState) => {
+    web3.eth.getTransaction(hash)
+        .then(data => {
+            dispatch({
+                type: 'SET_ETH_TX',
+                payload: data,
+            });
+        });
+
+    //  const subscription = web3.eth.subscribe('pendingTransactions')
+
+    // subscription.subscribe((error, result) => {
+    //     // debugger
+    //     // if (error) console.log(error)
+
+    //     console.log(result)
+    // })
 };
