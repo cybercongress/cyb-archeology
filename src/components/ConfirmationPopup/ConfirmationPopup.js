@@ -4,11 +4,13 @@ import { Title, Message } from '@cybercongress/ui';
 import './ConfirmationPopup.css';
 import Block, { BlockRow, Row } from '../Settings/Block';
 import Button from '../Button/Button';
+import CybLink from '../CybLink';
+
 
 const ConfirmationPopup = ({
     from, to, approveCallback, rejectCallback, children,
     content, txHash, totalAmount, accountBalance, insufficientFunds,
-    hidePending, txError,
+    hidePending, txError, viewHash
 }) => (
     <div className='confirmation-popup'>
         <span>
@@ -51,7 +53,7 @@ const ConfirmationPopup = ({
                             <div>
                                 <Message type='info'>
                                     <span>Tx hash:</span>
-                                    {txHash}
+                                    <CybLink dura={`${txHash}.eth`} onClick={viewHash}>{txHash}</CybLink>
                                 </Message>
                             </div>
                             <div className='confirmation-popup__buttons'>
