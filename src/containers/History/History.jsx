@@ -4,10 +4,11 @@ import { Title } from '@cybercongress/ui';
 
 import CybLink from '../../components/CybLink';
 import RootRegistry, { Table } from '../../components/RootRegistry/RootRegistry';
-
+import moment from 'moment';
 
 class History extends Component {
-    renderItem = (dura, index) => {
+    renderItem = (item, index) => {
+        const { dura, date } = item;
         let content = (
             <CybLink dura={dura}>{dura}</CybLink>
         );
@@ -23,13 +24,15 @@ class History extends Component {
         return (
             <tr key={index}>
                 <td>{content}</td>
-                <td>7/2/2018 17:33:12</td>
+                <td>{moment(date).format('D/MM YYYY h:mm:ss')}</td>
             </tr>
         );
     }
 
     render() {
         const { history } = this.props;
+        console.log(history);
+
         const _history = history.slice(0, history.length - 1);
 
         _history.reverse();

@@ -34,10 +34,29 @@ export const reducer = (state = initState, action) => {
     }
 
     case 'UPDATE_DURA': {
+        const { dura, date } = action.payload;
+        const lastItem = state.history[state.history.length - 1];
+        let history = state.history.concat({ dura, date });
+
+        if (lastItem) {
+            const { lastDura } = lastItem;
+
+            if (!!lastDura && dura === `${lastDura}/#/`) {
+                history = state.history.map((item, index) => {
+                    if (index === state.history.length - 1) {
+
+                        return { dura, date };
+                    }
+                    return item;
+                });
+            }
+        }
+
+
         return {
             ...state,
-            history: state.history.concat(action.payload),
-            dura: action.payload,
+            history,
+            dura,
         };
     }
     default:
@@ -49,7 +68,10 @@ export const updateDURA = dura => (dispatch, getState) => {
     localStorage.setItem('LAST_DURA', dura);
     dispatch({
         type: 'UPDATE_DURA',
-        payload: dura,
+        payload: {
+            dura,
+            date: new Date(),
+        },
     });
 };
 
@@ -187,7 +209,7 @@ export const canBack = (state) => {
 export const goBack = () => (dispatch, getState) => {
     const { history } = getState().browser;
     if (canBack(getState())) {
-        const lastUrl = history[history.length - 2];
+        const lastUrl = history[history.length - 2].dura;
 
         dispatch(navigate(lastUrl));
         dispatch({ type: 'MOVE_BACK' });
