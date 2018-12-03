@@ -4,6 +4,11 @@
 	margin: 0 auto;
 }
 
+.RootRegistry__container {
+	height: 100%;
+	overflow: scroll;
+}
+
 .rr__table {
 	background: #fff;
 	/*table-layout: fixed;*/

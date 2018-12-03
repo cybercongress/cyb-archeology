@@ -3,7 +3,9 @@ import React from 'react';
 import './RootRegistry.css';
 
 const RootRegistry = props => (
-    <div { ...props } className='RootRegistry' />
+	<div className='RootRegistry__container'>
+	    <div { ...props } className='RootRegistry' />
+    </div>
 );
 
 export const Table = props => (

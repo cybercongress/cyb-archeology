@@ -186,7 +186,6 @@ export const canBack = (state) => {
 
 export const goBack = () => (dispatch, getState) => {
     const { history } = getState().browser;
-    debugger
     if (canBack(getState())) {
         const lastUrl = history[history.length - 2];
 
