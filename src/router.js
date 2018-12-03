@@ -11,6 +11,7 @@ import Browser from './Browser';
 import Home from './containers/Home';
 import AppStore from './containers/AppStore/AppStore';
 import TransactionView from './containers/TransactionView/TransactionView';
+import History from './containers/History/History';
 
 const AppRouter = () => (
     <Router history={ hashHistory }>
@@ -20,6 +21,7 @@ const AppRouter = () => (
             <Route path='/wallet' component={ Wallet } />
             <Route path='/eth/:txHash' component={ TransactionView } />
             <Route path='/appstore' component={ AppStore } />
+            <Route path='/history' component={ History } />
             <Route path='/notfound' component={ NotFound } />
             <Route path='/browser' component={ Browser } />
             <IndexRoute component={ Home } />

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Message } from '@cybercongress/ui';
-import { navigate, goBack } from '../../redux/browser';
+import { navigate, goBack, canBack } from '../../redux/browser';
 import SearchInput, {
     BackButton, ForwardButton, NavigationContainer,
     FavoriteButton,
@@ -60,12 +59,12 @@ class Navigation extends Component {
 export default connect(
     state => ({
         dura: state.browser.dura,
-        canBack: !!state.browser.backDura,
+        canBack: canBack(state),
         isFavorited: isFavoritedPage(state),
     }),
     {
         navigate,
         goBack,
-        toggleFavorited
+        toggleFavorited,
     },
 )(Navigation);

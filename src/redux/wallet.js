@@ -1,7 +1,7 @@
 import Web3 from 'web3';
 import axios from 'axios';
 import Cyber from '../cyber/Cyber';
-import { navigate } from './browser';
+import { navigate, goBack } from './browser';
 import { setEthNetworkName } from './settings';
 
 const initState = {
@@ -504,7 +504,11 @@ export const login = (password) => (dispatch, getState) => {
             payload: password,
         });
         dispatch(loadAccounts())
-            .then(() => dispatch(setDefaultAccount()));
+            .then(() => {
+                dispatch(setDefaultAccount());
+                dispatch({ type: 'MOVE_BACK' });
+                dispatch(goBack()); //back to page if start not from waalet
+            });
     } catch (e) {
         dispatch({
             type: 'SET_ETH_PASSWORD_FAIL',

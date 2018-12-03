@@ -48,6 +48,11 @@ const initState = {
             subItems: {},
         },
         {
+            name: 'history',
+            rootDura: 'history.cyb',
+            subItems: {},
+        },
+        {
             name: 'test',
             rootDura: '.test',
             subItems: {},

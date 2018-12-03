@@ -12,6 +12,7 @@ const initState = {
     dura: START_DURA,
     backDura: null,
     loading: false,
+    history: [],
 };
 
 export const reducer = (state = initState, action) => {
@@ -24,16 +25,18 @@ export const reducer = (state = initState, action) => {
     }
 
     case 'MOVE_BACK': {
+        const { history } = state;
+
         return {
             ...state,
-            backDura: null,
+            history: history.slice(0, history.length - 1),
         };
     }
 
     case 'UPDATE_DURA': {
         return {
             ...state,
-            backDura: state.dura,
+            history: state.history.concat(action.payload),
             dura: action.payload,
         };
     }
@@ -72,6 +75,12 @@ export const navigate = (_dura, init = false) => (dispatch, getState) => {
     if (_dura === 'wallet.cyb') {
         // if (!init)
         hashHistory.push('/wallet');
+        dispatch(updateDURA(_dura));
+        return;
+    }
+
+    if (_dura === 'history.cyb') {
+        hashHistory.push('/history');
         dispatch(updateDURA(_dura));
         return;
     }
@@ -145,9 +154,9 @@ export const willNavigate = url => (dispatch, getState) => {
     dispatch(navigate(dura));
 };
 
-export const newWindow = (e) => (dispatch, getState) => {
+export const newWindow = e => (dispatch) => {
     dispatch(willNavigate(e.url));
-}
+};
 
 export const didNavigateInPage = url => (dispatch, getState) => {
     const apps = getRegistryItems(getState());
@@ -169,11 +178,20 @@ export const init = _IPFS_END_POINT => (dispatch, getState) => {
     dispatch(navigate(dura, true));
 };
 
-export const goBack = () => (dispatch, getState) => {
-    const { backDura } = getState().browser;
+export const canBack = (state) => {
+    const { history } = state.browser;
 
-    if (backDura) {
-        dispatch(navigate(backDura));
+    return history.length > 1;
+};
+
+export const goBack = () => (dispatch, getState) => {
+    const { history } = getState().browser;
+    debugger
+    if (canBack(getState())) {
+        const lastUrl = history[history.length - 2];
+
+        dispatch(navigate(lastUrl));
+        dispatch({ type: 'MOVE_BACK' });
         dispatch({ type: 'MOVE_BACK' });
     }
 };

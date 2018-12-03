@@ -61,10 +61,10 @@ class Browser extends Component {
         return (
             <BrowserContainer>
                 <BrowserWindow
-                    preload={ `${getPreloadPath()}` }
-                    src={ url }
-                    refFn={ this.handleWebview }
-                    loading={ loading }
+                  preload={ `${getPreloadPath()}` }
+                  src={ url }
+                  refFn={ this.handleWebview }
+                  loading={ loading }
                 />
                 <Loading loading={ loading } />
             </BrowserContainer>
@@ -83,6 +83,6 @@ export default connect(
         willNavigate,
         didNavigateInPage,
         receiveMessage,
-        newWindow
+        newWindow,
     },
 )(Browser);
