@@ -506,7 +506,7 @@ export const login = (password) => (dispatch, getState) => {
         dispatch(loadAccounts())
             .then(() => {
                 dispatch(setDefaultAccount());
-                dispatch({ type: 'MOVE_BACK' });
+                // dispatch({ type: 'MOVE_BACK' });
                 dispatch(goBack()); //back to page if start not from waalet
             });
     } catch (e) {
