@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import { didNavigateInPage, willNavigate } from './redux/browser';
+import { didNavigateInPage, willNavigate, newWindow } from './redux/browser';
 import { receiveMessage } from './redux/wallet';
 import { getPreloadPath, isDevMode } from './utils';
 import BrowserWindow, { BrowserContainer, Loading } from './components/BrowserWindow/BrowserWindow';
@@ -42,6 +42,11 @@ class Browser extends Component {
             this.setState({ loading: false });
         });
 
+        webview.addEventListener('new-window', (evt, url, frameName, disposition, options, additionalFeatures) => {
+            evt.preventDefault();
+            this.props.newWindow(evt);
+        });
+
         if (isDevMode()) {
             webview.addEventListener('dom-ready', (e) => {
                 webview.openDevTools();
@@ -78,5 +83,6 @@ export default connect(
         willNavigate,
         didNavigateInPage,
         receiveMessage,
+        newWindow
     },
 )(Browser);

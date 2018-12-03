@@ -133,6 +133,10 @@ export const willNavigate = url => (dispatch, getState) => {
         dura = url.split('cyb://')[1];
     }
 
+    if (url.indexOf('dura://') !== -1) {
+        dura = url.split('dura://')[1];
+    }
+
     console.log('will-navigate');
     console.log('url', url);
     console.log('dura', dura);
@@ -140,6 +144,10 @@ export const willNavigate = url => (dispatch, getState) => {
 
     dispatch(navigate(dura));
 };
+
+export const newWindow = (e) => (dispatch, getState) => {
+    dispatch(willNavigate(e.url));
+}
 
 export const didNavigateInPage = url => (dispatch, getState) => {
     const apps = getRegistryItems(getState());
