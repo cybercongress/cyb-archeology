@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import web3 from 'web3';
-import ConfirmationPopup, { TxDetailsContainer } from '../../components/ConfirmationPopup/ConfirmationPopup';
+import ConfirmationPopup, {
+    Address,
+    ConfirmationPopupContent,
+    PopupLabel,
+    TxDetailsContainer,
+    ConfirmationPopupButtons,
+} from '../../components/ConfirmationPopup/ConfirmationPopup';
 import { approve, reject, getDefaultAccountBalance, hidePending } from '../../redux/wallet';
 import Input from '../../components/Input/Input';
 import RequirePassword from './Login';
+import Block, { BlockRow, Row } from '../../components/Settings/Block';
+import CybLink from '../../components/CybLink';
+import Button from '../../components/Button/Button';
+import { Title, Message } from '@cybercongress/ui';
+
 
 class ConfirmationPopupContainer extends Component {
 
@@ -40,6 +51,7 @@ class ConfirmationPopupContainer extends Component {
             amount,
             gasPrice,
             gasLimit,
+            transactionInProgress: false
         };
     }
 
@@ -48,7 +60,7 @@ class ConfirmationPopupContainer extends Component {
             gasLimit,
             gasPrice,
         } = this.state;
-
+        this.setState({transactionInProgress: true})
         this.props.approve(gasLimit, web3.utils.toWei(gasPrice, 'Gwei'));
     };
 
@@ -83,7 +95,7 @@ class ConfirmationPopupContainer extends Component {
     gasPriceChange = (e) => {
         const { value } = e.target;
 
-        if (!Number.isNaN(value) && +value >= 1) {
+        if ((!Number.isNaN(value) && +value >= 1) || value === '') {
             this.setState({
                 gasPrice: value,
             });
@@ -127,6 +139,7 @@ class ConfirmationPopupContainer extends Component {
             gasLimit,
             gasPrice,
             amount,
+            transactionInProgress,
         } = this.state;
 
         const {
@@ -138,49 +151,101 @@ class ConfirmationPopupContainer extends Component {
         const totalAmount = Number.parseFloat(this.getTotalAmount()).toFixed(10);
         const insufficientFunds = Number(totalAmount) > Number(defaultAccountBalance);
 
+        let messageComponent;
+        if (insufficientFunds) {
+            messageComponent = (
+                <Row>
+                    <Message type='error'>You have insufficient funds</Message>
+                </Row>
+            );
+        }
+        if (txError) {
+            messageComponent = (
+                <Row>
+                    <Message type={txError.type}> { txError.message } </Message>
+                </Row>
+            );
+        }
+
+        const buttonsComponent = lastTransactionId ? (
+                <div>
+                    <div>
+                    </div>
+                    <div>
+                        <Message type='info'>
+                            <span>Tx hash:</span>
+                            <CybLink dura={`${lastTransactionId}.eth`} onClick={this.viewHash}>{lastTransactionId}</CybLink>
+                        </Message>
+                    </div>
+                    <ConfirmationPopupButtons>
+                        <Button style={ { width: 250 } } color='turquoise' onClick={ () => this.props.hidePending() }>
+                            Close window
+                        </Button>
+                    </ConfirmationPopupButtons>
+                </div>
+            ) : (
+                <ConfirmationPopupButtons>
+                    <Button style={ { width: 150 } } color='red' onClick={ this.reject }>REJECT</Button>
+                    <Button style={ { width: 150 } } color='green' onClick={ this.approve } disabled={transactionInProgress || insufficientFunds || gasPrice === ''}>CONFIRM</Button>
+                </ConfirmationPopupButtons>
+            );
+
+
         return (
             <div>
-                <ConfirmationPopup
-                    from={ from }
-                    to={ to }
-                    totalAmount={ totalAmount }
-                    accountBalance={ defaultAccountBalance }
-                    insufficientFunds={ insufficientFunds }
-                    approveCallback={ this.approve }
-                    rejectCallback={ this.reject }
-                    hidePending={() => this.props.hidePending()}
-                    txHash={ lastTransactionId }
-                    viewHash={this.viewHash}
-                    txError={ txError }
-                    content={ (
-                        <TxDetailsContainer>
-                            <span>
-                                <div className='popup-label'>Amount (ETH):</div>
-                                <Input
-                                    value={ amount }
-                                    style={ { width: 100 } }
-                                    disabled
-                                />
-                            </span>
-                            <span>
-                                <div className='popup-label'>Gas price (GWEI):</div>
-                                <Input
-                                    value={ gasPrice }
-                                    style={ { width: 100 } }
-                                    onChange={this.gasPriceChange}
-                                />
-                            </span>
-                            <span>
-                                <div className='popup-label'>Gas limit:</div>
-                                <Input
-                                    value={ gasLimit }
-                                    style={ { width: 100 } }
-                                    onChange={this.gasLimitChange}
-                                />
-                            </span>
-                        </TxDetailsContainer>
-                    ) }
-                />
+                <ConfirmationPopup>
+                    <Block>
+                        <Title inline style={ { color: 'black' } }>Transaction confirmation</Title>
+                        <BlockRow>
+                            <ConfirmationPopupContent>
+                                <Row>
+                                    <PopupLabel>Sender address:</PopupLabel>
+                                    <Address>{from}</Address>
+                                </Row>
+                                <Row>
+                                    <PopupLabel>Recipient address:</PopupLabel>
+                                    <Address>{to}</Address>
+                                </Row>
+                                <Row>
+                                    <PopupLabel>Account balance (ETH):</PopupLabel>
+                                    <Address>{defaultAccountBalance}</Address>
+                                </Row>
+                                <Row>
+                                    <PopupLabel>Total amount (ETH):</PopupLabel>
+                                    <Address>{totalAmount}</Address>
+                                </Row>
+                                {messageComponent}
+                                <TxDetailsContainer>
+                                    <span>
+                                        <div className='popup-label'>Amount (ETH):</div>
+                                        <Input
+                                            value={ amount }
+                                            style={ { width: 100 } }
+                                            disabled
+                                        />
+                                    </span>
+                                            <span>
+                                        <div className='popup-label'>Gas price (GWEI):</div>
+                                        <Input
+                                            value={ gasPrice }
+                                            style={ { width: 100 } }
+                                            onChange={this.gasPriceChange}
+                                        />
+                                    </span>
+                                            <span>
+                                        <div className='popup-label'>Gas limit:</div>
+                                        <Input
+                                            value={ gasLimit }
+                                            style={ { width: 100 } }
+                                            onChange={this.gasLimitChange}
+                                        />
+                                    </span>
+                                </TxDetailsContainer>
+                            </ConfirmationPopupContent>
+                            {buttonsComponent}
+                        </BlockRow>
+                    </Block>
+                </ConfirmationPopup>
             </div>
         );
     }
