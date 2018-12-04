@@ -16,6 +16,8 @@ const initState = {
     incorrectPassword: false,
 
     transaction: null,
+
+    transactions: [],
 };
 
 export const reducer = (state = initState, action) => {
@@ -92,6 +94,13 @@ export const reducer = (state = initState, action) => {
             ...state,
             transaction: action.payload
         }
+    }
+
+    case 'SET_ETH_TRANSACTIONS': {
+        return {
+            ...state,
+            transactions: action.payload,
+        };
     }
 
     default:
@@ -321,6 +330,8 @@ export const approve = (gasLimit, gasPrice) => (dispatch, getState) => {
         if (e) {
            // dispatch(hidePending());
         } else {
+            saveTransaction(web3Reqest, result.result);
+
             dispatch({
                 type: 'SHOW_TRANSACTION',
                 payload: result.result,
@@ -553,3 +564,74 @@ export const getTransaction = (hash) => (dispatch, getState) => {
     //     console.log(result)
     // })
 };
+
+
+
+// const getTransactionsCall = (address) => {
+//     return new Promise((resolve, reject) => {
+//
+//
+//         // var currentBlock = eth.blockNumber;
+//         // var n = eth.getTransactionCount(address, currentBlock);
+//         // var bal = eth.getBalance(address, currentBlock);
+//         // for (var i=currentBlock; i >= 0 && (n > 0 || bal > 0); --i) {
+//         //     try {
+//         //         var block = eth.getBlock(i, true);
+//         //         if (block && block.transactions) {
+//         //             block.transactions.forEach(function(e) {
+//         //                 if (myAddr == e.from) {
+//         //                     if (e.from != e.to)
+//         //                         bal = bal.plus(e.value);
+//         //                     console.log(i, e.from, e.to, e.value.toString(10));
+//         //                     --n;
+//         //                 }
+//         //                 if (myAddr == e.to) {
+//         //                     if (e.from != e.to)
+//         //                         bal = bal.minus(e.value);
+//         //                     console.log(i, e.from, e.to, e.value.toString(10));
+//         //                 }
+//         //             });
+//         //         }
+//         //     } catch (e) { reject("Error in block " + i, e); }
+//         // }
+//     })
+// }
+
+const saveTransaction = (payload, txHash) => {
+    const params = payload.params[0];
+debugger
+    const address = params.from;
+    const jsonStr = localStorage.getItem('transactions' + address) || '[]';
+    const transactions = JSON.parse(jsonStr);
+
+    const _payload = { ...payload, txHash };
+    const _transactions = transactions.concat(_payload);
+
+    localStorage.setItem('transactions' + address , JSON.stringify(_transactions));
+}
+
+export const getTransactions = (address) => (dispatch) => {
+    if (!address) return;
+    
+    const _address = address.toLowerCase();
+    const jsonStr = localStorage.getItem('transactions' + _address) || '[]';
+    const transactions = JSON.parse(jsonStr);
+
+
+    dispatch({
+        type: 'SET_ETH_TRANSACTIONS',
+        payload: transactions,
+    });
+    // console.log(transactions);
+    // if (!address) return ;
+
+    //web3.utils.toHex(
+    //
+    // web3.eth.getPastLogs({fromBlock:'0x0',address: address })
+    //     .then(res => {
+    //         debugger
+    //         res.forEach(rec => {
+    //             console.log(rec.blockNumber, rec.transactionHash, rec.topics);
+    //         });
+    //     }).catch(err => console.log("getPastLogs failed", err));
+}

@@ -107,6 +107,12 @@ export const navigate = (_dura, init = false) => (dispatch, getState) => {
         return;
     }
 
+    if (_dura === 'txq.cyb') {
+        hashHistory.push('/txq');
+        dispatch(updateDURA(_dura));
+        return;
+    }
+
     if (!!_dura && _dura.split('.')[1] === 'eth') {
         hashHistory.push(`/eth/${_dura.split('.')[0]}`);
         dispatch(updateDURA(_dura));
