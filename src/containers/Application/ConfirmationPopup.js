@@ -95,19 +95,19 @@ class ConfirmationPopupContainer extends Component {
     gasPriceChange = (e) => {
         const { value } = e.target;
 
-        // if ((!Number.isNaN(value) && +value >= 1) || value === '') {
-        //     this.setState({
-        //         gasPrice: value,
-        //     });
-        // } else {
-        //     this.setState({
-        //         gasPrice: 1,
-        //     });
-        // }
-
-        this.setState({
+        if ((!Number.isNaN(value) && +value >= 1) || value === '') {
+            this.setState({
                 gasPrice: value,
             });
+        } else {
+            this.setState({
+                gasPrice: 1,
+            });
+        }
+
+        // this.setState({
+        //         gasPrice: value,
+        //     });
     };
 
     gasLimitChange = (e) => {
