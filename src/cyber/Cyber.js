@@ -8,27 +8,73 @@ import {
 import builder from './builder';
 
 const chainId = 'test-chain-gRXWCL';
-const claimNodeUrl = 'http://earth.cybernode.ai:34666';
+const claimNodeUrl = 'http://earth.cybernode.ai:34666'; //proxy TODO: remove when fix chain
 const defaultAmount = 10000;
 
 let __accounts = {};
 
+const IPFS = require('ipfs-api');
+
+
+
+const saveInIPFS = (ipfs, jsonStr) => new Promise((resolve, reject) => {
+    const buffer = Buffer.from(jsonStr);
+
+    ipfs.add(buffer, (err, ipfsHash) => {
+        if (err) {
+            reject(err);
+        } else {
+            const hash = ipfsHash[0].path;
+
+            resolve(hash);
+        }
+    });
+});
+
+const getIPFS = (ipfs, ipfsHash) => new Promise((resolve) => {
+    ipfs.get(ipfsHash, (err, files) => {
+        const buf = files[0].content;
+        resolve(buf.toString());
+    });
+});
+
 function Cyber(nodeUrl) {
     const self = this;
 
+    //TOOD: use url from settings
+    const ipfs = new IPFS({
+        host: 'localhost',
+        port: 5001,
+        protocol: 'http',
+    });
+
     let defaultAccount = null;
 
-    self.search = function (cid) {
+    self.search = function (text) {
         return new Promise((resolve) => {
-            axios({
-                method: 'get',
-                url: `${nodeUrl}/search?cid=${cid}`,
-            })
-                .then((data) => {
+            saveInIPFS(ipfs, text)
+                .then(cid => axios({
+                    method: 'get',
+                    url: `${nodeUrl}/search?cid=${cid}`,
+                })).then((data) => {
                     const cids = data.data.result.cids;
-                    const links = cids.map(cid => ({ hash: cid.Cid }));
+                    const links = cids.map(cid => ({ ...cid, hash: cid.Cid }));
 
-                    resolve(links);
+                    const itemsPromises = links.map(item => {
+                        return Promise.all([
+                            getIPFS(ipfs, item.Cid),
+                            Promise.resolve(item)
+                        ]).then(([content, _item]) => {
+                            return {
+                                ..._item,
+                                content
+                            }
+                        });
+                    });
+
+                    Promise.all(itemsPromises).then(items => {
+                        resolve(items)
+                    });
                 })
                 .catch(error => resolve([]));
         });
@@ -36,35 +82,42 @@ function Cyber(nodeUrl) {
 
 
     self.link = function (from, to, address = '') {
-        return axios({
-            method: 'get',
-            url: `${nodeUrl}/account?address=${address}`,
-        }).then((response) => {
-            if (!response.data.result) { return false; }
-
-            return response.data.result.account;
-        }).then((account) => {
-            if (!account) { return; }
-
-            const acc = {
-                address: account.address,
-                chain_id: chainId, // todo: get from node
-                account_number: parseInt(account.account_number, 10),
-                sequence: parseInt(account.sequence, 10),
-            };
-            const linkRequest = {
-                acc,
-                fromCid: from,
-                toCid: to,
-                type: 'link',
-            };
-
+        return Promise.all([
+            saveInIPFS(ipfs, from),
+            saveInIPFS(ipfs, to),
+        ]).then(([_from, _to]) => {
             return axios({
-                method: 'post',
-                url: `${nodeUrl}/link`,
-                data: builder.buildAndSignTxRequest(linkRequest, __accounts[address].privateKey, chainId),
-            }).then(data => console.log('Link results: ', data)).catch(error => console.log('Cannot link', error));
+                method: 'get',
+                url: `${nodeUrl}/account?address=${address}`,
+            }).then((response) => {
+                if (!response.data.result) { return false; }
+
+                return response.data.result.account;
+            }).then((account) => {
+                if (!account) { return; }
+
+                const acc = {
+                    address: account.address,
+                    chain_id: chainId, // todo: get from node
+                    account_number: parseInt(account.account_number, 10),
+                    sequence: parseInt(account.sequence, 10),
+                };
+                const linkRequest = {
+                    acc,
+                    fromCid: _from,
+                    toCid: _to,
+                    type: 'link',
+                };
+
+                return axios({
+                    method: 'post',
+                    url: `${nodeUrl}/link`,
+                    data: builder.buildAndSignTxRequest(linkRequest, __accounts[address].privateKey, chainId),
+                }).then(data => console.log('Link results: ', data)).catch(error => console.log('Cannot link', error));
+            });
         });
+
+        
     };
 
     self.claimFunds = function (address, amount) {
