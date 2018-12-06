@@ -4,3 +4,12 @@ pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
 .boolean { color: blue; }
 .null { color: magenta; }
 .key { color: red; }
+
+.tx-view {
+	overflow: scroll;
+	height: 100%;
+}
+
+.tx-view pre {
+	overflow: hidden;
+}

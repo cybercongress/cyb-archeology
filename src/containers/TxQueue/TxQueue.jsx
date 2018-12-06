@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getTransactions } from '../../redux/wallet';
+import { getTransactions, resend } from '../../redux/wallet';
 import CybLink from '../../components/CybLink';
 
 function syntaxHighlight(json) {
@@ -29,6 +29,11 @@ class TxQueue extends Component {
     componentDidMount() {
         this.props.getTransactions(this.props.defaultAccount)
     }
+
+    resend = (txHash) => {
+        this.props.resend(txHash);
+    }
+
     render() {
         const { defaultAccount, transactions } = this.props;
         return (
@@ -38,10 +43,9 @@ class TxQueue extends Component {
                     {transactions.map(item => (
                         <div key={item.txHash}>
                             <CybLink dura={`${item.txHash}.eth`}>{item.txHash}</CybLink>
-                            <button>resent</button>
+                            {/*<button onClick={() => this.resend(item.txHash)}>resend</button>*/}
                         </div>
                     ))}
-
                 </div>
             </div>
         );
@@ -54,6 +58,7 @@ export default connect(
         defaultAccount: state.wallet.defaultAccount
     }),
     {
-        getTransactions
+        getTransactions,
+        resend
     }
 )(TxQueue);

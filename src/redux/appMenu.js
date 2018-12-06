@@ -57,6 +57,11 @@ const initState = {
             rootDura: '.test',
             subItems: {},
         },
+        {
+            name: 'txq',
+            rootDura: 'txq.cyb',
+            subItems: {},
+        },
     ],
     openMenu: false,
     pendingAddToFavorites: false,

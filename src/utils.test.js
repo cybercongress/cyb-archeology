@@ -172,6 +172,13 @@ it('DURAToURL should process q', () => {
 });
 
 it('port.dev => localhost:port', () => {
+    const { url, dura } = utils.DURAToURL('4000.dev/#/page1', apps, '');
+
+    expect(url).toEqual('http://localhost:4000/#/page1');
+    expect(dura).toEqual('4000.dev/#/page1');
+});
+
+it('port.dev => localhost:port with #', () => {
     const { url, dura } = utils.DURAToURL('4000.dev', apps, '');
 
     expect(url).toEqual('http://localhost:4000');
@@ -179,6 +186,13 @@ it('port.dev => localhost:port', () => {
 });
 
 it('default.dev => localhost:5000', () => {
+    const { url, dura } = utils.DURAToURL('.dev', apps, '');
+
+    expect(url).toEqual('http://localhost:5000');
+    expect(dura).toEqual('5000.dev');
+});
+
+it('default.dev => localhost:5000/#/page1', () => {
     const { url, dura } = utils.DURAToURL('.dev', apps, '');
 
     expect(url).toEqual('http://localhost:5000');

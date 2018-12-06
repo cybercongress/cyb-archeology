@@ -94,8 +94,8 @@ export const DURAToURL = (dura, apps = {}, IPFS_END_POINT = 'http://localhost:80
         const port = q || '5000';
 
         return {
-            url: `http://localhost:${port}`,
-            dura: `${port}.${app}`,
+            url: `http://localhost:${port}${path ? `/${path}` : ''}`,
+            dura: `${port}.${app}${path ? `/${path}` : ''}`,
         };
     }
 

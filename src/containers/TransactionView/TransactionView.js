@@ -31,12 +31,19 @@ class TransactionView extends Component {
         this.props.getTransaction(this.props.params.txHash)
     } 
     render() {
-        const { data } = this.props;
+        const { data, receipt } = this.props;
         return (
-            <div>
+            <div className='tx-view'>
                 <h2>transaction</h2>
                 {data ? (
                     <pre dangerouslySetInnerHTML={{ __html: syntaxHighlight(data) }}>
+                    </pre>
+                    ): (
+                        <div>not found</div>
+                    )}
+
+                {data ? (
+                    <pre dangerouslySetInnerHTML={{ __html: syntaxHighlight(receipt) }}>
                     </pre>
                     ): (
                         <div>not found</div>
@@ -48,7 +55,8 @@ class TransactionView extends Component {
 
 export default connect(
     state => ({
-        data: state.wallet.transaction
+        data: state.wallet.transaction,
+        receipt: state.wallet.receipt,
     }),
     {
         getTransaction

@@ -36,9 +36,9 @@ class ConfirmationPopupContainer extends Component {
         }
         if (request.params[0].gasPrice) {
             gasPrice = utils.hexToNumber(request.params[0].gasPrice);
-            if (gasPrice < 1000000000) {
-                gasPrice = 1000000000;
-            }
+            // if (gasPrice < 1000000000) {
+            //     gasPrice = 1000000000;
+            // }
             gasPrice = web3.utils.fromWei(`${gasPrice}`, 'Gwei');
         }
 
@@ -95,15 +95,19 @@ class ConfirmationPopupContainer extends Component {
     gasPriceChange = (e) => {
         const { value } = e.target;
 
-        if ((!Number.isNaN(value) && +value >= 1) || value === '') {
-            this.setState({
+        // if ((!Number.isNaN(value) && +value >= 1) || value === '') {
+        //     this.setState({
+        //         gasPrice: value,
+        //     });
+        // } else {
+        //     this.setState({
+        //         gasPrice: 1,
+        //     });
+        // }
+
+        this.setState({
                 gasPrice: value,
             });
-        } else {
-            this.setState({
-                gasPrice: 1,
-            });
-        }
     };
 
     gasLimitChange = (e) => {

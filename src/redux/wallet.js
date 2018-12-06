@@ -16,6 +16,7 @@ const initState = {
     incorrectPassword: false,
 
     transaction: null,
+    receipt: null,
 
     transactions: [],
 };
@@ -30,7 +31,8 @@ export const reducer = (state = initState, action) => {
     }
 
     case 'SET_DEFAULT_ACCOUNT': {
-        const { address, balance } = action.payload;
+        const { address } = action.payload;
+
         return {
             ...state,
             defaultAccount: address,
@@ -71,7 +73,7 @@ export const reducer = (state = initState, action) => {
     case 'SET_ETH_PASSWORD_FAIL': {
         return {
             ...state,
-            incorrectPassword: true
+            incorrectPassword: true,
         };
     }
 
@@ -90,11 +92,15 @@ export const reducer = (state = initState, action) => {
     }
 
     case 'SET_ETH_TX': {
+        const { transaction, receipt } = action.payload;
+
         return {
             ...state,
-            transaction: action.payload
-        }
+            transaction,
+            receipt,
+        };
     }
+
 
     case 'SET_ETH_TRANSACTIONS': {
         return {
@@ -321,6 +327,8 @@ export const approve = (gasLimit, gasPrice) => (dispatch, getState) => {
         web3Reqest.params[0].gasPrice = web3.utils.numberToHex(+gasPrice);
     }
 
+    debugger
+
     provider.sendAsync(web3Reqest, (e, result) => {
         if (!wv) {
             return;
@@ -342,6 +350,53 @@ export const approve = (gasLimit, gasPrice) => (dispatch, getState) => {
     });
 };
 
+const showAndCaclulateSingPopup = (payload) => (dispatch, getState) => {
+    web3Reqest = payload;
+
+    const params = payload.params[0];
+    const initialGasPrice = params.gasPrice ? web3.utils.fromWei(params.gasPrice, 'Gwei') : 0;
+
+    let gasPricePromise = Promise.resolve(initialGasPrice);
+    let gasLimitPromise = Promise.resolve(params.gas);
+
+    debugger
+
+    if (!params.gasPrice) {
+        gasPricePromise = new Promise((resolve) => {
+            web3.eth.getGasPrice((error, value) => {
+                resolve(web3.utils.fromWei(value, 'Gwei'));
+            });
+        });
+    }
+
+    if (!params.gas) {
+        gasLimitPromise = new Promise((resolve) => {
+            web3.eth.estimateGas({
+                ...params,
+            }, (error, gasLimitValue) => {
+                if (error) {
+                    resolve('2000000');
+                    dispatch({
+                        type: 'SHOW_TX_ERROR',
+                        payload: {
+                            type: 'error',
+                            message: 'Problem with gas estimation',
+                        },
+                    });
+                } else {
+                    resolve(gasLimitValue);
+                }
+            });
+        });
+    }
+
+    Promise.all([gasPricePromise, gasLimitPromise]).then(([gasPrice, gasLimit]) => {
+        payload.params[0].gas = gasLimit;
+        payload.params[0].gasPrice = web3.utils.toWei(gasPrice, 'gwei');
+        dispatch(showPending(payload));
+    });
+};
+
 export const receiveMessage = e => (dispatch, getState) => {
     if (!provider) {
         return;
@@ -352,48 +407,7 @@ export const receiveMessage = e => (dispatch, getState) => {
         wv = e.target;
 
         if (payload.method === 'eth_sendTransaction') {
-            web3Reqest = payload;
-
-            const params = payload.params[0];
-            const initialGasPrice = params.gasPrice ? web3.utils.fromWei(params.gasPrice, 'Gwei') : 0;
-
-            let gasPricePromise = Promise.resolve(initialGasPrice);
-            let gasLimitPromise = Promise.resolve(params.gas);
-
-            if (!params.gasPrice) {
-                gasPricePromise = new Promise((resolve) => {
-                    web3.eth.getGasPrice((error, value) => {
-                        resolve(web3.utils.fromWei(value, 'Gwei'));
-                    });
-                });
-            }
-
-            if (!params.gas) {
-                gasLimitPromise = new Promise((resolve) => {
-                    web3.eth.estimateGas({
-                        ...params,
-                    }, (error, gasLimitValue) => {
-                        if (error) {
-                            resolve('2000000');
-                            dispatch({
-                                type: 'SHOW_TX_ERROR',
-                                payload: {
-                                    type: 'error',
-                                    message: 'Problem with gas estimation',
-                                },
-                            });
-                        } else {
-                            resolve(gasLimitValue);
-                        }
-                    });
-                });
-            }
-
-            Promise.all([gasPricePromise, gasLimitPromise]).then(([gasPrice, gasLimit]) => {
-                payload.params[0].gas = gasLimit;
-                payload.params[0].gasPrice = web3.utils.toWei(gasPrice, 'gwei');
-                dispatch(showPending(payload));
-            });
+            dispatch(showAndCaclulateSingPopup(payload));
         } else {
             provider.sendAsync(payload, (error, result) => {
                 wv.send('web3_eth_call', result);
@@ -546,60 +560,20 @@ export const isLoginExist = () => {
 };
 
 
-export const getTransaction = (hash) => (dispatch, getState) => {
-    web3.eth.getTransaction(hash)
-        .then(data => {
-            dispatch({
-                type: 'SET_ETH_TX',
-                payload: data,
-            });
+export const getTransaction = hash => (dispatch) => {
+    Promise.all([
+        web3.eth.getTransaction(hash),
+        web3.eth.getTransactionReceipt(hash),
+    ]).then(([transaction, receipt]) => {
+        dispatch({
+            type: 'SET_ETH_TX',
+            payload: { transaction, receipt },
         });
-
-    //  const subscription = web3.eth.subscribe('pendingTransactions')
-
-    // subscription.subscribe((error, result) => {
-    //     // debugger
-    //     // if (error) console.log(error)
-
-    //     console.log(result)
-    // })
+    });
 };
-
-
-
-// const getTransactionsCall = (address) => {
-//     return new Promise((resolve, reject) => {
-//
-//
-//         // var currentBlock = eth.blockNumber;
-//         // var n = eth.getTransactionCount(address, currentBlock);
-//         // var bal = eth.getBalance(address, currentBlock);
-//         // for (var i=currentBlock; i >= 0 && (n > 0 || bal > 0); --i) {
-//         //     try {
-//         //         var block = eth.getBlock(i, true);
-//         //         if (block && block.transactions) {
-//         //             block.transactions.forEach(function(e) {
-//         //                 if (myAddr == e.from) {
-//         //                     if (e.from != e.to)
-//         //                         bal = bal.plus(e.value);
-//         //                     console.log(i, e.from, e.to, e.value.toString(10));
-//         //                     --n;
-//         //                 }
-//         //                 if (myAddr == e.to) {
-//         //                     if (e.from != e.to)
-//         //                         bal = bal.minus(e.value);
-//         //                     console.log(i, e.from, e.to, e.value.toString(10));
-//         //                 }
-//         //             });
-//         //         }
-//         //     } catch (e) { reject("Error in block " + i, e); }
-//         // }
-//     })
-// }
 
 const saveTransaction = (payload, txHash) => {
     const params = payload.params[0];
-debugger
     const address = params.from;
     const jsonStr = localStorage.getItem('transactions' + address) || '[]';
     const transactions = JSON.parse(jsonStr);
@@ -608,7 +582,7 @@ debugger
     const _transactions = transactions.concat(_payload);
 
     localStorage.setItem('transactions' + address , JSON.stringify(_transactions));
-}
+};
 
 export const getTransactions = (address) => (dispatch) => {
     if (!address) return;
@@ -622,16 +596,19 @@ export const getTransactions = (address) => (dispatch) => {
         type: 'SET_ETH_TRANSACTIONS',
         payload: transactions,
     });
-    // console.log(transactions);
-    // if (!address) return ;
+};
 
-    //web3.utils.toHex(
-    //
-    // web3.eth.getPastLogs({fromBlock:'0x0',address: address })
-    //     .then(res => {
-    //         debugger
-    //         res.forEach(rec => {
-    //             console.log(rec.blockNumber, rec.transactionHash, rec.topics);
-    //         });
-    //     }).catch(err => console.log("getPastLogs failed", err));
+
+export const resend = (txHash) => (dispatch, getState) => {
+    debugger
+    const address = getState().wallet.defaultAccount;
+    if (!address || !txHash) return;
+
+    const _address = address.toLowerCase();
+    const jsonStr = localStorage.getItem('transactions' + _address) || '[]';
+    const transactions = JSON.parse(jsonStr);
+
+    const payload = transactions.find(x => x.txHash === txHash);
+
+    dispatch(showAndCaclulateSingPopup(payload));
 }
