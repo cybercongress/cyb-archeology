@@ -152,8 +152,9 @@ class ConfirmationPopupContainer extends Component {
             txError,
         } = this.props;
 
-        const totalAmount = Number.parseFloat(this.getTotalAmount()).toFixed(10);
-        const insufficientFunds = Number(totalAmount) > Number(defaultAccountBalance);
+        const totalAmountN = this.getTotalAmount();
+        const totalAmount = Number.parseFloat(totalAmountN).toFixed(10);
+        const insufficientFunds = Number(totalAmountN) > Number(defaultAccountBalance);
 
         let messageComponent;
         if (insufficientFunds) {
