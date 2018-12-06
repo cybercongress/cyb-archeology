@@ -327,8 +327,6 @@ export const approve = (gasLimit, gasPrice) => (dispatch, getState) => {
         web3Reqest.params[0].gasPrice = web3.utils.numberToHex(+gasPrice);
     }
 
-    debugger
-
     provider.sendAsync(web3Reqest, (e, result) => {
         if (!wv) {
             return;
@@ -353,13 +351,13 @@ export const approve = (gasLimit, gasPrice) => (dispatch, getState) => {
 const showAndCaclulateSingPopup = (payload) => (dispatch, getState) => {
     web3Reqest = payload;
 
+    dispatch(hideTxError());
+
     const params = payload.params[0];
     const initialGasPrice = params.gasPrice ? web3.utils.fromWei(params.gasPrice, 'Gwei') : 0;
 
     let gasPricePromise = Promise.resolve(initialGasPrice);
     let gasLimitPromise = Promise.resolve(params.gas);
-
-    debugger
 
     if (!params.gasPrice) {
         gasPricePromise = new Promise((resolve) => {
@@ -586,7 +584,7 @@ const saveTransaction = (payload, txHash) => {
 
 export const getTransactions = (address) => (dispatch) => {
     if (!address) return;
-    
+
     const _address = address.toLowerCase();
     const jsonStr = localStorage.getItem('transactions' + _address) || '[]';
     const transactions = JSON.parse(jsonStr);
@@ -600,7 +598,6 @@ export const getTransactions = (address) => (dispatch) => {
 
 
 export const resend = (txHash) => (dispatch, getState) => {
-    debugger
     const address = getState().wallet.defaultAccount;
     if (!address || !txHash) return;
 
