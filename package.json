@@ -2,7 +2,7 @@
   "name": "cyb",
   "description": "Web3 browser",
   "main": "public/electron.js",
-  "version": "0.0.41",
+  "version": "0.0.42",
   "author": {
     "name": "cybercongress",
     "email": "cybercongress42@gmail.com"
