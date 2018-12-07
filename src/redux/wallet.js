@@ -344,7 +344,7 @@ export const approve = (gasLimit, gasPrice) => (dispatch, getState) => {
             });
          //   dispatch(hidePending());
         }
-        // dispatch(hidePending());
+        dispatch(hidePending());
     });
 };
 
