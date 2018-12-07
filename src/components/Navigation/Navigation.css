@@ -9,7 +9,7 @@
 }
 
 .navigation__left {
-	width: 100px;
+	width: 150px;
 	transition: visibility 1s, opacity 1s;
 	opacity: 1;
 	visibility:visible;
@@ -21,7 +21,7 @@
 }
 
 .navigation__right {
-	width: 100px;
+	width: 150px;
 	flex-grow: 0;
 	transition: visibility 1s, opacity 1s;
 	opacity: 1;

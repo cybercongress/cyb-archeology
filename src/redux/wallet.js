@@ -576,18 +576,26 @@ const saveTransaction = (payload, txHash) => {
     const jsonStr = localStorage.getItem('transactions' + address) || '[]';
     const transactions = JSON.parse(jsonStr);
 
-    const _payload = { ...payload, txHash };
+    const _payload = { ...payload, txHash, date: new Date(), type: 'eth', status: 'pending' };
     const _transactions = transactions.concat(_payload);
 
     localStorage.setItem('transactions' + address , JSON.stringify(_transactions));
 };
 
-export const getTransactions = (address) => (dispatch) => {
+export const getTransactions = (address) => (dispatch, getState) => {
     if (!address) return;
+
 
     const _address = address.toLowerCase();
     const jsonStr = localStorage.getItem('transactions' + _address) || '[]';
-    const transactions = JSON.parse(jsonStr);
+    let transactions = JSON.parse(jsonStr);
+
+    const cyberAddress = getState().cyber.defaultAccount;
+    if (cyberAddress) {
+        const jsonStr = localStorage.getItem('cyb_transactions' + cyberAddress) || '[]';
+        let _transactions = JSON.parse(jsonStr);
+        transactions = transactions.concat(_transactions);
+    }
 
 
     dispatch({

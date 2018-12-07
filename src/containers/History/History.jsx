@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Title } from '@cybercongress/ui';
+import moment from 'moment';
 
 import CybLink from '../../components/CybLink';
 import RootRegistry, { Table } from '../../components/RootRegistry/RootRegistry';
-import moment from 'moment';
 
 class History extends Component {
     renderItem = (item, index) => {

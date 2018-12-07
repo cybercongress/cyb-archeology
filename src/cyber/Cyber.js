@@ -113,7 +113,23 @@ function Cyber(nodeUrl) {
                     method: 'post',
                     url: `${nodeUrl}/link`,
                     data: builder.buildAndSignTxRequest(linkRequest, __accounts[address].privateKey, chainId),
-                }).then(data => console.log('Link results: ', data)).catch(error => console.log('Cannot link', error));
+                }).then(data => {
+                    console.log('Link results: ', data);
+
+                    const jsonStr = localStorage.getItem('cyb_transactions' + address) || '[]';
+                    const transactions = JSON.parse(jsonStr);
+
+                    const newItem = { 
+                        txHash: data.data.hash, 
+                        date: new Date(), 
+                        type: 'cyber', 
+                        status: 'pending' 
+                    };
+                    const _transactions = transactions.concat([newItem]);
+
+                    localStorage.setItem('cyb_transactions' + address, JSON.stringify(_transactions));
+
+                }).catch(error => console.log('Cannot link', error));
             });
         });
 
@@ -253,7 +269,7 @@ function Cyber(nodeUrl) {
             const { privateKey } = __accounts[defaultAddress];
             const tx = builder.buildAndSignTxRequest(sendRequest, privateKey, chainId);
 
-            console.log(tx);
+//            console.log(tx);
             return axios({
                 method: 'post',
                 url: `${nodeUrl}/send`,

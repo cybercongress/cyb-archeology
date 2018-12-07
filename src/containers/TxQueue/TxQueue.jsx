@@ -1,33 +1,18 @@
 import React, { Component } from 'react';
+import { Title } from '@cybercongress/ui';
 import { connect } from 'react-redux';
+import moment from 'moment';
+
 import { getTransactions, resend } from '../../redux/wallet';
 import CybLink from '../../components/CybLink';
 
-function syntaxHighlight(json) {
-    if (typeof json != 'string') {
-        json = JSON.stringify(json, undefined, 2);
-    }
-    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-        var cls = 'number';
-        if (/^"/.test(match)) {
-            if (/:$/.test(match)) {
-                cls = 'key';
-            } else {
-                cls = 'string';
-            }
-        } else if (/true|false/.test(match)) {
-            cls = 'boolean';
-        } else if (/null/.test(match)) {
-            cls = 'null';
-        }
-        return '<span class="' + cls + '">' + match + '</span>';
-    });
-}
+import RootRegistry, { Table } from '../../components/RootRegistry/RootRegistry';
+import { Hash } from '../../components/TxQueue/TxQueue';
+
 
 class TxQueue extends Component {
     componentDidMount() {
-        this.props.getTransactions(this.props.defaultAccount)
+        this.props.getTransactions(this.props.defaultAccount);
     }
 
     resend = (txHash) => {
@@ -35,19 +20,48 @@ class TxQueue extends Component {
     }
 
     render() {
-        const { defaultAccount, transactions } = this.props;
+        const { transactions } = this.props;
+
         return (
-            <div>
-                <h2>transaction</h2>
-                <div>
+            <RootRegistry>
+                <Title>/transaction</Title>
+                <Table>
+                    <thead>
+                        <tr>
+                            <th>type</th>
+                            <th>hash</th>
+                            <th>date</th>
+                            <th>status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     {transactions.map(item => (
-                        <div key={item.txHash}>
-                            <CybLink dura={`${item.txHash}.eth`}>{item.txHash}</CybLink>
-                            {/*<button onClick={() => this.resend(item.txHash)}>resend</button>*/}
-                        </div>
+                        <tr key={item.txHash}>
+                            <td>
+                                {item.type}
+                            </td>
+                            <td>
+                                {
+                                    item.type === 'eth' ? (
+                                        <CybLink dura={`${item.txHash}.eth`}>
+                                            <Hash>{item.txHash}</Hash>
+                                        </CybLink>
+                                    ) : (
+                                        <Hash>{item.txHash}</Hash>
+                                    )
+                                }                                
+                            </td>
+                            <tr>
+                                {moment(item.date).format('D/MM YYYY h:mm:ss')}
+                            </tr>
+                            <td>
+                                pending
+                            </td>
+                        </tr>
                     ))}
-                </div>
-            </div>
+                    </tbody>
+                </Table>
+            </RootRegistry>
         );
     }
 }
@@ -55,10 +69,10 @@ class TxQueue extends Component {
 export default connect(
     state => ({
         transactions: state.wallet.transactions,
-        defaultAccount: state.wallet.defaultAccount
+        defaultAccount: state.wallet.defaultAccount,
     }),
     {
         getTransactions,
-        resend
-    }
+        resend,
+    },
 )(TxQueue);

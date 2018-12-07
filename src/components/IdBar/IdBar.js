@@ -5,6 +5,7 @@ import CybLink from '../CybLink';
 const IdBar = ({ defaultEthAccount, defaultCyberAccount }) => (
     <div className='id-bar'>
         <SettingsLink />
+        <CybLink dura='txq.cyb' className='id-bar__txq'>txq</CybLink>
         <WalletLink />
         <CurrentUser defaultEthAccount={ defaultEthAccount } defaultCyberAccount={ defaultCyberAccount } />
     </div>

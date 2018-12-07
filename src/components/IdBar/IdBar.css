@@ -20,6 +20,18 @@
   cursor: pointer;
 }
 
+
+.id-bar__txq {
+  width: 20px;
+  height: 20px;
+  background: url(./bell-ring-voice-alarm-clock.svg) no-repeat center center;
+  border: none;
+  text-indent: -999999px;
+  cursor: pointer;
+}
+
+
+
 .id-bar__wallet {
   width: 20px;
   height: 20px;
