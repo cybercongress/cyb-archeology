@@ -51,11 +51,6 @@ class CyberAccounts extends Component {
                             {defaultAccount}
                         </AccountCardContentItem>
                         <AccountCardContentItem>
-                        Public key:
-                            {' '}
-                            {defaultAccountPublicKey}
-                        </AccountCardContentItem>
-                        <AccountCardContentItem>
                             <div>
                                 Balance:
                                 {' '}
@@ -88,11 +83,6 @@ class CyberAccounts extends Component {
                             Address:
                             {' '}
                             {account.address}
-                        </AccountCardContentItem>
-                        <AccountCardContentItem>
-                            Public key:
-                            {' '}
-                            {account.publicKey}
                         </AccountCardContentItem>
                         <AccountCardContentItem>
                             <div>

@@ -36,11 +36,6 @@ class CyberSend extends Component {
                             {defaultAccountAddress}
                         </AccountCardContentItem>
                         <AccountCardContentItem>
-                            public key:
-                            {' '}
-                            {defaultAccountPublicKey}
-                        </AccountCardContentItem>
-                        <AccountCardContentItem>
                             <div>
                                 balance:
                                 {defaultAccountBalance}
