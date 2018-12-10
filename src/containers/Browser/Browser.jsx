@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import { didNavigateInPage, willNavigate, newWindow } from './redux/browser';
-import { receiveMessage } from './redux/wallet';
-import { getPreloadPath, isDevMode } from './utils';
-import BrowserWindow, { BrowserContainer, Loading } from './components/BrowserWindow/BrowserWindow';
+import { didNavigateInPage, willNavigate, newWindow } from '../../redux/browser';
+import { receiveMessage } from '../../redux/wallet';
+import { getPreloadPath, isDevMode } from '../../utils';
+import BrowserWindow, { BrowserContainer, Loading } from '../../components/BrowserWindow/BrowserWindow';
 
 class Browser extends Component {
     state = {
@@ -16,22 +16,20 @@ class Browser extends Component {
             return;
         }
 
+        const { props } = this;
+
         webview.addEventListener('did-navigate-in-page', (e) => {
             e.preventDefault();
-            this.props.didNavigateInPage(e.url);
+            props.didNavigateInPage(e.url);
         });
 
         webview.addEventListener('will-navigate', (event) => {
             event.preventDefault();
-            this.props.willNavigate(event.url);
-        });
-
-        webview.addEventListener('console-message', (e) => {
-            console.log('[DAPP]', e.message);
+            props.willNavigate(event.url);
         });
 
         webview.addEventListener('ipc-message', (e) => {
-            this.props.receiveMessage(e);
+            props.receiveMessage(e);
         });
 
         webview.addEventListener('did-start-loading', (e) => {
@@ -44,7 +42,7 @@ class Browser extends Component {
 
         webview.addEventListener('new-window', (evt, url, frameName, disposition, options, additionalFeatures) => {
             evt.preventDefault();
-            this.props.newWindow(evt);
+            props.newWindow(evt);
         });
 
         if (isDevMode()) {
