@@ -1,7 +1,9 @@
 const electron = require('electron');
-
-const { app, Menu, BrowserWindow } = electron;
 const path = require('path');
+
+const {
+    app, Menu, BrowserWindow, shell,
+} = electron;
 const isDev = process.argv[2] === '--dev';
 
 let mainWindow;
@@ -85,11 +87,18 @@ function createMenu() {
 function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1200, height: 900,
-        titleBarStyle: 'hidden'
+        titleBarStyle: 'hidden',
     });
     mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
-    mainWindow.on('closed', () => mainWindow = null);
+    mainWindow.on('closed', () => {
+        mainWindow = null;
+    });
 
+
+    mainWindow.webContents.on('new-window', (event, url) => {
+        event.preventDefault();
+        shell.openExternal(url);
+    });
 
     createMenu();
 
