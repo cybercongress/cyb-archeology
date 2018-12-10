@@ -3,11 +3,11 @@
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-    transition: margin-left 0.3s;
+    
 }
 
 .app--open-menu {
-	margin-left: 200px;
+	/*margin-left: 200px;*/
 }
 
 
@@ -17,7 +17,7 @@
 	flex-grow: 0;
 	background: #438cef;
 	color: #fff;
-	transition: min-height 1s;
+	transition: min-height 1s, margin-left 0.3s;
 	display: flex;
 	align-items: center;
 	-webkit-app-region: drag;
@@ -25,6 +25,10 @@
 
 .app__header.app__header--open {
 	min-height: 450px;
+}
+
+.app__header--open-menu {
+	margin-left: 200px;	
 }
 
 .app__header-container {

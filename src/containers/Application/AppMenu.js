@@ -5,7 +5,6 @@ import * as actions from '../../redux/appMenu';
 
 import MenuContainer, {
     Bookmarks,
-    AppStoreLink,
     LogoLink,
     AddMenuItem,
     AddMenuItemApprove,
