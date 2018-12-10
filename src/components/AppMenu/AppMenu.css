@@ -33,15 +33,19 @@
 .bookmarks {
     display: flex;
     flex-direction: column;
-    width: 150px;
+    width: 100%;
     margin-top: 20px;
+    flex-grow: 1;
+    overflow: scroll;
 }
 
 .bookmarks__item {
-    padding: 0.5em;
+    padding-left: 24px;
+    padding-right: 14px;
     display: inline-flex;
     cursor: pointer;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .bookmarks__item a {
@@ -52,36 +56,31 @@
 
 .bookmarks__remove-btn {
     margin: 0 0 0 auto;
-    padding: 0.5em;
     text-indent: -9999px;
-    border: 1px solid #979797;
-    width: 10px;
-    height: 10px;
+    width: 36px;
+    height: 36px;
     position: relative;
+    cursor: pointer;
+    border: none;
+    background: url(./delete.svg) no-repeat center center;
+    opacity: 0;
+    transition: opacity 0.5s;
+    visibility: hidden;
+    border-radius: 50%;
 }
 
-.bookmarks__remove-btn::after {
-    content: '';
-    position: absolute;
-    width: 10px;
-    height: 1px;
-    background: #979797;
-    left: 3px;
-    top: 7px;    
-    transform: rotate(-45deg);
-    transform-origin: center; ;
+.bookmarks__item:hover .bookmarks__remove-btn {
+    opacity: 1;
+    visibility: visible;
 }
 
-.bookmarks__remove-btn::before {
-    content: '';
-    position: absolute;
-    width: 10px;
-    height: 1px;
-    background: #979797;
-    left: 3px;
-    top: 7px;    
-    transform: rotate(45deg);
-    transform-origin: center ;
+.bookmarks__remove-btn:focus {
+    background: url(./delete-focus.svg) rgba(216, 216, 216, 0.2) no-repeat center center;
+    outline: none;
+}
+
+.bookmarks__item:hover a {
+    color: #438cef;
 }
 
 
@@ -114,3 +113,17 @@
     border: none;
     color: green;
 }
+
+
+.ReportLinkContainer {
+    height: 40px;
+    flex-shrink: 0;
+    padding-top: 10px;
+}
+
+.ReportLinkContainer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+

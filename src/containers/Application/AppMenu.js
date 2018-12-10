@@ -9,6 +9,7 @@ import MenuContainer, {
     AddMenuItem,
     AddMenuItemApprove,
     AddMenuItemReject,
+    ReportLinkContainer,
 } from '../../components/AppMenu/AppMenu';
 
 class AppMenu extends Component {
@@ -67,7 +68,9 @@ class AppMenu extends Component {
                     </AddMenuItem>
                 )
                 }
-
+                <ReportLinkContainer>
+                    <a target='__blank'  href='https://github.com/cybercongress/cyb'>Report a bug</a>
+                </ReportLinkContainer>
             </MenuContainer>
         );
     }

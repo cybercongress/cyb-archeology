@@ -63,7 +63,7 @@ const initState = {
             subItems: {},
         },
     ],
-    openMenu: false,
+    openMenu: true,
     pendingAddToFavorites: false,
 };
 

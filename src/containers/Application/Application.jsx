@@ -5,8 +5,7 @@ import App, { AppHeader, AppContent } from '../../components/App/App';
 import Navigation, {
     NavigationLeft, NavigationRight, NavigationCenter, MenuButton,
 } from '../../components/Navigation/Navigation';
-import IdBar from '../../components/IdBar/IdBar';
-import ReportBugLink from '../../components/ReportBugLink/ReportBugLink';
+import IdBar from './IdBar';
 
 import ConfirmationPopup from './ConfirmationPopup';
 import AppMenu from './AppMenu';
@@ -27,7 +26,6 @@ const Application = (props) => {
             <AppMenu />
             {pendingRequest && <ConfirmationPopup />}
             {!homePage && <Status />}
-            {!homePage && <ReportBugLink />}
             <AppHeader isHome={ homePage } isMenuOpen={openMenu}>
                 <Navigation isHome={ homePage }>
                     <NavigationLeft>
@@ -40,10 +38,7 @@ const Application = (props) => {
                         <NavigationComponents />
                     </NavigationCenter>
                     <NavigationRight>
-                        <IdBar
-                          defaultEthAccount={ defaultEthAccount }
-                          defaultCyberAccount={ defaultCybertAccount }
-                        />
+                        <IdBar />
                     </NavigationRight>
                 </Navigation>
             </AppHeader>

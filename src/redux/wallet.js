@@ -490,6 +490,10 @@ export const init = endpoint => (dispatch, getState) => {
         .then(() => dispatch(setDefaultAccount()));
 };
 
+function financial(x) {
+    return Number.parseFloat(x).toFixed(2);
+}
+
 export const getDefaultAccountBalance = (state) => {
     const {
         accounts,
@@ -500,7 +504,7 @@ export const getDefaultAccountBalance = (state) => {
 
     if (!acc ) return 0;
 
-    return acc.balance;
+    return financial(acc.balance);
 }
 
 
