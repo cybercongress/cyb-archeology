@@ -10,6 +10,7 @@ import MenuContainer, {
     AddMenuItemApprove,
     AddMenuItemReject,
     ReportLinkContainer,
+    AddMenuItemContainer,
 } from '../../components/AppMenu/AppMenu';
 
 class AppMenu extends Component {
@@ -58,6 +59,7 @@ class AppMenu extends Component {
                 />
                 {pendingAddToFavorites
                 && (
+                    <AddMenuItemContainer>
                     <AddMenuItem>
                         <input
                           ref='input'
@@ -66,10 +68,11 @@ class AppMenu extends Component {
                         <AddMenuItemApprove onClick={ this.rejectFavorite } />
                         <AddMenuItemReject onClick={ this.addToFavorites } />
                     </AddMenuItem>
+                    </AddMenuItemContainer>
                 )
                 }
                 <ReportLinkContainer>
-                    <a target='__blank'  href='https://github.com/cybercongress/cyb'>Report a bug</a>
+                    <a target='__blank'  href='https://github.com/cybercongress/cyb'>Find a bug?</a>
                 </ReportLinkContainer>
             </MenuContainer>
         );

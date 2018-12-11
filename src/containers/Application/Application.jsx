@@ -26,12 +26,12 @@ const Application = (props) => {
             <AppMenu />
             {pendingRequest && <ConfirmationPopup />}
             {!homePage && <Status />}
-            <AppHeader isHome={ homePage } isMenuOpen={openMenu}>
+            <AppHeader isHome={ homePage } isMenuOpen={ openMenu }>
                 <Navigation isHome={ homePage }>
                     <NavigationLeft>
                         <MenuButton
-                          openMenu={openMenu}
-                            onClick={ toggleMenu }
+                          openMenu={ openMenu }
+                          onClick={ toggleMenu }
                         />
                     </NavigationLeft>
                     <NavigationCenter>

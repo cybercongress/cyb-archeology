@@ -83,4 +83,8 @@ export const AddMenuItemReject = ({ onClick }) => (
     </button>
 );
 
+export const AddMenuItemContainer = (props) => (
+  <div {...props} className='AddMenuItemContainer' />
+);
+
 export default MenuContainer;

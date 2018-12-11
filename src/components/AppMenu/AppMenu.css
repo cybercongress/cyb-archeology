@@ -87,23 +87,29 @@
 .AddMenuItem {
     /*background-color: #979797;*/
     position: relative;
-    margin-top: 20px;
+    display: inline-block;
 }
 
 .AddMenuItem input {
+    border-radius: 2px;
+    color: #1b1f23;
     border: none;
     padding: 10px;
     padding-right: 40px;
     box-sizing: border-box;
     width: 150px;
+    font-size: 14px;
 }
 
 .AddMenuItem__approve {
     position: absolute;
-    top: 7px;
-    right: 0;
+    top: 0;
+    right: -34px;
+    width: 34px;
+    bottom: 0;
     border: none;
     color: red;
+    background: #438cef;
 }
 
 .AddMenuItem__reject {
@@ -111,19 +117,35 @@
     top: 7px;
     right: 20px;
     border: none;
-    color: green;
+    color: #fff;
+    font-size: 16px;
+    top: 0;
+    right: 0;
+    width: 34px;
+    bottom: 0;
+    border: none;
+    background: #438cef;
 }
 
 
 .ReportLinkContainer {
-    height: 40px;
+    height: 42px;
     flex-shrink: 0;
     padding-top: 10px;
 }
 
 .ReportLinkContainer a {
-    color: #fff;
+    color: #438cef;
     text-decoration: none;
 }
 
+
+.AddMenuItemContainer {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #696969;
+    border-top: 1px solid #696969;
+    width: 100%;
+    text-align: center;
+}
 
