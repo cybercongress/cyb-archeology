@@ -30,6 +30,10 @@ const initState = {
             hash: 'Qmd22Hupa6obYzX5CDrSoAYmkrde8bVEERZDxGqaqu5U7t',
             protocol: 'ipfs',
         },
+        ipfsview: {
+            hash: 'QmSDgpiHco5yXdyVTfhKxr3aiJ82ynz8V14QcGKicM3rVh',
+            protocol: 'ipfs',
+        },
     },
 };
 

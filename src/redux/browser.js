@@ -81,7 +81,8 @@ export const navigate = (_dura, init = false) => (dispatch, getState) => {
     const ipfsEndpoint = getIpfsEndpoint(getState());
     const { url, dura } = DURAToURL(_dura, apps, ipfsEndpoint);
 
-    if (_dura === '' && getState().appMenu.openMenu) {
+
+    if ((_dura === '' || dura === '') && getState().appMenu.openMenu) {
         dispatch(toggleMenu());
     }
 

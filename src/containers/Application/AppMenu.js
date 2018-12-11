@@ -31,7 +31,7 @@ class AppMenu extends Component {
     };
 
     clickLogo = () => {
-        this.props.toggleMenu();
+        // this.props.toggleMenu();
     };
 
     render() {

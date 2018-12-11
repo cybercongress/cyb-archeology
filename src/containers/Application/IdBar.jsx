@@ -12,7 +12,7 @@ import { getDefaultAccountBalance as getDefaultAccountBalanceCyb } from '../../r
 
 class IdBar extends Component {
     state = {
-        open: true,
+        open: false,
     };
 
     toggle = () => {
