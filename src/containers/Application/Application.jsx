@@ -15,8 +15,8 @@ import NavigationComponents from './Navigation';
 
 const Application = (props) => {
     const {
-        dura, defaultEthAccount,
-        openMenu, defaultCybertAccount, pendingRequest,
+        dura,
+        openMenu, pendingRequest,
         children, toggleMenu,
     } = props;
     const homePage = dura === '';

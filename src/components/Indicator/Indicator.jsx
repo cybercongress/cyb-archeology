@@ -1,18 +1,32 @@
 import React from 'react';
 
+import Tooltip from 'rc-tooltip';
+
+import 'rc-tooltip/assets/bootstrap.css';
+
 import './Indicator.css';
 
-const Indicator = ({ status, children }) => {
+const Indicator = ({ status, children, tooltipContent }) => {
     const style = {
-        background: '#fff',
+        background: '#e8a823',
     };
 
-    if (status) {
-        style.background = status === 'fail' ? '#d0021b' : status === 'local' ? '#7ed321' : '#f8e71c';
+    if (status === 'local') {
+        style.background = '#3fb990';
+    }
+
+    if (status === 'fail') {
+        style.background = '#d32f2f';
     }
 
     return (
-        <span style={ style } className='indicator'>{children}</span>
+        <Tooltip
+          placement='topLeft'
+          trigger={ ['hover'] }
+          overlay={ tooltipContent }
+        >
+            <span style={ style } className='indicator'>{children}</span>
+        </Tooltip>
     );
 };
 

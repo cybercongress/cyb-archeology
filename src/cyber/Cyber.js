@@ -16,7 +16,6 @@ let __accounts = {};
 const IPFS = require('ipfs-api');
 
 
-
 const saveInIPFS = (ipfs, jsonStr) => new Promise((resolve, reject) => {
     const buffer = Buffer.from(jsonStr);
 
@@ -43,7 +42,7 @@ function Cyber(nodeUrl) {
 
     //TOOD: use url from settings
     const ipfs = new IPFS({
-        host: 'localhost',
+        host: '127.0.0.1',
         port: 5001,
         protocol: 'http',
     });
