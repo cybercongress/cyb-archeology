@@ -93,6 +93,17 @@ function createWindow() {
 
     createMenu();
 
+    session.defaultSession.on('will-download', (e, item) => {
+        switch (item.getMimeType()) {
+            case 'application/pdf': {
+                e.preventDefault();
+                const win = new PDFWindow();
+                win.loadURL(item.getURL());
+                break;
+            }
+        }
+    });
+
     if (isDev) {
         mainWindow.webContents.openDevTools();
     }
