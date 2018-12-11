@@ -7,7 +7,7 @@ import {
 
 import builder from './builder';
 
-const chainId = 'test-chain-gRXWCL';
+const chainId = 'euler-dev0';
 const claimNodeUrl = 'http://earth.cybernode.ai:34666'; //proxy TODO: remove when fix chain
 const defaultAmount = 10000;
 
