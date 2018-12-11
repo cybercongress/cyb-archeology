@@ -2,6 +2,7 @@ import { hashHistory } from 'react-router';
 import { URLToDURA, DURAToURL } from '../utils';
 import { getRegistryItems } from './rootRegistry';
 import { getIpfsEndpoint } from './settings';
+import { toggleMenu } from './appMenu';
 
 // TODO: proccess loading
 
@@ -79,6 +80,10 @@ export const navigate = (_dura, init = false) => (dispatch, getState) => {
     const apps = getRegistryItems(getState());
     const ipfsEndpoint = getIpfsEndpoint(getState());
     const { url, dura } = DURAToURL(_dura, apps, ipfsEndpoint);
+
+    if (_dura === '' && getState().appMenu.openMenu) {
+        dispatch(toggleMenu());
+    }
 
     if (_dura === 'rr.cyb') {
         // if (!init)

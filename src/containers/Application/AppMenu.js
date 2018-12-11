@@ -37,7 +37,7 @@ class AppMenu extends Component {
     render() {
         const {
             openMenu, deleteMenuItem, menuItems,
-            pendingAddToFavorites,
+            pendingAddToFavorites, dura,
         } = this.props;
 
         return (
@@ -79,6 +79,7 @@ class AppMenu extends Component {
 
 export default connect(
     state => ({
+        dura: state.browser.dura,
         openMenu: state.appMenu.openMenu,
         menuItems: state.appMenu.items,
         currentDura: state.browser.dura,
