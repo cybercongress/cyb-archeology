@@ -199,14 +199,14 @@ export const didNavigateInPage = url => (dispatch, getState) => {
 
     dispatch(updateDURA(dura));
 
-    dispatch({ // update URL in webview component, fix problem with links
-        type: 'NAVIGATE',
-        payload: {
-            url,
-            dura,
-            loading: false,
-        },
-    });
+    // dispatch({ // update URL in webview component, fix problem with links
+    //     type: 'NAVIGATE',
+    //     payload: {
+    //         url,
+    //         dura,
+    //         loading: false,
+    //     },
+    // });
 };
 
 export const init = _IPFS_END_POINT => (dispatch, getState) => {
