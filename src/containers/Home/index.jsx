@@ -25,8 +25,8 @@ const HomePage = props => (
             </Item>
 
             <Item dura='.ipfsview'>
-                <ItemTitle>ipfs web UI</ItemTitle>
-                <Image type='wallet' />
+                <ItemTitle>IPFS web UI</ItemTitle>
+                <Image type='ipfs' />
                 <Arrow />
             </Item>
         </Items>
