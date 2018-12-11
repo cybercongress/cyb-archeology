@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { Message } from '@cybercongress/ui';
 import EthAccounts from './EthAccounts';
 import ETHImport from './ETHImport';
 import EthSend from './EthSend';
@@ -18,6 +17,8 @@ import WalletTabs, { WalletTab } from '../../components/Wallet/WalletTabs/Wallet
 
 import RequirePassword from '../Application/Login';
 import ChangePassword from '../Application/ChangePassword';
+import RootRegistry from '../../components/RootRegistry/RootRegistry';
+
 
 class Page extends Component {
     state = {
@@ -89,6 +90,7 @@ class Page extends Component {
         }
 
         return (
+            <RootRegistry>
             <WalletContainer>
                 <Titile>/Wallet</Titile>
                 <WalletLauout>
@@ -145,6 +147,7 @@ send tokens
                     </WalletContent>
                 </WalletLauout>
             </WalletContainer>
+            </RootRegistry>
         );
     }
 }

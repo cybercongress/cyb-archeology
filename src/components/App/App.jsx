@@ -16,7 +16,7 @@ export const AppHeader = ({ isHome, children, isMenuOpen }) => (
     </div>
 );
 
-export const AppContent = ({ children }) => (
+export const AppContent = ({ children, isHome }) => (
     <div className='app__content'>
         {children}
     </div>
