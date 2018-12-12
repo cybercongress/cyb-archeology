@@ -36,7 +36,7 @@ export const SettingsIndicator = ({ status }) => {
     };
 
     if (status) {
-        style.background = status === 'fail' ? '#d0021b' : status === 'local' ? '#7ed321' : '#f8e71c';
+        style.background = status === 'fail' ? '#d32f2f' : status === 'local' ? '#3fb990' : '#e8a823';
     }
 
     let placeholder;
