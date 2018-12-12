@@ -39,7 +39,7 @@ class AppMenu extends Component {
     render() {
         const {
             openMenu, deleteMenuItem, menuItems,
-            pendingAddToFavorites, dura,
+            pendingAddToFavorites,
         } = this.props;
 
         return (

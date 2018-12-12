@@ -1,8 +1,10 @@
 import React from 'react';
 import CybLink from '../CybLink';
-import Logo from '../Logo/Logo';
 import './AppMenu.css';
 
+const Logo = props => (
+    <CybLink { ...props } className='logo'>logo</CybLink>
+);
 
 export const LogoLink = ({ onClick }) => (
     <div className='menu-logo'>
