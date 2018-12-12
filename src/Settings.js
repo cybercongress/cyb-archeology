@@ -14,6 +14,8 @@ import {
     SettingLabel, SettingRow,
     SettingsContainer,
 } from './components/Settings/Settings';
+import RootRegistry from './components/RootRegistry/RootRegistry';
+
 
 class Settings extends Component {
 
@@ -73,6 +75,7 @@ class Settings extends Component {
         } = this.props;
 
         return (
+            <RootRegistry>
             <Container>
                 <Titile>/ Settings</Titile>
                 <SettingsContainer>
@@ -154,6 +157,7 @@ class Settings extends Component {
                     </BlockRow>
                 </Block>
             </Container>
+            </RootRegistry>
         );
     }
 }

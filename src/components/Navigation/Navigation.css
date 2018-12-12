@@ -53,6 +53,11 @@
 	align-items: center;
 }
 
+.MenuButton.MenuButton--open {
+	transform: rotate(90deg);
+	margin-top: 20px;
+}
+
 
 
 .MenuButton_line1 {

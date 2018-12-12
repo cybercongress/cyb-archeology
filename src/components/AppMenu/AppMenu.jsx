@@ -21,7 +21,13 @@ const Items = ({ item, deleteAppFromMenu }) => (
         <CybLink dura={ item.rootDura }>
             {item.name}
         </CybLink>
-        <div className='bookmarks__remove-btn' onClick={ () => deleteAppFromMenu(item.rootDura) }>&#128465;</div>
+        <button
+          type='button'
+          className='bookmarks__remove-btn'
+          onClick={ () => deleteAppFromMenu(item.rootDura) }
+        >
+        &#128465;
+        </button>
     </span>
 );
 
@@ -29,14 +35,20 @@ export const Bookmarks = ({ items, deleteMenuItem }) => (
     <div className='bookmarks'>
         {items.map(item => (
             <Items
-                key={ item.rootDura }
-                item={ item }
-                deleteAppFromMenu={ deleteMenuItem }
+              key={ item.rootDura }
+              item={ item }
+              deleteAppFromMenu={ deleteMenuItem }
             />
         ))}
     </div>
 );
 
+
+export const ReportLinkContainer = ({ children }) => (
+    <div className='ReportLinkContainer'>
+        {children}
+    </div>
+);
 
 const MenuContainer = ({ children, openMenu }) => (
     <div className={ `menuContainer ${!openMenu ? 'menuContainer--hide' : ''}` }>
@@ -52,11 +64,27 @@ export const AddMenuItem = ({ children }) => (
 );
 
 export const AddMenuItemApprove = ({ onClick }) => (
-    <button onClick={ onClick } className='AddMenuItem__approve'>&#10006;</button>
+    <button
+      type='button'
+      onClick={ onClick }
+      className='AddMenuItem__approve'
+    >
+    &#10006;
+    </button>
 );
 
 export const AddMenuItemReject = ({ onClick }) => (
-    <button onClick={ onClick } className='AddMenuItem__reject'>&#10004;</button>
+    <button
+      type='button'
+      onClick={ onClick }
+      className='AddMenuItem__reject'
+    >
+    &#10004;
+    </button>
+);
+
+export const AddMenuItemContainer = (props) => (
+  <div {...props} className='AddMenuItemContainer' />
 );
 
 export default MenuContainer;

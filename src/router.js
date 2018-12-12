@@ -7,7 +7,7 @@ import RootRegistry from './RootRegistry';
 import Settings from './Settings';
 import Wallet from './containers/Wallet';
 import NotFound from './NotFound';
-import Browser from './Browser';
+import Browser from './containers/Browser/Browser';
 import Home from './containers/Home';
 import AppStore from './containers/AppStore/AppStore';
 import TransactionView from './containers/TransactionView/TransactionView';

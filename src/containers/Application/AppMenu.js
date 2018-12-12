@@ -5,11 +5,12 @@ import * as actions from '../../redux/appMenu';
 
 import MenuContainer, {
     Bookmarks,
-    AppStoreLink,
     LogoLink,
     AddMenuItem,
     AddMenuItemApprove,
     AddMenuItemReject,
+    ReportLinkContainer,
+    AddMenuItemContainer,
 } from '../../components/AppMenu/AppMenu';
 
 class AppMenu extends Component {
@@ -31,13 +32,13 @@ class AppMenu extends Component {
     };
 
     clickLogo = () => {
-        this.props.toggleMenu();
+        // this.props.toggleMenu();
     };
 
     render() {
         const {
             openMenu, deleteMenuItem, menuItems,
-            pendingAddToFavorites,
+            pendingAddToFavorites, dura,
         } = this.props;
 
         return (
@@ -58,6 +59,7 @@ class AppMenu extends Component {
                 />
                 {pendingAddToFavorites
                 && (
+                    <AddMenuItemContainer>
                     <AddMenuItem>
                         <input
                           ref='input'
@@ -66,9 +68,12 @@ class AppMenu extends Component {
                         <AddMenuItemApprove onClick={ this.rejectFavorite } />
                         <AddMenuItemReject onClick={ this.addToFavorites } />
                     </AddMenuItem>
+                    </AddMenuItemContainer>
                 )
                 }
-
+                <ReportLinkContainer>
+                    <a target='__blank'  href='https://github.com/cybercongress/cyb'>Find a bug?</a>
+                </ReportLinkContainer>
             </MenuContainer>
         );
     }
@@ -77,6 +82,7 @@ class AppMenu extends Component {
 
 export default connect(
     state => ({
+        dura: state.browser.dura,
         openMenu: state.appMenu.openMenu,
         menuItems: state.appMenu.items,
         currentDura: state.browser.dura,

@@ -23,11 +23,15 @@ const initState = {
             protocol: 'ipfs',
         },
         chaingear: {
-            hash: 'QmVwR6vFDGmgH5UMtNZXaH85vDQuwcaaJKvRdKpSiVcZJu',
+            hash: 'QmUuQawnPiRoSevE6MzTygA3ePPPtJKgr7qQHsUwEeuxLA',
             protocol: 'ipfs',
         },
         dragons: {
             hash: 'Qmd22Hupa6obYzX5CDrSoAYmkrde8bVEERZDxGqaqu5U7t',
+            protocol: 'ipfs',
+        },
+        ipfsview: {
+            hash: 'QmSDgpiHco5yXdyVTfhKxr3aiJ82ynz8V14QcGKicM3rVh',
             protocol: 'ipfs',
         },
     },
