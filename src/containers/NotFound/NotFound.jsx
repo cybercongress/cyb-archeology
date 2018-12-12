@@ -1,10 +1,10 @@
 import React from 'react';
-import Container from './components/Container/Container';
+import Container from '../../components/Container/Container';
 
-import Vitalick from './components/Vitalick/Vitalick';
+import Vitalick from '../../components/Vitalick/Vitalick';
 
-import NotFoundPage from './components/NotFound/NotFound';
-import Button from './components/Button/Button';
+import NotFoundPage from '../../components/NotFound/NotFound';
+import Button from '../../components/Button/Button';
 
 const NotFound = (props) => {
     const { location: { query: { dura } } } = props;
@@ -32,7 +32,7 @@ and Cyb will understand it!
             </NotFoundPage>
         </Container>
     );
-}
+};
 
 
 export default NotFound;

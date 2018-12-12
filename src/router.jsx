@@ -3,13 +3,12 @@ import {
     hashHistory, IndexRoute, Route, Router,
 } from 'react-router';
 import Application from './containers/Application/Application';
-import RootRegistry from './RootRegistry';
-import Settings from './Settings';
+import RootRegistry from './containers/RootRegistry/RootRegistry';
+import Settings from './containers/Settings/Settings';
 import Wallet from './containers/Wallet';
-import NotFound from './NotFound';
+import NotFound from './containers/NotFound/NotFound';
 import Browser from './containers/Browser/Browser';
 import Home from './containers/Home';
-import AppStore from './containers/AppStore/AppStore';
 import TransactionView from './containers/TransactionView/TransactionView';
 import History from './containers/History/History';
 import TxQueue from './containers/TxQueue/TxQueue';
@@ -21,7 +20,6 @@ const AppRouter = () => (
             <Route path='/settings' component={ Settings } />
             <Route path='/wallet' component={ Wallet } />
             <Route path='/eth/:txHash' component={ TransactionView } />
-            <Route path='/appstore' component={ AppStore } />
             <Route path='/history' component={ History } />
             <Route path='/txq' component={ TxQueue } />
             <Route path='/notfound' component={ NotFound } />

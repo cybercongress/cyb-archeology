@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
 import { Title } from '@cybercongress/ui';
-import { addRegistryItem, deleteRegistryItem, getRegistryItemsAsArray, resetToDefault } from './redux/rootRegistry';
+import {
+    addRegistryItem, deleteRegistryItem,
+    getRegistryItemsAsArray, resetToDefault,
+} from '../../redux/rootRegistry';
 
-import Button from './components/Button/Button';
-import Input from './components/Input/Input';
-import RootRegistry, { Table } from './components/RootRegistry/RootRegistry';
+import Button from '../../components/Button/Button';
+import Input from '../../components/Input/Input';
+import RootRegistry, { Table } from '../../components/RootRegistry/RootRegistry';
 
 
 class RootRegistryPage extends Component {
