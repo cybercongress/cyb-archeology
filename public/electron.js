@@ -1,12 +1,10 @@
 const electron = require('electron');
 const PDFWindow = require('electron-pdf-window');
 
-const { app, Menu, BrowserWindow, session } = electron;
+const { app, Menu, BrowserWindow, session, shell } = electron;
 const path = require('path');
 
-const {
-    app, Menu, BrowserWindow, shell,
-} = electron;
+
 const isDev = process.argv[2] === '--dev';
 
 let mainWindow;
