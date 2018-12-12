@@ -1,4 +1,7 @@
 const electron = require('electron');
+const PDFWindow = require('electron-pdf-window');
+
+const { app, Menu, BrowserWindow, session } = electron;
 const path = require('path');
 
 const {
@@ -102,9 +105,21 @@ function createWindow() {
 
     createMenu();
 
+    session.defaultSession.on('will-download', (e, item, webContents) => {
+        switch (item.getMimeType()) {
+            case 'application/pdf': {
+                e.preventDefault();
+                PDFWindow.addSupport(webContents);
+                webContents.loadURL(item.getURL());
+                break;
+            }
+        }
+    });
+
     if (isDev) {
         mainWindow.webContents.openDevTools();
     }
+	
 }
 
 app.on('ready', createWindow);
