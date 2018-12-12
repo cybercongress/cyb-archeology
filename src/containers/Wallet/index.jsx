@@ -17,7 +17,7 @@ import WalletTabs, { WalletTab } from '../../components/Wallet/WalletTabs/Wallet
 
 import RequirePassword from '../Application/Login';
 import ChangePassword from '../Application/ChangePassword';
-import RootRegistry from '../../components/RootRegistry/RootRegistry';
+import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
 
 
 class Page extends Component {
@@ -49,7 +49,7 @@ class Page extends Component {
 
         if (tab === 'eth' && menu === 'import') {
             content = (
-                <ETHImport importCompleted={() => this.selectMenu('accounts')}/>
+                <ETHImport importCompleted={ () => this.selectMenu('accounts') } />
             );
         }
 
@@ -73,7 +73,7 @@ class Page extends Component {
 
         if (tab === 'cyb' && menu === 'import') {
             content = (
-                <CyberImport importCompleted={() => this.selectMenu('accounts')}/>
+                <CyberImport importCompleted={ () => this.selectMenu('accounts') } />
             );
         }
 
@@ -90,7 +90,7 @@ class Page extends Component {
         }
 
         return (
-            <RootRegistry>
+            <ScrollContainer>
                 <WalletContainer>
                     <Titile>/Wallet</Titile>
                     <WalletLauout>
@@ -147,7 +147,7 @@ class Page extends Component {
                         </WalletContent>
                     </WalletLauout>
                 </WalletContainer>
-            </RootRegistry>
+            </ScrollContainer>
         );
     }
 }

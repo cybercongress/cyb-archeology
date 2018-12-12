@@ -8,7 +8,8 @@ import {
 
 import Button from '../../components/Button/Button';
 import Input from '../../components/Input/Input';
-import RootRegistry, { Table } from '../../components/RootRegistry/RootRegistry';
+import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
+import Table from '../../components/Table/Table';
 
 
 class RootRegistryPage extends Component {
@@ -49,7 +50,7 @@ class RootRegistryPage extends Component {
         ));
 
         return (
-            <RootRegistry>
+            <ScrollContainer>
 
                 <Title>/Cyb root registry</Title>
                 <div style={{ paddingBottom: 20 }}>
@@ -87,7 +88,7 @@ ipns
                         </tbody>
                     </Table>
                 </div>
-            </RootRegistry>
+            </ScrollContainer>
         );
     }
 }

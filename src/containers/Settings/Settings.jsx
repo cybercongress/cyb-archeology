@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from './redux/settings';
 
-import Container from './components/Container/Container';
-import Titile from './components/Titile/Titile';
-import Button from './components/Button/Button';
-import Block, { BlockRow } from './components/Settings/Block';
-import Input from './components/Input/Input';
-import { SettingsIndicator } from './components/Indicator/Indicator';
+import * as actions from '../../redux/settings';
+
+import Titile from '../../components/Titile/Titile';
+import Button from '../../components/Button/Button';
+import Block, { BlockRow } from '../../components/Settings/Block';
+import Input from '../../components/Input/Input';
+import { SettingsIndicator } from '../../components/Indicator/Indicator';
 import {
     ConnectionContainer,
     NodeStatusContainer,
     SettingLabel, SettingRow,
     SettingsContainer,
-} from './components/Settings/Settings';
-import RootRegistry from './components/RootRegistry/RootRegistry';
-import { getIpfsWriteUrl } from './redux/settings';
+} from '../../components/Settings/Settings';
+import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
 
 
 class Settings extends Component {
@@ -83,8 +82,7 @@ class Settings extends Component {
         } = this.props;
 
         return (
-            <RootRegistry>
-            <Container>
+            <ScrollContainer>
                 <Titile>/ Settings</Titile>
                 <SettingsContainer>
                     <ConnectionContainer>
@@ -116,9 +114,9 @@ class Settings extends Component {
                                 <SettingRow>
                                     <SettingLabel>ETH node:</SettingLabel>
                                     <Input
-                                        inputRef={ node => this.ethInput = node }
-                                        defaultValue={ PARITY_END_POINT }
-                                        style={ { width: 200 } }
+                                      inputRef={node => this.ethInput = node }
+                                      defaultValue={ PARITY_END_POINT }
+                                      style={ { width: 200 } }
                                     />
                                     <Button onClick={ this.setEthCustom }>update</Button>
                                 </SettingRow>
@@ -133,9 +131,9 @@ class Settings extends Component {
                                 <SettingRow>
                                     <SettingLabel>cyberd node:</SettingLabel>
                                     <Input
-                                        inputRef={ node => this.cyberdInput = node }
-                                        defaultValue={ CYBERD_END_POINT }
-                                        style={ { width: 200 } }
+                                      inputRef={node => this.cyberdInput = node }
+                                      defaultValue={ CYBERD_END_POINT }
+                                      style={ { width: 200 } }
                                     />
                                     <Button onClick={ this.updateCyberd }>update</Button>
                                 </SettingRow>
@@ -151,7 +149,7 @@ class Settings extends Component {
                                     <SettingsIndicator status={ ipfsStatus } />
                                 </SettingRow>
                             </BlockRow>
-                            <BlockRow style={{ height: 110}}>
+                            <BlockRow style={ { height: 110 } }>
                                 <SettingRow>
                                     <SettingsIndicator status={ parityStatus } />
                                 </SettingRow>
@@ -173,8 +171,8 @@ class Settings extends Component {
                         </SettingRow>
                     </BlockRow>
                 </Block>
-            </Container>
-            </RootRegistry>
+
+            </ScrollContainer>
         );
     }
 }
@@ -188,7 +186,7 @@ export default connect(
         ipfsStatus: settings.ipfsStatus,
         parityStatus: settings.ethNodeStatus,
         cyberdStatus: settings.cyberNodeStatus,
-        ipfsWriteUrl: getIpfsWriteUrl({settings}),
+        ipfsWriteUrl: actions.getIpfsWriteUrl({settings}),
     }),
     actions,
 )(Settings);

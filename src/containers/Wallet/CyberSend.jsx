@@ -2,30 +2,31 @@ import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
 import * as cyberActions from '../../redux/cyber';
 import {
-    AddAccount, Avatar, SendFunds, WalletAccountsList, WalletContainer,
+    Avatar, SendFunds,
 } from '../../components/Wallet/Wallet';
-import Container from '../../components/Container/Container';
-import Block, { BlockRow } from '../../components/Settings/Block';
 import Button from '../../components/Button/Button';
 import AccountCard, {
     AccountCardContent, AccountCardContentItem,
     AccountCardLeft, AccountCardRight,
-    MainIndecator
+    MainIndecator,
 } from '../../components/Wallet/AccountCard/AccountCard';
 
 class CyberSend extends Component {
     sendFunds = (defaultAddress, recipientAddress, amount) => {
-        this.props.sendFunds(defaultAddress, recipientAddress, amount);
+        const { props } = this;
+
+        props.sendFunds(defaultAddress, recipientAddress, amount);
     };
 
     render() {
-        const { defaultAccountAddress, defaultAccountBalance, defaultAccountPublicKey } = this.props;
+        const { props } = this;
+        const { defaultAccountAddress, defaultAccountBalance } = props;
 
         const defaultAccountComponent = defaultAccountAddress && (
             <AccountCard>
                 <AccountCardLeft>
 
-                    <Avatar hash={defaultAccountAddress} />
+                    <Avatar hash={ defaultAccountAddress } />
                     <MainIndecator />
                 </AccountCardLeft>
                 <AccountCardRight>
@@ -43,7 +44,9 @@ class CyberSend extends Component {
                                 CYB
                             </div>
                             <div>
-                                <Button onClick={() => this.props.onCopyKey(defaultAccountAddress)}>COPY PRIVATE KEY</Button>
+                                <Button onClick={ () => props.onCopyKey(defaultAccountAddress) }>
+                                COPY PRIVATE KEY
+                                </Button>
                             </div>
                         </AccountCardContentItem>
                     </AccountCardContent>
@@ -53,13 +56,15 @@ class CyberSend extends Component {
 
         return (
             <div>
-            {defaultAccountAddress ? <div>
-                    {defaultAccountComponent}
-                    <SendFunds
-                        defaultAddress={ defaultAccountAddress }
-                        sendCallback={ this.sendFunds }
-                    />
-                </div> : (
+                {defaultAccountAddress ? (
+                    <div>
+                        {defaultAccountComponent}
+                        <SendFunds
+                          defaultAddress={ defaultAccountAddress }
+                          sendCallback={ this.sendFunds }
+                        />
+                    </div>
+                ) : (
                     <div>
                         you have no accounts
                     </div>
@@ -74,7 +79,7 @@ export default connect(
         accounts: cyber.accounts,
         defaultAccountAddress: cyber.defaultAccount,
         defaultAccountPublicKey: cyberActions.getDefaultAccountPublicKey({ cyber }),
-        defaultAccountBalance: cyberActions.getDefaultAccountBalance({ cyber })
+        defaultAccountBalance: cyberActions.getDefaultAccountBalance({ cyber }),
     }),
     cyberActions,
 )(CyberSend);

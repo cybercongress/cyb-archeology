@@ -1,18 +1,17 @@
 import React from 'react';
-import Container from '../../components/Container/Container';
 
-import Vitalick from '../../components/Vitalick/Vitalick';
-
+import Vitalik from '../../components/Vitalik/Vitalik';
 import NotFoundPage from '../../components/NotFound/NotFound';
 import Button from '../../components/Button/Button';
+import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
 
 const NotFound = (props) => {
     const { location: { query: { dura } } } = props;
 
     return (
-        <Container>
+        <ScrollContainer>
             <NotFoundPage>
-                <Vitalick style={ { float: 'right' } } />
+                <Vitalik style={ { float: 'right' } } />
                 <p>
 Seems that Cyb doesn`t know
                     <b>
@@ -30,7 +29,7 @@ and Cyb will understand it!
                 </p>
                 <Button color='green' dura='rr.cyb'>Go to Root Registry!</Button>
             </NotFoundPage>
-        </Container>
+        </ScrollContainer>
     );
 };
 

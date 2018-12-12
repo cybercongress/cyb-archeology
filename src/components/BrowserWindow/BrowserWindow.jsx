@@ -5,9 +5,9 @@ import Block, { BlockRow } from '../Settings/Block';
 
 const BrowserWindow = ({ loading, refFn, ...props }) => (
     <webview
-        { ...props }
-        ref={ refFn }
-        className={ `browser__webview ${loading ? 'browser__webview--loading' : ''}` }
+      { ...props }
+      ref={ refFn }
+      className={ `browser__webview ${loading ? 'browser__webview--loading' : ''}` }
     />
 );
 

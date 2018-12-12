@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
 import * as actions from '../../redux/wallet';
-import Container from '../../components/Container/Container';
 import { Avatar, SendFunds } from '../../components/Wallet/Wallet';
 import AccountCard, {
     AccountCardContent, AccountCardContentItem,
     AccountCardLeft, AccountCardRight,
-    MainIndecator
+    MainIndecator,
 } from '../../components/Wallet/AccountCard/AccountCard';
-import Button from '../../components/Button/Button';
 
 class EthSend extends Component {
     sendFunds = (defaultAddress, recipientAddress, amount) => {
-        this.props.sendFunds(defaultAddress, recipientAddress, amount)
+        const { props } = this;
+
+        props.sendFunds(defaultAddress, recipientAddress, amount)
             .then(() => {
-                this.props.loadAccounts();
+                props.loadAccounts();
             });
     };
 
@@ -49,19 +49,21 @@ class EthSend extends Component {
 
         return (
             <div>
-                {defaultAccount ? <div>
-                    {defaultAccountComponent}
-                    <SendFunds
-                        defaultAddress={ defaultAccount }
-                        sendCallback={ this.sendFunds }
-                    />
-                </div> : (
+                {defaultAccount ? (
+                    <div>
+                        {defaultAccountComponent}
+                        <SendFunds
+                          defaultAddress={ defaultAccount }
+                          sendCallback={ this.sendFunds }
+                        />
+                    </div>
+                ) : (
                     <div>
                         you have no accounts
                     </div>
                 )}
             </div>
-    );
+        );
     }
 }
 

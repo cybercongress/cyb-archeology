@@ -6,6 +6,9 @@ import { receiveMessage } from '../../redux/wallet';
 import { getPreloadPath, isDevMode } from '../../utils';
 import BrowserWindow, { BrowserContainer, Loading } from '../../components/BrowserWindow/BrowserWindow';
 
+/*
+TODO: fix bug /#/ => /#/page => click /#/
+*/
 class Browser extends Component {
     state = {
         loading: false,

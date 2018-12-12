@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
 import * as actions from '../../redux/wallet';
-import Container from '../../components/Container/Container';
 import { AddAccount } from '../../components/Wallet/Wallet';
 
 class ETHImport extends Component {
     importAccount = (privatekey) => {
-        this.props.importAccount(privatekey)
-            .then(this.props.importCompleted);
+        const { props } = this;
+
+        props.importAccount(privatekey)
+            .then(props.importCompleted);
     };
 
 
@@ -15,9 +16,9 @@ class ETHImport extends Component {
         return (
             <div>
                 <AddAccount
-                    addMethodName='Import'
-                    placeholder='private key'
-                    addCallback={ this.importAccount }
+                  addMethodName='Import'
+                  placeholder='private key'
+                  addCallback={ this.importAccount }
                 />
             </div>
         );
