@@ -35,6 +35,8 @@ const Status = ({
 
     const cyberContent = cyberNodeStatus !== 'fail' ? (
         <div>
+            <div>euler-dev0</div>
+            <hr />
             <div>{SEARCH_END_POINT}</div>
         </div>
     ) : (

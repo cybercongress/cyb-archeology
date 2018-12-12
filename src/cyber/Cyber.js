@@ -51,11 +51,13 @@ function Cyber(nodeUrl) {
 
     self.search = function (text) {
         return new Promise((resolve) => {
+            
             saveInIPFS(ipfs, text)
                 .then(cid => axios({
                     method: 'get',
                     url: `${nodeUrl}/search?cid=${cid}`,
                 })).then((data) => {
+                    
                     const cids = data.data.result.cids;
                     const links = cids.map(cid => ({ ...cid, hash: cid.Cid }));
 
@@ -80,60 +82,61 @@ function Cyber(nodeUrl) {
     };
 
 
-    self.link = function (from, to, address = '') {
-        return Promise.all([
-            saveInIPFS(ipfs, from),
-            saveInIPFS(ipfs, to),
-        ]).then(([_from, _to]) => {
-            return axios({
-                method: 'get',
-                url: `${nodeUrl}/account?address=${address}`,
-            }).then((response) => {
-                if (!response.data.result) { return false; }
+    function addTransactionLog(address, txHash, status) {
+        const jsonStr = localStorage.getItem(`cyb_transactions${address}`) || '[]';
+        const transactions = JSON.parse(jsonStr);
 
-                return response.data.result.account;
-            }).then((account) => {
-                if (!account) { return; }
+        const newItem = {
+            txHash,
+            date: new Date(),
+            type: 'cyber',
+            status: 'pending',
+        };
+        const newTransactions = transactions.concat([newItem]);
 
-                const acc = {
-                    address: account.address,
-                    chain_id: chainId, // todo: get from node
-                    account_number: parseInt(account.account_number, 10),
-                    sequence: parseInt(account.sequence, 10),
-                };
-                const linkRequest = {
-                    acc,
-                    fromCid: _from,
-                    toCid: _to,
-                    type: 'link',
-                };
+        localStorage.setItem(`cyb_transactions${address}`, JSON.stringify(newTransactions));
+    }
 
-                return axios({
-                    method: 'post',
-                    url: `${nodeUrl}/link`,
-                    data: builder.buildAndSignTxRequest(linkRequest, __accounts[address].privateKey, chainId),
-                }).then(data => {
-                    console.log('Link results: ', data);
+    self.link = (from, to, address = '') => Promise.all([
+        saveInIPFS(ipfs, from),
+        saveInIPFS(ipfs, to),
+    ]).then(([_from, _to]) => axios({
+        method: 'get',
+        url: `${nodeUrl}/account?address=${address}`,
+    }).then((response) => {
+        if (!response.data.result) { return false; }
 
-                    const jsonStr = localStorage.getItem('cyb_transactions' + address) || '[]';
-                    const transactions = JSON.parse(jsonStr);
+        return response.data.result.account;
+    }).then((account) => {
+        if (!account) { return; }
 
-                    const newItem = { 
-                        txHash: data.data.hash, 
-                        date: new Date(), 
-                        type: 'cyber', 
-                        status: 'pending' 
-                    };
-                    const _transactions = transactions.concat([newItem]);
+        const acc = {
+            address: account.address,
+            chain_id: chainId, // todo: get from node
+            account_number: parseInt(account.account_number, 10),
+            sequence: parseInt(account.sequence, 10),
+        };
+        const linkRequest = {
+            acc,
+            fromCid: _from,
+            toCid: _to,
+            type: 'link',
+        };
 
-                    localStorage.setItem('cyb_transactions' + address, JSON.stringify(_transactions));
+        return axios({
+            method: 'post',
+            url: `${nodeUrl}/link`,
+            data: builder.buildAndSignTxRequest(linkRequest, __accounts[address].privateKey, chainId),
+        }).then(data => {
+            console.log('Link results: ', data);
 
-                }).catch(error => console.log('Cannot link', error));
-            });
+            addTransactionLog(address, data.data.hash, 'pending');
+        }).catch(error => {
+            console.log('Cannot link', error);
+
+            // addTransactionLog(address, data.data.hash, 'fail');
         });
-
-        
-    };
+    }));
 
     self.claimFunds = function (address, amount) {
         return axios({
@@ -146,12 +149,25 @@ function Cyber(nodeUrl) {
 
     let __setDefaultAddress;
 
-    self.getDefaultAddress = function () {
-        return new Promise((resolve) => {
-            __setDefaultAddress = resolve;
-            resolve(defaultAccount);
+    self.getDefaultAddress = () => new Promise((resolve) => {
+        __setDefaultAddress = resolve;
+
+        axios({
+            method: 'get',
+            url: `${nodeUrl}/account?address=${defaultAccount}`,
+        }).then(response => response.data.result).then((data) => {
+            let balance = 0;
+
+            if (data && data.account && data.account.account_number >= 0) {
+                balance = data.account.coins[0].amount;
+            }
+
+            resolve({
+                address: defaultAccount,
+                balance: +balance,
+            });
         });
-    };
+    });
 
     self.setDefaultAccount = function (_address) {
         defaultAccount = _address;

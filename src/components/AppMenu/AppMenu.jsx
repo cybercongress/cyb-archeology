@@ -43,6 +43,10 @@ export const Bookmarks = ({ items, deleteMenuItem }) => (
     </div>
 );
 
+export const CloseButton = props => (
+    <button type='button' { ...props } className='CloseButton'>close</button>
+);
+
 
 export const ReportLinkContainer = ({ children }) => (
     <div className='ReportLinkContainer'>

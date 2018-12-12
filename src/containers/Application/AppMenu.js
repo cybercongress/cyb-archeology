@@ -11,6 +11,7 @@ import MenuContainer, {
     AddMenuItemReject,
     ReportLinkContainer,
     AddMenuItemContainer,
+    CloseButton,
 } from '../../components/AppMenu/AppMenu';
 
 class AppMenu extends Component {
@@ -43,6 +44,7 @@ class AppMenu extends Component {
 
         return (
             <MenuContainer openMenu={ openMenu }>
+                <CloseButton onClick={this.props.toggleMenu} />
                 <LogoLink onClick={ this.clickLogo } />
 
                 <Message

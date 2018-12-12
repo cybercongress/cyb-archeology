@@ -152,7 +152,7 @@ class Settings extends Component {
                     <BlockRow>
                         <SettingRow>
                             <Button color='green' dura='rr.cyb'>CYB ROOT REGISTRY</Button>
-                            <Button onClick={ resetAllSettings }>RESET ALL SETTINGS</Button>
+                            <Button onClick={ resetAllSettings }>RESET SETTINGS</Button>
                         </SettingRow>
                     </BlockRow>
                 </Block>

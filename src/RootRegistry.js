@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
 import { Title } from '@cybercongress/ui';
-import { addRegistryItem, deleteRegistryItem, getRegistryItemsAsArray } from './redux/rootRegistry';
+import { addRegistryItem, deleteRegistryItem, getRegistryItemsAsArray, resetToDefault } from './redux/rootRegistry';
 
 import Button from './components/Button/Button';
 import Input from './components/Input/Input';
@@ -49,7 +49,9 @@ class RootRegistryPage extends Component {
             <RootRegistry>
 
                 <Title>/Cyb root registry</Title>
-
+                <div style={{ paddingBottom: 20 }}>
+                    <Button onClick={this.props.resetToDefault}>RESET TO DEFAULT</Button>
+                </div>
                 <div>
                     <Table>
                         <thead>
@@ -94,5 +96,6 @@ export default connect(
     {
         addRegistryItem,
         deleteRegistryItem,
+        resetToDefault,
     },
 )(RootRegistryPage);

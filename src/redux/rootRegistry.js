@@ -7,7 +7,7 @@ const initState = {
             protocol: 'ipfs',
         },
         cyber: {
-            hash: 'QmXCCZ7gjbQFRSrTGQ1Vuwf7LWVgv3xbS4eruE4uKrqytc',
+            hash: 'QmWzAybSUkAcnRdD7gz61pmeSGt8XJYyz4jq6bCc4u8bEB',
             protocol: 'ipfs',
         },
         wiki: {
@@ -23,7 +23,7 @@ const initState = {
             protocol: 'ipfs',
         },
         chaingear: {
-            hash: 'QmUuQawnPiRoSevE6MzTygA3ePPPtJKgr7qQHsUwEeuxLA',
+            hash: 'Qmc5omStXHuc9JNmDwE54AH1htsF5JeqsW8Xk3CAy2wquy',
             protocol: 'ipfs',
         },
         dragons: {
@@ -111,6 +111,11 @@ export const addRegistryItem = (name, hash, protocol) => (dispatch, getState) =>
 
     resolve(registryItems);
 });
+
+export const resetToDefault = () => (dispatch) => {
+    localStorage.removeItem('rootRegistry');
+    dispatch(init());
+};
 
 const saveRootRegistryItemsInLs = () => (dispatch, getState) => {
     const registryItems = getState().rootRegistry.items;

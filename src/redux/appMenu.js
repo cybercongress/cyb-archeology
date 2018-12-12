@@ -43,23 +43,18 @@ const initState = {
             subItems: {},
         },
         {
-            name: 'Turkish Wiki',
-            rootDura: '.ewiki/wiki/Anasayfa.html',
-            subItems: {},
-        },
-        {
             name: 'history',
             rootDura: 'history.cyb',
             subItems: {},
         },
         {
-            name: 'test',
-            rootDura: '.test',
+            name: 'notifications',
+            rootDura: 'txq.cyb',
             subItems: {},
         },
         {
-            name: 'txq',
-            rootDura: 'txq.cyb',
+            name: 'IPFS Web UI',
+            rootDura: '.ipfsview',
             subItems: {},
         },
     ],
