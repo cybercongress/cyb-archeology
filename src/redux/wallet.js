@@ -586,25 +586,33 @@ const saveTransaction = (payload, txHash) => {
     localStorage.setItem('transactions' + address , JSON.stringify(_transactions));
 };
 
-export const getTransactions = (address) => (dispatch, getState) => {
-    if (!address) return;
+export const getTransactions = address => (dispatch, getState) => {
+    if (!address) {
+        return;
+    }
+    let transactions = [];
 
+    const addressLowerCase = address.toLowerCase();
+    const jsonStr = localStorage.getItem(`transactions${addressLowerCase}`) || '[]';
 
-    const _address = address.toLowerCase();
-    const jsonStr = localStorage.getItem('transactions' + _address) || '[]';
-    let transactions = JSON.parse(jsonStr);
+    transactions = JSON.parse(jsonStr);
 
-    const cyberAddress = getState().cyber.defaultAccount;
+    const { defaultAccount: cyberAddress } = getState().cyber;
+
     if (cyberAddress) {
-        const jsonStr = localStorage.getItem('cyb_transactions' + cyberAddress) || '[]';
-        let _transactions = JSON.parse(jsonStr);
-        transactions = transactions.concat(_transactions);
+        const cyberJsonStr = localStorage.getItem(`cyb_transactions${cyberAddress}`) || '[]';
+        const cyberTransactions = JSON.parse(cyberJsonStr);
+
+        transactions = transactions.concat(cyberTransactions);
     }
 
+    const transactionsSorted = transactions.slice(0);
+
+    transactionsSorted.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     dispatch({
         type: 'SET_ETH_TRANSACTIONS',
-        payload: transactions,
+        payload: transactionsSorted,
     });
 };
 
