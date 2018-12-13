@@ -45,6 +45,27 @@ class ElectronProvider extends EventEmitter {
     }
 }
 
+window.getIpfsConfig = () => {
+    return new Promise(resolve => {
+        ipcRenderer.sendToHost('ipfs', {
+            method: 'getIpfsConfig',
+        });
+        ipcRenderer.once('ipfs_config', (_, payload) => {
+            resolve(payload);
+        });
+    });
+};
+
+window.getIpfsGateway = () => {
+    return new Promise(resolve => {
+        ipcRenderer.sendToHost('ipfs', {
+            method: 'getGateway',
+        });
+        ipcRenderer.once('ipfs_gateway', (_, payload) => {
+            resolve(payload);
+        });
+    });
+};
 
 window.cyber = {
     search(q) {

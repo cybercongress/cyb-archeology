@@ -3,6 +3,7 @@ import axios from 'axios';
 import Cyber from '../cyber/Cyber';
 import { navigate, goBack } from './browser';
 import { setEthNetworkName } from './settings';
+const IPFS = require('ipfs-api');
 
 const initState = {
     accounts: [],
@@ -422,6 +423,21 @@ export const receiveMessage = e => (dispatch, getState) => {
             wvCyber.send(`cyber_${method}`, result);
         });
     }
+    if (e.channel === 'ipfs') {
+        const method = e.args[0].method;
+        const wvCyber = e.target;
+
+        if (method === 'getGateway') {
+            const gateway = getState().settings.IPFS_END_POINT;
+
+            wvCyber.send(`ipfs_gateway`, gateway);
+        }
+        if (method === 'getIpfsConfig') {
+            const config = getState().settings.ipfsWrite;
+
+            wvCyber.send(`ipfs_config`, config);
+        }
+    }
 };
 
 export const init = endpoint => (dispatch, getState) => {
@@ -484,7 +500,10 @@ export const init = endpoint => (dispatch, getState) => {
         }
     });
 
-    window.cyber = new Cyber(getState().settings.SEARCH_END_POINT);
+    const ipfsConfig = getState().settings.ipfsWrite;
+    const ipfs = new IPFS(ipfsConfig);
+
+    window.cyber = new Cyber(getState().settings.SEARCH_END_POINT, ipfs);
 
     dispatch(loadAccounts())
         .then(() => dispatch(setDefaultAccount()));

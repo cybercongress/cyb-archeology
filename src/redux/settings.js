@@ -12,6 +12,11 @@ const initState = {
     cyberNodeStatus: 'fail',
     ethNetworkName: null,
     cyberNetwork: '',
+    ipfsWrite: {
+        host: 'localhost',
+        port: 5001,
+        protocol: 'http',
+    },
 };
 
 export const reducer = (state = initState, action) => {
@@ -63,12 +68,42 @@ export const reducer = (state = initState, action) => {
         };
     }
 
+    case 'SET_IPFS_WRITE_URL': {
+        return {
+            ...state,
+            ipfsWrite: action.payload,
+        };
+    }
+
     default:
         return state;
     }
 };
 
 export const getIpfsEndpoint = state => state.settings.IPFS_END_POINT;
+
+export const getIpfsWriteUrl = state => {
+    const { ipfsWrite: { protocol, host, port } } = state.settings;
+
+    return `${protocol}://${host}:${port}`;
+};
+
+export const setIpfsWriteUrl = url => (dispatch, getState) => {
+    const splitted = url.split('://');
+    const protocol = splitted[0];
+    const host = splitted[1].split(':')[0];
+    const port = splitted[1].split(':')[1];
+
+    dispatch({
+        type: 'SET_IPFS_WRITE_URL',
+        payload: {
+            host,
+            port,
+            protocol,
+        },
+    });
+    dispatch(saveSettingsInLS());
+};
 
 export const init = () => (dispatch, getState) => new Promise((resolve) => {
     const __settings = localStorage.getItem('settings')
@@ -165,7 +200,7 @@ export const checkStatus = () => (dispatch, getState) => {
         getCyberStatus(SEARCH_END_POINT),
     ]).then(([ipfsStatus, ethNodeStatus, cyberNodeStatus]) => {
         window.cyber.setChainId(cyberNodeStatus.network);
-        
+
         dispatch({
             type: 'SET_STATUS',
             payload: {

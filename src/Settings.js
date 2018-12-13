@@ -15,6 +15,7 @@ import {
     SettingsContainer,
 } from './components/Settings/Settings';
 import RootRegistry from './components/RootRegistry/RootRegistry';
+import { getIpfsWriteUrl } from './redux/settings';
 
 
 class Settings extends Component {
@@ -58,7 +59,13 @@ class Settings extends Component {
     };
 
     setEthCustom = () => {
-        this.updateEth(this.ethInput.value)
+        this.updateEth(this.ethInput.value);
+    };
+
+    updateIpfsWrite = () => {
+        const url = this.ipfsWriteInput.value;
+
+        this.props.setIpfsWriteUrl(url);
     };
 
     render() {
@@ -72,6 +79,7 @@ class Settings extends Component {
             cyberdStatus,
 
             resetAllSettings,
+            ipfsWriteUrl,
         } = this.props;
 
         return (
@@ -85,13 +93,22 @@ class Settings extends Component {
 
                             <BlockRow>
                                 <SettingRow>
-                                    <SettingLabel>IPFS node:</SettingLabel>
+                                    <SettingLabel>IPFS read:</SettingLabel>
                                     <Input
                                         inputRef={ node => this.ipfsInput = node }
                                         defaultValue={ IPFS_END_POINT }
                                         style={ { width: 200 } }
                                     />
                                     <Button onClick={ this.updateIPFS }>update</Button>
+                                </SettingRow>
+                                <SettingRow>
+                                    <SettingLabel>IPFS write:</SettingLabel>
+                                    <Input
+                                        inputRef={ node => this.ipfsWriteInput = node }
+                                        defaultValue={ ipfsWriteUrl }
+                                        style={ { width: 200 } }
+                                    />
+                                    <Button onClick={ this.updateIpfsWrite }>update</Button>
                                 </SettingRow>
                             </BlockRow>
 
@@ -171,6 +188,7 @@ export default connect(
         ipfsStatus: settings.ipfsStatus,
         parityStatus: settings.ethNodeStatus,
         cyberdStatus: settings.cyberNodeStatus,
+        ipfsWriteUrl: getIpfsWriteUrl({settings}),
     }),
     actions,
 )(Settings);
