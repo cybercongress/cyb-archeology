@@ -11,6 +11,7 @@ const initState = {
     ethNodeStatus: 'fail',
     cyberNodeStatus: 'fail',
     ethNetworkName: null,
+    cyberNetwork: '',
 };
 
 export const reducer = (state = initState, action) => {
@@ -133,18 +134,20 @@ const getIPFSStatus = url => new Promise((resolve) => {
 });
 
 const getCyberStatus = url => new Promise((resolve) => {
-    axios.head(`${url}/health`, { timeout: 4 * 1000 })
+    axios.get(`${url}/status`, { timeout: 4 * 1000 })
+        .then(response => response.data.result)
         .then((data) => {
+            const { network } = data.node_info;
+
             if (url.indexOf('localhost') !== -1 || url.indexOf('127.0.0.1') !== -1) {
-                resolve('local');
+                resolve({ status: 'local', network });
             } else {
-                resolve('remote');
+                resolve({ status: 'remote', network });
             }
         }).catch((e) => {
-            resolve('fail');
+            resolve({ status: 'fail' });
         });
 });
-
 
 
 export const checkStatus = () => (dispatch, getState) => {
@@ -161,12 +164,15 @@ export const checkStatus = () => (dispatch, getState) => {
         getStatus(PARITTY_END_POINT),
         getCyberStatus(SEARCH_END_POINT),
     ]).then(([ipfsStatus, ethNodeStatus, cyberNodeStatus]) => {
+        window.cyber.setChainId(cyberNodeStatus.network);
+        
         dispatch({
             type: 'SET_STATUS',
             payload: {
                 ipfsStatus,
                 ethNodeStatus,
-                cyberNodeStatus,
+                cyberNodeStatus: cyberNodeStatus.status,
+                cyberNetwork: cyberNodeStatus.network,
             },
         });
     });

@@ -9,6 +9,7 @@ const Status = ({
     IPFS_END_POINT,
     PARITTY_END_POINT,
     SEARCH_END_POINT,
+    cyberNetwork,
 }) => {
     const ipfsContent = ipfsStatus !== 'fail' ? (
         <div>
@@ -35,7 +36,7 @@ const Status = ({
 
     const cyberContent = cyberNodeStatus !== 'fail' ? (
         <div>
-            <div>euler-dev0</div>
+            <div>{cyberNetwork}</div>
             <hr />
             <div>{SEARCH_END_POINT}</div>
         </div>
@@ -44,7 +45,6 @@ const Status = ({
             No connection
         </div>
     );
-
 
     return (
         <StatusContainer>
@@ -82,5 +82,7 @@ export default connect(
         IPFS_END_POINT: state.settings.IPFS_END_POINT,
         PARITTY_END_POINT: state.settings.PARITTY_END_POINT,
         SEARCH_END_POINT: state.settings.SEARCH_END_POINT,
+
+        cyberNetwork: state.settings.cyberNetwork,
     }),
 )(Status);

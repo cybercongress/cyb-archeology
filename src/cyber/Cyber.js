@@ -7,7 +7,7 @@ import {
 
 import builder from './builder';
 
-const chainId = 'euler-dev0';
+let chainId = 'euler-dev0';
 const claimNodeUrl = 'http://earth.cybernode.ai:34666'; //proxy TODO: remove when fix chain
 const defaultAmount = 10000;
 
@@ -48,6 +48,11 @@ function Cyber(nodeUrl) {
     });
 
     let defaultAccount = null;
+
+
+    self.setChainId = (newChainId) => {
+        chainId = newChainId;
+    };
 
     self.search = function (text) {
         return new Promise((resolve) => {
