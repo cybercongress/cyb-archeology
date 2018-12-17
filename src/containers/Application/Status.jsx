@@ -3,6 +3,22 @@ import { connect } from 'react-redux';
 
 import Indicator, { StatusContainer } from '../../components/Indicator/Indicator';
 
+const NoConnection = ({ status, children }) => {
+    if (status === 'fail') {
+        return (
+            <div>
+                No connection
+            </div>
+        );
+    }
+
+    return (
+        <div>
+            {children}
+        </div>
+    );
+};
+
 const Status = ({
     pending, ipfsStatus,
     ethNodeStatus, cyberNodeStatus, ethNetworkName,
@@ -10,41 +26,35 @@ const Status = ({
     PARITTY_END_POINT,
     SEARCH_END_POINT,
     cyberNetwork,
+    homePage,
 }) => {
-    const ipfsContent = ipfsStatus !== 'fail' ? (
-        <div>
+    if (homePage) {
+        return null;
+    }
+
+    const ipfsContent = (
+        <NoConnection status={ ipfsStatus }>
             <div>{IPFS_END_POINT}</div>
-        </div>
-    ) : (
-        <div>
-            No connection
-        </div>
+        </NoConnection>
     );
 
-    const ethContent = ethNodeStatus !== 'fail' ? (
-        <div>
+    const ethContent = (
+        <NoConnection status={ ethNodeStatus }>
             <div>{ethNetworkName}</div>
             <hr />
             <div>{PARITTY_END_POINT}</div>
-        </div>
-    ) : (
-        <div>
-            No connection
-        </div>
+        </NoConnection>
     );
 
 
-    const cyberContent = cyberNodeStatus !== 'fail' ? (
-        <div>
+    const cyberContent = (
+        <NoConnection status={ cyberNodeStatus }>
             <div>{cyberNetwork}</div>
             <hr />
             <div>{SEARCH_END_POINT}</div>
-        </div>
-    ) : (
-        <div>
-            No connection
-        </div>
+        </NoConnection>
     );
+
 
     return (
         <StatusContainer>
@@ -72,6 +82,7 @@ const Status = ({
 
 export default connect(
     state => ({
+        homePage: state.browser.dura === '',
         ipfsStatus: state.settings.ipfsStatus,
         ethNodeStatus: state.settings.ethNodeStatus,
         cyberNodeStatus: state.settings.cyberNodeStatus,

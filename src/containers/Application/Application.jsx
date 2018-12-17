@@ -1,38 +1,41 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../redux/appMenu';
-import App, { AppHeader, AppContent } from '../../components/App/App';
-import Navigation, {
-    NavigationLeft, NavigationRight, NavigationCenter, MenuButton,
-} from '../../components/Navigation/Navigation';
-import IdBar from './IdBar';
+import { toggleMenu as toggleMenuAction } from '../../redux/appMenu';
 
+import App, {
+    AppHeader, AppContent, AppSideBar,
+} from '../../components/App/App';
+import Navigation, {
+    NavigationLeft, NavigationRight, NavigationCenter,
+} from '../../components/Navigation/Navigation';
+
+import IdBar from './IdBar';
 import ConfirmationPopup from './ConfirmationPopup';
 import AppMenu from './AppMenu';
 import Status from './Status';
 import NavigationComponents from './Navigation';
+import ToggleMenu from './ToggleMenu';
 
 
 const Application = (props) => {
     const {
-        dura,
-        openMenu, pendingRequest,
-        children, toggleMenu,
+        homePage,
+        openMenu,
+        children,
+        toggleMenu,
     } = props;
-    const homePage = dura === '';
 
     return (
         <App openMenu={ openMenu }>
-            <AppMenu />
-            {pendingRequest && <ConfirmationPopup />}
-            {!homePage && <Status />}
+            <ConfirmationPopup />
+            <Status />
+            <AppSideBar onCloseSidebar={ toggleMenu } openMenu={ openMenu }>
+                <AppMenu />
+            </AppSideBar>
             <AppHeader isHome={ homePage } isMenuOpen={ openMenu }>
                 <Navigation isHome={ homePage }>
                     <NavigationLeft>
-                        <MenuButton
-                          openMenu={ openMenu }
-                          onClick={ toggleMenu }
-                        />
+                        <ToggleMenu />
                     </NavigationLeft>
                     <NavigationCenter>
                         <NavigationComponents />
@@ -51,11 +54,8 @@ const Application = (props) => {
 
 export default connect(
     state => ({
-        dura: state.browser.dura,
-        defaultEthAccount: state.wallet.defaultAccount,
+        homePage: state.browser.dura === '',
         openMenu: state.appMenu.openMenu,
-        defaultCybertAccount: state.cyber.defaultAccount,
-        pendingRequest: state.wallet.pendingRequest,
     }),
-    actions,
+    { toggleMenu: toggleMenuAction },
 )(Application);

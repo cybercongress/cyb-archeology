@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import web3 from 'web3';
+import { Title, Message } from '@cybercongress/ui';
 import ConfirmationPopup, {
     Address,
     ConfirmationPopupContent,
@@ -14,7 +15,6 @@ import RequirePassword from './Login';
 import Block, { BlockRow, Row } from '../../components/Settings/Block';
 import CybLink from '../../components/CybLink';
 import Button from '../../components/Button/Button';
-import { Title, Message } from '@cybercongress/ui';
 
 
 class ConfirmationPopupContainer extends Component {
@@ -130,7 +130,6 @@ class ConfirmationPopupContainer extends Component {
     }
 
     render() {
-
         if (!this.props.password) {
             return (
                 <RequirePassword />
@@ -256,7 +255,7 @@ class ConfirmationPopupContainer extends Component {
     }
 }
 
-export default connect(
+const ConfirmationPopupContainer2 = connect(
     state => ({
         request: state.wallet.request,
         lastTransactionId: state.wallet.lastTransactionId,
@@ -270,3 +269,19 @@ export default connect(
         hidePending,
     },
 )(ConfirmationPopupContainer);
+
+// TODO refactoring component
+const Popup = ({ pendingRequest }) => {
+    if (!pendingRequest) {
+        return null;
+    }
+
+    return (<ConfirmationPopupContainer2 />);
+};
+
+
+export default connect(
+    state => ({
+        pendingRequest: state.wallet.pendingRequest,
+    }),
+)(Popup);

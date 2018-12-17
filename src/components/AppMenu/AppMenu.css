@@ -1,18 +1,10 @@
-.menuContainer {
-    position: fixed;
-    top: 60px;
-    left: 0;
-    bottom: 0;
-    width: 200px;
-    background: #2e3842;
-    color: #fff;
-    transition: 0.3s;
+
+.menuContainer2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: 1;
+    height: 100%;
 }
-
 
 .logo {
   width: 54px;
@@ -24,9 +16,6 @@
   background-size: 54px 54px;
 }
 
-.menuContainer--hide {
-    left: -200px;
-}
 
 
 .menu-logo {
@@ -160,14 +149,3 @@
     text-align: center;
 }
 
-.CloseButton {
-    position: absolute;
-    right: 15px;
-    top: 15px;
-    width: 24px;
-    height: 24px;
-    font-size: 0;
-    border: none;
-    background: url(./close.svg);
-    cursor: pointer;
-}

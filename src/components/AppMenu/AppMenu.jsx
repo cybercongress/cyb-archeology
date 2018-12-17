@@ -56,8 +56,8 @@ export const ReportLinkContainer = ({ children }) => (
     </div>
 );
 
-const MenuContainer = ({ children, openMenu }) => (
-    <div className={ `menuContainer ${!openMenu ? 'menuContainer--hide' : ''}` }>
+const MenuContainer = ({ children }) => (
+    <div className='menuContainer2'>
         {children}
     </div>
 );

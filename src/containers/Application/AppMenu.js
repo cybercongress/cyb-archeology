@@ -11,7 +11,6 @@ import MenuContainer, {
     AddMenuItemReject,
     ReportLinkContainer,
     AddMenuItemContainer,
-    CloseButton,
 } from '../../components/AppMenu/AppMenu';
 
 class AppMenu extends Component {
@@ -38,13 +37,12 @@ class AppMenu extends Component {
 
     render() {
         const {
-            openMenu, deleteMenuItem, menuItems,
+            deleteMenuItem, menuItems,
             pendingAddToFavorites,
         } = this.props;
 
         return (
-            <MenuContainer openMenu={ openMenu }>
-                <CloseButton onClick={this.props.toggleMenu} />
+            <MenuContainer>
                 <LogoLink onClick={ this.clickLogo } />
 
                 <Message
@@ -85,7 +83,6 @@ class AppMenu extends Component {
 export default connect(
     state => ({
         dura: state.browser.dura,
-        openMenu: state.appMenu.openMenu,
         menuItems: state.appMenu.items,
         currentDura: state.browser.dura,
         pendingAddToFavorites: state.appMenu.pendingAddToFavorites,
