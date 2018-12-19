@@ -100,9 +100,9 @@ class ConfirmationPopupContainer extends Component {
                 gasPrice: value,
             });
         } else {
-            this.setState({
-                gasPrice: 1,
-            });
+            // this.setState({
+            //     gasPrice: 1,
+            // });
         }
 
         // this.setState({
