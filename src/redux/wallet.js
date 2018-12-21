@@ -3,6 +3,7 @@ import axios from 'axios';
 import Cyber from '../cyber/Cyber';
 import { navigate, goBack } from './browser';
 import { setEthNetworkName } from './settings';
+//import { setBadgeTextInc } from '../components/IdBar/IdBar';
 const IPFS = require('ipfs-api');
 
 const initState = {
@@ -635,6 +636,36 @@ export const getTransactions = address => (dispatch, getState) => {
     });
 };
 
+export const updateStatusTransactions = address => () => {
+    if (!address) {
+        return;
+    }
+    
+	const addressLowerCase = address.toLowerCase();
+    const jsonStr = localStorage.getItem(`transactions${addressLowerCase}`) || '[]';
+	
+	if (jsonStr) {
+		let transactions = JSON.parse(jsonStr);
+		/* transactions.filter(item => {
+			return item.status == 'pending'
+		}) */
+		transactions.map(item => {
+			if (item.status == 'pending') {
+				/* const transaction = web3.eth.getTransaction(item.txHash);
+				const receipt = web3.eth.getTransactionReceipt(item.txHash); */
+				const { transaction, receipt } = getTransaction(item.txHash);
+				//console.log(transaction, receipt);
+				// https://ethereum.stackexchange.com/a/6003
+				if (transaction.gas == receipt.gasUsed) {	
+					item.status = 'success';
+					//setBadgeTextInc();
+				}
+			}
+		});
+		
+		localStorage.setItem('transactions' + addressLowerCase, JSON.stringify(transactions));
+	}
+};
 
 export const resend = (txHash) => (dispatch, getState) => {
     const address = getState().wallet.defaultAccount;

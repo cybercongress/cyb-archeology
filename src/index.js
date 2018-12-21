@@ -19,3 +19,17 @@ appStart(store).then(() => {
 if (module.hot) {
     module.hot.accept();
 }
+
+
+import { updateStatusTransactions } from './redux/wallet';
+import { setBadgeTextInc } from './components/IdBar/IdBar';
+
+setInterval(() => {
+	//const defaultAccount = store.getState().wallet.defaultAccount;
+	const defaultAccount = localStorage.getItem('defaultEthAccount') || '';
+	console.log('updateStatusTransactions', 'defaultAccount', defaultAccount);
+	if (defaultAccount) {
+		updateStatusTransactions(defaultAccount);
+		setBadgeTextInc();
+	}
+}, 5000);

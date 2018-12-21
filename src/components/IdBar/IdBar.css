@@ -28,8 +28,21 @@
   height: 20px;
   background: url(./bell-ring-voice-alarm-clock.svg) no-repeat center center;
   border: none;
-  text-indent: -999999px;
+  /* text-indent: -999999px; */
   cursor: pointer;
+  text-decoration: none;
+}
+
+.id-bar__txq span {
+  background: #cd333a;
+  border: 2px solid #cd333a;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  margin: -11px 11px;
+  position: absolute;
+  /* padding: 2px; */
 }
 
 

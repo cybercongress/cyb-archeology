@@ -41,7 +41,7 @@ class IdBar extends Component {
 
         return (
             <IdBarComponent>
-                <CybLink dura='txq.cyb' className='id-bar__txq'>txq</CybLink>
+                <CybLink dura='txq.cyb' className='id-bar__txq'><span></span></CybLink>
                 <SettingsLink />
                 <CurrentUser
                   defaultEthAccount={ defaultEthAccount }
@@ -56,7 +56,6 @@ class IdBar extends Component {
         );
     }
 }
-
 
 export default connect(
     state => ({

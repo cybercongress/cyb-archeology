@@ -8,6 +8,11 @@ const IdBar = ({ children }) => (
     </div>
 );
 
+const badgeText = () => {
+	return document.querySelector('.id-bar__txq > span');
+}
+let badgeTextVal;
+
 export const SettingsLink = () => (
     <CybLink dura='settings.cyb' className='id-bar__settings'>Settings</CybLink>
 );
@@ -71,5 +76,16 @@ export const CurrentUser = (props) => {
         </div>
     );
 };
+
+export const setBadgeText = (text) => {
+	badgeTextVal = text;
+	badgeText().innerText = badgeTextVal;
+}
+
+export const setBadgeTextInc = () => {
+	let prevVal = parseInt(badgeTextVal);
+	if ( ! prevVal) prevVal = 0;
+	setBadgeText(prevVal + 1);
+}
 
 export default IdBar;
