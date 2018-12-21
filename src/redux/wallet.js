@@ -3,15 +3,13 @@ import axios from 'axios';
 import Cyber from '../cyber/Cyber';
 import { navigate, goBack } from './browser';
 import { setEthNetworkName } from './settings';
+import { showSigner } from './signer';
+
 const IPFS = require('ipfs-api');
 
 const initState = {
     accounts: [],
     defaultAccount: '',
-    pendingRequest: false,
-    request: null,
-    lastTransactionId: null,
-    txError: null,
 
     password: null,
     incorrectPassword: false,
@@ -40,29 +38,6 @@ export const reducer = (state = initState, action) => {
         };
     }
 
-    case 'SHOW_PENDING': {
-        return {
-            ...state,
-            pendingRequest: true,
-            request: action.payload,
-            lastTransactionId: null,
-        };
-    }
-
-    case 'HIDE_PENDING': {
-        return {
-            ...state,
-            pendingRequest: false,
-            request: null,
-        };
-    }
-
-    case 'SHOW_TRANSACTION': {
-        return {
-            ...state,
-            lastTransactionId: action.payload,
-        };
-    }
     case 'SET_ETH_PASSWORD': {
         return {
             ...state,
@@ -78,19 +53,6 @@ export const reducer = (state = initState, action) => {
         };
     }
 
-    case 'SHOW_TX_ERROR': {
-        return {
-            ...state,
-            txError: action.payload,
-        };
-    }
-
-    case 'HIDE_TX_ERROR': {
-        return {
-            ...state,
-            txError: null,
-        };
-    }
 
     case 'SET_ETH_TX': {
         const { transaction, receipt } = action.payload;
@@ -119,7 +81,6 @@ let eth;
 let provider;
 let web3;
 let wv = null;
-let web3Reqest = null;
 
 window.cyber = null;
 
@@ -157,6 +118,19 @@ export const loadAccounts = () => (dispatch, getState) => new Promise((resolve) 
         resolve(accounts);
     });
 });
+
+
+const saveTransaction = (payload, txHash) => {
+    const params = payload.params[0];
+    const address = params.from;
+    const jsonStr = localStorage.getItem('transactions' + address) || '[]';
+    const transactions = JSON.parse(jsonStr);
+
+    const _payload = { ...payload, txHash, date: new Date(), type: 'eth', status: 'pending' };
+    const _transactions = transactions.concat(_payload);
+
+    localStorage.setItem('transactions' + address , JSON.stringify(_transactions));
+};
 
 
 export const setDefaultAccount = account => (dispatch) => {
@@ -264,31 +238,44 @@ export const deleteAccount = address => (dispatch, getState) => new Promise((res
     resolve(address);
 });
 
-const showPending = payload => ({ type: 'SHOW_PENDING', payload });
-export const hidePending = () => ({ type: 'HIDE_PENDING' });
-const hideTxError = () => ({ type: 'HIDE_TX_ERROR' });
 
-export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => () => new Promise((resolve) => {
-
-    console.log('send eth');
-    console.log(_from, to, amount, web3.utils.toWei(amount, 'ether'));
-    eth.sendTransaction({
-        from: _from,
-        to,
-        value: web3.utils.toWei(amount, 'ether'),
-        gas: 210000,
-    }).on('transactionHash', (hash) => {
-        console.log('transactionHash', hash);
-    })
-        .on('receipt', (receipt) => {
-            console.log('receipt', receipt);
+export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatch => new Promise((resolve) => {
+    dispatch(showSigner({
+        fromAddress: _from,
+        toAddress: to,
+        gasPrice: 20,
+        gasLimit: 210000,
+        value: amount,
+    })).then((data) => {
+        console.log('>>', data);
+        eth.sendTransaction({
+            from: _from,
+            to,
+            value: web3.utils.toWei(amount, 'ether'),
+            gasPrice: data.gasPrice,
+            gas: data.gasLimit,
+        }).on('transactionHash', (hash) => {
+            console.log('transactionHash', hash);
+            saveTransaction({
+                params: [{
+                    from: _from.toLowerCase(),
+                    toAddress: to,
+                    gasPrice: 20,
+                    gasLimit: 210000,
+                    value: amount,
+                }],
+            }, hash);
         })
-        .on('confirmation', (confirmationNumber, receipt) => {
-            console.log('confirmation', confirmationNumber, receipt);
-            if (confirmationNumber === _confirmationNumber) {
-                resolve();
-            }
-        });
+            .on('receipt', (receipt) => {
+                console.log('receipt', receipt);
+            })
+            .on('confirmation', (confirmationNumber, receipt) => {
+                console.log('confirmation', confirmationNumber, receipt);
+                if (confirmationNumber === _confirmationNumber) {
+                    resolve();
+                }
+            });
+    }).catch(() => {});
 });
 
 export const getStatus = url => new Promise((resolve) => {
@@ -307,66 +294,10 @@ export const getStatus = url => new Promise((resolve) => {
         });
 });
 
-export const reject = () => (dispatch, getState) => {
-    dispatch(hidePending());
-    dispatch(hideTxError());
 
-    if (!wv) {
-        return;
-    }
-    wv.send('web3_eth_call_reject', web3Reqest);
-};
-
-
-export const approve = (gasLimit, gasPrice) => (dispatch, getState) => {
-    // todo: refactor
-    if (gasLimit) {
-        web3Reqest.params[0].gas = web3.utils.numberToHex(+gasLimit);
-    }
-
-    if (gasPrice) {
-        web3Reqest.params[0].gasPrice = web3.utils.numberToHex(+gasPrice);
-    }
-
-    provider.sendAsync(web3Reqest, (e, result) => {
-        if (!wv) {
-            return;
-        }
-        wv.send('web3_eth_call', result);
-
-        if (e) {
-           // dispatch(hidePending());
-        } else {
-            saveTransaction(web3Reqest, result.result);
-
-            dispatch({
-                type: 'SHOW_TRANSACTION',
-                payload: result.result,
-            });
-         //   dispatch(hidePending());
-        }
-        dispatch(hidePending());
-    });
-};
-
-const showAndCaclulateSingPopup = (payload) => (dispatch, getState) => {
-    web3Reqest = payload;
-
-    dispatch(hideTxError());
-
+const calculateGasLimit = (payload) => {
     const params = payload.params[0];
-    const initialGasPrice = params.gasPrice ? web3.utils.fromWei(params.gasPrice, 'Gwei') : 0;
-
-    let gasPricePromise = Promise.resolve(initialGasPrice);
-    let gasLimitPromise = Promise.resolve(params.gas);
-
-    if (!params.gasPrice) {
-        gasPricePromise = new Promise((resolve) => {
-            web3.eth.getGasPrice((error, value) => {
-                resolve(web3.utils.fromWei(value, 'Gwei'));
-            });
-        });
-    }
+    let gasLimitPromise = Promise.resolve(210000);
 
     if (!params.gas) {
         gasLimitPromise = new Promise((resolve) => {
@@ -374,26 +305,38 @@ const showAndCaclulateSingPopup = (payload) => (dispatch, getState) => {
                 ...params,
             }, (error, gasLimitValue) => {
                 if (error) {
-                    resolve('2000000');
-                    dispatch({
-                        type: 'SHOW_TX_ERROR',
-                        payload: {
-                            type: 'error',
-                            message: 'Problem with gas estimation',
-                        },
-                    });
+                    resolve(2000000);
                 } else {
                     resolve(gasLimitValue);
                 }
             });
         });
+    } else {
+        gasLimitPromise = Promise.resolve(web3.utils.hexToNumber(params.gas));
     }
 
-    Promise.all([gasPricePromise, gasLimitPromise]).then(([gasPrice, gasLimit]) => {
-        payload.params[0].gas = gasLimit;
-        payload.params[0].gasPrice = web3.utils.toWei(gasPrice, 'gwei');
-        dispatch(showPending(payload));
-    });
+    return gasLimitPromise;
+};
+
+const calculateGasPrice = (payload) => {
+    const params = payload.params[0];
+    const initialGasPrice = params.gasPrice ? web3.utils.fromWei(params.gasPrice, 'Gwei') : 0;
+
+    let gasPricePromise = Promise.resolve(initialGasPrice);
+
+    if (!params.gasPrice) {
+        gasPricePromise = new Promise((resolve) => {
+            web3.eth.getGasPrice((error, value) => {
+                if (error) { // TOOD: problem with gas calculation
+                    resolve(210000);
+                } else {
+                    resolve(web3.utils.fromWei(value, 'Gwei'));
+                }
+            });
+        });
+    }
+
+    return gasPricePromise;
 };
 
 export const receiveMessage = e => (dispatch, getState) => {
@@ -406,7 +349,39 @@ export const receiveMessage = e => (dispatch, getState) => {
         wv = e.target;
 
         if (payload.method === 'eth_sendTransaction') {
-            dispatch(showAndCaclulateSingPopup(payload));
+            const params = payload.params[0];
+            const value = params.value ? +web3.utils.fromWei(`${web3.utils.hexToNumber(params.value)}`, 'ether') : 0;
+
+            Promise.all([
+                calculateGasLimit(payload),
+                calculateGasPrice(payload),
+            ]).then(([gasLimit, gasPrice]) => dispatch(showSigner({
+                fromAddress: params.from,
+                toAddress: params.to,
+                gasPrice,
+                gasLimit,
+                value,
+            }))).then((data) => {
+                if (data.gasLimit) {
+                    payload.params[0].gas = web3.utils.numberToHex(+data.gasLimit);
+                }
+
+                if (data.gasPrice) {
+                    payload.params[0].gasPrice = web3.utils.numberToHex(+data.gasPrice);
+                }
+                provider.sendAsync(payload, (err, result) => {
+                    saveTransaction(payload, result.result);
+                    if (!wv) {
+                        return;
+                    }
+                    wv.send('web3_eth_call', result);
+                });
+            }).catch(() => {
+                if (!wv) {
+                    return;
+                }
+                wv.send('web3_eth_call_reject', payload);
+            });
         } else {
             provider.sendAsync(payload, (error, result) => {
                 wv.send('web3_eth_call', result);
@@ -593,17 +568,6 @@ export const getTransaction = hash => (dispatch) => {
     });
 };
 
-const saveTransaction = (payload, txHash) => {
-    const params = payload.params[0];
-    const address = params.from;
-    const jsonStr = localStorage.getItem('transactions' + address) || '[]';
-    const transactions = JSON.parse(jsonStr);
-
-    const _payload = { ...payload, txHash, date: new Date(), type: 'eth', status: 'pending' };
-    const _transactions = transactions.concat(_payload);
-
-    localStorage.setItem('transactions' + address , JSON.stringify(_transactions));
-};
 
 export const getTransactions = address => (dispatch, getState) => {
     if (!address) {
@@ -646,5 +610,5 @@ export const resend = (txHash) => (dispatch, getState) => {
 
     const payload = transactions.find(x => x.txHash === txHash);
 
-    dispatch(showAndCaclulateSingPopup(payload));
-}
+    // TODO: show singer
+};

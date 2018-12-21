@@ -15,7 +15,7 @@ import AppMenu from './AppMenu';
 import Status from './Status';
 import NavigationComponents from './Navigation';
 import ToggleMenu from './ToggleMenu';
-
+import SignerPopup from './SignerPopup';
 
 const Application = (props) => {
     const {
@@ -27,6 +27,7 @@ const Application = (props) => {
 
     return (
         <App openMenu={ openMenu }>
+            <SignerPopup />
             <ConfirmationPopup />
             <Status />
             <AppSideBar onCloseSidebar={ toggleMenu } openMenu={ openMenu }>
