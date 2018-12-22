@@ -18,6 +18,8 @@ const initState = {
     receipt: null,
 
     transactions: [],
+
+    notificationLinkText: '',
 };
 
 export const reducer = (state = initState, action) => {
@@ -72,6 +74,29 @@ export const reducer = (state = initState, action) => {
         };
     }
 
+    case 'SET_NOTIFICATION_LINK_TEXT': {
+        return {
+            ...state,
+            notificationLinkText: action.payload,
+        };
+    }
+
+    case 'SET_NOTIFICATION_LINK_TEXT_INC': {
+        state.notificationLinkText = parseInt(state.notificationLinkText) || 0;
+        return {
+            ...state,
+            notificationLinkText: state.notificationLinkText + 1,
+        };
+    }
+
+    case 'SET_NOTIFICATION_LINK_TEXT_DEC': {
+        state.notificationLinkText = parseInt(state.notificationLinkText) || 0;
+        return {
+            ...state,
+            notificationLinkText: (state.notificationLinkText > 1 ? state.notificationLinkText - 1 : ''),
+        };
+    }
+
     default:
         return state;
     }
@@ -123,13 +148,14 @@ export const loadAccounts = () => (dispatch, getState) => new Promise((resolve) 
 const saveTransaction = (payload, txHash) => {
     const params = payload.params[0];
     const address = params.from;
-    const jsonStr = localStorage.getItem('transactions' + address) || '[]';
+    const jsonStr = localStorage.getItem('transactions') || '{}';
     const transactions = JSON.parse(jsonStr);
+    if ( ! transactions[address]) transactions[address] = [];
 
     const _payload = { ...payload, txHash, date: new Date(), type: 'eth', status: 'pending' };
-    const _transactions = transactions.concat(_payload);
+    transactions[address] = transactions[address].concat(_payload);
 
-    localStorage.setItem('transactions' + address , JSON.stringify(_transactions));
+    localStorage.setItem('transactions', JSON.stringify(transactions));
 };
 
 
@@ -265,6 +291,11 @@ export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatc
                     value: amount,
                 }],
             }, hash);
+
+            dispatch({
+                type: 'SET_NOTIFICATION_LINK_TEXT_INC'
+            });
+
         })
             .on('receipt', (receipt) => {
                 console.log('receipt', receipt);
@@ -375,6 +406,11 @@ export const receiveMessage = e => (dispatch, getState) => {
                         return;
                     }
                     wv.send('web3_eth_call', result);
+
+                    dispatch({
+                        type: 'SET_NOTIFICATION_LINK_TEXT_INC'
+                    });
+
                 });
             }).catch(() => {
                 if (!wv) {
@@ -576,15 +612,17 @@ export const getTransactions = address => (dispatch, getState) => {
     let transactions = [];
 
     const addressLowerCase = address.toLowerCase();
-    const jsonStr = localStorage.getItem(`transactions${addressLowerCase}`) || '[]';
+    const jsonStr = localStorage.getItem('transactions') || '{}';
 
     transactions = JSON.parse(jsonStr);
+    if (transactions[addressLowerCase]) transactions = transactions[addressLowerCase]; else transactions = [];
 
     const { defaultAccount: cyberAddress } = getState().cyber;
 
     if (cyberAddress) {
-        const cyberJsonStr = localStorage.getItem(`cyb_transactions${cyberAddress}`) || '[]';
+        const cyberJsonStr = localStorage.getItem('cyb_transactions') || '{}';
         const cyberTransactions = JSON.parse(cyberJsonStr);
+        if (cyberTransactions[cyberAddress]) cyberTransactions = cyberTransactions[cyberAddress]; else cyberTransactions = [];
 
         transactions = transactions.concat(cyberTransactions);
     }
@@ -600,13 +638,64 @@ export const getTransactions = address => (dispatch, getState) => {
 };
 
 
+export const checkPendingStatusTransactions = () => (dispatch) => {
+    const jsonStr = localStorage.getItem('transactions') || '{}';
+
+    if (jsonStr) {
+        let transactions = JSON.parse(jsonStr);
+        Object.keys(transactions).forEach(address => {
+            transactions[address].forEach(item => {
+                if (item.status == 'pending') {
+                    dispatch({
+                        type: 'SET_NOTIFICATION_LINK_TEXT_INC'
+                    });	
+                }
+            });
+        });
+    }
+};
+
+
+export const updateStatusTransactions = () => (dispatch) => {
+    if ( ! web3.eth.defaultAccount) return;
+
+    const jsonStr = localStorage.getItem('transactions') || '{}';
+
+    if (jsonStr) {
+        let transactions = JSON.parse(jsonStr);
+        Object.keys(transactions).forEach(address => {
+            transactions[address].forEach(item => {
+
+                if (item.status == 'pending') {
+                    Promise.all([
+                        // web3.eth.getTransaction(item.txHash),
+                        web3.eth.getTransactionReceipt(item.txHash),
+                    ]).then(([/* transaction,  */receipt]) => {
+                        // https://ethereum.stackexchange.com/a/6003
+                        if (receipt.blockNumber) {
+                            item.status = 'success';
+                            localStorage.setItem('transactions', JSON.stringify(transactions));
+                            dispatch({
+                                type: 'SET_NOTIFICATION_LINK_TEXT_DEC'
+                            });
+                        }
+                    });
+                }
+
+            });
+        });
+    }
+};
+
+
 export const resend = (txHash) => (dispatch, getState) => {
     const address = getState().wallet.defaultAccount;
     if (!address || !txHash) return;
 
     const _address = address.toLowerCase();
-    const jsonStr = localStorage.getItem('transactions' + _address) || '[]';
+    const jsonStr = localStorage.getItem('transactions') || '{}';
     const transactions = JSON.parse(jsonStr);
+    if (transactions[_address]) transactions = transactions[_address]; else transactions = [];
 
     const payload = transactions.find(x => x.txHash === txHash);
 

@@ -8,6 +8,10 @@ const IdBarComponent = ({ children }) => (
     </div>
 );
 
+export const NotificationLink = ({ notificationLinkText }) => (
+    <CybLink dura='txq.cyb' className='id-bar__txq'><span>{notificationLinkText}</span></CybLink>
+);
+
 export const SettingsLink = () => (
     <CybLink dura='settings.cyb' className='id-bar__settings'>Settings</CybLink>
 );

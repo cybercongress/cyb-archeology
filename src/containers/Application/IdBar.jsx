@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ClickOutside from 'react-click-outside';
 import CybLink from '../../components/CybLink';
 import IdBarComponent, {
+    NotificationLink,
     SettingsLink,
     CurrentUser,
 } from '../../components/IdBar/IdBar';
@@ -42,6 +43,7 @@ class IdBar extends Component {
             defaultCyberAccount,
             defaultAccountBalance,
             defaultAccountBalanceCyb,
+            notificationLinkText,
         } = this.props;
 
         return (
@@ -58,7 +60,7 @@ class IdBar extends Component {
                     />
                 </ClickOutside>
                 {defaultEthAccount && <SettingsLink />}
-                {defaultEthAccount && <CybLink dura='txq.cyb' className='id-bar__txq'>txq</CybLink>}
+                {defaultEthAccount && <NotificationLink notificationLinkText={ notificationLinkText } />}
             </IdBarComponent>
         );
     }
@@ -71,6 +73,7 @@ export default connect(
         defaultCyberAccount: state.cyber.defaultAccount,
         defaultAccountBalance: getDefaultAccountBalance(state),
         defaultAccountBalanceCyb: getDefaultAccountBalanceCyb(state),
+        notificationLinkText: state.wallet.notificationLinkText,
     }),
     { toggleMenu },
 )(IdBar);
