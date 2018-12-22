@@ -10,7 +10,6 @@ import Navigation, {
 } from '../../components/Navigation/Navigation';
 
 import IdBar from './IdBar';
-import { ConfirmationPopup } from '../../components/ConfirmationPopup/ConfirmationPopup';
 import AppMenu from './AppMenu';
 import Status from './Status';
 import NavigationComponents from './Navigation';
@@ -28,7 +27,6 @@ const Application = (props) => {
     return (
         <App openMenu={ openMenu }>
             <SignerPopup />
-            <ConfirmationPopup />
             <Status />
             <AppSideBar onCloseSidebar={ toggleMenu } openMenu={ openMenu }>
                 <AppMenu />
