@@ -10,7 +10,7 @@ import Navigation, {
 } from '../../components/Navigation/Navigation';
 
 import IdBar from './IdBar';
-import ConfirmationPopup from './ConfirmationPopup';
+import { ConfirmationPopup } from '../../components/ConfirmationPopup/ConfirmationPopup';
 import AppMenu from './AppMenu';
 import Status from './Status';
 import NavigationComponents from './Navigation';
