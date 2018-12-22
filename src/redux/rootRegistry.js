@@ -51,6 +51,12 @@ export const reducer = (state = initState, action) => {
     }
 };
 
+const saveRootRegistryItemsInLs = () => (dispatch, getState) => {
+    const registryItems = getState().rootRegistry.items;
+
+    localStorage.setItem(localStorageItemName, JSON.stringify(registryItems));
+};
+
 export const init = () => (dispatch, getState) => new Promise((resolve) => {
     let registryItems;
     const registryItemsJson = localStorage.getItem(localStorageItemName);
@@ -95,7 +101,9 @@ export const getRegistryItemsAsArray = (state) => {
 
 export const getRegistryItems = state => state.rootRegistry.items;
 
-export const addRegistryItem = (name, hash, protocol) => (dispatch, getState) => new Promise((resolve) => {
+export const addRegistryItem = (
+    name, hash, protocol,
+) => (dispatch, getState) => new Promise((resolve) => {
     const registryItems = getState().rootRegistry.items;
 
     registryItems[name] = {
@@ -115,10 +123,4 @@ export const addRegistryItem = (name, hash, protocol) => (dispatch, getState) =>
 export const resetToDefault = () => (dispatch) => {
     localStorage.removeItem('rootRegistry');
     dispatch(init());
-};
-
-const saveRootRegistryItemsInLs = () => (dispatch, getState) => {
-    const registryItems = getState().rootRegistry.items;
-
-    localStorage.setItem(localStorageItemName, JSON.stringify(registryItems));
 };

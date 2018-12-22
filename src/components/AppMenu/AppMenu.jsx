@@ -69,15 +69,6 @@ export const AddMenuItem = ({ children }) => (
     </span>
 );
 
-export const AddMenuItemApprove = ({ onClick }) => (
-    <button
-      type='button'
-      onClick={ onClick }
-      className='AddMenuItem__approve'
-    >
-    &#10006;
-    </button>
-);
 
 export const AddMenuItemReject = ({ onClick }) => (
     <button
@@ -89,8 +80,8 @@ export const AddMenuItemReject = ({ onClick }) => (
     </button>
 );
 
-export const AddMenuItemContainer = (props) => (
-  <div {...props} className='AddMenuItemContainer' />
+export const AddMenuItemContainer = props => (
+    <div { ...props } className='AddMenuItemContainer' />
 );
 
 export default MenuContainer;

@@ -91,6 +91,12 @@ export const reducer = (state = initState, action) => {
     }
 };
 
+const saveMenuItemsInLs = () => (dispatch, getState) => {
+    const registryItems = getState().appMenu.items;
+
+    localStorage.setItem(localStorageItemName, JSON.stringify(registryItems));
+};
+
 export const init = () => (dispatch, getState) => {
     let menuItems;
     const menuItemsJson = localStorage.getItem(localStorageItemName);
@@ -121,11 +127,7 @@ export const hideInput = () => (dispatch, getState) => {
         payload: false,
     });
 };
-const saveMenuItemsInLs = () => (dispatch, getState) => {
-    const registryItems = getState().appMenu.items;
 
-    localStorage.setItem(localStorageItemName, JSON.stringify(registryItems));
-};
 
 export const toggleMenu = () => ({ type: 'TOGGLE_MENU' });
 
@@ -168,14 +170,16 @@ export const isFavoritedPage = (state) => {
     const currentDura = state.browser.dura;
 
     return menuItems.find(item => item.rootDura === currentDura);
-}
+};
 
 export const toggleFavorited = () => (dispatch, getState) => {
     const state = getState();
+
     if (!isFavoritedPage(state)) {
         dispatch(showInput());
     } else {
         const currentDura = state.browser.dura;
+
         dispatch(deleteMenuItem(currentDura));
     }
-}
+};

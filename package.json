@@ -30,6 +30,7 @@
     "react-router": "3.2.0",
     "react-scripts": "2.0.4",
     "redux": "4.0.0",
+    "react-click-outside": "github:tj/react-click-outside",
     "redux-thunk": "2.3.0",
     "rimraf": "2.6.2",
     "ripemd160": "2.0.2",

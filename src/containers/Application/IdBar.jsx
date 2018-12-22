@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import ClickOutside from 'react-click-outside';
 import CybLink from '../../components/CybLink';
 import IdBarComponent, {
     SettingsLink,
@@ -30,6 +31,10 @@ class IdBar extends Component {
         props.toggleMenu();
     }
 
+    close = () => {
+        this.setState({ open: false });
+    }
+
     render() {
         const { open } = this.state;
         const {
@@ -41,17 +46,19 @@ class IdBar extends Component {
 
         return (
             <IdBarComponent>
-                <CybLink dura='txq.cyb' className='id-bar__txq'>txq</CybLink>
-                <SettingsLink />
-                <CurrentUser
-                  defaultEthAccount={ defaultEthAccount }
-                  defaultCyberAccount={ defaultCyberAccount }
-                  toggle={this.toggle}
-                  open={open}
-                  favoriteClick={this.favoriteClick}
-                  ethBalance={defaultAccountBalance}
-                  cybBalance={defaultAccountBalanceCyb}
-                />
+                <ClickOutside onClickOutside={ this.close }>
+                    <CurrentUser
+                      defaultEthAccount={ defaultEthAccount }
+                      defaultCyberAccount={ defaultCyberAccount }
+                      toggle={ this.toggle }
+                      open={ open }
+                      favoriteClick={ this.favoriteClick }
+                      ethBalance={ defaultAccountBalance }
+                      cybBalance={ defaultAccountBalanceCyb }
+                    />
+                </ClickOutside>
+                {defaultEthAccount && <SettingsLink />}
+                {defaultEthAccount && <CybLink dura='txq.cyb' className='id-bar__txq'>txq</CybLink>}
             </IdBarComponent>
         );
     }

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Message } from '@cybercongress/ui';
+import ClickOutside from 'react-click-outside';
 import * as actions from '../../redux/appMenu';
 
 import MenuContainer, {
     Bookmarks,
     LogoLink,
     AddMenuItem,
-    AddMenuItemApprove,
     AddMenuItemReject,
     ReportLinkContainer,
     AddMenuItemContainer,
@@ -15,19 +15,22 @@ import MenuContainer, {
 
 class AppMenu extends Component {
     addToFavorites = () => {
-        const dura = this.props.currentDura;
-        const name = this.refs.input.value;
+        const { props } = this;
+        const dura = props.currentDura;
+        const name = this.input.value;
 
-        this.props.addMenuItem(name, dura);
+        props.addMenuItem(name, dura);
         this.hideInput();
     };
 
     hideInput = () => {
-        this.props.hideInput();
+        const { props } = this;
+
+        props.hideInput();
     };
 
     rejectFavorite = () => {
-        this.refs.input.value = 'New App';
+        this.input.value = 'New App';
         this.hideInput();
     };
 
@@ -46,12 +49,12 @@ class AppMenu extends Component {
                 <LogoLink onClick={ this.clickLogo } />
 
                 <Message
-                    style={{
-                        margin: 15,
-                    }}
-                    type='error'
+                  style={ {
+                    margin: 15,
+                  } }
+                  type='error'
                 >
-                    Cyb in Ethereum Mainnet may not be secure yet. We recommend to operate accounts with small balance at your own risk.
+                Cyb in Ethereum Mainnet may not be secure yet. We recommend to operate accounts with small balance at your own risk.
                 </Message>
                 <Bookmarks
                   items={ menuItems }
@@ -59,20 +62,25 @@ class AppMenu extends Component {
                 />
                 {pendingAddToFavorites
                 && (
-                    <AddMenuItemContainer>
-                    <AddMenuItem>
-                        <input
-                          ref='input'
-                          defaultValue='New App'
-                        />
-                        <AddMenuItemApprove onClick={ this.rejectFavorite } />
-                        <AddMenuItemReject onClick={ this.addToFavorites } />
-                    </AddMenuItem>
-                    </AddMenuItemContainer>
-                )
-                }
+                    <ClickOutside onClickOutside={ this.rejectFavorite }>
+                        <AddMenuItemContainer>
+                            <AddMenuItem>
+                                <input
+                                  ref={ (node) => { this.input = node; } }
+                                  defaultValue='New App'
+                                />
+                                <AddMenuItemReject onClick={ this.addToFavorites } />
+                            </AddMenuItem>
+                        </AddMenuItemContainer>
+                    </ClickOutside>
+                )}
                 <ReportLinkContainer>
-                    <a target='__blank'  href='https://github.com/cybercongress/cyb'>Find a bug?</a>
+                    <a
+                      target='__blank'
+                      href='https://github.com/cybercongress/cyb'
+                    >
+                    Find a bug?
+                    </a>
                 </ReportLinkContainer>
             </MenuContainer>
         );

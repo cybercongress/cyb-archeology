@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './IdBar.css';
 import CybLink from '../CybLink';
 
-const IdBar = ({ children }) => (
+const IdBarComponent = ({ children }) => (
     <div className='id-bar'>
         {children}
     </div>
@@ -29,47 +29,62 @@ export const CurrentUser = (props) => {
     return (
         <div className='user-popup__container'>
             {defaultEthAccount ? (
-                <img className='id-bar__user' onClick={ toggle } src={`https://robohash.org/${defaultEthAccount}`} />
+                <img
+                  alt='user'
+                  className='id-bar__user'
+                  onClick={ toggle }
+                  src={`https://robohash.org/${defaultEthAccount}`}
+                />
             ) : (
-                <div className='id-bar__user id-bar__user--default ' onClick={ toggle } />
+                <CybLink dura='wallet.cyb'>
+                    <div
+                      className='id-bar__user id-bar__user--default '
+                      onClick={ toggle }
+                    />
+                </CybLink>
             )}
-            <div className={ `user-popup ${open ? 'user-popup--open' : ''}` }>
-                <div>
-                    Username
+            {defaultEthAccount && (
+                <div className={ `user-popup ${open ? 'user-popup--open' : ''}` }>
+                    <div>
+                        Username
+                    </div>
+                    <div className='id-bar-img-container'>
+                        <img
+                          alt='user'
+                          className='id-bar__user id-bar__user--big'
+                          src={ `https://robohash.org/${defaultEthAccount}` }
+                        />
+                    </div>
+                    <div>
+                        <span className='tokenName'>
+                            {ethBalance}
+                            {' '}
+                            ETH
+                        </span>
+                    </div>
+                    <hr className='separator' />
+                    <div>
+                        <span className='tokenName'>
+                            {cybBalance}
+                            {' '}
+                            CYB
+                        </span>
+                    </div>
+                    <div className='id-bar-link-container'>
+                        <WalletLink />
+                        <CybLink dura='history.cyb' className='id-bar__history'>history</CybLink>
+                        <a
+                          className='id-bar__favorite'
+                          href='/'
+                          onClick={ favoriteClick }
+                        >
+                        favorite
+                        </a>
+                    </div>
                 </div>
-                <div className='id-bar-img-container'>
-            {defaultEthAccount ? (
-                <img className='id-bar__user id-bar__user--big' onClick={ toggle } src={`https://robohash.org/${defaultEthAccount}`} />
-            ) : (
-                <div className='id-bar__user id-bar__user--default id-bar__user--big' onClick={ toggle } />
             )}
-
-                </div>
-                <div>
-                    <span className='tokenName'>
-                        {ethBalance} ETH
-                    </span>
-                </div>
-                <hr className='separator' />
-                <div>
-                    <span className='tokenName'>
-                        {cybBalance} CYB
-                    </span>
-                </div>
-                <div className='id-bar-link-container'>
-                    <WalletLink />
-                    <CybLink dura='history.cyb' className='id-bar__history'>history</CybLink>
-                    <a
-                      className='id-bar__favorite'
-                      href='/'
-                      onClick={favoriteClick}
-                    >
-                    favorite
-                    </a>
-                </div>
-            </div>
         </div>
     );
 };
 
-export default IdBar;
+export default IdBarComponent;
