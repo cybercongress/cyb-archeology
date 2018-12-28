@@ -91,12 +91,12 @@ class SignerPopup extends React.Component {
 
         try {
             totalAmount = utils
-                .toBN(utils.toWei(gasPrice, 'Gwei'))
+                .toBN(utils.toWei(`${gasPrice}`, 'Gwei'))
                 .mul(utils.toBN(gasLimit))
                 .add(utils.toBN(utils.toWei(`${value}`, 'ether')));
             totalAmount = utils.fromWei(totalAmount, 'ether');
         } catch (e) {
-            console.log('Something wrong on total amount calculating');
+            console.log(e, 'Something wrong on total amount calculating');
         }
 
         return totalAmount;

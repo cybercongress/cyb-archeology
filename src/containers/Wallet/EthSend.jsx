@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
+import web3 from 'web3';
 import * as actions from '../../redux/wallet';
 import { Avatar, SendFunds } from '../../components/Wallet/Wallet';
 import AccountCard, {
@@ -17,6 +18,10 @@ class EthSend extends Component {
                 props.loadAccounts();
             });
     };
+
+    validateAddress = (address) => {
+        return address.indexOf('0x') === 0 && web3.utils.isAddress(address);
+    }
 
     render() {
         const { defaultAccount, defaultAccountBalance } = this.props;
@@ -55,6 +60,7 @@ class EthSend extends Component {
                         <SendFunds
                           defaultAddress={ defaultAccount }
                           sendCallback={ this.sendFunds }
+                          validateAddress={this.validateAddress}
                         />
                     </div>
                 ) : (

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import { WideInput } from '@cybercongress/ui';
 import './wallet.css';
 import Block, { BlockRow } from '../Settings/Block';
 import Button from '../Button/Button';
@@ -93,26 +94,38 @@ AddAccount.propTypes = {
 };
 
 export class SendFunds extends React.Component {
-
+    state = {
+        addressValid: true,
+    }
     send = () => {
+        const validateAddress = this.props.validateAddress || (() => true);
         const defaultAddress = this.props.defaultAddress;
         const recipientAddress = this.recipientAddress.value;
         const amount = this.amount.value;
-
-        this.props.sendCallback(defaultAddress, recipientAddress, amount);
+        const addressValid = validateAddress(recipientAddress);
+        this.setState({
+            addressValid,
+        })
+        if (addressValid) {
+            this.props.sendCallback(defaultAddress, recipientAddress, amount);
+        }
     };
 
     render() {
-
+        const { addressValid } = this.state;
         return (
             <Block noMargin={true}>
                 <BlockRow>
                     <SettingLabel style={{ width: 160 }}>Recipient Address</SettingLabel>
-                    <Input style={{ width: 350 }} inputRef={node => { this.recipientAddress = node; }} />
+                    <div style={{ width: 350, display: 'inline-block' }}>
+                        <WideInput valid={addressValid} errorMessage='incorrect ETH address' inputRef={node => { this.recipientAddress = node; }} />
+                    </div>
                 </BlockRow>
                 <BlockRow>
                     <SettingLabel style={{ width: 160 }}>Amount</SettingLabel>
-                    <Input style={{ width: 350 }} inputRef={node => { this.amount = node; }} />
+                    <div style={{ width: 350, display: 'inline-block' }}>
+                        <WideInput style={{ width: 350 }} inputRef={node => { this.amount = node; }} />
+                    </div>
                 </BlockRow>
                 <BlockRow>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>

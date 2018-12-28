@@ -247,12 +247,12 @@ export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatc
         gasLimit: 210000,
         value: amount,
     })).then((data) => {
-        console.log('>>', data);
+        console.log('>>', data, web3.utils.toWei(`${data.gasPrice}`, 'Gwei'));
         eth.sendTransaction({
             from: _from,
             to,
             value: web3.utils.toWei(amount, 'ether'),
-            gasPrice: data.gasPrice,
+            gasPrice: web3.utils.toWei(`${data.gasPrice}`, 'Gwei'),
             gas: data.gasLimit,
         }).on('transactionHash', (hash) => {
             console.log('transactionHash', hash);
@@ -275,7 +275,9 @@ export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatc
                     resolve();
                 }
             });
-    }).catch(() => {});
+    }).catch((e) => {
+        console.log('send error', e);
+    });
 });
 
 export const getStatus = url => new Promise((resolve) => {
