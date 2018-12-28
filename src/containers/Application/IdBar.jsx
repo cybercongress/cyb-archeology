@@ -43,7 +43,7 @@ class IdBar extends Component {
             defaultCyberAccount,
             defaultAccountBalance,
             defaultAccountBalanceCyb,
-            notificationLinkText,
+            notificationLinkCounter,
         } = this.props;
 
         return (
@@ -60,7 +60,7 @@ class IdBar extends Component {
                     />
                 </ClickOutside>
                 {defaultEthAccount && <SettingsLink />}
-                {defaultEthAccount && <NotificationLink notificationLinkText={ notificationLinkText } />}
+                {defaultEthAccount && <NotificationLink notificationLinkCounter={ notificationLinkCounter } />}
             </IdBarComponent>
         );
     }
@@ -73,7 +73,7 @@ export default connect(
         defaultCyberAccount: state.cyber.defaultAccount,
         defaultAccountBalance: getDefaultAccountBalance(state),
         defaultAccountBalanceCyb: getDefaultAccountBalanceCyb(state),
-        notificationLinkText: state.wallet.notificationLinkText,
+        notificationLinkCounter: state.wallet.notificationLinkCounter,
     }),
     { toggleMenu },
 )(IdBar);

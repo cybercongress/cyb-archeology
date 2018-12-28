@@ -19,7 +19,7 @@ const initState = {
 
     transactions: [],
 
-    notificationLinkText: '',
+    notificationLinkCounter: '',
 };
 
 export const reducer = (state = initState, action) => {
@@ -74,26 +74,19 @@ export const reducer = (state = initState, action) => {
         };
     }
 
-    case 'SET_NOTIFICATION_LINK_TEXT': {
+    case 'SET_NOTIFICATION_LINK_COUNTER_INC': {
+        let notificationLinkCounter = parseInt(state.notificationLinkCounter, 10) || 0;
         return {
             ...state,
-            notificationLinkText: action.payload,
+            notificationLinkCounter: notificationLinkCounter + (action.payload ? action.payload : 1),
         };
     }
 
-    case 'SET_NOTIFICATION_LINK_TEXT_INC': {
-        state.notificationLinkText = parseInt(state.notificationLinkText) || 0;
+    case 'SET_NOTIFICATION_LINK_COUNTER_DEC': {
+        let notificationLinkCounter = parseInt(state.notificationLinkCounter, 10) || 0;
         return {
             ...state,
-            notificationLinkText: state.notificationLinkText + 1,
-        };
-    }
-
-    case 'SET_NOTIFICATION_LINK_TEXT_DEC': {
-        state.notificationLinkText = parseInt(state.notificationLinkText) || 0;
-        return {
-            ...state,
-            notificationLinkText: (state.notificationLinkText > 1 ? state.notificationLinkText - 1 : ''),
+            notificationLinkCounter: (notificationLinkCounter > 1 ? notificationLinkCounter - 1 : ''),
         };
     }
 
@@ -293,7 +286,7 @@ export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatc
             }, hash);
 
             dispatch({
-                type: 'SET_NOTIFICATION_LINK_TEXT_INC'
+                type: 'SET_NOTIFICATION_LINK_COUNTER_INC'
             });
 
         })
@@ -408,7 +401,7 @@ export const receiveMessage = e => (dispatch, getState) => {
                     wv.send('web3_eth_call', result);
 
                     dispatch({
-                        type: 'SET_NOTIFICATION_LINK_TEXT_INC'
+                        type: 'SET_NOTIFICATION_LINK_COUNTER_INC'
                     });
 
                 });
@@ -597,6 +590,7 @@ export const getTransaction = hash => (dispatch) => {
         web3.eth.getTransaction(hash),
         web3.eth.getTransactionReceipt(hash),
     ]).then(([transaction, receipt]) => {
+        updateStatusTransactions();
         dispatch({
             type: 'SET_ETH_TX',
             payload: { transaction, receipt },
@@ -621,7 +615,7 @@ export const getTransactions = address => (dispatch, getState) => {
 
     if (cyberAddress) {
         const cyberJsonStr = localStorage.getItem('cyb_transactions') || '{}';
-        const cyberTransactions = JSON.parse(cyberJsonStr);
+        let cyberTransactions = JSON.parse(cyberJsonStr);
         if (cyberTransactions[cyberAddress]) cyberTransactions = cyberTransactions[cyberAddress]; else cyberTransactions = [];
 
         transactions = transactions.concat(cyberTransactions);
@@ -643,14 +637,15 @@ export const checkPendingStatusTransactions = () => (dispatch) => {
 
     if (jsonStr) {
         let transactions = JSON.parse(jsonStr);
+        let pendingTransactionsCount = 0;
         Object.keys(transactions).forEach(address => {
             transactions[address].forEach(item => {
-                if (item.status == 'pending') {
-                    dispatch({
-                        type: 'SET_NOTIFICATION_LINK_TEXT_INC'
-                    });	
-                }
+                if (item.status == 'pending') pendingTransactionsCount++;
             });
+        });
+        dispatch({
+            type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
+            payload: pendingTransactionsCount
         });
     }
 };
@@ -672,11 +667,11 @@ export const updateStatusTransactions = () => (dispatch) => {
                         web3.eth.getTransactionReceipt(item.txHash),
                     ]).then(([/* transaction,  */receipt]) => {
                         // https://ethereum.stackexchange.com/a/6003
-                        if (receipt.blockNumber) {
+                        if (receipt.blockNumber && receipt.status == 1) {
                             item.status = 'success';
                             localStorage.setItem('transactions', JSON.stringify(transactions));
                             dispatch({
-                                type: 'SET_NOTIFICATION_LINK_TEXT_DEC'
+                                type: 'SET_NOTIFICATION_LINK_COUNTER_DEC'
                             });
                         }
                     });

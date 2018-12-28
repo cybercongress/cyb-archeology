@@ -8,8 +8,8 @@ const IdBarComponent = ({ children }) => (
     </div>
 );
 
-export const NotificationLink = ({ notificationLinkText }) => (
-    <CybLink dura='txq.cyb' className='id-bar__txq'><span>{notificationLinkText}</span></CybLink>
+export const NotificationLink = ({ notificationLinkCounter }) => (
+    <CybLink dura='txq.cyb' className='id-bar__txq'><span>{notificationLinkCounter}</span></CybLink>
 );
 
 export const SettingsLink = () => (
