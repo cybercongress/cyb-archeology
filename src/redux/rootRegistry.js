@@ -3,7 +3,7 @@ const localStorageItemName = 'rootRegistry';
 const initState = {
     items: {
         help: {
-            hash: 'QmTf9ooSeBJMe4HbuXsebCukHDZbUtY8qWqP82us4Uvjwc',
+            hash: 'QmaC1YFu4Lm65RxU8bzCppAp8TQRFVRMT4czS6gzJXgp7h',
             protocol: 'ipfs',
         },
         cyber: {
@@ -23,7 +23,7 @@ const initState = {
             protocol: 'ipfs',
         },
         chaingear: {
-            hash: 'QmcvRaFEyPRniwSp7kMRuKtbijLLYNFGJvEe4S86FHypvH',
+            hash: 'QmWm1UvpcUL5fizTRTvhBCDeV11PCi6Z7pBgxfQTuheA2i',
             protocol: 'ipfs',
         },
         dragons: {
