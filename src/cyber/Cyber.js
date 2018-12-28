@@ -49,7 +49,6 @@ function Cyber(nodeUrl, ipfs) {
 
     self.search = function (text) {
         return new Promise((resolve) => {
-
             saveInIPFS(ipfs, text)
                 .then(cid => axios({
                     method: 'get',
@@ -57,11 +56,11 @@ function Cyber(nodeUrl, ipfs) {
                 })).then((data) => {
 
                     const cids = data.data.result.cids;
-                    const links = cids.map(cid => ({ ...cid, hash: cid.Cid }));
+                    const links = cids.map(cid => ({ ...cid, hash: cid.rank }));
 
                     const itemsPromises = links.map(item => {
                         return Promise.all([
-                            getIPFS(ipfs, item.Cid),
+                            getIPFS(ipfs, item.cid),
                             Promise.resolve(item)
                         ]).then(([content, _item]) => {
                             return {
