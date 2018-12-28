@@ -96,41 +96,65 @@ AddAccount.propTypes = {
 export class SendFunds extends React.Component {
     state = {
         addressValid: true,
+        amount: 0,
+        address: '',
     }
     send = () => {
         const validateAddress = this.props.validateAddress || (() => true);
         const defaultAddress = this.props.defaultAddress;
-        const recipientAddress = this.recipientAddress.value;
-        const amount = this.amount.value;
+        const recipientAddress = this.state.address;
+        const amount = +this.state.amount;
         const addressValid = validateAddress(recipientAddress);
         this.setState({
             addressValid,
-        })
+        });
         if (addressValid) {
             this.props.sendCallback(defaultAddress, recipientAddress, amount);
         }
     };
 
+
+    updateAmount = (e) => {
+        const { value } = e.target;
+
+        if ((!Number.isNaN(value) && +value >= 0) || value === '') {
+            this.setState({
+                amount: value,
+            });
+        }
+    };
+
+    updateAddress = (e) => {
+        const validateAddress = this.props.validateAddress || (() => true);
+        const { value } = e.target;
+
+        this.setState({
+            address: value,
+            addressValid: validateAddress(value)
+        });
+    }
+
     render() {
-        const { addressValid } = this.state;
+        const { addressValid, amount, address } = this.state;
+        const disabledSend = !amount || !addressValid;
         return (
             <Block noMargin={true}>
                 <BlockRow>
                     <SettingLabel style={{ width: 160 }}>Recipient Address</SettingLabel>
                     <div style={{ width: 350, display: 'inline-block' }}>
-                        <WideInput valid={addressValid} errorMessage='incorrect ETH address' inputRef={node => { this.recipientAddress = node; }} />
+                        <WideInput valid={addressValid} errorMessage='incorrect ETH address' value={address} onChange={this.updateAddress} />
                     </div>
                 </BlockRow>
                 <BlockRow>
                     <SettingLabel style={{ width: 160 }}>Amount</SettingLabel>
                     <div style={{ width: 350, display: 'inline-block' }}>
-                        <WideInput style={{ width: 350 }} inputRef={node => { this.amount = node; }} />
+                        <WideInput style={{ width: 350 }} value={amount} onChange={this.updateAmount} />
                     </div>
                 </BlockRow>
                 <BlockRow>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Button onClick={ this.cancelSend }>cancel</Button>
-                        <Button color='green' onClick={ this.send }>send</Button>
+                        <Button disabled={disabledSend} color='green' onClick={ this.send }>send</Button>
                     </div>
                 </BlockRow>
             </Block>
