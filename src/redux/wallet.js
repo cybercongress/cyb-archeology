@@ -429,7 +429,7 @@ export const receiveMessage = e => (dispatch, getState) => {
                     } else {
                         dispatch({
                             type: 'SET_SIGNER_ERROR',
-                            payload: err,
+                            payload: err.message,
                         });
                     }
                 });
