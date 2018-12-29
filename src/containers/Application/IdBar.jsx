@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ClickOutside from 'react-click-outside';
-import CybLink from '../../components/CybLink';
 import IdBarComponent, {
     NotificationLink,
     SettingsLink,
@@ -60,7 +59,11 @@ class IdBar extends Component {
                     />
                 </ClickOutside>
                 {defaultEthAccount && <SettingsLink />}
-                {defaultEthAccount && <NotificationLink notificationLinkCounter={ notificationLinkCounter } />}
+                {defaultEthAccount && (
+                    <NotificationLink
+                      notificationLinkCounter={ notificationLinkCounter }
+                    />
+                )}
             </IdBarComponent>
         );
     }

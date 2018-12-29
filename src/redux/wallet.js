@@ -20,6 +20,8 @@ const initState = {
     transactions: [],
 
     notificationLinkCounter: 0,
+
+    signerError: '',
 };
 
 export const reducer = (state = initState, action) => {
@@ -89,6 +91,14 @@ export const reducer = (state = initState, action) => {
         return {
             ...state,
             notificationLinkCounter: (prevCounter > 1 ? prevCounter - 1 : 0),
+        };
+    }
+
+
+    case 'SET_SIGNER_ERROR': {
+        return {
+            ...state,
+            signerError: action.payload,
         };
     }
 
@@ -416,6 +426,11 @@ export const receiveMessage = e => (dispatch, getState) => {
                         dispatch({
                             type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
                         });
+                    } else {
+                        dispatch({
+                            type: 'SET_SIGNER_ERROR',
+                            payload: err,
+                        });
                     }
                 });
             }).catch(() => {
@@ -636,7 +651,7 @@ export const getTransaction = hash => (dispatch) => {
         web3.eth.getTransaction(hash),
         web3.eth.getTransactionReceipt(hash),
     ]).then(([transaction, receipt]) => {
-        updateStatusTransactions();
+        dispatch(updateStatusTransactions());
         dispatch({
             type: 'SET_ETH_TX',
             payload: { transaction, receipt },
