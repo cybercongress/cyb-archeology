@@ -406,16 +406,17 @@ export const receiveMessage = e => (dispatch, getState) => {
                     payload.params[0].gasPrice = web3.utils.numberToHex(+data.gasPrice);
                 }
                 provider.sendAsync(payload, (err, result) => {
-                    saveTransaction(payload, result.result);
-                    if (!wv) {
-                        return;
+                    if (!err) {
+                        saveTransaction(payload, result.result);
+                        if (!wv) {
+                            return;
+                        }
+                        wv.send('web3_eth_call', result);
+
+                        dispatch({
+                            type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
+                        });
                     }
-                    wv.send('web3_eth_call', result);
-
-                    dispatch({
-                        type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
-                    });
-
                 });
             }).catch(() => {
                 if (!wv) {
@@ -615,7 +616,7 @@ export const updateStatusTransactions = () => (dispatch) => {
                         web3.eth.getTransactionReceipt(item.txHash),
                     ]).then(([/* transaction,  */receipt]) => {
                         // https://ethereum.stackexchange.com/a/6003
-                        if (receipt.blockNumber && receipt.status === 1) {
+                        if (receipt.blockNumber && parseInt(receipt.status, 16) === 1) {
                             item.status = 'success';
                             localStorage.setItem('transactions', JSON.stringify(transactions));
                             dispatch({
@@ -700,10 +701,12 @@ export const checkPendingStatusTransactions = () => (dispatch) => {
                 }
             });
         });
-        dispatch({
-            type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
-            payload: pendingTransactionsCount,
-        });
+        if (pendingTransactionsCount) {
+            dispatch({
+                type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
+                payload: pendingTransactionsCount,
+            });
+        }
     }
 };
 
