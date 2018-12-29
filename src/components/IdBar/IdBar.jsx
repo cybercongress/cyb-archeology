@@ -9,7 +9,7 @@ const IdBarComponent = ({ children }) => (
 );
 
 export const NotificationLink = ({ notificationLinkCounter }) => (
-    <CybLink dura='txq.cyb' className='id-bar__txq'><span>{notificationLinkCounter}</span></CybLink>
+    <CybLink dura='txq.cyb' className='id-bar__txq'><span>{notificationLinkCounter !== 0 ? notificationLinkCounter : ''}</span></CybLink>
 );
 
 export const SettingsLink = () => (

@@ -19,7 +19,7 @@ const initState = {
 
     transactions: [],
 
-    notificationLinkCounter: '',
+    notificationLinkCounter: 0,
 };
 
 export const reducer = (state = initState, action) => {
@@ -75,7 +75,7 @@ export const reducer = (state = initState, action) => {
     }
 
     case 'SET_NOTIFICATION_LINK_COUNTER_INC': {
-        let notificationLinkCounter = parseInt(state.notificationLinkCounter, 10) || 0;
+        let notificationLinkCounter = state.notificationLinkCounter;
         return {
             ...state,
             notificationLinkCounter: notificationLinkCounter + (action.payload ? action.payload : 1),
@@ -83,10 +83,10 @@ export const reducer = (state = initState, action) => {
     }
 
     case 'SET_NOTIFICATION_LINK_COUNTER_DEC': {
-        let notificationLinkCounter = parseInt(state.notificationLinkCounter, 10) || 0;
+        let notificationLinkCounter = state.notificationLinkCounter;
         return {
             ...state,
-            notificationLinkCounter: (notificationLinkCounter > 1 ? notificationLinkCounter - 1 : ''),
+            notificationLinkCounter: (notificationLinkCounter > 1 ? notificationLinkCounter - 1 : 0),
         };
     }
 
