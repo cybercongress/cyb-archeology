@@ -25,5 +25,5 @@ if (module.hot) {
 store.dispatch(checkPendingStatusTransactions());
 
 setInterval(() => {
-	store.dispatch(updateStatusTransactions());
+    store.dispatch(updateStatusTransactions());
 }, 60000);
