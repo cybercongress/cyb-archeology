@@ -14,6 +14,7 @@ const defaultAmount = 10000;
 let __accounts = {};
 
 const IPFS = require('ipfs-api');
+const codec = require('./codec');
 
 
 const saveInIPFS = (ipfs, jsonStr) => new Promise((resolve, reject) => {
@@ -52,7 +53,7 @@ function Cyber(nodeUrl, ipfs) {
             saveInIPFS(ipfs, text)
                 .then(cid => axios({
                     method: 'get',
-                    url: `${nodeUrl}/search?cid=${cid}`,
+                    url: `${nodeUrl}/search?cid="${cid}"`,
                 })).then((data) => {
 
                     const cids = data.data.result.cids;
@@ -99,7 +100,7 @@ function Cyber(nodeUrl, ipfs) {
         saveInIPFS(ipfs, to),
     ]).then(([_from, _to]) => axios({
         method: 'get',
-        url: `${nodeUrl}/account?address=${address}`,
+        url: `${nodeUrl}/account?address="${address.address}"`,
     }).then((response) => {
         if (!response.data.result) { return false; }
 
@@ -120,10 +121,12 @@ function Cyber(nodeUrl, ipfs) {
             type: 'link',
         };
 
+        const txRequest = builder.buildAndSignTxRequest(linkRequest, __accounts[address.address].privateKey, chainId);
+        const signedLinkHex = codec.hex.stringToHex(JSON.stringify(txRequest));
+
         return axios({
-            method: 'post',
-            url: `${nodeUrl}/link`,
-            data: builder.buildAndSignTxRequest(linkRequest, __accounts[address].privateKey, chainId),
+            method: 'get',
+            url: `${nodeUrl}/submit_signed_link?data="${signedLinkHex}"`,
         }).then(data => {
             console.log('Link results: ', data);
 
@@ -151,7 +154,7 @@ function Cyber(nodeUrl, ipfs) {
 
         axios({
             method: 'get',
-            url: `${nodeUrl}/account?address=${defaultAccount}`,
+            url: `${nodeUrl}/account?address="${defaultAccount}"`,
         }).then(response => response.data.result).then((data) => {
             let balance = 0;
 
@@ -178,7 +181,7 @@ function Cyber(nodeUrl, ipfs) {
             Promise.all(
                 Object.keys(__accounts).map(address => axios({
                     method: 'get',
-                    url: `${nodeUrl}/account?address=${address}`,
+                    url: `${nodeUrl}/account?address="${address}"`,
                 }).then((data) => {
                     let balance = 0;
                     let publicKey = '';
@@ -257,7 +260,7 @@ function Cyber(nodeUrl, ipfs) {
     self.sendFunds = function (defaultAddress, recipientAddress, amount) {
         return axios({
             method: 'get',
-            url: `${nodeUrl}/account?address=${defaultAddress}`,
+            url: `${nodeUrl}/account?address="${defaultAddress}"`,
         }).then((response) => {
             if (!response.data.result) { return false; }
 
@@ -278,14 +281,14 @@ function Cyber(nodeUrl, ipfs) {
                 amount,
                 type: 'send',
             };
-            const { privateKey } = __accounts[defaultAddress];
-            const tx = builder.buildAndSignTxRequest(sendRequest, privateKey, chainId);
+
+            const txRequest = builder.buildAndSignTxRequest(sendRequest, __accounts[defaultAddress].privateKey, chainId);
+            const signedSendHex = codec.hex.stringToHex(JSON.stringify(txRequest));
 
 //            console.log(tx);
             return axios({
-                method: 'post',
-                url: `${nodeUrl}/send`,
-                data: tx,
+                method: 'get',
+                url: `${nodeUrl}/submit_signed_send?data="${signedSendHex}"`,
             }).then(data => console.log('Send results: ', data)).catch(error => console.log('Cannot send', error));
         });
     };
