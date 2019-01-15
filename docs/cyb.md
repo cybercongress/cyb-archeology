@@ -14,37 +14,47 @@ Cyb is a friendly software robot who helps you explore the universes. Put it sim
 
 Current state of web3 experience is non satisfactory. Still [we did not meet](https://github.com/cybercongress/cyb/blob/master/docs/comparison.md) any piece of software that is able to deliver deep, emotional web3 experience. So we decide to bring to the table one contender that strictly follows web3 principles defined by ourselves ;-) In a rush for this passion we define the following web3 apps which we believe together implement the full web3 vision in the context of a browsing for web3 agents and app developers:
 
-##
+## CLI
 
-CLI
 
 ## Shell
 
+Default UX elements for web3 experience.
+
+- `Navigation bar` - search field, back & forward buttons
+- `App Bar` - list of pinned favourites apps
+- `ID Bar` - main identity data
+- `State Bar` - node connection statuses
+
+## .cyb
+
+Main browser app with all necessary settings.
+
 - `main.cyb`: main page for every joe
-- `path.cyb`: navigation bar and its backend + tqx
-- `pins.cyb`: favourites backend and application bar
-- `connect.cyb`: connection manager and state widget
+- `path.cyb`: user's navigation history
+- `txq.cyb` : user's transaction activity
+- `pins.cyb`: pinned user's favourite apps and pages
+- `connect.cyb`: connection manager
 
 - `root.cyb`: cyb root registry
 - `help.cyb`: cyb educational library and feedback mechanism
 - `dev.cyb`: web3 development tool with support of contracts
 
-- `keys.cyb`: keystore interface and id widget
+- `keys.cyb`: keystore interface
 - `sign.cyb`: phishing resistant signer for messages and transactions with scheduler
-- `wallet.cyb`: universal wallet ux
+- `wallet.cyb`: universal wallet
 
-- `settings.cyb`: cyb settings
-
-- `feed.cyb`: notification backend and feed app
+- `feed.cyb`: notification & feed app
 - `access.cyb`: permission manager that respects agents' resources
 
 ## Apps
+
+Main apps for initial web3 experience
 
 - `.cyber`: cyberd node manager and app for link chains + - `apps.cyber`: search appstore - 
 - `.ipfs`: ipfs node manager and agent experience
 - `.eth`: ethereum node manager + ens resolver
 - `.chaingear`: all the things chaingearable
-- `.dev`: all dev things
 - `.wiki`: wiki indexator
 
 All this apps are considered as core apps and are included in every Cyb distribution. Let us describe in details every app as a pure concept.
