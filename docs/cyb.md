@@ -8,32 +8,47 @@ Concept. Definitions are work in progress.
 
 ## Abstract
 
-Cyb is a friendly software robot who helps you explore the universes. Put it simply it just a [web3](cyb://QmXHiEVCFTN8hda93qZN6ay5bXJ1ZkaLCV68AefXPs1pXg.ipfs) browser. At the very beginning cyb is focusing on developers and advanced blockchain users who are able to work with private keys and transactions. But we see how Cyb becomes friendly for everyone who wants to interact with consensus computers in a web of the third generation. This new web is designed to free developers from outdated things such as html and v8. So developers can use any markup, execution and rendering engine they wish. That is why we don't focus on implementation of mentioned things. Instead this paper discuss implementation agnostic concepts of browser that are simple enough to be adopted by web3 developers. Initially we design Cyb for conventional desktop browsing. But suggested concepts can be easily used for mobile, voice, vr and robotics implementations.
+Cyb is a friendly software robot who helps you explore the universes.
+Put it simply it just a [web3](cyb://QmXHiEVCFTN8hda93qZN6ay5bXJ1ZkaLCV68AefXPs1pXg.ipfs) browser.
+At the very beginning Cyb is focusing on developers and advanced blockchain users who are able to work with private keys and transactions.
+But we see how Cyb becomes friendly for everyone who wants to interact with consensus computers in a web of the third generation.
+This new web is designed to free developers from outdated things such as html and v8.
+So developers can use any markup, execution and rendering engine they wish.
+That is why we don't focus on implementation of mentioned things.
+Instead this paper shows implementation agnostic concepts of browser that are simple enough to be adopted by web3 developers.
+Initially we design Cyb for conventional desktop browsing.
+But suggested concepts can be easily used for mobile, voice, VR and robotics implementations.
 
 ## Introduction
 
-Current state of web3 experience is non satisfactory. Still [we did not meet](https://github.com/cybercongress/cyb/blob/master/docs/comparison.md) any piece of software that is able to deliver deep, emotional web3 experience. So we decide to bring to the table one contender that strictly follows web3 principles defined by ourselves ;-) In a rush for this passion we define the following web3 apps which we believe together implement the full web3 vision in the context of a browsing for web3 agents and app developers:
+Current state of web3 experience is non satisfactory.
+We still [didn't meet](https://github.com/cybercongress/cyb/blob/master/docs/comparison.md) any piece of software that is able to deliver deep and emotional web3 experience. So we decide to bring to the table one contender that strictly follows web3 principles defined by ourselves ;-) 
+In a rush for this passion we define the following web3 apps which we believe together implement the full web3 vision in the context of a browsing for web3 agents and app developers:
 
 ## CLI
 
-
 ## Shell
 
-Default UX elements for web3 experience.
+Here are the default UX elements, that Cyb uses to provide basic web3 UX:
 
 - `Navigation bar` - search field, back & forward buttons
-- `App Bar` - list of pinned favourites apps
+- `App Bar` - list of pinned favourites cyberlinks
 - `ID Bar` - main identity data
 - `State Bar` - node connection statuses
 
+<div align="center">
+  <img src="/docs/img/shell-components.png"></a>
+</div>
+
 ## .cyb
 
-Main browser app with all necessary settings.
+Cyb has a lot of user and technical settings. 
+They are implemented in the default browser app - .cyb:
 
 - `main.cyb`: main page for every joe
 - `path.cyb`: user's navigation history
 - `txq.cyb` : user's transaction activity
-- `pins.cyb`: pinned user's favourite apps and pages
+- `pins.cyb`: pinned user's favourite apps or cyberlinks
 - `connect.cyb`: connection manager
 
 - `root.cyb`: cyb root registry
@@ -57,28 +72,25 @@ Main apps for initial web3 experience
 - `.chaingear`: all the things chaingearable
 - `.wiki`: wiki indexator
 
-All this apps are considered as core apps and are included in every Cyb distribution. Let us describe in details every app as a pure concept.
+All this apps are considered as core apps and are included in every Cyb distribution. 
+Let us describe in details every app as a pure concept.
 
-## .main
+## Navigation Bar
 
-Purpose of the `main` app is to make agent happier in a moment it returns for surfing and between experiences. Main page of the browser consists of three main elements:
-
-- search bar: provides all search functions
-- relevance bar: the most relevant cyberlinks for a particular agent
-- footer: cyberlinks to ecosystem resources which are important for education and contribution
-
-## .path
-
-Navigation bar in Cyb is based on the following elements:
+Navigation bar in Cyb is based on the following UI elements:
 
 - back button - returns user to the previous state of web3 agent
-- search bar - provides direct access to certain state
-- star button - allow users to pin cyberlinks
+- search field - provides direct access to certain state
+- heart button - allow users to pin cyberlinks
 - forward button - brings user to the future state based on Cyb prediction
 
-Search bar is used to browse web3. With the help of DURA with knowledge of application involved (<content-address>.<app>) it can get content across different content addressing protocols such as IPFS, DAT, SWARM, and inside blockchains, tangles and DAGs thus forming heterogeneous environment of web3. In [web3 vision doc](cyb/docs/web3-vision.md) we describe in details a concept of web3 browsing based on DURA specs.
-
-That is, in web3 appending "dot" works very different in comparison with web2. Dot is literally a search query to a particular app that also has a content address in heterogeneous network. All symbols after "dot" make a map with content address of an app in root registry, and all data before "dot" is a query parameter to an app.
+Search bar is used to browse web3. 
+With the help of DURA and knowledge of application involved (<content-address>.<app>) it can get content across different content addressing protocols such as IPFS, DAT, SWARM, and inside blockchains, tangles and DAGs thus forming heterogeneous environment of web3. 
+  
+In [web3 vision doc](cyb/docs/web3-vision.md) we describe in details a concept of web3 browsing based on DURA specs.
+So, in web3 appending "dot" works very different in comparison with web2. 
+Dot is literally a search query to a particular app that also has a content address in heterogeneous network. 
+All symbols after "dot" make a map with content address of an app in root registry, and all data before "dot" is a query parameter to an app.
 
 ```
 <illustration>
@@ -86,17 +98,60 @@ That is, in web3 appending "dot" works very different in comparison with web2. D
 
 For example:
 
-`.help` query will open Cyb help app. `chaingear.help` will open `chaingear` info page in the `help` app. Query without "dot" will be automatically redirected to search in cyberd (Note: queries without dot is synonym to `<your-query>.cyber`).
+`.cyb` query will open Cyb default app. `help.cyb` will open `help` info page in the `cyb` app. Query without "dot" will be automatically redirected to search in cyberd (Note: queries without dot is synonym to `<your-query>.cyber`).
 
-Empty query always leads to the main page. `.` query returns a root registry that is being used by default in Cyb.
+Empty query always leads to the main page. 
+
+`.` query returns a root registry that is being used by default in Cyb.
 
 ```
 <api-definition>
 ```
 
-All cyberlinks that was requested by agent can be accessed using `path` app that is integral part of Cyb experience.
+All cyberlinks that were requested by agent can be accessed using `path.cyb` page that is integral part of Cyb experience.  
 
-## .connect
+## App Bar
+
+App bar is a place where user can quickly get access to most used web3 objects. 
+User can pin such objects by clicking on button "heart" on navigation bar and then it will appear in app bar. 
+Cyberlink manager "pins.cyb" is an attached page that allow agents to group and tag pins, as well as import and export them.
+
+## ID Bar
+
+ID bar provides quick access to the main account data - balances, transaction notifictions, profile logo and has links to wallet.cyb, path.cyb, pins.cyb, connect.cyb, txq.cyb.
+
+## State Bar
+
+The purpose of state bar is to show user the ability of cyb to operate with web3 providers. 
+Currently we have 3 providers: IPFS, Cyberd and Ethereum. 
+State bar also shows endpoints and network names.
+
+
+## main.cyb
+
+Purpose of the `main` page is to make agent happier in a moment it returns for surfing. 
+Main page of the browser consists of three global elements:
+
+- search field: provides all search functions
+- relevance bar: the most relevant cyberlinks for a particular agent
+- footer: cyberlinks to ecosystem resources which are important for education and contribution
+
+
+
+## path.cyb
+
+1. navigation history
+2. import/export
+3. privacy
+
+## txq.cyb
+
+1. transaction history
+2. import/export
+3. resend tx
+4. privacy
+
+## connect.cyb
 
 In web3 all data has the state, so it become easier to navigate through it and make agent experience better. To be sure that you are working with actual state Cyb needs to manage connection to web3 providers.
 
@@ -160,7 +215,7 @@ It happens then agent knows some content address but have no idea in which netwo
 
 ## .pins
 
-App bar is a place where user can quickly get access to most used web3 objects. User can pin such objects by clicking on button "favourite" on navigation bar and then it will appear in app bar. Cyberlink manager is an attached app that allow agents to group and tag pins.
+
 
 ## .sign
 
