@@ -92,6 +92,9 @@ window.cyber = {
             ipcRenderer.once('cyber_link', (_, payload) => {
                 resolve(payload);
             });
+            ipcRenderer.once('cyber_link_error', (_, payload) => {
+                reject();
+            });
         }));
     },
     getDefaultAddress(cb) {

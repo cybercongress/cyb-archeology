@@ -8,7 +8,6 @@ import {
 import builder from './builder';
 
 let chainId = 'euler-dev0';
-const claimNodeUrl = 'http://earth.cybernode.ai:34666'; //proxy TODO: remove when fix chain
 const defaultAmount = 10000;
 
 let __accounts = {};
@@ -55,7 +54,6 @@ function Cyber(nodeUrl, ipfs) {
                     method: 'get',
                     url: `${nodeUrl}/search?cid="${cid}"`,
                 })).then((data) => {
-
                     const cids = data.data.result.cids;
                     const links = cids.map(cid => ({ ...cid, hash: cid.rank }));
 
@@ -100,7 +98,7 @@ function Cyber(nodeUrl, ipfs) {
         saveInIPFS(ipfs, to),
     ]).then(([_from, _to]) => axios({
         method: 'get',
-        url: `${nodeUrl}/account?address="${address.address}"`,
+        url: `${nodeUrl}/account?address="${address}"`,
     }).then((response) => {
         if (!response.data.result) { return false; }
 
@@ -121,31 +119,30 @@ function Cyber(nodeUrl, ipfs) {
             type: 'link',
         };
 
-        const txRequest = builder.buildAndSignTxRequest(linkRequest, __accounts[address.address].privateKey, chainId);
+        const txRequest = builder.buildAndSignTxRequest(linkRequest, __accounts[address].privateKey, chainId);
         const signedLinkHex = codec.hex.stringToHex(JSON.stringify(txRequest));
 
-        return axios({
-            method: 'get',
-            url: `${nodeUrl}/submit_signed_link?data="${signedLinkHex}"`,
-        }).then(data => {
-            console.log('Link results: ', data);
+        return new Promise((resolve, reject) => {
+            axios({
+                method: 'get',
+                url: `${nodeUrl}/submit_signed_link?data="${signedLinkHex}"`,
+            }).then(data => {
+                if (data.data.result.code != 0) {
+                    reject();
+                    return;
+                }
+                console.log('Link results: ', data);
 
-            addTransactionLog(address, data.data.hash, 'pending');
-        }).catch(error => {
-            console.log('Cannot link', error);
-
-            // addTransactionLog(address, data.data.hash, 'fail');
-        });
+                addTransactionLog(address, data.data.hash, 'pending');
+                resolve(data);
+            }).catch(error => {
+                console.log('Cannot link', error);
+                reject();
+                // addTransactionLog(address, data.data.hash, 'fail');
+            });
+        })
     }));
 
-    self.claimFunds = function (address, amount) {
-        return axios({
-            method: 'get',
-            url: `${claimNodeUrl}/claim?address=${address}&amount=${amount}`,
-        }).then((response) => {
-            console.log(`Claimed ${amount} for address ${address}`, response);
-        });
-    };
 
     let __setDefaultAddress;
 
@@ -162,10 +159,18 @@ function Cyber(nodeUrl, ipfs) {
                 balance = data.account.coins[0].amount;
             }
 
-            resolve({
-                address: defaultAccount,
-                balance: +balance,
+            axios({
+                method: 'get',
+                url: `${nodeUrl}/account_bandwidth?address="${defaultAccount}"`,
+            }).then(res => {
+                resolve({
+                    remained: res.data.result.remained,
+                    max_value: res.data.result.max_value,
+                    address: defaultAccount,
+                    balance: +balance,
+                });
             });
+            
         });
     });
 

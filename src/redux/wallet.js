@@ -398,6 +398,8 @@ export const receiveMessage = e => (dispatch, getState) => {
 
         window.cyber[method].apply(window.cyber, params).then((result) => {
             wvCyber.send(`cyber_${method}`, result);
+        }).catch(e => {
+            wvCyber.send(`cyber_${method}_error`);
         });
     }
     if (e.channel === 'ipfs') {
