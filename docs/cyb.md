@@ -98,7 +98,8 @@ All symbols after "dot" make a map with content address of an app in root regist
 
 For example:
 
-`.cyb` query will open Cyb default app. `help.cyb` will open `help` info page in the `cyb` app. Query without "dot" will be automatically redirected to search in cyberd (Note: queries without dot is synonym to `<your-query>.cyber`).
+`.cyb` query will open Cyb default app. `help.cyb` will open `help` info page in the `cyb` app. 
+Query without "dot" will be automatically redirected to search in cyberd (Note: queries without dot is synonym to `<your-query>.cyber`).
 
 Empty query always leads to the main page. 
 
@@ -122,9 +123,10 @@ ID bar provides quick access to the main account data - balances, transaction no
 
 ## State Bar
 
-The purpose of state bar is to show user the ability of cyb to operate with web3 providers. 
-Currently we have 3 providers: IPFS, Cyberd and Ethereum. 
-State bar also shows endpoints and network names.
+Cyb is hiding all complexities of web3 connections under one colorful indicator that range from green to red. 
+Ideally it works like indicator of internet connection we all used to see in smartphones.  
+Connection indicator is cyberlinked to a `connect.cyb` app. 
+It gives an ability for an agent to understand status of connections and chose web3 providers.
 
 
 ## main.cyb
@@ -153,23 +155,80 @@ Main page of the browser consists of three global elements:
 3. resend tx
 4. privacy
 
+## pins.cyb
+
+1. favorite apps
+2. import/export
+3. privacy
+
 ## connect.cyb
 
-In web3 all data has the state, so it become easier to navigate through it and make agent experience better. To be sure that you are working with actual state Cyb needs to manage connection to web3 providers.
+In web3 world all data has the state, so it become easier to navigate through it and make agent experience better. 
+To be sure that you are working with actual state Cyb needs to manage connection to web3 providers.
 
-Our purpose is to build web3 browser that is agnostic from addressing, identity and consensus protocols. But currently we use ipfs, parity-light and cyberd nodes to show off possible experience at early stage of web3 development without necessity to connect to web3 provider at all (be your own web3 provider) for basic needs such as popular static content surfing and simple transfers of tokens.
+Our purpose is to build web3 browser that is agnostic from addressing, identity and consensus protocols. 
+But currently we use IPFS, Ethereum and Cyberd nodes to show off possible experience at early stage of web3 development.
+It is not necessary to connect to own web3 providers for basic needs such as popular static content surfing and simple transfers of tokens.
 
 ```
-<illustration>
+<illustration> - 
 ```
-
-Cyb is hiding all complexities of web3 connections under one colorful indicator that range from green to red. Ideally it works like indicator of internet connection we all used to see in smartphones.  Connection indicator cyberlinked to a `connect` app that is integral part of id bar. It gives an ability for an agent to understand status of connections and chose web3 providers.
 
 ```
 <api-definition>
 ```
 
-Ultimate purpose of `connect` is to remove necessity of agents to manually switch between networks. Agent do not need to think about switching across networks. It is a goal of app developers and browser vendors to define an approach that allow seamless interaction during web3 experience with all network magic happens underneath. Cyb is developing in a way that allow async interactions with several peer-to-peer networks in an app context.
+Ultimate purpose of `connect.cyb` is to remove necessity of agents to manually switch between networks. 
+Agent doesn't need to think about switching across networks. 
+It is a goal of app developers and browser vendors to define an approach that allows seamless interaction during web3 experience with all network magic, which happenes underneath. 
+Cyb is developing in a way which allows async interactions with several peer-to-peer networks in an app context.
+
+## root.cyb
+
+According to [3 rules of root registry](https://github.com/cybercongress/cyb/blob/master/docs/web3-vision.md#three-rules-of-a-root-registry) every developer can deliver best possible experience for their agents. 
+That is why we want to mix the best from every word in our worlds in our implementation of root registry. 
+To bring better user experience about 3k of records will be cybersquatted to align interests of existing app developers and agents who look for a beautiful, simple and trustful experience.
+
+`root.cyb` is a mix of the most well known concepts consolidated under one namespace! 
+Let me introduce what is included in the shake:
+
+- [programming languages](https://gist.github.com/aymen-mouelhi/82c93fbcd25f091f2c13faa5e0d61760): up to 200 names
+- [common programs](https://fileinfo.com/filetypes/common): up to 100 names
+- [tokens](https://coinmarketcap.com/): Up to 1k names
+- [top-level domains](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains): up to 300 names
+- [top english words](https://github.com/first20hours/google-10000-english/blob/master/google-10000-english-no-swears.txt): up to 1k names
+- [utf symbols](https://www.compart.com/en/unicode/category/So): up to 300 names
+
+Initially cyber•Congress will own all this cybersquatted records. 
+In order to improve probability of adoption of `root.cyb` cyber•Congres will distribute this names to original app developers based on proof of dns mechanism. 
+That is, names for programming languages, common programs, tokens and top-level domains will be distributed based on a proof of dns according to verified registry produced by cyber•Congress.
+
+Top english words and utf symbols will be distributed using competitions, grants and awards produced by cyber•Congress.
+
+Initially unregistered names in `root.cyb` will be distributed under flat fee for cyb root registry owner in Chaingear. 
+We are going to start from 1 ETH for every name and will see will it be enough to protect from abusive squatting or not. 
+It is possible that we will switch to auction form of distribution in a future.
+
+## help.cyb
+
+Help is a two way help app. 
+Using this app cyb helps agents to use itself. Using `help.cyb` agents help Cyb evolve.
+
+As an open source project we are welcome for contributions. 
+Gitcoin is an excellent instrument that we use for delegating tasks for community a processing payments for completed ones.
+
+We have our vision of how to develop browser and what kind of features develop first. 
+But we give an opportunity for community to decide and vote with tokens what kind of browser we need to see in near future. Our product [Chaingear](https://github.com/cybercongress/chaingear) is also made for this.
+
+We use user's feedback to make products better. 
+So we provide options for bug reporting and feedback leaving on every page.
+
+## dev.cyb
+
+Developers experience is critical for the whole web3 adoption. 
+This app helps to develop and publish web3 apps.
+
+
 
 ## .keys
 
@@ -215,7 +274,6 @@ It happens then agent knows some content address but have no idea in which netwo
 <api-definition>
 ```
 
-## .pins
 
 
 
@@ -227,24 +285,7 @@ Browser use embedded app for signing transactions so user can be always sure tha
 
 Another problem we are approach to solve with `.sign` is deferred transactions. Cyb has its own address for which an agent can delegate some rights. Using this API app developer can create a logic that allow create and execute complex sequences of transactions client side. Since inception of Ethereum we sign thousands of transactions and miss even more. That is why we believe this feature is critical for awesome web3 experience.
 
-## .crr
 
-According to [3 rules of root registry]() every developer can deliver best possible experience for their agents. That is why we want to mix the best from every word in our worlds in our implementation of root registry. To bring better user experience about 3k of records will be cybersquatted to align interests of existing app developers and agents who look for a beautiful, simple and trustful experience.
-
-`.crr` is a potpourri of the most well known concepts consolidated under one namespace! Let me introduce what is included in the shake:
-
-- [programming languages](https://gist.github.com/aymen-mouelhi/82c93fbcd25f091f2c13faa5e0d61760): up to 200 names
-- [common programs](https://fileinfo.com/filetypes/common): up to 100 names
-- [tokens](https://coinmarketcap.com/): Up to 1k names
-- [top-level domains](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains): up to 300 names
-- [top english words](https://github.com/first20hours/google-10000-english/blob/master/google-10000-english-no-swears.txt): up to 1k names
-- [utf symbols](https://www.compart.com/en/unicode/category/So): up to 300 names
-
-Initially cyber•Congress will own all this cybersquatted records. In order to improve probability of adoption of `.crr` cyber•Congres will distribute this names to original app developers based on proof of dns mechanism. That is, names for programming languages, common programs, tokens and top-level domains will be distributed based on a proof of dns according to verified registry produced by cyber•Congress.
-
-Top english words and utf symbols will be distributed using competitions, grants and awards produced by cyber•Congress.
-
-Initially unregistered names in `.crr` will be distributed under flat fee for cyb root registry owner in Chaingear. We are going to start from 1 ETH for every name and will see will it be enough to protect from abusive squatting or not. It is possible that we will switch to auction form of distribution in a future.
 
 ## .cyb
 
@@ -285,27 +326,11 @@ Simple app which ger DURI requests and route requests to ethereum node (contract
 
 We believe that transfer of tokens is very basic experience in a web3 thus want to provide embedded in browser wallet app as soon as possible. Thus we consider either to develop our own bicycle or partner with some 3d party wallet developer.
 
-## .dev
-
-Developers experience is critical for the whole web3 adoption. This app helps to develop and publish web3 apps.
-
 ## .cg
 
 [Chaingear](https://github.com/cybercongress/chaingear) is an app that help developers create ethereum based CRUD databases. We believe it will help developers to adopt web3 easier the same they MySQL helped to site developers in the very beginning of web.
 
-## .help
 
-Help is a two way help application. Using this app cyb helps agents to use itself. Using `.help` agents help Cyb evolve.
-
-As an open source project we are welcome for contributions. Gitcoin is an excellent instrument that we use for delegating tasks for community a processing payments for completed ones.
-
-We have our vision of how to develop browser and what kind of features develop first. But we give an opportunity for community to decide and vote with tokens what kind of browser we need to see in near future. Our product [Chaingear](https://github.com/cybercongress/chaingear) is also made for this.
-
-We use user's feedback to make products better. So we provide options for bug reporting and feedback leaving on every page.
-
-## .settings
-
-Cyb settings
 
 ## Saga on privacy and anonymity
 
