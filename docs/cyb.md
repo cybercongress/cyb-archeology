@@ -8,18 +8,29 @@ Concept. Definitions are work in progress.
 
 ## Abstract
 
-Cyb is a friendly software robot who helps you explore the universes. Put it simply it just a [web3](cyb://QmXHiEVCFTN8hda93qZN6ay5bXJ1ZkaLCV68AefXPs1pXg.ipfs) browser. At the very beginning cyb is focusing on developers and advanced blockchain users who are able to work with private keys and transactions. But we see how Cyb becomes friendly for everyone who wants to interact with consensus computers in a web of the third generation. This new web is designed to free developers from outdated things such as html and v8. So developers can use any markup, execution and rendering engine they wish. That is why we don't focus on implementation of mentioned things. Instead this paper discuss implementation agnostic concepts of browser that are simple enough to be adopted by web3 developers. Initially we design Cyb for conventional desktop browsing. But suggested concepts can be easily used for mobile, voice, vr and robotics implementations.
+Cyb is a friendly software robot who helps you explore the universes.
+Put it simply it just a [web3](cyb://QmXHiEVCFTN8hda93qZN6ay5bXJ1ZkaLCV68AefXPs1pXg.ipfs) browser.
+At the very beginning Cyb is focusing on developers and advanced blockchain users who are able to work with private keys and transactions.
+But we see how Cyb becomes friendly for everyone who wants to interact with consensus computers in a web of the third generation.
+This new web is designed to free developers from outdated things such as html and v8.
+So developers can use any markup, execution and rendering engine they wish.
+That is why we don't focus on implementation of mentioned things.
+Instead this paper shows implementation agnostic concepts of browser that are simple enough to be adopted by web3 developers.
+Initially we design Cyb for conventional desktop browsing.
+But suggested concepts can be easily used for mobile, voice, VR and robotics implementations.
 
 ## Introduction
 
-Current state of web3 experience is non satisfactory. Still [we did not meet](https://github.com/cybercongress/cyb/blob/master/docs/comparison.md) any piece of software that is able to deliver deep, emotional web3 experience. So we decide to bring to the table one contender that strictly follows web3 principles defined by ourselves ;-) In a rush for this passion we define the following web3 apps which we believe together implement the full web3 vision in the context of a browsing for web3 agents and app developers:
+Current state of web3 experience is non satisfactory.
+We still [didn't meet](https://github.com/cybercongress/cyb/blob/master/docs/comparison.md) any piece of software that is able to deliver deep and emotional web3 experience. So we decide to bring to the table one contender that strictly follows web3 principles defined by ourselves ;-) 
+In a rush for this passion we define the following web3 apps which we believe together implement the full web3 vision in the context of a browsing for web3 agents and app developers:
 
 ## CLI
 
 
 ## Shell
 
-Default UX elements for web3 experience.
+Here are the default UX elements, that Cyb uses to provide basic web3 UX:
 
 - `Navigation bar` - search field, back & forward buttons
 - `App Bar` - list of pinned favourites apps
@@ -28,7 +39,7 @@ Default UX elements for web3 experience.
 
 ## .cyb
 
-Main browser app with all necessary settings.
+Cyb has a lot of user and technical settings. They are implemented in the core browser app - .cyb:
 
 - `main.cyb`: main page for every joe
 - `path.cyb`: user's navigation history
