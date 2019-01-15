@@ -136,7 +136,9 @@ Main page of the browser consists of three global elements:
 - relevance bar: the most relevant cyberlinks for a particular agent
 - footer: cyberlinks to ecosystem resources which are important for education and contribution
 
-
+<div align="center">
+  <img src="/docs/img/main.cyb.png"></a>
+</div>
 
 ## path.cyb
 
