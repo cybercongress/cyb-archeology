@@ -97,6 +97,17 @@ window.cyber = {
             });
         }));
     },
+    getStatistics() {
+        return new Promise((resolve, reject) => {
+            ipcRenderer.sendToHost('cyber', {
+                method: 'getStatistics',
+                params: [],
+            });
+            ipcRenderer.once('cyber_getStatistics', (_, payload) => {
+                resolve(payload);
+            });
+        });
+    },
     getDefaultAddress(cb) {
         ipcRenderer.sendToHost('cyber', {
             method: 'getDefaultAddress',

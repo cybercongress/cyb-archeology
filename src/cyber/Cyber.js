@@ -179,6 +179,11 @@ function Cyber(nodeUrl, ipfs) {
         if (__setDefaultAddress) { __setDefaultAddress(defaultAccount); }
     };
 
+    self.getStatistics = () => axios({
+        method: 'get',
+        url: `${nodeUrl}/index_stats`,
+    }).then(response => response.data.result);
+
     self.getAccounts = function () {
         return new Promise((resolve) => {
             __accounts = JSON.parse(localStorage.getItem('cyberAccounts') || '{}');
