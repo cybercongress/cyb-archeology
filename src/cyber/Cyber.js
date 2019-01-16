@@ -37,7 +37,7 @@ const getIPFS = (ipfs, ipfsHash) => new Promise((resolve) => {
     });
 });
 
-function Cyber(nodeUrl, ipfs) {
+function Cyber(nodeUrl, ipfs, wsUrl) {
     const self = this;
 
     let defaultAccount = null;
@@ -179,10 +179,36 @@ function Cyber(nodeUrl, ipfs) {
         if (__setDefaultAddress) { __setDefaultAddress(defaultAccount); }
     };
 
-    self.getStatistics = () => axios({
-        method: 'get',
-        url: `${nodeUrl}/index_stats`,
-    }).then(response => response.data.result);
+    self.getStatistics = () => new Promise((resolve) => {
+        axios({
+            method: 'get',
+            url: `${nodeUrl}/index_stats`,
+        }).then(response => response.data.result).then(stats => {
+            axios({
+                method: 'get',
+                url: `${nodeUrl}/status`,
+            }).then(r => r.data.result).then((data) => {
+                resolve({ ...stats, latest_block_time: data.sync_info.latest_block_time});
+            });
+        });
+    });
+
+    self.onNewBlock = (cb) => {
+        const websocket = new WebSocket(wsUrl);
+
+        websocket.onopen = () => {
+            websocket.send(JSON.stringify({
+                "method": "subscribe",
+                "params": ["tm.event='NewBlockHeader'"],
+                "id": "1",
+                "jsonrpc": "2.0",
+            }));
+        };
+
+        websocket.onmessage = (event) => {
+            cb(event);
+        };
+    };
 
     self.getAccounts = function () {
         return new Promise((resolve) => {

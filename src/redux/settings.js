@@ -5,6 +5,7 @@ const initState = {
     IPFS_END_POINT: 'http://earth.cybernode.ai:34402',
     PARITTY_END_POINT: 'http://earth.cybernode.ai:34645',
     SEARCH_END_POINT: 'http://earth.cybernode.ai:34660',
+    CYBERD_WS_END_POINT: 'ws://earth.cybernode.ai:34657/websocket',
 
     pending: false,
     ipfsStatus: 'fail',
@@ -46,6 +47,14 @@ export const reducer = (state = initState, action) => {
             SEARCH_END_POINT: action.payload,
         };
     }
+    case 'SET_SEARCH_WS_END_POINT': {
+        return {
+            ...state,
+            CYBERD_WS_END_POINT: action.payload,
+        };
+    }
+
+
     case 'SET_STATUS': {
         return {
             ...state,
@@ -154,6 +163,12 @@ export const setSearch = SEARCH_END_POINT => (dispatch, getState) => {
     dispatch(saveSettingsInLS());
     dispatch(checkStatus());
 };
+
+export const setSearchWS = CYBERD_WS_END_POINT => (dispatch, getState) => {
+    dispatch({ type: 'SET_SEARCH_WS_END_POINT', payload: CYBERD_WS_END_POINT });
+    dispatch(saveSettingsInLS());
+    dispatch(checkStatus()); 
+}
 
 const getIPFSStatus = url => new Promise((resolve) => {
     axios.get(`${url}/ipfs/QmZfSNpHVzTNi9gezLcgq64Wbj1xhwi9wk4AxYyxMZgtCG`, { timeout: 4 * 1000 })

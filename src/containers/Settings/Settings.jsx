@@ -26,10 +26,12 @@ class Settings extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.IPFS_END_POINT !== nextProps.IPFS_END_POINT
             || this.props.PARITY_END_POINT !== nextProps.PARITY_END_POINT
-            || this.props.CYBERD_END_POINT !== nextProps.CYBERD_END_POINT) {
+            || this.props.CYBERD_END_POINT !== nextProps.CYBERD_END_POINT
+            || this.props.CYBERD_WS_END_POINT !== nextProps.CYBERD_WS_END_POINT) {
             this.ipfsInput.value = nextProps.IPFS_END_POINT;
             this.ethInput.value = nextProps.PARITY_END_POINT;
             this.cyberdInput.value = nextProps.CYBERD_END_POINT;
+            this.cyberdWSInput.value = nextProps.CYBERD_WS_END_POINT;
         }
     }
 
@@ -67,11 +69,16 @@ class Settings extends Component {
         this.props.setIpfsWriteUrl(url);
     };
 
+    updateCyberdWS = () => {
+        this.props.setSearchWS(this.cyberdWSInput.value);
+    }
+
     render() {
         const {
             IPFS_END_POINT,
             PARITY_END_POINT,
             CYBERD_END_POINT,
+            CYBERD_WS_END_POINT,
 
             ipfsStatus,
             parityStatus,
@@ -137,6 +144,15 @@ class Settings extends Component {
                                     />
                                     <Button onClick={ this.updateCyberd }>update</Button>
                                 </SettingRow>
+                                <SettingRow>
+                                    <SettingLabel>cyberd ws:</SettingLabel>
+                                    <Input
+                                      inputRef={node => this.cyberdWSInput = node }
+                                      defaultValue={ CYBERD_WS_END_POINT }
+                                      style={ { width: 200 } }
+                                    />
+                                    <Button onClick={ this.updateCyberdWS }>update</Button>
+                                </SettingRow>
                             </BlockRow>
 
                         </Block>
@@ -182,6 +198,7 @@ export default connect(
         IPFS_END_POINT: settings.IPFS_END_POINT,
         PARITY_END_POINT: settings.PARITTY_END_POINT,
         CYBERD_END_POINT: settings.SEARCH_END_POINT,
+        CYBERD_WS_END_POINT: settings.CYBERD_WS_END_POINT,
 
         ipfsStatus: settings.ipfsStatus,
         parityStatus: settings.ethNodeStatus,

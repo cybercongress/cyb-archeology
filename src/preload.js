@@ -108,6 +108,18 @@ window.cyber = {
             });
         });
     },
+
+    onNewBlock(cb) {
+        ipcRenderer.sendToHost('cyber', {
+            method: 'subscribe',
+            params: [],
+        });
+
+        ipcRenderer.on('cyber_subscribe_event', (_, payload) => {
+            cb(payload);
+        });
+    },
+
     getDefaultAddress(cb) {
         ipcRenderer.sendToHost('cyber', {
             method: 'getDefaultAddress',

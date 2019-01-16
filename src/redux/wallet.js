@@ -396,11 +396,18 @@ export const receiveMessage = e => (dispatch, getState) => {
 
         const wvCyber = e.target;
 
-        window.cyber[method].apply(window.cyber, params).then((result) => {
-            wvCyber.send(`cyber_${method}`, result);
-        }).catch(e => {
-            wvCyber.send(`cyber_${method}_error`);
-        });
+        if (method !== 'subscribe'){
+            window.cyber[method].apply(window.cyber, params).then((result) => {
+                wvCyber.send(`cyber_${method}`, result);
+            }).catch(e => {
+                wvCyber.send(`cyber_${method}_error`);
+            });            
+        } else {
+            window.cyber.onNewBlock((event) => {
+                 wvCyber.send(`cyber_subscribe_event`, JSON.parse(event.data));
+            });
+        }
+
     }
     if (e.channel === 'ipfs') {
         const method = e.args[0].method;
@@ -482,7 +489,10 @@ export const init = endpoint => (dispatch, getState) => {
     const ipfsConfig = getState().settings.ipfsWrite;
     const ipfs = new IPFS(ipfsConfig);
 
-    window.cyber = new Cyber(getState().settings.SEARCH_END_POINT, ipfs);
+    window.cyber = new Cyber(
+        getState().settings.SEARCH_END_POINT, ipfs,
+        getState().settings.CYBERD_WS_END_POINT
+    );
 
     dispatch(loadAccounts())
         .then(() => dispatch(setDefaultAccount()));
