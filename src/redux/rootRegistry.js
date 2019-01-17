@@ -7,7 +7,7 @@ const initState = {
             protocol: 'ipfs',
         },
         cyber: {
-            hash: 'QmcEd3zrfsRRx44HLZ6QJcAW1uLsq3fiBLNE9zsu5WX9s4',
+            hash: 'QmbzVCxPXseAWScVEMPAKCZRtVub29DXuQAooSTD3dH2WX',
             protocol: 'ipfs',
         },
         wiki: {
@@ -27,7 +27,7 @@ const initState = {
             protocol: 'ipfs',
         },
         dragons: {
-            hash: 'Qmd22Hupa6obYzX5CDrSoAYmkrde8bVEERZDxGqaqu5U7t',
+            hash: 'QmZJsMYAYVgo7qKKj2b5JMQ4zTw7BjQ1RDsNoewSYZrJke',
             protocol: 'ipfs',
         },
         ipfsview: {
