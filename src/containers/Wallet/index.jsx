@@ -126,12 +126,12 @@ class Page extends Component {
                                     >
     import account
                                     </WalletTab>
-                                    <WalletTab
+{/*                                    <WalletTab
                                       onClick={ () => this.selectMenu('send') }
                                       isActive={ menu === 'send' }
                                     >
     send tokens
-                                    </WalletTab>
+                                    </WalletTab>*/}
                                     <WalletTab
                                       onClick={ () => this.selectMenu('changePassword') }
                                       isActive={ menu === 'changePassword' }

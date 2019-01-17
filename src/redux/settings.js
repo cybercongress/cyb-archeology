@@ -4,7 +4,7 @@ import { init as initWallet, getStatus, login } from './wallet';
 const initState = {
     IPFS_END_POINT: 'http://earth.cybernode.ai:34402',
     PARITTY_END_POINT: 'http://earth.cybernode.ai:34645',
-    SEARCH_END_POINT: 'http://earth.cybernode.ai:34660',
+    SEARCH_END_POINT: 'http://earth.cybernode.ai:34657',
     CYBERD_WS_END_POINT: 'ws://earth.cybernode.ai:34657/websocket',
 
     pending: false,
@@ -167,7 +167,7 @@ export const setSearch = SEARCH_END_POINT => (dispatch, getState) => {
 export const setSearchWS = CYBERD_WS_END_POINT => (dispatch, getState) => {
     dispatch({ type: 'SET_SEARCH_WS_END_POINT', payload: CYBERD_WS_END_POINT });
     dispatch(saveSettingsInLS());
-    dispatch(checkStatus()); 
+    dispatch(checkStatus());
 }
 
 const getIPFSStatus = url => new Promise((resolve) => {
