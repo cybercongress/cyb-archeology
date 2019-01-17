@@ -117,9 +117,16 @@ App bar is a place where user can quickly get access to most used web3 objects.
 User can pin such objects by clicking on button "heart" on navigation bar and then it will appear in app bar. 
 Cyberlink manager "pins.cyb" is an attached page that allow agents to group and tag pins, as well as import and export them.
 
-## ID Bar
+## Id Bar
 
-ID bar provides quick access to the main account data - balances, transaction notifictions, profile logo and has links to wallet.cyb, path.cyb, pins.cyb, connect.cyb, txq.cyb.
+Purpose of id bar is to enable the concept of identity. 
+Using identity an agent is able to authenticate messages and sign transactions in web3. 
+Cyb assumes that an agent which interacts with web3 is using active identity, but offers ability to change id of a signed transaction during signing.
+
+Agent understand which id is active using identicon. 
+Cyb computes unique and deterministic identicons for every id, but offer agent to set any identicon for local pleasure. Clicking on id bar allow agent to choose active identity from a `keys` app.
+
+ID bar also provides quick access to the main account data - balances, transaction notifictions and has links to wallet.cyb, path.cyb, pins.cyb, connect.cyb, txq.cyb.
 
 ## State Bar
 
@@ -230,17 +237,11 @@ This app helps to develop and publish web3 apps.
 
 
 
-## .keys
+## keys.cyb
 
-Purpose of id bar is to enable the concept of identity. Using identity an agent is able to authenticate messages and sign transactions in web3. Cyb assumes that an agent interacting with web3 is using active identity, but offers ability to change id of a signed transaction during signing.
-
-Agent understand which id is active using identicon. Cyb computes unique and deterministic identicons for every id, but offer agent to set any identicon for local pleasure. Clicking on id bar allow agent to choose active identity from a `keys` app.
-
-```
-<illustration>
-```
-
-Keys app is inherent component of id bar and embedded in Cyb. This app allows to store cryptographic secrets. Think of it as lastpass you don't need to trust that is able to compute different addresses, one time passwords and signatures in the context of an app.
+Keys app is inherent component of id bar and is embedded in Cyb. 
+This app allows to store cryptographic secrets. 
+Think of it as lastpass you don't need to trust that is able to compute different addresses, one time passwords and signatures in the context of an app.
 
 The following convention is used for `keys`:
 
@@ -266,69 +267,99 @@ signMessage(messageObject: Object): Promise <String>
 verifyMessage(verificationObject: Object): Promise <Boolean>
 ```
 
+## sign.cyb
+
+`sign.cyb` allows users to sign messages and transactions in a way that brings web3 experience to the whole new level.
+
+Browser use embedded app for signing transactions so user can be always sure that transaction details are valid. 
+In a web2 there is no inherent mechanism to be sure that overlay of an app is produced by a browser and not an app itself. 
+Cyb solves this problem deterministically generating background and sound of overlay window in a way that an underlying app cannot know the seed for generating desired sound and visual pattern. 
+The user need to remember its unique pattern once to safely interacting with different apps including not so trusted.
+
+Another problem we are approach to solve with `sign.cyb` is deferred transactions. 
+Cyb has its own address for which an agent can delegate some rights. 
+Using this API app developer can create a logic that allow create and execute complex sequences of transactions client side.
+Since inception of Ethereum we sign thousands of transactions and miss even more. 
+That is why we believe this feature is critical for awesome web3 experience.
+
+
+## wallet.cyb
+
+We believe that transfer of tokens is very basic experience in a web3 thus want to provide embedded in browser wallet app as soon as possible. 
+Thus we consider either to develop our own bicycle or partner with some 3d party wallet developer.
+
+
+## feed.cyb
+
+1. what is web3 feed
+2. subscription on events
+3. import/export/sharing
+4. privacy
+
+
+## access.cyb
+
+Permission management is of paramount importance in the process of safe application distribution. 
+We want to improve upon 3 critical aspects of permission management in web:
+
+- app authentication
+- resource management
+- dynamic permissions
+
+*App authentication* is hard in web2. 
+You need somehow know the origin and this is practically hard in a face of government level adversaries, than you must compute hash of received file and compare it with a file hash received from origin. 
+Due to practical complexity nobody do that. In web3 if you know that address is correct authentication is done automagically.
+That is why browser can easily verify that permission is granted for expected app and not malicious.
+
+*Resource management* was not in place. 
+In web2 all permission systems was primarily build around a concept of granting access to a particular data which browser has access to. 
+While this approach find itself useful it just not enough to run any application from untrusted developers. 
+Computing resources has fundamental value now, thus must be carefully managed and metered. 
+In web3 its weird that any untrusted app can eat all resources of a machine in no time. 
+Moreover, if an application is executed in a sandbox all we need to feel ourselves safe (in addition to authenticated permissions) is ensure that app do not eat more resources than expected. 
+Libraries that help app developers to mine some proof-of-work algorithms using visitor machine become ubiquitous. 
+Practically that means that in addition to shity ads web2 users will experience even more worse web experience: greedy, slow and battery consuming apps are coming. 
+The answer to this upcoming problem in a browser permission system which is able to produce bounds on apps consumption of fundamental resources such as cpu, gpu, ram, storage and broadband. 
+We believe that resource management must be in the core of web3 application engine. 
+We are currently doing research on how that can be implemented: containerisation seems to be low hanging fruit that can be embedded right into web experience.
+
+*Permission affordances*. 
+Current permission systems are static in a sense that browser provide limited set of predefined apis. 
+Cookies, location, camera, microphone, sound and notifications: that is very limited set of things browsers can afford. 
+Permissions of a third party developers are not native for a browsers either. 
+Browser just don't care about what data with which apps agent want to share. 
+We ask ourselves what if a browser can ask apps what kind of permissions they can provide thus exposing this permission system to any other apps? 
+We believe this approach will allow web3 developers provide experience inaccessible for previous architectures.
+
+
+
+
 ## .cyber
 
-It happens then agent knows some content address but have no idea in which network it can be retrieved as well as what app can deal with it. That is why Cyb has default integration with cyber [CYBER] protocol. Cyb append `.cyber` app for all request without a dot. `.cyber` is an app that has simple interface to cyberd, which returns prediction of related cyberlinks thus agent can get required resource directly through peer-to-peer network. Cyb has a setting of default search engine, thus an agent can plug a search she wants.
+It happens then agent knows some content address but have no idea in which network it can be retrieved as well as what app can deal with it. 
+That is why Cyb has default integration with cyber [CYBER] protocol. 
+Cyb append `.cyber` app for all request without a dot. `.cyber` is an app that has simple interface to cyberd, which returns prediction of related cyberlinks thus agent can get required resource directly through peer-to-peer network. 
+Cyb has a setting of default search engine, thus an agent can plug a search she wants.
 
 ```
 <api-definition>
 ```
 
 
-
-
-## .sign
-
-`.sign` allows users to sign messages and transactions in a way that brings web3 experience to the whole new level.
-
-Browser use embedded app for signing transactions so user can be always sure that transaction details are valid. In a web2 there is no inherent mechanism to be sure that overlay of an app is produced by a browser and not an app itself. Cyb solves this problem deterministically generating background and sound of overlay window in a way that an underlying app cannot know the seed for generating desired sound and visual pattern. The user need to remember its unique pattern once to safely interacting with different apps including not so trusted.
-
-Another problem we are approach to solve with `.sign` is deferred transactions. Cyb has its own address for which an agent can delegate some rights. Using this API app developer can create a logic that allow create and execute complex sequences of transactions client side. Since inception of Ethereum we sign thousands of transactions and miss even more. That is why we believe this feature is critical for awesome web3 experience.
-
-
-
-## .cyb
-
-Extension over `.crr`.
-
-Added fields: logo, tagline, manifest, meta, code, crr.
-
-As result it become suitable to be an app store for browser. Appstore treats pinned apps as installed if at leas one permission is granted.
-
-## .access
-
-Permission management is of paramount importance in the process of safe application distribution. We want to improve upon 3 critical aspects of permission management in web:
-
-- app authentication
-- resource management
-- dynamic permissions
-
-*App authentication* is hard in web2. You need somehow know the origin and this is practically hard in a face of government level adversaries, than you must compute hash of received file and compare it with a file hash received from origin. Due to practical complexity nobody do that. In web3 if you know that address is correct authentication is done automagically. That is why browser can easily verify that permission is granted for expected app and not malicious.
-
-*Resource management* was not in place. In web2 all permission systems was primarily build around a concept of granting access to a particular data which browser has access to. While this approach find itself useful it just not enough to run any application from untrusted developers. Computing resources has fundamental value now, thus must be carefully managed and metered. In web3 its weird that any untrusted app can eat all resources of a machine in no time. Moreover, if an application is executed in a sandbox all we need to feel ourselves safe (in addition to authenticated permissions) is ensure that app do not eat more resources than expected. Libraries that help app developers to mine some proof-of-work algorithms using visitor machine become ubiquitous. Practically that means that in addition to shity ads web2 users will experience even more worse web experience: greedy, slow and battery consuming apps are coming. The answer to this upcoming problem in a browser permission system which is able to produce bounds on apps consumption of fundamental resources such as cpu, gpu, ram, storage and broadband. We believe that resource management must be in the core of web3 application engine. We are currently doing research on how that can be implemented: containerisation seems to be low hanging fruit that can be embedded right into web experience.
-
-*Permission affordances*. Current permission systems are static in a sense that browser provide limited set of predefined apis. Cookies, location, camera, microphone, sound and notifications: that is very limited set of things browsers can afford. Permissions of a third party developers are not native for a browsers either. Browser just don't care about what data with which apps agent want to share. We ask ourselves what if a browser can ask apps what kind of permissions they can provide thus exposing this permission system to any other apps? We believe this approach will allow web3 developers provide experience inaccessible for previous architectures.
-
-## .feed
-
-Notification panel displaying all pending transactions and web3 events corresponding to certain account.
-Settings button leads to settings page where user can manage connection to IPFS, Ethereum and Cyber nodes (local or remote ways).
-
 ## .ipfs
 
-This app is a third party app developed by IPFS Shipyard. This is very basic app for interacting with ipfs.
+This app is a third party app developed by IPFS Shipyard. 
+This is very basic app for interacting with ipfs.
 
 ## .eth
 
-Simple app which ger DURI requests and route requests to ethereum node (contracts, transactions and blocks). Else resolve ENS.
+Simple app which ger DURI requests and route requests to ethereum node (contracts, transactions and blocks). 
+Else resolve ENS.
 
-## .wallet
+## .chaingear
 
-We believe that transfer of tokens is very basic experience in a web3 thus want to provide embedded in browser wallet app as soon as possible. Thus we consider either to develop our own bicycle or partner with some 3d party wallet developer.
-
-## .cg
-
-[Chaingear](https://github.com/cybercongress/chaingear) is an app that help developers create ethereum based CRUD databases. We believe it will help developers to adopt web3 easier the same they MySQL helped to site developers in the very beginning of web.
+[Chaingear](https://github.com/cybercongress/chaingear) is an app that help developers create ethereum based CRUD databases.
+We believe it will help developers to adopt web3 easier the same they MySQL helped to site developers in the very beginning of web.
 
 
 
