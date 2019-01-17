@@ -52,8 +52,8 @@ If you have any problems with or questions about CYB, please contact us through 
 [GitHub issue](https://github.com/cybercongress/cyb/issues).
 
 ## Gitcoin Tasks
-<a href="https://gitcoin.co/explorer?q=cyber-browser">
-    <img src="https://gitcoin.co/funding/embed?repo=https://github.com/cybercongress/cyber-browser">
+<a href="https://gitcoin.co/explorer?q=cyb">
+    <img src="https://gitcoin.co/funding/embed?repo=https://github.com/cybercongress/cyb">
 </a>
 
 ## Contribute
@@ -62,9 +62,9 @@ You are invited to contribute new features, fixes, or updates, large or small; W
 requests, and do our best to process them as fast as We can. You can find detailed information in our
 [contribution guide](./CONTRIBUTION.md).
 
-## Roadmap & Changelog
+## Roadmap
 
-Stay tuned with our [Changelog](./CHANGELOG.md) and [Roadmap](https://github.com/orgs/cybercongress/projects/1).
+Stay tuned with our [Roadmap](https://github.com/orgs/cybercongress/projects/1).
 
 ## Join Us On Telegram
 
