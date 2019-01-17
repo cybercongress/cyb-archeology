@@ -6,8 +6,9 @@ import moment from 'moment';
 import { getTransactions, resend } from '../../redux/wallet';
 import CybLink from '../../components/CybLink';
 
-import RootRegistry, { Table } from '../../components/RootRegistry/RootRegistry';
 import { Hash } from '../../components/TxQueue/TxQueue';
+import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
+import Table from '../../components/Table/Table';
 
 
 class TxQueue extends Component {
@@ -23,7 +24,7 @@ class TxQueue extends Component {
         const { transactions } = this.props;
 
         return (
-            <RootRegistry>
+            <ScrollContainer>
                 <Title>/transaction</Title>
                 <Table>
                     <thead>
@@ -61,7 +62,7 @@ class TxQueue extends Component {
                     ))}
                     </tbody>
                 </Table>
-            </RootRegistry>
+            </ScrollContainer>
         );
     }
 }

@@ -45,6 +45,27 @@ class ElectronProvider extends EventEmitter {
     }
 }
 
+window.getIpfsConfig = () => {
+    return new Promise(resolve => {
+        ipcRenderer.sendToHost('ipfs', {
+            method: 'getIpfsConfig',
+        });
+        ipcRenderer.once('ipfs_config', (_, payload) => {
+            resolve(payload);
+        });
+    });
+};
+
+window.getIpfsGateway = () => {
+    return new Promise(resolve => {
+        ipcRenderer.sendToHost('ipfs', {
+            method: 'getGateway',
+        });
+        ipcRenderer.once('ipfs_gateway', (_, payload) => {
+            resolve(payload);
+        });
+    });
+};
 
 window.cyber = {
     search(q) {
@@ -71,8 +92,34 @@ window.cyber = {
             ipcRenderer.once('cyber_link', (_, payload) => {
                 resolve(payload);
             });
+            ipcRenderer.once('cyber_link_error', (_, payload) => {
+                reject();
+            });
         }));
     },
+    getStatistics() {
+        return new Promise((resolve, reject) => {
+            ipcRenderer.sendToHost('cyber', {
+                method: 'getStatistics',
+                params: [],
+            });
+            ipcRenderer.once('cyber_getStatistics', (_, payload) => {
+                resolve(payload);
+            });
+        });
+    },
+
+    onNewBlock(cb) {
+        ipcRenderer.sendToHost('cyber', {
+            method: 'subscribe',
+            params: [],
+        });
+
+        ipcRenderer.on('cyber_subscribe_event', (_, payload) => {
+            cb(payload);
+        });
+    },
+
     getDefaultAddress(cb) {
         ipcRenderer.sendToHost('cyber', {
             method: 'getDefaultAddress',

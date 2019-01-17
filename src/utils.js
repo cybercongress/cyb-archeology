@@ -5,7 +5,16 @@ export const URLToDURA = (url, apps, IPFS_END_POINT = '') => {
     let path = '';
     let q = '';
     let app = 'ipfs';
-    const ipfsIndex = url.indexOf('ipfs');
+    let ipfsIndex = url.indexOf('ipfs');
+
+    if (ipfsIndex === -1) {
+        const ipnsIndex = url.indexOf('ipns');
+
+        if (ipnsIndex !== -1) {
+            app = 'ipns';
+            ipfsIndex = ipnsIndex;
+        }
+    }
 
     if (ipfsIndex !== -1) {
         hash = url.substr(ipfsIndex + 5, 46);

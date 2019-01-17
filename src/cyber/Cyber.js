@@ -7,14 +7,13 @@ import {
 
 import builder from './builder';
 
-const chainId = 'euler-dev0';
-const claimNodeUrl = 'http://earth.cybernode.ai:34666'; //proxy TODO: remove when fix chain
+let chainId = 'euler-dev0';
 const defaultAmount = 10000;
 
 let __accounts = {};
 
 const IPFS = require('ipfs-api');
-
+const codec = require('./codec');
 
 
 const saveInIPFS = (ipfs, jsonStr) => new Promise((resolve, reject) => {
@@ -38,31 +37,29 @@ const getIPFS = (ipfs, ipfsHash) => new Promise((resolve) => {
     });
 });
 
-function Cyber(nodeUrl) {
+function Cyber(nodeUrl, ipfs, wsUrl) {
     const self = this;
 
-    //TOOD: use url from settings
-    const ipfs = new IPFS({
-        host: 'localhost',
-        port: 5001,
-        protocol: 'http',
-    });
-
     let defaultAccount = null;
+
+
+    self.setChainId = (newChainId) => {
+        chainId = newChainId;
+    };
 
     self.search = function (text) {
         return new Promise((resolve) => {
             saveInIPFS(ipfs, text)
                 .then(cid => axios({
                     method: 'get',
-                    url: `${nodeUrl}/search?cid=${cid}`,
+                    url: `${nodeUrl}/search?cid="${cid}"`,
                 })).then((data) => {
                     const cids = data.data.result.cids;
-                    const links = cids.map(cid => ({ ...cid, hash: cid.Cid }));
+                    const links = cids.map(cid => ({ ...cid, hash: cid.rank }));
 
                     const itemsPromises = links.map(item => {
                         return Promise.all([
-                            getIPFS(ipfs, item.Cid),
+                            getIPFS(ipfs, item.cid),
                             Promise.resolve(item)
                         ]).then(([content, _item]) => {
                             return {
@@ -81,82 +78,136 @@ function Cyber(nodeUrl) {
     };
 
 
-    self.link = function (from, to, address = '') {
-        return Promise.all([
-            saveInIPFS(ipfs, from),
-            saveInIPFS(ipfs, to),
-        ]).then(([_from, _to]) => {
-            return axios({
+    function addTransactionLog(address, txHash, status) {
+        const jsonStr = localStorage.getItem(`cyb_transactions${address}`) || '[]';
+        const transactions = JSON.parse(jsonStr);
+
+        const newItem = {
+            txHash,
+            date: new Date(),
+            type: 'cyber',
+            status: 'pending',
+        };
+        const newTransactions = transactions.concat([newItem]);
+
+        localStorage.setItem(`cyb_transactions${address}`, JSON.stringify(newTransactions));
+    }
+
+    self.link = (from, to, address = '') => Promise.all([
+        saveInIPFS(ipfs, from),
+        saveInIPFS(ipfs, to),
+    ]).then(([_from, _to]) => axios({
+        method: 'get',
+        url: `${nodeUrl}/account?address="${address}"`,
+    }).then((response) => {
+        if (!response.data.result) { return false; }
+
+        return response.data.result.account;
+    }).then((account) => {
+        if (!account) { return; }
+
+        const acc = {
+            address: account.address,
+            chain_id: chainId, // todo: get from node
+            account_number: parseInt(account.account_number, 10),
+            sequence: parseInt(account.sequence, 10),
+        };
+        const linkRequest = {
+            acc,
+            fromCid: _from,
+            toCid: _to,
+            type: 'link',
+        };
+
+        const txRequest = builder.buildAndSignTxRequest(linkRequest, __accounts[address].privateKey, chainId);
+        const signedLinkHex = codec.hex.stringToHex(JSON.stringify(txRequest));
+
+        return new Promise((resolve, reject) => {
+            axios({
                 method: 'get',
-                url: `${nodeUrl}/account?address=${address}`,
-            }).then((response) => {
-                if (!response.data.result) { return false; }
+                url: `${nodeUrl}/submit_signed_link?data="${signedLinkHex}"`,
+            }).then(data => {
+                if (data.data.result.code != 0) {
+                    reject();
+                    return;
+                }
+                console.log('Link results: ', data);
 
-                return response.data.result.account;
-            }).then((account) => {
-                if (!account) { return; }
-
-                const acc = {
-                    address: account.address,
-                    chain_id: chainId, // todo: get from node
-                    account_number: parseInt(account.account_number, 10),
-                    sequence: parseInt(account.sequence, 10),
-                };
-                const linkRequest = {
-                    acc,
-                    fromCid: _from,
-                    toCid: _to,
-                    type: 'link',
-                };
-
-                return axios({
-                    method: 'post',
-                    url: `${nodeUrl}/link`,
-                    data: builder.buildAndSignTxRequest(linkRequest, __accounts[address].privateKey, chainId),
-                }).then(data => {
-                    console.log('Link results: ', data);
-
-                    const jsonStr = localStorage.getItem('cyb_transactions' + address) || '[]';
-                    const transactions = JSON.parse(jsonStr);
-
-                    const newItem = { 
-                        txHash: data.data.hash, 
-                        date: new Date(), 
-                        type: 'cyber', 
-                        status: 'pending' 
-                    };
-                    const _transactions = transactions.concat([newItem]);
-
-                    localStorage.setItem('cyb_transactions' + address, JSON.stringify(_transactions));
-
-                }).catch(error => console.log('Cannot link', error));
+                addTransactionLog(address, data.data.hash, 'pending');
+                resolve(data);
+            }).catch(error => {
+                console.log('Cannot link', error);
+                reject();
+                // addTransactionLog(address, data.data.hash, 'fail');
             });
-        });
+        })
+    }));
 
-        
-    };
-
-    self.claimFunds = function (address, amount) {
-        return axios({
-            method: 'get',
-            url: `${claimNodeUrl}/claim?address=${address}&amount=${amount}`,
-        }).then((response) => {
-            console.log(`Claimed ${amount} for address ${address}`, response);
-        });
-    };
 
     let __setDefaultAddress;
 
-    self.getDefaultAddress = function () {
-        return new Promise((resolve) => {
-            __setDefaultAddress = resolve;
-            resolve(defaultAccount);
+    self.getDefaultAddress = () => new Promise((resolve) => {
+        __setDefaultAddress = resolve;
+
+        axios({
+            method: 'get',
+            url: `${nodeUrl}/account?address="${defaultAccount}"`,
+        }).then(response => response.data.result).then((data) => {
+            let balance = 0;
+
+            if (data && data.account && data.account.account_number >= 0) {
+                balance = data.account.coins[0].amount;
+            }
+
+            axios({
+                method: 'get',
+                url: `${nodeUrl}/account_bandwidth?address="${defaultAccount}"`,
+            }).then(res => {
+                resolve({
+                    remained: res.data.result.remained,
+                    max_value: res.data.result.max_value,
+                    address: defaultAccount,
+                    balance: +balance,
+                });
+            });
+            
         });
-    };
+    });
 
     self.setDefaultAccount = function (_address) {
         defaultAccount = _address;
         if (__setDefaultAddress) { __setDefaultAddress(defaultAccount); }
+    };
+
+    self.getStatistics = () => new Promise((resolve) => {
+        axios({
+            method: 'get',
+            url: `${nodeUrl}/index_stats`,
+        }).then(response => response.data.result).then(stats => {
+            axios({
+                method: 'get',
+                url: `${nodeUrl}/status`,
+            }).then(r => r.data.result).then((data) => {
+                resolve({ ...stats, latest_block_time: data.sync_info.latest_block_time});
+            });
+        });
+    });
+
+    self.onNewBlock = (cb) => {
+        const websocket = new WebSocket(wsUrl);
+
+        websocket.onopen = () => {
+            websocket.send(JSON.stringify({
+                "method": "subscribe",
+                "params": ["tm.event='NewBlockHeader'"],
+                "id": "1",
+                "jsonrpc": "2.0",
+            }));
+        };
+
+        websocket.onmessage = (event) => {
+            cb(event);
+        };
     };
 
     self.getAccounts = function () {
@@ -166,7 +217,7 @@ function Cyber(nodeUrl) {
             Promise.all(
                 Object.keys(__accounts).map(address => axios({
                     method: 'get',
-                    url: `${nodeUrl}/account?address=${address}`,
+                    url: `${nodeUrl}/account?address="${address}"`,
                 }).then((data) => {
                     let balance = 0;
                     let publicKey = '';
@@ -245,7 +296,7 @@ function Cyber(nodeUrl) {
     self.sendFunds = function (defaultAddress, recipientAddress, amount) {
         return axios({
             method: 'get',
-            url: `${nodeUrl}/account?address=${defaultAddress}`,
+            url: `${nodeUrl}/account?address="${defaultAddress}"`,
         }).then((response) => {
             if (!response.data.result) { return false; }
 
@@ -266,14 +317,14 @@ function Cyber(nodeUrl) {
                 amount,
                 type: 'send',
             };
-            const { privateKey } = __accounts[defaultAddress];
-            const tx = builder.buildAndSignTxRequest(sendRequest, privateKey, chainId);
+
+            const txRequest = builder.buildAndSignTxRequest(sendRequest, __accounts[defaultAddress].privateKey, chainId);
+            const signedSendHex = codec.hex.stringToHex(JSON.stringify(txRequest));
 
 //            console.log(tx);
             return axios({
-                method: 'post',
-                url: `${nodeUrl}/send`,
-                data: tx,
+                method: 'get',
+                url: `${nodeUrl}/submit_signed_send?data="${signedSendHex}"`,
             }).then(data => console.log('Send results: ', data)).catch(error => console.log('Cannot send', error));
         });
     };

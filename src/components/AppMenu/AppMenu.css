@@ -1,20 +1,21 @@
-.menuContainer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 200px;
-    background: #2e3842;
-    color: #fff;
-    transition: 0.3s;
+
+.menuContainer2 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
 }
 
-.menuContainer--hide {
-    left: -200px;
+.logo {
+  width: 54px;
+  height: 54px;
+  display: inline-block;
+  background: url(./logo.svg) no-repeat center center;
+  text-indent: -999999px;
+  cursor: pointer;
+  background-size: 54px 54px;
 }
+
 
 
 .menu-logo {
@@ -32,15 +33,19 @@
 .bookmarks {
     display: flex;
     flex-direction: column;
-    width: 150px;
+    width: 100%;
     margin-top: 20px;
+    flex-grow: 1;
+    overflow: scroll;
 }
 
 .bookmarks__item {
-    padding: 0.5em;
+    padding-left: 24px;
+    padding-right: 14px;
     display: inline-flex;
     cursor: pointer;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .bookmarks__item a {
@@ -51,59 +56,60 @@
 
 .bookmarks__remove-btn {
     margin: 0 0 0 auto;
-    padding: 0.5em;
     text-indent: -9999px;
-    border: 1px solid #979797;
-    width: 10px;
-    height: 10px;
+    width: 36px;
+    height: 36px;
     position: relative;
+    cursor: pointer;
+    border: none;
+    background: url(./delete.svg) no-repeat center center;
+    opacity: 0;
+    transition: opacity 0.5s;
+    visibility: hidden;
+    border-radius: 50%;
 }
 
-.bookmarks__remove-btn::after {
-    content: '';
-    position: absolute;
-    width: 10px;
-    height: 1px;
-    background: #979797;
-    left: 3px;
-    top: 7px;    
-    transform: rotate(-45deg);
-    transform-origin: center; ;
+.bookmarks__item:hover .bookmarks__remove-btn {
+    opacity: 1;
+    visibility: visible;
 }
 
-.bookmarks__remove-btn::before {
-    content: '';
-    position: absolute;
-    width: 10px;
-    height: 1px;
-    background: #979797;
-    left: 3px;
-    top: 7px;    
-    transform: rotate(45deg);
-    transform-origin: center ;
+.bookmarks__remove-btn:focus {
+    background: url(./delete-focus.svg) rgba(216, 216, 216, 0.2) no-repeat center center;
+    outline: none;
+}
+
+.bookmarks__item:hover a {
+    color: #438cef;
 }
 
 
 .AddMenuItem {
     /*background-color: #979797;*/
     position: relative;
-    margin-top: 20px;
+    display: inline-block;
 }
 
 .AddMenuItem input {
+    border-radius: 2px;
+    color: #1b1f23;
     border: none;
     padding: 10px;
     padding-right: 40px;
     box-sizing: border-box;
     width: 150px;
+    font-size: 14px;
 }
 
 .AddMenuItem__approve {
     position: absolute;
-    top: 7px;
-    right: 0;
+    top: 0;
+    right: -34px;
+    width: 34px;
+    bottom: 0;
     border: none;
     color: red;
+    background: #438cef;
 }
 
 .AddMenuItem__reject {
@@ -111,5 +117,35 @@
     top: 7px;
     right: 20px;
     border: none;
-    color: green;
+    color: #fff;
+    font-size: 16px;
+    top: 0;
+    right: 0;
+    width: 34px;
+    bottom: 0;
+    border: none;
+    background: #438cef;
 }
+
+
+.ReportLinkContainer {
+    height: 42px;
+    flex-shrink: 0;
+    padding-top: 10px;
+}
+
+.ReportLinkContainer a {
+    color: #438cef;
+    text-decoration: none;
+}
+
+
+.AddMenuItemContainer {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #696969;
+    border-top: 1px solid #696969;
+    width: 100%;
+    text-align: center;
+}
+

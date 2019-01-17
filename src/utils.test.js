@@ -18,6 +18,10 @@ const apps = {
         hash: 'QmfBnoeaTX4YVFFWWrDsafSwEyXSoUtvypr97yBcsKqQYZ',
         protocol: 'ipfs',
     },
+    ch: {
+        hash: 'QmbLwHKfuk6DfiCpG5tvcwNAcwtMPjuC5pbSwshGrSPpCs',
+        protocol: 'ipns',
+    },
 };
 
 
@@ -204,4 +208,17 @@ it('should correct work with local ipfs node ', () => {
     const dura = utils.URLToDURA('http://localhost:8080/ipfs/QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco/wiki/', apps, 'http://localhost:8080');
 
     expect(dura).toEqual('.wiki/wiki/');
+});
+
+it('-> URLToDURA with ipns ', () => {
+    const dura = utils.URLToDURA('http://earth.cybernode.ai:34402/ipns/QmbLwHKfuk6DfiCpG5tvcwNAcwtMPjuC5pbSwshGrSPpC2', apps, 'http://earth.cybernode.ai:34402');
+
+    expect(dura).toEqual('QmbLwHKfuk6DfiCpG5tvcwNAcwtMPjuC5pbSwshGrSPpC2.ipns');
+});
+
+it('DURAToURL with ipns', () => {
+    const { url, dura } = utils.DURAToURL('.ch', apps, '');
+
+    expect(url).toEqual(`/ipns/${apps.ch.hash}/`);
+    expect(dura).toEqual('.ch');
 });

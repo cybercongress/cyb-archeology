@@ -31,6 +31,11 @@ import {
     init as initCyber,
 } from './cyber';
 
+
+import {
+    reducer as signerReducer,
+} from './signer';
+
 const rootReducer = combineReducers({
     browser: browserReducer,
     wallet: walletReducer,
@@ -38,7 +43,9 @@ const rootReducer = combineReducers({
     rootRegistry: rootRegistryReducer,
     appMenu: appMenuReducer,
     cyber: cyberReducer,
+    signer: signerReducer,
 });
+
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
 

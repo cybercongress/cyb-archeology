@@ -1,7 +1,10 @@
 const electron = require('electron');
+const PDFWindow = require('electron-pdf-window');
 
-const { app, Menu, BrowserWindow } = electron;
+const { app, Menu, BrowserWindow, session, shell } = electron;
 const path = require('path');
+
+
 const isDev = process.argv[2] === '--dev';
 
 let mainWindow;
@@ -85,17 +88,36 @@ function createMenu() {
 function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1200, height: 900,
-        titleBarStyle: 'hidden'
+        titleBarStyle: 'hidden',
     });
     mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
-    mainWindow.on('closed', () => mainWindow = null);
+    mainWindow.on('closed', () => {
+        mainWindow = null;
+    });
 
+
+    mainWindow.webContents.on('new-window', (event, url) => {
+        event.preventDefault();
+        shell.openExternal(url);
+    });
 
     createMenu();
+
+    session.defaultSession.on('will-download', (e, item, webContents) => {
+        switch (item.getMimeType()) {
+            case 'application/pdf': {
+                e.preventDefault();
+                PDFWindow.addSupport(webContents);
+                webContents.loadURL(item.getURL());
+                break;
+            }
+        }
+    });
 
     if (isDev) {
         mainWindow.webContents.openDevTools();
     }
+	
 }
 
 app.on('ready', createWindow);

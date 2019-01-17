@@ -4,13 +4,20 @@ import { init as initWallet, getStatus, login } from './wallet';
 const initState = {
     IPFS_END_POINT: 'http://earth.cybernode.ai:34402',
     PARITTY_END_POINT: 'http://earth.cybernode.ai:34645',
-    SEARCH_END_POINT: 'http://earth.cybernode.ai:34660',
+    SEARCH_END_POINT: 'http://earth.cybernode.ai:34657',
+    CYBERD_WS_END_POINT: 'ws://earth.cybernode.ai:34657/websocket',
 
     pending: false,
     ipfsStatus: 'fail',
     ethNodeStatus: 'fail',
     cyberNodeStatus: 'fail',
     ethNetworkName: null,
+    cyberNetwork: '',
+    ipfsWrite: {
+        host: 'localhost',
+        port: 5001,
+        protocol: 'http',
+    },
 };
 
 export const reducer = (state = initState, action) => {
@@ -40,6 +47,14 @@ export const reducer = (state = initState, action) => {
             SEARCH_END_POINT: action.payload,
         };
     }
+    case 'SET_SEARCH_WS_END_POINT': {
+        return {
+            ...state,
+            CYBERD_WS_END_POINT: action.payload,
+        };
+    }
+
+
     case 'SET_STATUS': {
         return {
             ...state,
@@ -62,12 +77,42 @@ export const reducer = (state = initState, action) => {
         };
     }
 
+    case 'SET_IPFS_WRITE_URL': {
+        return {
+            ...state,
+            ipfsWrite: action.payload,
+        };
+    }
+
     default:
         return state;
     }
 };
 
 export const getIpfsEndpoint = state => state.settings.IPFS_END_POINT;
+
+export const getIpfsWriteUrl = state => {
+    const { ipfsWrite: { protocol, host, port } } = state.settings;
+
+    return `${protocol}://${host}:${port}`;
+};
+
+export const setIpfsWriteUrl = url => (dispatch, getState) => {
+    const splitted = url.split('://');
+    const protocol = splitted[0];
+    const host = splitted[1].split(':')[0];
+    const port = splitted[1].split(':')[1];
+
+    dispatch({
+        type: 'SET_IPFS_WRITE_URL',
+        payload: {
+            host,
+            port,
+            protocol,
+        },
+    });
+    dispatch(saveSettingsInLS());
+};
 
 export const init = () => (dispatch, getState) => new Promise((resolve) => {
     const __settings = localStorage.getItem('settings')
@@ -119,6 +164,12 @@ export const setSearch = SEARCH_END_POINT => (dispatch, getState) => {
     dispatch(checkStatus());
 };
 
+export const setSearchWS = CYBERD_WS_END_POINT => (dispatch, getState) => {
+    dispatch({ type: 'SET_SEARCH_WS_END_POINT', payload: CYBERD_WS_END_POINT });
+    dispatch(saveSettingsInLS());
+    dispatch(checkStatus());
+}
+
 const getIPFSStatus = url => new Promise((resolve) => {
     axios.get(`${url}/ipfs/QmZfSNpHVzTNi9gezLcgq64Wbj1xhwi9wk4AxYyxMZgtCG`, { timeout: 4 * 1000 })
         .then((data) => {
@@ -133,18 +184,20 @@ const getIPFSStatus = url => new Promise((resolve) => {
 });
 
 const getCyberStatus = url => new Promise((resolve) => {
-    axios.head(`${url}/health`, { timeout: 4 * 1000 })
+    axios.get(`${url}/status`, { timeout: 4 * 1000 })
+        .then(response => response.data.result)
         .then((data) => {
+            const { network } = data.node_info;
+
             if (url.indexOf('localhost') !== -1 || url.indexOf('127.0.0.1') !== -1) {
-                resolve('local');
+                resolve({ status: 'local', network });
             } else {
-                resolve('remote');
+                resolve({ status: 'remote', network });
             }
         }).catch((e) => {
-            resolve('fail');
+            resolve({ status: 'fail' });
         });
 });
-
 
 
 export const checkStatus = () => (dispatch, getState) => {
@@ -161,12 +214,15 @@ export const checkStatus = () => (dispatch, getState) => {
         getStatus(PARITTY_END_POINT),
         getCyberStatus(SEARCH_END_POINT),
     ]).then(([ipfsStatus, ethNodeStatus, cyberNodeStatus]) => {
+        window.cyber.setChainId(cyberNodeStatus.network);
+
         dispatch({
             type: 'SET_STATUS',
             payload: {
                 ipfsStatus,
                 ethNodeStatus,
-                cyberNodeStatus,
+                cyberNodeStatus: cyberNodeStatus.status,
+                cyberNetwork: cyberNodeStatus.network,
             },
         });
     });
@@ -174,8 +230,6 @@ export const checkStatus = () => (dispatch, getState) => {
 
 export const resetAllSettings = () => (dispatch, getState) => {
     localStorage.removeItem('settings');
-    localStorage.removeItem('rootRegistry');
-    // localStorage.removeItem('appMenu');
     dispatch(init());
     dispatch(checkStatus());
 };

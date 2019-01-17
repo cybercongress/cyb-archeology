@@ -99,6 +99,10 @@
   background: url('./group-6.png') no-repeat center center;
 }
 
+.imageipfs {
+  background: url('./ipfs.png') no-repeat center center;  
+}
+
 
 .linkList {
   display: flex;

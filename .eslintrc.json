@@ -29,8 +29,9 @@
     }],
     "react/jsx-closing-bracket-location": "warn",
     "react/jsx-curly-spacing": ["warn", "always"],
+    "react/jsx-indent-props": [2, 2],
     "react/prop-types": 0,
     "react/jsx-indent": ["warn", 4],
-    "indent": ["warn", 4]
+    "indent": ["warn", 4, {"ignoredNodes": ["JSXElement *", "JSXElement"]}]
   }
 }

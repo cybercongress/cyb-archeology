@@ -3,11 +3,11 @@ const localStorageItemName = 'rootRegistry';
 const initState = {
     items: {
         help: {
-            hash: 'QmTf9ooSeBJMe4HbuXsebCukHDZbUtY8qWqP82us4Uvjwc',
+            hash: 'QmaC1YFu4Lm65RxU8bzCppAp8TQRFVRMT4czS6gzJXgp7h',
             protocol: 'ipfs',
         },
         cyber: {
-            hash: 'QmXCCZ7gjbQFRSrTGQ1Vuwf7LWVgv3xbS4eruE4uKrqytc',
+            hash: 'QmbzVCxPXseAWScVEMPAKCZRtVub29DXuQAooSTD3dH2WX',
             protocol: 'ipfs',
         },
         wiki: {
@@ -23,11 +23,15 @@ const initState = {
             protocol: 'ipfs',
         },
         chaingear: {
-            hash: 'QmVwR6vFDGmgH5UMtNZXaH85vDQuwcaaJKvRdKpSiVcZJu',
+            hash: 'QmYwXzLRfgy2m6Grm9LZSyxQU95T58ZNU5J5YALxbStRDg',
             protocol: 'ipfs',
         },
         dragons: {
-            hash: 'Qmd22Hupa6obYzX5CDrSoAYmkrde8bVEERZDxGqaqu5U7t',
+            hash: 'QmZJsMYAYVgo7qKKj2b5JMQ4zTw7BjQ1RDsNoewSYZrJke',
+            protocol: 'ipfs',
+        },
+        ipfsview: {
+            hash: 'QmSDgpiHco5yXdyVTfhKxr3aiJ82ynz8V14QcGKicM3rVh',
             protocol: 'ipfs',
         },
     },
@@ -45,6 +49,12 @@ export const reducer = (state = initState, action) => {
     default:
         return state;
     }
+};
+
+const saveRootRegistryItemsInLs = () => (dispatch, getState) => {
+    const registryItems = getState().rootRegistry.items;
+
+    localStorage.setItem(localStorageItemName, JSON.stringify(registryItems));
 };
 
 export const init = () => (dispatch, getState) => new Promise((resolve) => {
@@ -91,7 +101,9 @@ export const getRegistryItemsAsArray = (state) => {
 
 export const getRegistryItems = state => state.rootRegistry.items;
 
-export const addRegistryItem = (name, hash, protocol) => (dispatch, getState) => new Promise((resolve) => {
+export const addRegistryItem = (
+    name, hash, protocol,
+) => (dispatch, getState) => new Promise((resolve) => {
     const registryItems = getState().rootRegistry.items;
 
     registryItems[name] = {
@@ -108,8 +120,7 @@ export const addRegistryItem = (name, hash, protocol) => (dispatch, getState) =>
     resolve(registryItems);
 });
 
-const saveRootRegistryItemsInLs = () => (dispatch, getState) => {
-    const registryItems = getState().rootRegistry.items;
-
-    localStorage.setItem(localStorageItemName, JSON.stringify(registryItems));
+export const resetToDefault = () => (dispatch) => {
+    localStorage.removeItem('rootRegistry');
+    dispatch(init());
 };
