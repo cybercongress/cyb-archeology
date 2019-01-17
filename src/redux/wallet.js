@@ -352,7 +352,7 @@ export const receiveMessage = e => (dispatch, getState) => {
 
         if (payload.method === 'eth_sendTransaction') {
             const params = payload.params[0];
-            const value = params.value ? +web3.utils.fromWei(`${web3.utils.hexToNumber(params.value)}`, 'ether') : 0;
+            const value = params.value ? +web3.utils.fromWei(web3.utils.toBN(params.value), 'ether') : 0;
 
             Promise.all([
                 calculateGasLimit(payload),
@@ -401,10 +401,10 @@ export const receiveMessage = e => (dispatch, getState) => {
                 wvCyber.send(`cyber_${method}`, result);
             }).catch(e => {
                 wvCyber.send(`cyber_${method}_error`);
-            });            
+            });
         } else {
             window.cyber.onNewBlock((event) => {
-                 wvCyber.send(`cyber_subscribe_event`, JSON.parse(event.data));
+                wvCyber.send('cyber_subscribe_event', JSON.parse(event.data));
             });
         }
 
