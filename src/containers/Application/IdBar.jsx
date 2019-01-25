@@ -29,11 +29,11 @@ class IdBar extends Component {
 
         e.preventDefault();
         props.toggleMenu();
-    }
+    };
 
     close = () => {
         this.setState({ open: false });
-    }
+    };
 
     render() {
         const { open } = this.state;
@@ -45,7 +45,9 @@ class IdBar extends Component {
         } = this.props;
 
         return (
-            <IdBarComponent>
+            <IdBarComponent
+              loggedIn={ !!defaultEthAccount }
+            >
                 <ClickOutside onClickOutside={ this.close }>
                     <CurrentUser
                       defaultEthAccount={ defaultEthAccount }
@@ -57,8 +59,16 @@ class IdBar extends Component {
                       cybBalance={ defaultAccountBalanceCyb }
                     />
                 </ClickOutside>
-                {defaultEthAccount && <SettingsLink />}
-                {defaultEthAccount && <CybLink dura='txq.cyb' className='id-bar__txq'>txq</CybLink>}
+                <SettingsLink />
+                {defaultEthAccount && (
+                    <CybLink
+                      dura='txq.cyb'
+                      disabled={ !defaultEthAccount }
+                      className='id-bar__txq'
+                    >
+                        txq
+                    </CybLink>
+                )}
             </IdBarComponent>
         );
     }
