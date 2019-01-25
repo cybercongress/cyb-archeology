@@ -170,7 +170,7 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
                     balance: +balance,
                 });
             });
-            
+
         });
     });
 
@@ -273,8 +273,6 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
 
             localStorage.setItem('cyberAccounts', JSON.stringify(__accounts));
 
-            this.claimFunds(account.address, defaultAmount);
-
             resolve();
         });
     };
@@ -306,7 +304,7 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
 
             const acc = {
                 address: account.address,
-                chain_id: chainId, // todo: get from node
+                chain_id: chainId,
                 account_number: parseInt(account.account_number, 10),
                 sequence: parseInt(account.sequence, 10),
             };
@@ -325,7 +323,7 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
             return axios({
                 method: 'get',
                 url: `${nodeUrl}/submit_signed_send?data="${signedSendHex}"`,
-            }).then(data => console.log('Send results: ', data)).catch(error => console.log('Cannot send', error));
+            }).then(data => console.log('Send results: ', JSON.stringify(data))).catch(error => console.log('Cannot send', error));
         });
     };
 }
