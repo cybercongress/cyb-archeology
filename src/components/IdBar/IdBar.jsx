@@ -1,20 +1,12 @@
 import React from 'react';
 import './IdBar.css';
-import cx from 'classnames';
 import CybLink from '../CybLink';
 
-const IdBarComponent = ({ children, loggedIn }) => {
-    const className = cx('id-bar', {
-        'id-bar__logged-in': loggedIn,
-        'id-bar__logged-out': !loggedIn,
-    });
-
-    return (
-        <div className={ className }>
-            {children}
-        </div>
-    );
-};
+const IdBarComponent = ({ children }) => (
+    <div className='id-bar'>
+        {children}
+    </div>
+);
 
 export const SettingsLink = () => (
     <CybLink dura='settings.cyb' className='id-bar__settings'>Settings</CybLink>
