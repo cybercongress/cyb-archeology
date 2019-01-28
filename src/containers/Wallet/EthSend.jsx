@@ -19,9 +19,7 @@ class EthSend extends Component {
             });
     };
 
-    validateAddress = (address) => {
-        return address.indexOf('0x') === 0 && web3.utils.isAddress(address);
-    }
+    validateAddress = address => address.indexOf('0x') === 0 && web3.utils.isAddress(address);
 
     render() {
         const { defaultAccount, defaultAccountBalance } = this.props;
@@ -29,7 +27,7 @@ class EthSend extends Component {
         const defaultAccountComponent = defaultAccount && (
             <AccountCard>
                 <AccountCardLeft>
-                    <Avatar hash={defaultAccount} />
+                    <Avatar hash={ defaultAccount } />
                     <MainIndecator />
                 </AccountCardLeft>
                 <AccountCardRight>
@@ -60,7 +58,7 @@ class EthSend extends Component {
                         <SendFunds
                           defaultAddress={ defaultAccount }
                           sendCallback={ this.sendFunds }
-                          validateAddress={this.validateAddress}
+                          validateAddress={ this.validateAddress }
                         />
                     </div>
                 ) : (
