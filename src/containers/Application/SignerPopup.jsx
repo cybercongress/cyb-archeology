@@ -50,6 +50,7 @@ class SignerPopup extends React.Component {
 
         props.reject();
     }
+    
 
     approve = () => {
         const { props } = this;

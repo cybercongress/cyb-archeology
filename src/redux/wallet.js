@@ -376,7 +376,7 @@ const calculateGasPrice = (payload) => {
         gasPricePromise = new Promise((resolve) => {
             web3.eth.getGasPrice((error, value) => {
                 if (error) { // TOOD: problem with gas calculation
-                    resolve(210000);
+                    resolve(2);
                 } else {
                     resolve(web3.utils.fromWei(value, 'Gwei'));
                 }
@@ -415,7 +415,7 @@ export const receiveMessage = e => (dispatch, getState) => {
                 }
 
                 if (data.gasPrice) {
-                    payload.params[0].gasPrice = web3.utils.numberToHex(+data.gasPrice);
+                    payload.params[0].gasPrice = web3.utils.numberToHex(web3.utils.toWei(`${data.gasPrice}`, 'Gwei'));
                 }
                 provider.sendAsync(payload, (err, result) => {
                     if (!err) {
