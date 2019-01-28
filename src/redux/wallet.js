@@ -283,7 +283,10 @@ export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatc
 export const getStatus = url => new Promise((resolve) => {
     axios.post(url, {
         jsonrpc: '2.0', id: 1, method: 'eth_protocolVersion', params: [],
-    }, { timeout: 4 * 1000 })
+    }, {
+        headers: { 'Content-type': 'application/json' },
+        timeout: 4 * 1000,
+    })
         .then(resonce => resonce.data)
         .then((data) => {
             if (url.indexOf('localhost') !== -1 || url.indexOf('127.0.0.1') !== -1) {
