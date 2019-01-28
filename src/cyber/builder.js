@@ -20,7 +20,7 @@ const builder = {
             break;
         }
         case constants.TxType.SEND: {
-            msg = buildSendSignMsg(req.acc, req.from, req.to, req.amount, chainId);
+            msg = buildSendSignMsg(req.acc, req.from, req.to, req.amount.toString(), chainId);
             break;
         }
         default: {

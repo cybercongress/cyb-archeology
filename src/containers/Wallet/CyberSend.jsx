@@ -10,6 +10,7 @@ import AccountCard, {
     AccountCardLeft, AccountCardRight,
     MainIndecator,
 } from '../../components/Wallet/AccountCard/AccountCard';
+import { isValidAddress } from '../../cyber/crypto';
 
 class CyberSend extends Component {
     sendFunds = (defaultAddress, recipientAddress, amount) => {
@@ -17,6 +18,9 @@ class CyberSend extends Component {
 
         props.sendFunds(defaultAddress, recipientAddress, amount);
     };
+
+    validateAddress = address => address.indexOf('cbd') === 0
+        && isValidAddress(address);
 
     render() {
         const { props } = this;
@@ -62,6 +66,7 @@ class CyberSend extends Component {
                         <SendFunds
                           defaultAddress={ defaultAccountAddress }
                           sendCallback={ this.sendFunds }
+                          validateAddress={ this.validateAddress }
                         />
                     </div>
                 ) : (

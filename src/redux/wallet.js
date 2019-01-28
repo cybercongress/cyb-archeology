@@ -251,7 +251,7 @@ export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatc
         eth.sendTransaction({
             from: _from,
             to,
-            value: web3.utils.toWei(amount, 'ether'),
+            value: web3.utils.toWei(amount.toString(), 'ether'),
             gasPrice: web3.utils.toWei(`${data.gasPrice}`, 'Gwei'),
             gas: data.gasLimit,
         }).on('transactionHash', (hash) => {
