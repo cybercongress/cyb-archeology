@@ -2,16 +2,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 120px;
     margin-left: auto;
     flex-direction: row-reverse;
-}
-
-.id-bar__logged-in {
-    width: 120px;
-}
-
-.id-bar__logged-out {
-    width: 75px;
 }
 
 .separator {
@@ -28,7 +21,9 @@
     border: none;
     text-indent: -999999px;
     cursor: pointer;
+    margin-left: auto;
 }
+
 
 .id-bar__txq {
     width: 20px;
@@ -38,6 +33,7 @@
     text-indent: -999999px;
     cursor: pointer;
 }
+
 
 .id-bar__wallet {
     width: 20px;
@@ -77,11 +73,13 @@
     cursor: pointer;
     /*background: no-repeat center center #eff3f6;*/
     background-size: 30px 30px;
+    margin-left: 20px;
 }
 
 .id-bar__user--default {
     background: url(./ic-account-circle-48-px.svg) no-repeat center center;
     background-size: 40px;
+    margin-left: 20px;
 }
 
 .id-bar-img-container {
@@ -112,6 +110,7 @@
     padding: 20px;
     box-sizing: border-box;
     z-index: 2;
+    box-sizing: border-box;
 }
 
 .id-bar-link-container {
