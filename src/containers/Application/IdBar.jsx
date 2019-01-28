@@ -29,11 +29,11 @@ class IdBar extends Component {
 
         e.preventDefault();
         props.toggleMenu();
-    }
+    };
 
     close = () => {
         this.setState({ open: false });
-    }
+    };
 
     render() {
         const { open } = this.state;
@@ -57,7 +57,7 @@ class IdBar extends Component {
                       cybBalance={ defaultAccountBalanceCyb }
                     />
                 </ClickOutside>
-                {defaultEthAccount && <SettingsLink />}
+                <SettingsLink />
                 {defaultEthAccount && <CybLink dura='txq.cyb' className='id-bar__txq'>txq</CybLink>}
             </IdBarComponent>
         );
