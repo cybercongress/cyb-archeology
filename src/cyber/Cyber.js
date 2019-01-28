@@ -193,8 +193,9 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
         });
     });
 
-    self.onNewBlock = (cb) => {
-        const websocket = new WebSocket(wsUrl);
+    let websocket;
+    const listenNewBlock = (cb) => {
+        websocket = new WebSocket(wsUrl);
 
         websocket.onopen = () => {
             websocket.send(JSON.stringify({
@@ -208,6 +209,18 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
         websocket.onmessage = (event) => {
             cb(event);
         };
+    };
+
+    self.onNewBlock = (cb) => {
+        if (websocket) {
+            websocket.onclose = () => {
+                listenNewBlock(cb);
+            };
+
+            websocket.close();
+        } else {
+            listenNewBlock(cb);
+        }
     };
 
     self.getAccounts = function () {
