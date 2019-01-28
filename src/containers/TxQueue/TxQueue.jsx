@@ -56,7 +56,7 @@ class TxQueue extends Component {
                                 {moment(item.date).format('D/MM YYYY h:mm:ss')}
                             </td>
                             <td>
-                                pending
+                                {item.status}
                             </td>
                         </tr>
                     ))}

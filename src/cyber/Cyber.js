@@ -79,8 +79,12 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
 
 
     function addTransactionLog(address, txHash, status) {
-        const jsonStr = localStorage.getItem(`cyb_transactions${address}`) || '[]';
+        const jsonStr = localStorage.getItem('cyb_transactions') || '{}';
         const transactions = JSON.parse(jsonStr);
+
+        if (!transactions[address]) {
+            transactions[address] = [];
+        }
 
         const newItem = {
             txHash,
@@ -88,9 +92,10 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
             type: 'cyber',
             status: 'pending',
         };
-        const newTransactions = transactions.concat([newItem]);
 
-        localStorage.setItem(`cyb_transactions${address}`, JSON.stringify(newTransactions));
+        transactions[address] = transactions[address].concat([newItem]);
+
+        localStorage.setItem('cyb_transactions', JSON.stringify(transactions));
     }
 
     self.link = (from, to, address = '') => Promise.all([
