@@ -323,7 +323,7 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
             return axios({
                 method: 'get',
                 url: `${nodeUrl}/submit_signed_send?data="${signedSendHex}"`,
-            }).then(data => console.log('Send results: ', JSON.stringify(data))).catch(error => console.log('Cannot send', error));
+            }).then(data => console.log('Send results: ', data)).catch(error => console.log('Cannot send', error));
         });
     };
 }

@@ -144,7 +144,7 @@ export class SendFunds extends React.Component {
                     <SettingLabel style={ { width: 160 } }>Recipient Address</SettingLabel>
                     <div style={ { width: 350, display: 'inline-block' } }>
                         <WideInput
-                          errorMessage={ addressValid ? null : 'incorrect ETH address' }
+                          errorMessage={ addressValid ? null : 'incorrect address' }
                           value={ address }
                           onChange={ this.updateAddress }
                         />
