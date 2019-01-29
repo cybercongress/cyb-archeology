@@ -9,24 +9,13 @@ pure web3 browser
 
 
 <div align="center">
-<img src="https://img.shields.io/github/release/cybercongress/cyb.svg?style=flat-square&longCache=true">
-<img src="https://img.shields.io/github/license/cybercongress/cyb.svg?style=flat-square&longCache=true">
+  
+  [![version](https://img.shields.io/github/release/cybercongress/cyberd.svg?style=flat-square)](https://github.com/cybercongress/cyb/releases/latest)
+  [![license](https://img.shields.io/badge/License-Cyber-brightgreen.svg?style=flat-square)](https://github.com/cybercongress/cyberd/blob/master/LICENSE)
+  [![contributors](https://img.shields.io/github/contributors/cybercongress/cyberd.svg?style=flat-square)](https://github.com/cybercongress/cyb/graphs/contributors)
+  [![discuss](https://img.shields.io/badge/Join%20Us%20On-Telegram-2599D2.svg?style=flat-square)](https://t.me/fuckgoogle)
+  [![contribute](https://img.shields.io/badge/contributions-welcome-orange.svg?style=flat-square)](https://github.com/cybercongress/cyb/blob/master/.github/CONTRIBUTING.md)
 </div>
-
-
-<div align="center">
-  <img src="https://img.shields.io/github/contributors/cybercongress/cyb.svg?style=flat-square&longCache=true" alt="">
-   <img src="https://img.shields.io/badge/contributions-welcome-orange.svg?style=flat-square&longCache=true" alt="" />
-</div>
-
-<div align="center">
-  <sub>Built by
-  <a href="https://twitter.com/cyber_devs">cyber•Congress</a> and
-  <a href="https://github.com/cybercongress/chaingear/graphs/contributors">
-    contributors
-  </a>
-</div>
-
 
 ## Getting Start Useful Links
 
@@ -60,7 +49,7 @@ If you have any problems with or questions about CYB, please contact us through 
 
 You are invited to contribute new features, fixes, or updates, large or small; We are always thrilled to receive pull
 requests, and do our best to process them as fast as We can. You can find detailed information in our
-[contribution guide](./CONTRIBUTION.md).
+[contribution guide](https://github.com/cybercongress/cyb/blob/master/.github/CONTRIBUTING.md).
 
 ## Roadmap
 
@@ -69,3 +58,11 @@ Stay tuned with our [Roadmap](https://github.com/orgs/cybercongress/projects/1).
 ## Join Us On Telegram
 
 If you're interested in using or developing CYB, come [join us on Telegram](https://t.me/fuckgoogle)
+
+<div align="center">
+  <sub>Built by
+  <a href="https://twitter.com/cyber_devs">cyber•Congress</a> and
+  <a href="https://github.com/cybercongress/cyb/graphs/contributors">
+    contributors
+  </a>
+</div>
