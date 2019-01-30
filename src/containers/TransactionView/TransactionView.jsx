@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import {
+    MainContainer, PageTitle, JsonView, ScrollContainer,
+} from '@cybercongress/ui';
 import { getTransaction } from '../../redux/wallet';
-import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
-import JsonView from '../../components/JsonView/JsonView';
+// import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
+// import JsonView from '../../components/JsonView/JsonView';
 
 class TransactionView extends Component {
     componentDidMount() {
         const { props } = this;
-        const { params: { txHash } } = props;
+        const {
+            params: { txHash },
+        } = props;
 
         props.getTransaction(txHash);
     }
@@ -17,9 +22,11 @@ class TransactionView extends Component {
 
         return (
             <ScrollContainer>
-                <h2>transaction</h2>
-                <JsonView data={ transaction } />
-                <JsonView data={ receipt } />
+                <MainContainer>
+                    <PageTitle>transaction</PageTitle>
+                    <JsonView data={ transaction } />
+                    <JsonView data={ receipt } />
+                </MainContainer>
             </ScrollContainer>
         );
     }
