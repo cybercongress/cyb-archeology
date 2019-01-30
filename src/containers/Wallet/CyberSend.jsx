@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
-import * as cyberActions from '../../redux/cyber';
 import {
     Avatar, SendFunds,
-} from '../../components/Wallet/Wallet';
-import Button from '../../components/Button/Button';
-import AccountCard, {
+    Button,
+    AccountCard,
     AccountCardContent, AccountCardContentItem,
     AccountCardLeft, AccountCardRight,
     MainIndecator,
-} from '../../components/Wallet/AccountCard/AccountCard';
+} from '@cybercongress/ui';
+import * as cyberActions from '../../redux/cyber';
+// import {
+//     Avatar, SendFunds,
+// } from '../../components/Wallet/Wallet';
+// import Button from '../../components/Button/Button';
+// import AccountCard, {
+//     AccountCardContent, AccountCardContentItem,
+//     AccountCardLeft, AccountCardRight,
+//     MainIndecator,
+// } from '../../components/Wallet/AccountCard/AccountCard';
 
 class CyberSend extends Component {
     sendFunds = (defaultAddress, recipientAddress, amount) => {
@@ -44,7 +52,7 @@ class CyberSend extends Component {
                                 CYB
                             </div>
                             <div>
-                                <Button onClick={ () => props.onCopyKey(defaultAccountAddress) }>
+                                <Button color='blue' onClick={ () => props.onCopyKey(defaultAccountAddress) }>
                                 COPY PRIVATE KEY
                                 </Button>
                             </div>

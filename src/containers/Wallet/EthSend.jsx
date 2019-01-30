@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
 import web3 from 'web3';
-import * as actions from '../../redux/wallet';
-import { Avatar, SendFunds } from '../../components/Wallet/Wallet';
-import AccountCard, {
+import {
+    Avatar, SendFunds,
+    AccountCard,
     AccountCardContent, AccountCardContentItem,
     AccountCardLeft, AccountCardRight,
     MainIndecator,
-} from '../../components/Wallet/AccountCard/AccountCard';
+} from '@cybercongress/ui';
+import * as actions from '../../redux/wallet';
+// import { Avatar, SendFunds } from '../../components/Wallet/Wallet';
+// import AccountCard, {
+//     AccountCardContent, AccountCardContentItem,
+//     AccountCardLeft, AccountCardRight,
+//     MainIndecator,
+// } from '../../components/Wallet/AccountCard/AccountCard';
 
 class EthSend extends Component {
     sendFunds = (defaultAddress, recipientAddress, amount) => {

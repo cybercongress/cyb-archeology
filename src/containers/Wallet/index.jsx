@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import {
+    PageTitle,
+    MainContainer,
+    WalletTabs,
+    WalletTab,
+    WalletLauout,
+    WalletSidebar,
+    WalletContent,
+    ScrollContainer,
+} from '@cybercongress/ui';
 import EthAccounts from './EthAccounts';
 import ETHImport from './ETHImport';
 import EthSend from './EthSend';
@@ -9,16 +19,16 @@ import CyberAccounts from './CyberAccounts';
 import CyberImport from './CyberImport';
 import CyberSend from './CyberSend';
 
-import Titile from '../../components/Titile/Titile';
-import { WalletContainer } from '../../components/Wallet/Wallet';
 
-import WalletLauout, { WalletSidebar, WalletContent } from '../../components/Wallet/WalletLauout/WalletLauout';
-import WalletTabs, { WalletTab } from '../../components/Wallet/WalletTabs/WalletTabs';
+// import Titile from '../../components/Titile/Titile';
+// import { WalletContainer } from '../../components/Wallet/Wallet';
+
+// import WalletLauout, { WalletSidebar, WalletContent } from '../../components/Wallet/WalletLauout/WalletLauout';
+// import WalletTabs, { WalletTab } from '../../components/Wallet/WalletTabs/WalletTabs';
 
 import RequirePassword from '../Application/Login';
 import ChangePassword from '../Application/ChangePassword';
-import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
-
+// import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
 
 class Page extends Component {
     state = {
@@ -38,9 +48,7 @@ class Page extends Component {
         const { password } = this.props;
 
         if (!password) {
-            return (
-                <RequirePassword />
-            );
+            return <RequirePassword />;
         }
 
         const { tab, menu } = this.state;
@@ -48,52 +56,38 @@ class Page extends Component {
         let content;
 
         if (tab === 'eth' && menu === 'import') {
-            content = (
-                <ETHImport importCompleted={ () => this.selectMenu('accounts') } />
-            );
+            content = <ETHImport importCompleted={ () => this.selectMenu('accounts') } />;
         }
 
         if (tab === 'eth' && menu === 'accounts') {
-            content = (
-                <EthAccounts />
-            );
+            content = <EthAccounts />;
         }
 
         if (tab === 'eth' && menu === 'send') {
-            content = (
-                <EthSend />
-            );
+            content = <EthSend />;
         }
 
         if (tab === 'cyb' && menu === 'accounts') {
-            content = (
-                <CyberAccounts />
-            );
+            content = <CyberAccounts />;
         }
 
         if (tab === 'cyb' && menu === 'import') {
-            content = (
-                <CyberImport importCompleted={ () => this.selectMenu('accounts') } />
-            );
+            content = <CyberImport importCompleted={ () => this.selectMenu('accounts') } />;
         }
 
         if (tab === 'cyb' && menu === 'send') {
-            content = (
-                <CyberSend />
-            );
+            content = <CyberSend />;
         }
 
         if (menu === 'changePassword') {
-            content = (
-                <ChangePassword />
-            );
+            content = <ChangePassword />;
         }
 
         return (
             <ScrollContainer>
-                <WalletContainer>
-                    <Titile>/Wallet</Titile>
-                    <WalletLauout>
+                <MainContainer>
+                    <PageTitle>Wallet</PageTitle>
+                    <WalletLauout style={ { paddingTop: 45 } }>
                         <WalletSidebar>
                             <div>
                                 <WalletTabs>
@@ -101,37 +95,36 @@ class Page extends Component {
                                       onClick={ () => this.select('eth') }
                                       isActive={ tab === 'eth' }
                                     >
-    eth
+                                        eth
                                     </WalletTab>
                                     <WalletTab
                                       onClick={ () => this.select('cyb') }
                                       isActive={ tab === 'cyb' }
                                     >
-    cyb
+                                        cyb
                                     </WalletTab>
                                 </WalletTabs>
                             </div>
                             <div>
-
                                 <WalletTabs vertical>
                                     <WalletTab
                                       onClick={ () => this.selectMenu('accounts') }
                                       isActive={ menu === 'accounts' }
                                     >
-    accounts
+                                        accounts
                                     </WalletTab>
                                     <WalletTab
                                       onClick={ () => this.selectMenu('import') }
                                       isActive={ menu === 'import' }
                                     >
-    import account
+                                        import account
                                     </WalletTab>
-{/*                                    <WalletTab
+                                    {/*                                    <WalletTab
                                       onClick={ () => this.selectMenu('send') }
                                       isActive={ menu === 'send' }
                                     >
     send tokens
-                                    </WalletTab>*/}
+                                    </WalletTab> */}
                                     <WalletTab
                                       onClick={ () => this.selectMenu('changePassword') }
                                       isActive={ menu === 'changePassword' }
@@ -139,14 +132,11 @@ class Page extends Component {
                                         Change password
                                     </WalletTab>
                                 </WalletTabs>
-
                             </div>
                         </WalletSidebar>
-                        <WalletContent>
-                            {content}
-                        </WalletContent>
+                        <WalletContent>{content}</WalletContent>
                     </WalletLauout>
-                </WalletContainer>
+                </MainContainer>
             </ScrollContainer>
         );
     }
