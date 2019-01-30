@@ -1,20 +1,36 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import {
+    Button,
+    Input,
+    MainContainer,
+    FlexContainer,
+    FlexContainerLeft,
+    FlexContainerRight,
+    Section,
+    SectionContent,
+    Control,
+    PageTitle,
+    FormControl,
+    ScrollContainer,
+    SettingsIndicator,
+} from '@cybercongress/ui';
 import * as actions from '../../redux/settings';
 
-import Titile from '../../components/Titile/Titile';
-import Button from '../../components/Button/Button';
-import Block, { BlockRow } from '../../components/Settings/Block';
-import Input from '../../components/Input/Input';
-import { SettingsIndicator } from '../../components/Indicator/Indicator';
-import {
-    ConnectionContainer,
-    NodeStatusContainer,
-    SettingLabel, SettingRow,
-    SettingsContainer,
-} from '../../components/Settings/Settings';
-import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
+
+// import Titile from '../../components/Titile/Titile';
+// import Button from '../../components/Button/Button';
+// import Block, { BlockRow } from '../../components/Settings/Block';
+// import Input from '../../components/Input/Input';
+// import { SettingsIndicator } from '../../components/Indicator/Indicator';
+// import {
+//     ConnectionContainer,
+//     NodeStatusContainer,
+//     SettingLabel, SettingRow,
+//     SettingsContainer,
+// } from '../../components/Settings/Settings';
+// import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
 
 
 class Settings extends Component {
@@ -90,104 +106,144 @@ class Settings extends Component {
 
         return (
             <ScrollContainer>
-                <Titile>/ Settings</Titile>
-                <SettingsContainer>
-                    <ConnectionContainer>
-                        <Titile inline>CONNECTION</Titile>
-                        <Block>
-
-                            <BlockRow>
-                                <SettingRow>
-                                    <SettingLabel>IPFS read:</SettingLabel>
+            <MainContainer>
+                <PageTitle>Settings</PageTitle>
+                <Section>
+                    <SectionContent title='CONNECTION' grow={ 3 }>
+                        <FormControl blockRow flex_basis_auto>
+                            <Control title='IPFS read:'>
+                                <div style={ { width: '300px' } }>
                                     <Input
-                                        inputRef={ node => this.ipfsInput = node }
-                                        defaultValue={ IPFS_END_POINT }
-                                        style={ { width: 200 } }
+                                      inputRef={ node => (this.ipfsInput = node) }
+                                      defaultValue={ IPFS_END_POINT }
                                     />
-                                    <Button onClick={ this.updateIPFS }>update</Button>
-                                </SettingRow>
-                                <SettingRow>
-                                    <SettingLabel>IPFS write:</SettingLabel>
-                                    <Input
-                                        inputRef={ node => this.ipfsWriteInput = node }
-                                        defaultValue={ ipfsWriteUrl }
-                                        style={ { width: 200 } }
-                                    />
-                                    <Button onClick={ this.updateIpfsWrite }>update</Button>
-                                </SettingRow>
-                            </BlockRow>
+                                </div>
 
-                            <BlockRow>
-                                <SettingRow>
-                                    <SettingLabel>ETH node:</SettingLabel>
+                                <Button
+                                  color='blue'
+                                  style={ { height: '30px' } }
+                                  onClick={ this.updateIPFS }
+                                >
+                                    update
+                                </Button>
+                            </Control>
+                            <Control title='IPFS write:'>
+                                <div style={ { width: '300px' } }>
                                     <Input
-                                      inputRef={node => this.ethInput = node }
+                                      inputRef={ node => (this.ipfsWriteInput = node) }
+                                      defaultValue={ ipfsWriteUrl }
+                                    />
+                                </div>
+                                <Button
+                                  color='blue'
+                                  style={ { height: '30px' } }
+                                  onClick={ this.updateIpfsWrite }
+                                >
+                                    update
+                                </Button>
+                            </Control>
+                        </FormControl>
+
+                        <FormControl blockRow flex_basis_auto>
+                            <Control title='ETH node:'>
+                                <div style={ { width: '300px' } }>
+                                    <Input
+                                      inputRef={ node => (this.ethInput = node) }
                                       defaultValue={ PARITY_END_POINT }
-                                      style={ { width: 200 } }
                                     />
-                                    <Button onClick={ this.setEthCustom }>update</Button>
-                                </SettingRow>
-                                <SettingRow style={{marginTop: 20}}>
-                                    <Button onClick={this.setEthMain}>Main</Button>
-                                    <Button onClick={this.setEthRinkeby}>Rikenby</Button>
-                                    <Button onClick={this.setEthKovan}>Kovan</Button>
-                                </SettingRow>
-                            </BlockRow>
+                                </div>
+                                <Button
+                                  color='blue'
+                                  style={ { height: '30px' } }
+                                  onClick={ this.setEthCustom }
+                                >
+                                    update
+                                </Button>
+                            </Control>
+                            <Control noText style={ { marginTop: 10 } }>
+                                <Button
+                                  color='blue'
+                                  style={ { height: '30px' } }
+                                  onClick={ this.setEthMain }
+                                >
+                                    Main
+                                </Button>
+                                <Button
+                                  color='blue'
+                                  style={ { height: '30px' } }
+                                  onClick={ this.setEthRinkeby }
+                                >
+                                    Rikenby
+                                </Button>
+                                <Button
+                                  color='blue'
+                                  style={ { height: '30px' } }
+                                  onClick={ this.setEthKovan }
+                                >
+                                    Kovan
+                                </Button>
+                            </Control>
+                        </FormControl>
 
-                            <BlockRow>
-                                <SettingRow>
-                                    <SettingLabel>cyberd node:</SettingLabel>
+                        <FormControl blockRow flex_basis_auto>
+                            <Control title='cyberd node:'>
+                                <div style={ { width: '300px' } }>
                                     <Input
-                                      inputRef={node => this.cyberdInput = node }
+                                      inputRef={ node => (this.cyberdInput = node) }
                                       defaultValue={ CYBERD_END_POINT }
-                                      style={ { width: 200 } }
                                     />
-                                    <Button onClick={ this.updateCyberd }>update</Button>
-                                </SettingRow>
-                                <SettingRow>
-                                    <SettingLabel>cyberd ws:</SettingLabel>
+                                </div>
+                                <Button
+                                  color='blue'
+                                  style={ { height: '30px' } }
+                                  onClick={ this.updateCyberd }
+                                >
+                                    update
+                                </Button>
+                            </Control>
+                            <Control title='cyberd ws:'>
+                                <div style={ { width: '300px' } }>
                                     <Input
-                                      inputRef={node => this.cyberdWSInput = node }
+                                      inputRef={ node => (this.cyberdWSInput = node) }
                                       defaultValue={ CYBERD_WS_END_POINT }
-                                      style={ { width: 200 } }
                                     />
-                                    <Button onClick={ this.updateCyberdWS }>update</Button>
-                                </SettingRow>
-                            </BlockRow>
+                                </div>
+                                <Button
+                                  color='blue'
+                                  style={ { height: '30px' } }
+                                  onClick={ this.updateCyberdWS }
+                                >
+                                    update
+                                </Button>
+                            </Control>
+                        </FormControl>
+                    </SectionContent>
+                    <SectionContent flex direction='column' title='STATUS'>
+                        <FormControl blockRow>
+                            <SettingsIndicator status={ ipfsStatus } />
+                        </FormControl>
+                        <FormControl blockRow>
+                            <SettingsIndicator status={ parityStatus } />
+                        </FormControl>
+                        <FormControl blockRow>
+                            <SettingsIndicator status={ cyberdStatus } />
+                        </FormControl>
+                    </SectionContent>
+                </Section>
 
-                        </Block>
-                    </ConnectionContainer>
-                    <NodeStatusContainer>
-                        <Titile inline>STATUS</Titile>
-                        <Block>
-                            <BlockRow>
-                                <SettingRow>
-                                    <SettingsIndicator status={ ipfsStatus } />
-                                </SettingRow>
-                            </BlockRow>
-                            <BlockRow style={ { height: 110 } }>
-                                <SettingRow>
-                                    <SettingsIndicator status={ parityStatus } />
-                                </SettingRow>
-                            </BlockRow>
-                            <BlockRow>
-                                <SettingRow>
-                                    <SettingsIndicator status={ cyberdStatus } />
-                                </SettingRow>
-                            </BlockRow>
-                        </Block>
-                    </NodeStatusContainer>
-                </SettingsContainer>
-
-                <Block>
-                    <BlockRow>
-                        <SettingRow>
-                            <Button color='green' dura='rr.cyb'>CYB ROOT REGISTRY</Button>
-                            <Button onClick={ resetAllSettings }>RESET SETTINGS</Button>
-                        </SettingRow>
-                    </BlockRow>
-                </Block>
-
+                <FlexContainer>
+                    <FlexContainerLeft>
+                        <Button color='green' dura='rr.cyb'>
+                            CYB ROOT REGISTRY
+                        </Button>
+                    </FlexContainerLeft>
+                    <FlexContainerRight style={{paddingRight: 20}}>
+                        <Button color='blue' onClick={ resetAllSettings }>
+                            RESET SETTINGS
+                        </Button>
+                    </FlexContainerRight>
+                </FlexContainer>
+            </MainContainer>
             </ScrollContainer>
         );
     }
