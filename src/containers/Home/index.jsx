@@ -1,13 +1,22 @@
 import React from 'react';
 
-import Home, {
-    Item,
-    ItemTitle,
+import {
+    Home,
+    Items,
     Image,
     Arrow,
-    LinkList,
-    Items,
     LinkItem,
+    LinkList,
+    ItemTitle,
+} from '@cybercongress/ui';
+import {
+    Item,
+    // ItemTitle,
+    // Image,
+    // Arrow,
+    // LinkList,
+    // Items,
+    // LinkItem,
 } from '../../components/Home/Home';
 
 const HomePage = props => (
