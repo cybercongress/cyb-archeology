@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toggleMenu as toggleMenuAction } from '../../redux/appMenu';
-
 import {
     MenuButton,
-} from '../../components/Navigation/Navigation';
+} from '@cybercongress/ui';
+import { toggleMenu as toggleMenuAction } from '../../redux/appMenu';
+
+// import {
+//     MenuButton,
+// } from '../../components/Navigation/Navigation';
 
 const Menu = ({ openMenu, toggleMenu }) => (
     <MenuButton
