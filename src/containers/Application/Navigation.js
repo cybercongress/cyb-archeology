@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { navigate, goBack, canBack } from '../../redux/browser';
-import SearchInput, {
+import {
+    SearchInput,
     BackButton, ForwardButton, NavigationContainer,
     FavoriteButton,
     FavoriteButtonContainer,
     SearchIcon,
-} from '../../components/SearchInput/SearchInput';
+} from '@cybercongress/ui';
+import { navigate, goBack, canBack } from '../../redux/browser';
+// import SearchInput, {
+//     BackButton, ForwardButton, NavigationContainer,
+//     FavoriteButton,
+//     FavoriteButtonContainer,
+//     SearchIcon,
+// } from '../../components/SearchInput/SearchInput';
 import { isFavoritedPage, toggleFavorited } from '../../redux/appMenu';
-
 
 class Navigation extends Component {
     componentWillReceiveProps(nextProps) {
