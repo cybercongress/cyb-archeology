@@ -16,6 +16,7 @@ import {
     ScrollContainer,
     SettingsIndicator,
 } from '@cybercongress/ui';
+import ButtonDura from '../../components/Button/Button';
 import * as actions from '../../redux/settings';
 
 
@@ -233,9 +234,9 @@ class Settings extends Component {
 
                 <FlexContainer>
                     <FlexContainerLeft>
-                        <Button color='green' dura='rr.cyb'>
+                        <ButtonDura color='green' dura='rr.cyb'>
                             CYB ROOT REGISTRY
-                        </Button>
+                        </ButtonDura>
                     </FlexContainerLeft>
                     <FlexContainerRight style={{paddingRight: 20}}>
                         <Button color='blue' onClick={ resetAllSettings }>

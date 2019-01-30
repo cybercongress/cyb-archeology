@@ -10,6 +10,7 @@ import {
     FlexContainerRight,
     ScrollContainer,
 } from '@cybercongress/ui';
+import ButtonDura from '../../components/Button/Button';
 
 // import Vitalik from '../../components/Vitalik/Vitalik';
 // import NotFoundPage from '../../components/NotFound/NotFound';
@@ -43,9 +44,9 @@ const NotFound = (props) => {
                                 and Cyb will understand it!
                             </Text>
                         </CentredPanel>
-                        <Button color='green' dura='rr.cyb'>
+                        <ButtonDura color='green' dura='rr.cyb'>
                             Go to Root Registry!
-                        </Button>
+                        </ButtonDura>
                     </FlexContainerLeft>
                     <FlexContainerRight>
                         <Vitalick />
