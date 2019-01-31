@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { init as initWallet, getStatus, login } from './wallet';
+import { init as initWallet, getEthStatus, login } from './wallet';
 import { init as initCyberdWallet } from './cyber';
 
 const initState = {
@@ -140,7 +140,7 @@ export const setIPFS = IPFS_END_POINT => (dispatch, getState) => {
     dispatch(checkStatus());
 };
 
-export const setParity = PARITTY_END_POINT => (dispatch, getState) => {
+export const setEthEndpoint = PARITTY_END_POINT => (dispatch, getState) => {
     dispatch({ type: 'SET_PARITTY_END_POINT', payload: PARITTY_END_POINT });
     dispatch(saveSettingsInLS());
     dispatch(initWallet(PARITTY_END_POINT));
@@ -173,7 +173,7 @@ export const setSearchWS = CYBERD_WS_END_POINT => (dispatch, getState) => {
     dispatch(checkStatus());
 };
 
-const getIPFSStatus = url => new Promise((resolve) => {
+export const getIpfsStatus = url => new Promise((resolve) => {
     axios.get(`${url}/ipfs/QmZfSNpHVzTNi9gezLcgq64Wbj1xhwi9wk4AxYyxMZgtCG`, { timeout: 4 * 1000 })
         .then((data) => {
             if (url.indexOf('localhost') !== -1 || url.indexOf('127.0.0.1') !== -1) {
@@ -186,7 +186,7 @@ const getIPFSStatus = url => new Promise((resolve) => {
         });
 });
 
-const getCyberStatus = url => new Promise((resolve) => {
+export const getCyberStatus = url => new Promise((resolve) => {
     axios.get(`${url}/status`, { timeout: 4 * 1000 })
         .then(response => response.data.result)
         .then((data) => {
@@ -213,8 +213,8 @@ export const checkStatus = () => (dispatch, getState) => {
     dispatch({ type: 'SET_CHECKING_PENDING' });
 
     Promise.all([
-        getIPFSStatus(IPFS_END_POINT),
-        getStatus(PARITTY_END_POINT),
+        getIpfsStatus(IPFS_END_POINT),
+        getEthStatus(PARITTY_END_POINT),
         getCyberStatus(SEARCH_END_POINT),
     ]).then(([ipfsStatus, ethNodeStatus, cyberNodeStatus]) => {
         if (cyberNodeStatus.status !== 'fail') {

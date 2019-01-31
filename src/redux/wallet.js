@@ -279,7 +279,7 @@ export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatc
     });
 });
 
-export const getStatus = url => new Promise((resolve) => {
+export const getEthStatus = url => new Promise((resolve) => {
     axios.post(url, {
         jsonrpc: '2.0', id: 1, method: 'eth_protocolVersion', params: [],
     }, {
