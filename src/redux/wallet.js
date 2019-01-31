@@ -645,8 +645,12 @@ export const updateStatusTransactions = () => (dispatch) => {
                         web3.eth.getTransactionReceipt(item.txHash),
                     ]).then(([/* transaction,  */receipt]) => {
                         // https://ethereum.stackexchange.com/a/6003
-                        if (receipt.blockNumber && parseInt(receipt.status, 16) === 1) {
-                            item.status = 'success';
+                        if (receipt.blockNumber) {
+                            if (parseInt(receipt.status, 16) === 1) {
+                                item.status = 'success';
+                            } else {
+                                item.status = 'cancelled';
+                            }
                             localStorage.setItem('transactions', JSON.stringify(transactions));
                             dispatch({
                                 type: 'SET_NOTIFICATION_LINK_COUNTER_DEC',
