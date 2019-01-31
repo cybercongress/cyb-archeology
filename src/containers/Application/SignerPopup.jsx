@@ -1,17 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import web3 from 'web3';
-import { Title, Message } from '@cybercongress/ui';
-
-import Block, { BlockRow, Row } from '../../components/Settings/Block';
-import ConfirmationPopup, {
+import {
+    Title, Message, Block, BlockRow, Row,
     Address,
     ConfirmationPopupContent,
     PopupLabel,
     TxDetailsContainer,
     ConfirmationPopupButtons,
-} from '../../components/ConfirmationPopup/ConfirmationPopup';
-import Input from '../../components/Input/Input';
+    ConfirmationPopup,
+    Input,
+} from '@cybercongress/ui';
+
+// import Block, { BlockRow, Row } from '../../components/Settings/Block';
+// import ConfirmationPopup, {
+//     Address,
+//     ConfirmationPopupContent,
+//     PopupLabel,
+//     TxDetailsContainer,
+//     ConfirmationPopupButtons,
+// } from '../../components/ConfirmationPopup/ConfirmationPopup';
+// import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 
 import { getDefaultAccountBalance } from '../../redux/wallet';
@@ -23,6 +32,7 @@ class SignerPopup extends React.Component {
         gasLimit: 210000,
         value: 0,
         transactionInProgress: false,
+        error: '',
     }
 
     componentWillReceiveProps(nextProps) {
@@ -36,6 +46,12 @@ class SignerPopup extends React.Component {
                 gasPrice, gasLimit, value,
             });
         }
+
+        if (nextProps.signerError !== props.signerError) {
+            this.setState({
+                error: nextProps.signerError,
+            });
+        }
     }
 
     reject = () => {
@@ -43,6 +59,7 @@ class SignerPopup extends React.Component {
 
         props.reject();
     }
+    
 
     approve = () => {
         const { props } = this;
@@ -112,6 +129,7 @@ class SignerPopup extends React.Component {
         const {
             value, gasPrice, gasLimit,
             transactionInProgress,
+            error,
         } = this.state;
 
         if (!isSignerPopup) {
@@ -128,6 +146,14 @@ class SignerPopup extends React.Component {
             messageComponent = (
                 <Row>
                     <Message type='error'>You have insufficient funds</Message>
+                </Row>
+            );
+        }
+
+        if (error) {
+            messageComponent = (
+                <Row>
+                    <Message type='error'>{error}</Message>
                 </Row>
             );
         }
@@ -206,6 +232,7 @@ export default connect(
         value: state.signer.value,
         gasPrice: state.signer.gasPrice,
         gasLimit: state.signer.gasLimit,
+        signerError: state.wallet.signerError,
     }),
     { approve, reject },
 )(SignerPopup);

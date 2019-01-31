@@ -1,16 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Message } from '@cybercongress/ui';
+// import { Message } from '@cybercongress/ui';
 import ClickOutside from 'react-click-outside';
-import * as actions from '../../redux/appMenu';
-
-import MenuContainer, {
-    Bookmarks,
-    LogoLink,
+import {
+    Message,
+    MenuContainer,
+    // Bookmarks,
+    // LogoLink,
     AddMenuItem,
     AddMenuItemReject,
     ReportLinkContainer,
     AddMenuItemContainer,
+} from '@cybercongress/ui';
+import * as actions from '../../redux/appMenu';
+
+
+import {
+    Bookmarks,
+    LogoLink,
+//     AddMenuItem,
+//     AddMenuItemReject,
+//     ReportLinkContainer,
+//     AddMenuItemContainer,
 } from '../../components/AppMenu/AppMenu';
 
 class AppMenu extends Component {

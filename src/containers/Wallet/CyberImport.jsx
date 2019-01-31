@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
-import * as cyberActions from '../../redux/cyber';
 import {
     AddAccount,
-} from '../../components/Wallet/Wallet';
+} from '@cybercongress/ui';
+import * as cyberActions from '../../redux/cyber';
+// import {
+//     AddAccount,
+// } from '../../components/Wallet/Wallet';
 
 class CyberImport extends Component {
     restoreAccount = (seedPhrase) => {
