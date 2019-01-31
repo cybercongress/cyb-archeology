@@ -217,7 +217,9 @@ export const checkStatus = () => (dispatch, getState) => {
         getStatus(PARITTY_END_POINT),
         getCyberStatus(SEARCH_END_POINT),
     ]).then(([ipfsStatus, ethNodeStatus, cyberNodeStatus]) => {
-        window.cyber.setChainId(cyberNodeStatus.network);
+        if (cyberNodeStatus.status !== 'fail') {
+            window.cyber.setChainId(cyberNodeStatus.network);
+        }
 
         dispatch({
             type: 'SET_STATUS',
@@ -233,6 +235,10 @@ export const checkStatus = () => (dispatch, getState) => {
 
 export const resetAllSettings = () => (dispatch, getState) => {
     localStorage.removeItem('settings');
-    dispatch(init());
-    dispatch(checkStatus());
+    dispatch(init())
+        .then(() => {
+            dispatch(initWallet(getState().settings.PARITTY_END_POINT));
+            dispatch(initCyberdWallet());
+            dispatch(checkStatus());
+        });
 };
