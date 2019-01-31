@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
 import web3 from 'web3';
 import {
-    Avatar, SendFunds,
+    Avatar,
     AccountCard,
     AccountCardContent, AccountCardContentItem,
     AccountCardLeft, AccountCardRight,
     MainIndecator,
 } from '@cybercongress/ui';
 import * as actions from '../../redux/wallet';
+import { SendFunds } from '../../components/Wallet/Wallet';
 // import { Avatar, SendFunds } from '../../components/Wallet/Wallet';
 // import AccountCard, {
 //     AccountCardContent, AccountCardContentItem,

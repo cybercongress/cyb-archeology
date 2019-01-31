@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
 import {
-    Avatar, SendFunds,
+    Avatar,
     Button,
     AccountCard,
     AccountCardContent, AccountCardContentItem,
@@ -10,6 +10,7 @@ import {
 } from '@cybercongress/ui';
 import * as cyberActions from '../../redux/cyber';
 import { isValidAddress } from '../../cyber/crypto';
+import { SendFunds } from '../../components/Wallet/Wallet';
 
 class CyberSend extends Component {
     sendFunds = (defaultAddress, recipientAddress, amount) => {
