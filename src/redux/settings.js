@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { init as initWallet, getStatus, login } from './wallet';
+import { init as initCyberdWallet } from './cyber';
 
 const initState = {
     IPFS_END_POINT: 'http://earth.cybernode.ai:34402',
@@ -161,14 +162,16 @@ export const setEthNetworkName = ethNetworkName => (dispatch, getState) => {
 export const setSearch = SEARCH_END_POINT => (dispatch, getState) => {
     dispatch({ type: 'SET_SEARCH_END_POINT', payload: SEARCH_END_POINT });
     dispatch(saveSettingsInLS());
+    dispatch(initCyberdWallet());
     dispatch(checkStatus());
 };
 
 export const setSearchWS = CYBERD_WS_END_POINT => (dispatch, getState) => {
     dispatch({ type: 'SET_SEARCH_WS_END_POINT', payload: CYBERD_WS_END_POINT });
     dispatch(saveSettingsInLS());
+    dispatch(initCyberdWallet());
     dispatch(checkStatus());
-}
+};
 
 const getIPFSStatus = url => new Promise((resolve) => {
     axios.get(`${url}/ipfs/QmZfSNpHVzTNi9gezLcgq64Wbj1xhwi9wk4AxYyxMZgtCG`, { timeout: 4 * 1000 })
