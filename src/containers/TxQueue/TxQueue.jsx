@@ -9,6 +9,7 @@ import CybLink from '../../components/CybLink';
 import { Hash } from '../../components/TxQueue/TxQueue';
 import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
 import Table from '../../components/Table/Table';
+import Button from '../../components/Button/Button';
 
 
 class TxQueue extends Component {
@@ -56,7 +57,13 @@ class TxQueue extends Component {
                                 {moment(item.date).format('D/MM YYYY h:mm:ss')}
                             </td>
                             <td>
-                                {item.status}
+                                {
+                                    item.status === 'pending' ? (
+                                        <Button onClick={ () => this.resend(item.txHash) }>Resend</Button>
+                                    ) : (
+                                        item.status
+                                    )
+                                }
                             </td>
                         </tr>
                     ))}
