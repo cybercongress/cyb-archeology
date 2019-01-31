@@ -10,7 +10,7 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
-    "@cybercongress/ui": ">=0.0.16",
+    "@cybercongress/ui": ">=0.0.17",
     "axios": "0.18.0",
     "bech32": "1.1.3",
     "bip39": "2.5.0",
