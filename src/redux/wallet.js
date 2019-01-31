@@ -645,7 +645,7 @@ export const updateStatusTransactions = () => (dispatch) => {
                         web3.eth.getTransactionReceipt(item.txHash),
                     ]).then(([/* transaction,  */receipt]) => {
                         // https://ethereum.stackexchange.com/a/6003
-                        if (receipt.blockNumber) {
+                        if (receipt && receipt.blockNumber) {
                             if (parseInt(receipt.status, 16) === 1) {
                                 item.status = 'success';
                             } else {
