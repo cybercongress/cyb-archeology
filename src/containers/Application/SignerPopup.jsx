@@ -32,6 +32,7 @@ class SignerPopup extends React.Component {
         gasLimit: 210000,
         value: 0,
         transactionInProgress: false,
+        error: '',
     }
 
     componentWillReceiveProps(nextProps) {
@@ -45,6 +46,12 @@ class SignerPopup extends React.Component {
                 gasPrice, gasLimit, value,
             });
         }
+
+        if (nextProps.signerError !== props.signerError) {
+            this.setState({
+                error: nextProps.signerError,
+            });
+        }
     }
 
     reject = () => {
@@ -52,6 +59,7 @@ class SignerPopup extends React.Component {
 
         props.reject();
     }
+    
 
     approve = () => {
         const { props } = this;
@@ -121,6 +129,7 @@ class SignerPopup extends React.Component {
         const {
             value, gasPrice, gasLimit,
             transactionInProgress,
+            error,
         } = this.state;
 
         if (!isSignerPopup) {
@@ -137,6 +146,14 @@ class SignerPopup extends React.Component {
             messageComponent = (
                 <Row>
                     <Message type='error'>You have insufficient funds</Message>
+                </Row>
+            );
+        }
+
+        if (error) {
+            messageComponent = (
+                <Row>
+                    <Message type='error'>{error}</Message>
                 </Row>
             );
         }
@@ -215,6 +232,7 @@ export default connect(
         value: state.signer.value,
         gasPrice: state.signer.gasPrice,
         gasLimit: state.signer.gasLimit,
+        signerError: state.wallet.signerError,
     }),
     { approve, reject },
 )(SignerPopup);
