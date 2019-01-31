@@ -815,6 +815,13 @@ export const resend = (txHash) => (dispatch, getState) => {
                         if (confirmationNumber === _confirmationNumber) {
                             resolve();
                         }
+                    })
+                    .on('error', (error) => {
+                        console.log('send error', error.message);
+                        dispatch({
+                            type: 'SET_SIGNER_ERROR',
+                            payload: error.message,
+                        });
                     });
                 }).catch((e) => {
                     console.log('send error', e);
