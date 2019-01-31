@@ -19,7 +19,7 @@ class CyberSend extends Component {
         props.sendFunds(defaultAddress, recipientAddress, amount);
     };
 
-    validateAddress = address => address.indexOf('cbd') === 0
+    validateAddress = address => address.indexOf('cyber') === 0
         && isValidAddress(address);
 
     render() {
