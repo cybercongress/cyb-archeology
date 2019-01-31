@@ -753,60 +753,73 @@ export const resend = (txHash) => (dispatch, getState) => {
 
     let transactions = JSON.parse(jsonStr);
 
-    if (transactions[addressLowerCase]) {
-        transactions = transactions[addressLowerCase];
-    } else {
-        transactions = [];
+    if (!transactions[addressLowerCase]) {
+        return;
     }
 
-    const payload = transactions.find(x => x.txHash === txHash);
+    const payload = transactions[addressLowerCase].find(x => x.txHash === txHash);
 
     if (payload.params[0]) {
         let transaction = payload.params[0];
         transaction.amount = web3.utils.fromWei(web3.utils.toBN(transaction.value), 'ether');
-        console.log('RESEND', transaction);
-        dispatch(showSigner({
-            fromAddress: transaction.from,
-            toAddress: transaction.to,
-            gasPrice: 20,
-            gasLimit: 210000,
-            value: transaction.amount,
-        })).then((data) => {
-            console.log('>>', data, web3.utils.toWei(`${data.gasPrice}`, 'Gwei'));
-            eth.sendTransaction({
-                from: transaction.from,
-                to: transaction.to,
-                value: web3.utils.toWei(transaction.amount, 'ether'),
-                gasPrice: web3.utils.toWei(`${data.gasPrice}`, 'Gwei'),
-                gas: data.gasLimit,
-            }).on('transactionHash', (hash) => {
-                console.log('transactionHash', hash);
-                saveTransaction({
-                    params: [{
+        web3.eth.getTransactionCount(addressLowerCase, 'pending')
+            .then(nonce => {
+                transaction.nonce = nonce - 1;
+                console.log('RESEND', transaction);
+                dispatch(showSigner({
+                    fromAddress: transaction.from,
+                    toAddress: transaction.to,
+                    gasPrice: 20,
+                    gasLimit: 210000,
+                    value: transaction.amount,
+                })).then((data) => {
+                    console.log('>>', data, web3.utils.toWei(`${data.gasPrice}`, 'Gwei'));
+                    eth.sendTransaction({
                         from: transaction.from,
-                        toAddress: transaction.to,
-                        gasPrice: 20,
-                        gasLimit: 210000,
-                        value: transaction.amount,
-                    }],
-                }, hash);
+                        to: transaction.to,
+                        value: web3.utils.toWei(transaction.amount, 'ether'),
+                        gasPrice: web3.utils.toWei(`${data.gasPrice}`, 'Gwei'),
+                        gas: data.gasLimit,
+                        data: transaction.data,
+                        nonce: web3.utils.toHex(transaction.nonce)
+                    }).on('transactionHash', (hash) => {
+                        console.log('transactionHash', hash);
+                        
+                        transactions[addressLowerCase] = transactions[addressLowerCase].filter(x => x.txHash !== txHash);
+                        localStorage.setItem('transactions', JSON.stringify(transactions));
+                        
+                        dispatch({
+                            type: 'SET_NOTIFICATION_LINK_COUNTER_DEC',
+                        });
+                        
+                        saveTransaction({
+                            params: [{
+                                from: transaction.from,
+                                toAddress: transaction.to,
+                                gasPrice: 20,
+                                gasLimit: 210000,
+                                value: transaction.amount,
+                            }],
+                        }, hash);
 
-                dispatch({
-                    type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
-                });
+                        dispatch({
+                            type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
+                        });
 
-            })
-                .on('receipt', (receipt) => {
-                    console.log('receipt', receipt);
-                })
-                .on('confirmation', (confirmationNumber, receipt) => {
-                    console.log('confirmation', confirmationNumber, receipt);
-                    if (confirmationNumber === _confirmationNumber) {
-                        resolve();
-                    }
+                    })
+                    .on('receipt', (receipt) => {
+                        console.log('receipt', receipt);
+                    })
+                    .on('confirmation', (confirmationNumber, receipt) => {
+                        console.log('confirmation', confirmationNumber, receipt);
+                        if (confirmationNumber === _confirmationNumber) {
+                            resolve();
+                        }
+                    });
+                }).catch((e) => {
+                    console.log('send error', e);
                 });
-        }).catch((e) => {
-            console.log('send error', e);
-        });
+            
+            });
     }
 };
