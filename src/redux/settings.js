@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { init as initWallet, getEthStatus, login } from './wallet';
+import { init as initCyberdWallet } from './cyber';
 
 const initState = {
     IPFS_END_POINT: 'http://earth.cybernode.ai:34402',
@@ -161,14 +162,16 @@ export const setEthNetworkName = ethNetworkName => (dispatch, getState) => {
 export const setSearch = SEARCH_END_POINT => (dispatch, getState) => {
     dispatch({ type: 'SET_SEARCH_END_POINT', payload: SEARCH_END_POINT });
     dispatch(saveSettingsInLS());
+    dispatch(initCyberdWallet());
     dispatch(checkStatus());
 };
 
 export const setSearchWS = CYBERD_WS_END_POINT => (dispatch, getState) => {
     dispatch({ type: 'SET_SEARCH_WS_END_POINT', payload: CYBERD_WS_END_POINT });
     dispatch(saveSettingsInLS());
+    dispatch(initCyberdWallet());
     dispatch(checkStatus());
-}
+};
 
 export const getIpfsStatus = url => new Promise((resolve) => {
     axios.get(`${url}/ipfs/QmZfSNpHVzTNi9gezLcgq64Wbj1xhwi9wk4AxYyxMZgtCG`, { timeout: 4 * 1000 })
@@ -214,7 +217,9 @@ export const checkStatus = () => (dispatch, getState) => {
         getEthStatus(PARITTY_END_POINT),
         getCyberStatus(SEARCH_END_POINT),
     ]).then(([ipfsStatus, ethNodeStatus, cyberNodeStatus]) => {
-        window.cyber.setChainId(cyberNodeStatus.network);
+        if (cyberNodeStatus.status !== 'fail') {
+            window.cyber.setChainId(cyberNodeStatus.network);
+        }
 
         dispatch({
             type: 'SET_STATUS',
@@ -230,6 +235,10 @@ export const checkStatus = () => (dispatch, getState) => {
 
 export const resetAllSettings = () => (dispatch, getState) => {
     localStorage.removeItem('settings');
-    dispatch(init());
-    dispatch(checkStatus());
+    dispatch(init())
+        .then(() => {
+            dispatch(initWallet(getState().settings.PARITTY_END_POINT));
+            dispatch(initCyberdWallet());
+            dispatch(checkStatus());
+        });
 };
