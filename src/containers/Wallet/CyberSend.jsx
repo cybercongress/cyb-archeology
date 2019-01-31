@@ -9,15 +9,7 @@ import {
     MainIndecator,
 } from '@cybercongress/ui';
 import * as cyberActions from '../../redux/cyber';
-// import {
-//     Avatar, SendFunds,
-// } from '../../components/Wallet/Wallet';
-// import Button from '../../components/Button/Button';
-// import AccountCard, {
-//     AccountCardContent, AccountCardContentItem,
-//     AccountCardLeft, AccountCardRight,
-//     MainIndecator,
-// } from '../../components/Wallet/AccountCard/AccountCard';
+import { isValidAddress } from '../../cyber/crypto';
 
 class CyberSend extends Component {
     sendFunds = (defaultAddress, recipientAddress, amount) => {
@@ -25,6 +17,9 @@ class CyberSend extends Component {
 
         props.sendFunds(defaultAddress, recipientAddress, amount);
     };
+
+    validateAddress = address => address.indexOf('cyber') === 0
+        && isValidAddress(address);
 
     render() {
         const { props } = this;
@@ -70,6 +65,7 @@ class CyberSend extends Component {
                         <SendFunds
                           defaultAddress={ defaultAccountAddress }
                           sendCallback={ this.sendFunds }
+                          validateAddress={ this.validateAddress }
                         />
                     </div>
                 ) : (

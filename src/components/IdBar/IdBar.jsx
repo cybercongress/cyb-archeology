@@ -33,7 +33,7 @@ export const CurrentUser = (props) => {
                   alt='user'
                   className='id-bar__user'
                   onClick={ toggle }
-                  src={`https://robohash.org/${defaultEthAccount}`}
+                  src={ `https://robohash.org/${defaultEthAccount}` }
                 />
             ) : (
                 <CybLink dura='wallet.cyb'>

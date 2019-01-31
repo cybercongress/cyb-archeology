@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import {
     PageTitle,
     MainContainer,
@@ -18,17 +17,8 @@ import EthSend from './EthSend';
 import CyberAccounts from './CyberAccounts';
 import CyberImport from './CyberImport';
 import CyberSend from './CyberSend';
-
-
-// import Titile from '../../components/Titile/Titile';
-// import { WalletContainer } from '../../components/Wallet/Wallet';
-
-// import WalletLauout, { WalletSidebar, WalletContent } from '../../components/Wallet/WalletLauout/WalletLauout';
-// import WalletTabs, { WalletTab } from '../../components/Wallet/WalletTabs/WalletTabs';
-
 import RequirePassword from '../Application/Login';
 import ChangePassword from '../Application/ChangePassword';
-// import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
 
 class Page extends Component {
     state = {
@@ -119,12 +109,12 @@ class Page extends Component {
                                     >
                                         import account
                                     </WalletTab>
-                                    {/*                                    <WalletTab
+                                    <WalletTab
                                       onClick={ () => this.selectMenu('send') }
                                       isActive={ menu === 'send' }
                                     >
-    send tokens
-                                    </WalletTab> */}
+                                        send tokens
+                                    </WalletTab>
                                     <WalletTab
                                       onClick={ () => this.selectMenu('changePassword') }
                                       isActive={ menu === 'changePassword' }
