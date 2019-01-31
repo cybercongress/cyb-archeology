@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
+import {
+    AddAccount,
+} from '@cybercongress/ui';
 import * as actions from '../../redux/wallet';
-import { AddAccount } from '../../components/Wallet/Wallet';
+// import { AddAccount } from '../../components/Wallet/Wallet';
 
 class ETHImport extends Component {
     importAccount = (privatekey) => {

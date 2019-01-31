@@ -1,17 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import web3 from 'web3';
-import { Title, Message } from '@cybercongress/ui';
-
-import Block, { BlockRow, Row } from '../../components/Settings/Block';
-import ConfirmationPopup, {
+import {
+    Title, Message, Block, BlockRow, Row,
     Address,
     ConfirmationPopupContent,
     PopupLabel,
     TxDetailsContainer,
     ConfirmationPopupButtons,
-} from '../../components/ConfirmationPopup/ConfirmationPopup';
-import Input from '../../components/Input/Input';
+    ConfirmationPopup,
+    Input,
+} from '@cybercongress/ui';
+
+// import Block, { BlockRow, Row } from '../../components/Settings/Block';
+// import ConfirmationPopup, {
+//     Address,
+//     ConfirmationPopupContent,
+//     PopupLabel,
+//     TxDetailsContainer,
+//     ConfirmationPopupButtons,
+// } from '../../components/ConfirmationPopup/ConfirmationPopup';
+// import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 
 import { getDefaultAccountBalance } from '../../redux/wallet';

@@ -125,7 +125,6 @@ export const loadAccounts = () => (dispatch, getState) => new Promise((resolve) 
     // for(let n = 0; n < web3.eth.accounts.wallet.length; n++) {
     //     _accounts.push(web3.eth.accounts.wallet[n].address);
     // }
-
     var indexes = web3.eth.accounts.wallet._currentIndexes();
     const _accounts = indexes.map(index => {
         return web3.eth.accounts.wallet[index].address;
@@ -292,7 +291,7 @@ export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatc
         eth.sendTransaction({
             from: _from,
             to,
-            value: web3.utils.toWei(amount, 'ether'),
+            value: web3.utils.toWei(amount.toString(), 'ether'),
             gasPrice: web3.utils.toWei(`${data.gasPrice}`, 'Gwei'),
             gas: data.gasLimit,
         }).on('transactionHash', (hash) => {
@@ -326,10 +325,13 @@ export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatc
     });
 });
 
-export const getStatus = url => new Promise((resolve) => {
+export const getEthStatus = url => new Promise((resolve) => {
     axios.post(url, {
         jsonrpc: '2.0', id: 1, method: 'eth_protocolVersion', params: [],
-    }, { timeout: 4 * 1000 })
+    }, {
+        headers: { 'Content-type': 'application/json' },
+        timeout: 4 * 1000,
+    })
         .then(resonce => resonce.data)
         .then((data) => {
             if (url.indexOf('localhost') !== -1 || url.indexOf('127.0.0.1') !== -1) {
@@ -548,9 +550,12 @@ export const init = endpoint => (dispatch, getState) => {
 
     window.cyber = new Cyber(
         getState().settings.SEARCH_END_POINT, ipfs,
-        getState().settings.CYBERD_WS_END_POINT
+        getState().settings.CYBERD_WS_END_POINT,
     );
 
+    if (getState().wallet.password) {
+        web3.eth.accounts.wallet.load(getState().wallet.password);
+    }
     dispatch(loadAccounts())
         .then(() => dispatch(setDefaultAccount()));
 };

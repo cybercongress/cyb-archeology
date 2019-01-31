@@ -29,7 +29,7 @@ const initState = {
         },
         {
             name: 'Help',
-            rootDura: '.help/#/',
+            rootDura: 'help.cyb',
             subItems: {},
         },
         {

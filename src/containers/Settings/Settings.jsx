@@ -1,23 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-import * as actions from '../../redux/settings';
-
-import Titile from '../../components/Titile/Titile';
-import Button from '../../components/Button/Button';
-import Block, { BlockRow } from '../../components/Settings/Block';
-import Input from '../../components/Input/Input';
-import { SettingsIndicator } from '../../components/Indicator/Indicator';
 import {
-    ConnectionContainer,
-    NodeStatusContainer,
-    SettingLabel, SettingRow,
-    SettingsContainer,
-} from '../../components/Settings/Settings';
-import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
+    ScrollContainer,
+    SettingsIndicator,
+    Control,
+    FlexContainer,
+    FlexContainerLeft,
+    FlexContainerRight,
+    FormControl,
+    MainContainer,
+    SectionContent,
+    Section,
+    PageTitle,
+    Button,
+    Input,
+} from '@cybercongress/ui';
+import * as actions from '../../redux/settings';
+import CybLink from '../../components/CybLink';
+import { getEthStatus } from '../../redux/wallet';
 
+const ERROR_MESSAGE = 'Cannot connect. Used:';
 
 class Settings extends Component {
+
+    state = {
+        ipfsError: false,
+        ethError: false,
+        cyberdError: false,
+    };
 
     componentWillMount() {
         this.props.checkStatus();
@@ -36,15 +46,52 @@ class Settings extends Component {
     }
 
     updateIPFS = () => {
-        this.props.setIPFS(this.ipfsInput.value);
+        const { value } = this.ipfsInput;
+        const { setIPFS } = this.props;
+
+        actions
+            .getIpfsStatus(value)
+            .then((status) => {
+                if (status === 'fail') {
+                    this.setState({
+                        ipfsError: true,
+                    });
+                } else {
+                    setIPFS(value);
+                }
+            });
     };
 
     updateCyberd = () => {
-        this.props.setSearch(this.cyberdInput.value);
+        const { value } = this.cyberdInput;
+        const { setSearch } = this.props;
+
+        actions
+            .getCyberStatus(value)
+            .then((status) => {
+                if (status.status === 'fail') {
+                    this.setState({
+                        cyberdError: true,
+                    });
+                } else {
+                    setSearch(value);
+                }
+            });
     };
 
     updateEth = (endpoint) => {
-        this.props.setParity(endpoint);
+        const { setEthEndpoint } = this.props;
+
+        getEthStatus(endpoint)
+            .then((status) => {
+                if (status === 'fail') {
+                    this.setState({
+                        ethError: true,
+                    });
+                } else {
+                    setEthEndpoint(endpoint);
+                }
+            });
     };
 
     setEthMain = () => {
@@ -71,7 +118,25 @@ class Settings extends Component {
 
     updateCyberdWS = () => {
         this.props.setSearchWS(this.cyberdWSInput.value);
-    }
+    };
+
+    onIpfsChange = () => {
+        this.setState({
+            ipfsError: false,
+        });
+    };
+
+    onEthChange = () => {
+        this.setState({
+            ethError: false,
+        });
+    };
+
+    onCyberdChange = () => {
+        this.setState({
+            cyberdError: false,
+        });
+    };
 
     render() {
         const {
@@ -88,106 +153,161 @@ class Settings extends Component {
             ipfsWriteUrl,
         } = this.props;
 
+        const {
+            ipfsError,
+            ethError,
+            cyberdError,
+        } = this.state;
+
         return (
             <ScrollContainer>
-                <Titile>/ Settings</Titile>
-                <SettingsContainer>
-                    <ConnectionContainer>
-                        <Titile inline>CONNECTION</Titile>
-                        <Block>
+                <MainContainer>
+                    <PageTitle>Settings</PageTitle>
+                    <Section>
+                        <SectionContent title='CONNECTION' grow={ 3 }>
+                            <FormControl blockRow flex_basis_auto>
+                                <Control title='IPFS read:'>
+                                    <div style={ { width: '320px' } }>
+                                        <Input
+                                          inputRef={ node => (this.ipfsInput = node) }
+                                          defaultValue={ IPFS_END_POINT }
+                                          errorMessage={ ipfsError ? `${ERROR_MESSAGE} ${IPFS_END_POINT}` : '' }
+                                          onChange={ this.onIpfsChange }
+                                        />
+                                    </div>
 
-                            <BlockRow>
-                                <SettingRow>
-                                    <SettingLabel>IPFS read:</SettingLabel>
-                                    <Input
-                                        inputRef={ node => this.ipfsInput = node }
-                                        defaultValue={ IPFS_END_POINT }
-                                        style={ { width: 200 } }
-                                    />
-                                    <Button onClick={ this.updateIPFS }>update</Button>
-                                </SettingRow>
-                                <SettingRow>
-                                    <SettingLabel>IPFS write:</SettingLabel>
-                                    <Input
-                                        inputRef={ node => this.ipfsWriteInput = node }
-                                        defaultValue={ ipfsWriteUrl }
-                                        style={ { width: 200 } }
-                                    />
-                                    <Button onClick={ this.updateIpfsWrite }>update</Button>
-                                </SettingRow>
-                            </BlockRow>
+                                    <Button
+                                      color='blue'
+                                      style={ { height: '30px' } }
+                                      onClick={ this.updateIPFS }
+                                    >
+                                        update
+                                    </Button>
+                                </Control>
+                                <Control title='IPFS write:'>
+                                    <div style={ { width: '320px' } }>
+                                        <Input
+                                          inputRef={ node => (this.ipfsWriteInput = node) }
+                                          defaultValue={ ipfsWriteUrl }
+                                        />
+                                    </div>
+                                    <Button
+                                      color='blue'
+                                      style={ { height: '30px' } }
+                                      onClick={ this.updateIpfsWrite }
+                                    >
+                                        update
+                                    </Button>
+                                </Control>
+                            </FormControl>
 
-                            <BlockRow>
-                                <SettingRow>
-                                    <SettingLabel>ETH node:</SettingLabel>
-                                    <Input
-                                      inputRef={node => this.ethInput = node }
-                                      defaultValue={ PARITY_END_POINT }
-                                      style={ { width: 200 } }
-                                    />
-                                    <Button onClick={ this.setEthCustom }>update</Button>
-                                </SettingRow>
-                                <SettingRow style={{marginTop: 20}}>
-                                    <Button onClick={this.setEthMain}>Main</Button>
-                                    <Button onClick={this.setEthRinkeby}>Rikenby</Button>
-                                    <Button onClick={this.setEthKovan}>Kovan</Button>
-                                </SettingRow>
-                            </BlockRow>
+                            <FormControl blockRow flex_basis_auto>
+                                <Control title='ETH node:'>
+                                    <div style={ { width: '320px' } }>
+                                        <Input
+                                          inputRef={ node => (this.ethInput = node) }
+                                          defaultValue={ PARITY_END_POINT }
+                                          errorMessage={ ethError ? `${ERROR_MESSAGE} ${PARITY_END_POINT}` : '' }
+                                          onChange={ this.onEthChange }
+                                        />
+                                    </div>
+                                    <Button
+                                      color='blue'
+                                      style={ { height: '30px' } }
+                                      onClick={ this.setEthCustom }
+                                    >
+                                        update
+                                    </Button>
+                                </Control>
+                                <Control noText style={ { marginTop: 10 } }>
+                                    <Button
+                                      color='blue'
+                                      style={ { height: '30px' } }
+                                      onClick={ this.setEthMain }
+                                    >
+                                        Main
+                                    </Button>
+                                    <Button
+                                      color='blue'
+                                      style={ { height: '30px' } }
+                                      onClick={ this.setEthRinkeby }
+                                    >
+                                        Rinkeby
+                                    </Button>
+                                    <Button
+                                      color='blue'
+                                      style={ { height: '30px' } }
+                                      onClick={ this.setEthKovan }
+                                    >
+                                        Kovan
+                                    </Button>
+                                </Control>
+                            </FormControl>
 
-                            <BlockRow>
-                                <SettingRow>
-                                    <SettingLabel>cyberd node:</SettingLabel>
-                                    <Input
-                                      inputRef={node => this.cyberdInput = node }
-                                      defaultValue={ CYBERD_END_POINT }
-                                      style={ { width: 200 } }
-                                    />
-                                    <Button onClick={ this.updateCyberd }>update</Button>
-                                </SettingRow>
-                                <SettingRow>
-                                    <SettingLabel>cyberd ws:</SettingLabel>
-                                    <Input
-                                      inputRef={node => this.cyberdWSInput = node }
-                                      defaultValue={ CYBERD_WS_END_POINT }
-                                      style={ { width: 200 } }
-                                    />
-                                    <Button onClick={ this.updateCyberdWS }>update</Button>
-                                </SettingRow>
-                            </BlockRow>
+                            <FormControl blockRow flex_basis_auto>
+                                <Control title='cyberd node:'>
+                                    <div style={ { width: '320px' } }>
+                                        <Input
+                                          inputRef={ node => (this.cyberdInput = node) }
+                                          defaultValue={ CYBERD_END_POINT }
+                                          errorMessage={ cyberdError ? `${ERROR_MESSAGE} ${CYBERD_END_POINT}` : '' }
+                                          onChange={ this.onCyberdChange }
+                                        />
+                                    </div>
+                                    <Button
+                                      color='blue'
+                                      style={ { height: '30px' } }
+                                      onClick={ this.updateCyberd }
+                                    >
+                                        update
+                                    </Button>
+                                </Control>
+                                <Control title='cyberd ws:'>
+                                    <div style={ { width: '320px' } }>
+                                        <Input
+                                          inputRef={ node => (this.cyberdWSInput = node) }
+                                          defaultValue={ CYBERD_WS_END_POINT }
+                                        />
+                                    </div>
+                                    <Button
+                                      color='blue'
+                                      style={ { height: '30px' } }
+                                      onClick={ this.updateCyberdWS }
+                                    >
+                                        update
+                                    </Button>
+                                </Control>
+                            </FormControl>
+                        </SectionContent>
 
-                        </Block>
-                    </ConnectionContainer>
-                    <NodeStatusContainer>
-                        <Titile inline>STATUS</Titile>
-                        <Block>
-                            <BlockRow>
-                                <SettingRow>
-                                    <SettingsIndicator status={ ipfsStatus } />
-                                </SettingRow>
-                            </BlockRow>
-                            <BlockRow style={ { height: 110 } }>
-                                <SettingRow>
-                                    <SettingsIndicator status={ parityStatus } />
-                                </SettingRow>
-                            </BlockRow>
-                            <BlockRow>
-                                <SettingRow>
-                                    <SettingsIndicator status={ cyberdStatus } />
-                                </SettingRow>
-                            </BlockRow>
-                        </Block>
-                    </NodeStatusContainer>
-                </SettingsContainer>
+                        <SectionContent flex direction='column' title='STATUS'>
+                            <FormControl blockRow>
+                                <SettingsIndicator status={ ipfsStatus } />
+                            </FormControl>
+                            <FormControl blockRow>
+                                <SettingsIndicator status={ parityStatus } />
+                            </FormControl>
+                            <FormControl blockRow>
+                                <SettingsIndicator status={ cyberdStatus } />
+                            </FormControl>
+                        </SectionContent>
+                    </Section>
 
-                <Block>
-                    <BlockRow>
-                        <SettingRow>
-                            <Button color='green' dura='rr.cyb'>CYB ROOT REGISTRY</Button>
-                            <Button onClick={ resetAllSettings }>RESET SETTINGS</Button>
-                        </SettingRow>
-                    </BlockRow>
-                </Block>
-
+                    <FlexContainer>
+                        <FlexContainerLeft>
+                            <CybLink dura='rr.cyb'>
+                                <Button color='greenyellow'>
+                                    CYB ROOT REGISTRY
+                                </Button>
+                            </CybLink>
+                        </FlexContainerLeft>
+                        <FlexContainerRight style={ { paddingRight: 20 } }>
+                            <Button color='blue' onClick={ resetAllSettings }>
+                                RESET SETTINGS
+                            </Button>
+                        </FlexContainerRight>
+                    </FlexContainer>
+                </MainContainer>
             </ScrollContainer>
         );
     }
@@ -203,7 +323,7 @@ export default connect(
         ipfsStatus: settings.ipfsStatus,
         parityStatus: settings.ethNodeStatus,
         cyberdStatus: settings.cyberNodeStatus,
-        ipfsWriteUrl: actions.getIpfsWriteUrl({settings}),
+        ipfsWriteUrl: actions.getIpfsWriteUrl({ settings }),
     }),
     actions,
 )(Settings);

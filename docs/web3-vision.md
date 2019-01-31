@@ -81,12 +81,12 @@ Worth to note that saying that any particular blockchain or even all blockchains
 Distributed Unified Resource Address or put simply DURA is a more simpler and trustful scheme that has been used in a conventional web. It doesn't requires central authorities such as ICANN or others:
 
 ```
-[local-handler]://[content-address].[root-registry-app]/[app-navigation]
+[protocol]://[query].[root-app]/[navigation]
 ```
 
 We believe that a term `cyberlink` can be used for DURA links in order to differentiate with `hyperlinks` of previous internet architecture.
 
-## Local handler
+## Protocol
 
 ```
 dura://
@@ -95,7 +95,7 @@ dura://
 It is a local handler that every os can handle. Being fully optional it can be very important in the very beginning of web3.
 
 
-## Content address
+## Query
 
 ```
 dura://QmQLXHs7K98JNQdWrBB2cQLJahPhmupbDjRuH1b9ibmwVa

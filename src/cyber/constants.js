@@ -8,8 +8,8 @@ export class CyberdNetConfig {
 }
 
 CyberdNetConfig.MAXGAS = 200000;
-CyberdNetConfig.PREFIX_BECH32_ACCADDR = 'cbd';
-CyberdNetConfig.PREFIX_BECH32_ACCPUB = 'cbdpub';
+CyberdNetConfig.PREFIX_BECH32_ACCADDR = 'cyber';
+CyberdNetConfig.PREFIX_BECH32_ACCPUB = 'cyberpub';
 CyberdNetConfig.ENCODING_BECH32 = 'bech32';
 CyberdNetConfig.ENCODING_HEX = 'hex';
 CyberdNetConfig.DEFAULT_ENCODING = CyberdNetConfig.ENCODING_BECH32;

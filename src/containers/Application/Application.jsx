@@ -1,13 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import {
+    App,
+    AppHeader, AppContent, AppSideBar,
+    Navigation,
+    NavigationLeft, NavigationRight, NavigationCenter,
+} from '@cybercongress/ui';
 import { toggleMenu as toggleMenuAction } from '../../redux/appMenu';
 
-import App, {
-    AppHeader, AppContent, AppSideBar,
-} from '../../components/App/App';
-import Navigation, {
-    NavigationLeft, NavigationRight, NavigationCenter,
-} from '../../components/Navigation/Navigation';
+
+// import App, {
+//     AppHeader, AppContent, AppSideBar,
+// } from '../../components/App/App';
+// import Navigation, {
+//     NavigationLeft, NavigationRight, NavigationCenter,
+// } from '../../components/Navigation/Navigation';
 
 import IdBar from './IdBar';
 import AppMenu from './AppMenu';
