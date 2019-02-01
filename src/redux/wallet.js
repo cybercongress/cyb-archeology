@@ -767,7 +767,7 @@ export const resend = (txHash) => (dispatch, getState) => {
         let transaction = payload.params[0];
         transaction.amount = web3.utils.fromWei(web3.utils.toBN(transaction.value), 'ether');
         web3.eth.getTransactionCount(addressLowerCase, 'pending')
-            .then(nonce => {
+            .then((nonce) => {
                 transaction.nonce = nonce - 1;
                 console.log('RESEND', transaction);
                 dispatch(showSigner({
@@ -785,17 +785,25 @@ export const resend = (txHash) => (dispatch, getState) => {
                         gasPrice: web3.utils.toWei(`${data.gasPrice}`, 'Gwei'),
                         gas: data.gasLimit,
                         data: transaction.data,
-                        nonce: web3.utils.toHex(transaction.nonce)
+                        nonce: web3.utils.toHex(transaction.nonce),
                     }).on('transactionHash', (hash) => {
                         console.log('transactionHash', hash);
-                        
-                        transactions[addressLowerCase] = transactions[addressLowerCase].filter(x => x.txHash !== txHash);
+
+                        //transactions[addressLowerCase] = transactions[addressLowerCase].filter(x => x.txHash !== txHash);
+                        //transactions[addressLowerCase].find(x => x.txHash === txHash).status = 'cancelled';
+                        transactions[addressLowerCase] = transactions[addressLowerCase].map(item => {
+                            if (item.txHash === txHash) {
+                                return { ...item, status: 'cancelled' };
+                            }
+                            return item;
+                        });
+
                         localStorage.setItem('transactions', JSON.stringify(transactions));
-                        
+
                         dispatch({
                             type: 'SET_NOTIFICATION_LINK_COUNTER_DEC',
                         });
-                        
+
                         saveTransaction({
                             params: [{
                                 from: transaction.from,
@@ -809,18 +817,9 @@ export const resend = (txHash) => (dispatch, getState) => {
                         dispatch({
                             type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
                         });
-
-                    })
-                    .on('receipt', (receipt) => {
+                    }).on('receipt', (receipt) => {
                         console.log('receipt', receipt);
-                    })
-                    .on('confirmation', (confirmationNumber, receipt) => {
-                        console.log('confirmation', confirmationNumber, receipt);
-                        if (confirmationNumber === _confirmationNumber) {
-                            resolve();
-                        }
-                    })
-                    .on('error', (error) => {
+                    }).on('error', (error) => {
                         console.log('send error', error.message);
                         dispatch({
                             type: 'SET_SIGNER_ERROR',
@@ -830,7 +829,6 @@ export const resend = (txHash) => (dispatch, getState) => {
                 }).catch((e) => {
                     console.log('send error', e);
                 });
-            
             });
     }
 };
