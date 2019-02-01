@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import { ScrollContainer } from '@cybercongress/ui';
 import CybLink from '../../components/CybLink';
-import ScrollContainer from '@cybercongress/ui';
 
 class HelpApp extends Component {
     render() {
