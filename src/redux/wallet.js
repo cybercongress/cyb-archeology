@@ -770,13 +770,17 @@ export const resend = (txHash) => (dispatch, getState) => {
             .then((nonce) => {
                 transaction.nonce = nonce - 1;
                 console.log('RESEND', transaction);
-                dispatch(showSigner({
+
+                Promise.all([
+                    calculateGasLimit(payload),
+                    calculateGasPrice(payload),
+                ]).then(([gasLimit, gasPrice]) => dispatch(showSigner({
                     fromAddress: transaction.from,
                     toAddress: transaction.to,
-                    gasPrice: 20,
-                    gasLimit: 210000,
+                    gasPrice,
+                    gasLimit,
                     value: transaction.amount,
-                })).then((data) => {
+                }))).then((data) => {
                     console.log('>>', data, web3.utils.toWei(`${data.gasPrice}`, 'Gwei'));
                     eth.sendTransaction({
                         from: transaction.from,
