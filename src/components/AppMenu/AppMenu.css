@@ -36,7 +36,7 @@
     width: 100%;
     margin-top: 20px;
     flex-grow: 1;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .bookmarks__item {

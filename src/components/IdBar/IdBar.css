@@ -1,10 +1,10 @@
 .id-bar {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-  width: 120px;
-  margin-left: auto;
-  flex-direction: row-reverse;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 120px;
+    margin-left: auto;
+    flex-direction: row-reverse;
 }
 
 .separator {
@@ -15,12 +15,13 @@
 }
 
 .id-bar__settings {
-  width: 20px;
-  height: 20px;
-  background: url(./settings.svg) no-repeat center center;
-  border: none;
-  text-indent: -999999px;
-  cursor: pointer;
+    width: 20px;
+    height: 20px;
+    background: url(./settings.svg) no-repeat center center;
+    border: none;
+    text-indent: -999999px;
+    cursor: pointer;
+    margin-left: auto;
 }
 
 
@@ -29,93 +30,109 @@
   height: 20px;
   background: url(./bell-ring-voice-alarm-clock.svg) no-repeat center center;
   border: none;
-  text-indent: -999999px;
+  /* text-indent: -999999px; */
   cursor: pointer;
+  text-decoration: none;
 }
 
+.id-bar__txq span {
+  background: #cd333a;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  margin: -11px 11px;
+  padding: 2px;
+  position: absolute;
+}
+.id-bar__txq span:empty  {
+  display: none;
+}
 
 
 .id-bar__wallet {
-  width: 20px;
-  height: 20px;
-  background: url(./wallet.svg) no-repeat center center;
-  border: none;
-  text-indent: -999999px;
-  cursor: pointer;
-  display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url(./wallet.svg) no-repeat center center;
+    border: none;
+    text-indent: -999999px;
+    cursor: pointer;
+    display: inline-block;
 }
 
 .id-bar__history {
-  width: 20px;
-  height: 20px;
-  background: url(./history.svg) no-repeat center center;
-  border: none;
-  text-indent: -999999px;
-  cursor: pointer;
-  display: inline-block;  
+    width: 20px;
+    height: 20px;
+    background: url(./history.svg) no-repeat center center;
+    border: none;
+    text-indent: -999999px;
+    cursor: pointer;
+    display: inline-block;
 }
 
 .id-bar__favorite {
-  width: 20px;
-  height: 20px;
-  background: url(./favorite.svg) no-repeat center center;
-  border: none;
-  text-indent: -999999px;
-  cursor: pointer;
-  display: inline-block; 
+    width: 20px;
+    height: 20px;
+    background: url(./favorite.svg) no-repeat center center;
+    border: none;
+    text-indent: -999999px;
+    cursor: pointer;
+    display: inline-block;
 }
 
 .id-bar__user {
-  width: 37px;
-  height: 37px;
-  background: #eff3f6;
-  border-radius: 50%;
-  cursor: pointer;
-  /*background: no-repeat center center #eff3f6;*/
-  background-size: 30px 30px;
+    width: 37px;
+    height: 37px;
+    background: #eff3f6;
+    border-radius: 50%;
+    cursor: pointer;
+    /*background: no-repeat center center #eff3f6;*/
+    background-size: 30px 30px;
+    margin-left: 20px;
 }
 
 .id-bar__user--default {
-    background: url(./ic-account-circle-48-px.svg) no-repeat center center ;
+    background: url(./ic-account-circle-48-px.svg) no-repeat center center;
     background-size: 40px;
+    margin-left: 20px;
 }
 
 .id-bar-img-container {
-  padding-top: 10px;
-  padding-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .id-bar__user--big {
-  width: 70px;
-  height: 70px;
+    width: 70px;
+    height: 70px;
 }
 
 .user-popup__container {
-	position: relative;
+    position: relative;
 }
 
 .user-popup {
-  font-family: 'Play', sans-serif;
-	position: absolute;
-  width: 156px;
-	background: white;
-	color: #000;
-  border-radius: 2px;
-  box-shadow: 1px 5px 4px 0 rgba(0, 0, 0, 0.14);
-  right: 0;
-  top: 53px;
-	display: none;
-	padding: 20px;
-	box-sizing: border-box;
-  z-index: 2;
-  box-sizing: border-box;
+    font-family: 'Play', sans-serif;
+    position: absolute;
+    width: 156px;
+    background: white;
+    color: #000;
+    border-radius: 2px;
+    box-shadow: 1px 5px 4px 0 rgba(0, 0, 0, 0.14);
+    right: 0;
+    top: 53px;
+    display: none;
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 2;
+    box-sizing: border-box;
 }
 
 .id-bar-link-container {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
 }
 
 .user-popup:before {
@@ -130,10 +147,10 @@
 }
 
 .user-popup--open {
-	display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
 }
 
 .tokenName {

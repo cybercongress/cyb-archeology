@@ -119,6 +119,15 @@ export const navigate = (_dura, init = false) => (dispatch, getState) => {
         return;
     }
 
+    if (_dura.indexOf('help.cyb') === 0) {
+        const url = `/help${_dura.split('help.cyb')[1]}`;
+        const dura = `help.cyb${_dura.split('help.cyb')[1]}`;
+
+        hashHistory.push(url);
+        dispatch(updateDURA(dura));
+        return;
+    }
+
     if (!!_dura && _dura.split('.')[1] === 'eth') {
         hashHistory.push(`/eth/${_dura.split('.')[0]}`);
         dispatch(updateDURA(_dura));

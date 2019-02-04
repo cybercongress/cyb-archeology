@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
-import { Message } from '@cybercongress/ui';
-import Block, { BlockRow } from '../../components/Settings/Block';
-import { SettingLabel, SettingRow } from '../../components/Settings/Settings';
-import Input from '../../components/Input/Input';
-import Button from '../../components/Button/Button';
+import {
+    Message, Input, Button, Control, Block, BlockRow,
+} from '@cybercongress/ui';
+// import { Message } from '@cybercongress/ui';
+// import Block, { BlockRow } from '../../components/Settings/Block';
+// import { SettingLabel, SettingRow } from '../../components/Settings/Settings';
+// import Input from '../../components/Input/Input';
+// import Button from '../../components/Button/Button';
 import { changePassword } from '../../redux/wallet';
 
 class ChangePassword extends Component {
@@ -23,7 +26,7 @@ class ChangePassword extends Component {
         this.setState({
             notification: {
                 type: type,
-                message: message,
+                message,
             },
         });
     };
@@ -53,29 +56,38 @@ class ChangePassword extends Component {
         const { notification } = this.state;
 
         return (
-            <Block style={ { width: 400 } }>
+            <Block style={ { width: 500 } }>
                 { notification &&
                     <BlockRow key={notification.message}>
                         <Message type={notification.type}>{notification.message}</Message>
                     </BlockRow>
                 }
                 <BlockRow key='currentPassword'>
-                    <SettingRow>
+                    <Control textWidth={100} title='Current password'>
+                            <Input type='password' inputRef={ node => this.currentPassword = node } onClick={this.hideNotification} />
+                        </Control>
+                    {/* <SettingRow>
                         <SettingLabel>Current password</SettingLabel>
                         <Input type='password' inputRef={ node => this.currentPassword = node } onClick={this.hideNotification} />
-                    </SettingRow>
+                    </SettingRow> */}
                 </BlockRow>
                 <BlockRow key='newPassword'>
-                    <SettingRow>
+                    <Control textWidth={100} title='New password'>
+                        <Input type='password' inputRef={ node => this.newPassword = node } onClick={this.hideNotification} />
+                    </Control>
+                    {/* <SettingRow>
                         <SettingLabel>New password</SettingLabel>
                         <Input type='password' inputRef={ node => this.newPassword = node } onClick={this.hideNotification} />
-                    </SettingRow>
+                    </SettingRow> */}
                 </BlockRow>
                 <BlockRow key='confirmPassword'>
-                    <SettingRow>
+                    <Control  textWidth={100} title='Confirm new password'>
+                        <Input type='password' inputRef={ node => this.confirmPassword = node } onClick={this.hideNotification} />
+                    </Control>
+                    {/* <SettingRow>
                         <SettingLabel>Confirm new password</SettingLabel>
                         <Input type='password' inputRef={ node => this.confirmPassword = node } onClick={this.hideNotification} />
-                    </SettingRow>
+                    </SettingRow> */}
                 </BlockRow>
                 <BlockRow>
                     <div style={ {

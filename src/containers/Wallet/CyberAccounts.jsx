@@ -1,18 +1,27 @@
 import React from 'react';
 import connect from 'react-redux/es/connect/connect';
-import * as cyberActions from '../../redux/cyber';
 import {
+    Button,
+    AccountCardLeft,
+    AccountCardRight,
+    AccountCardContent,
+    AccountCardContentItem,
+    MainIndecator,
+    CreateButtonContainer,
+    AccountCard,
     Avatar,
-} from '../../components/Wallet/Wallet';
-import Button from '../../components/Button/Button';
+} from '@cybercongress/ui';
+import * as cyberActions from '../../redux/cyber';
+// import {
+//     Avatar,
+// } from '../../components/Wallet/Wallet';
+// import Button from '../../components/Button/Button';
 
-import AccountCard, {
-    AccountCardLeft, AccountCardRight,
-    AccountCardContent, AccountCardContentItem,
-    MainIndecator, SelectButton, CreateButtonContainer,
-} from '../../components/Wallet/AccountCard/AccountCard';
-
-
+// import AccountCard, {
+//     AccountCardLeft, AccountCardRight,
+//     AccountCardContent, AccountCardContentItem,
+//     MainIndecator, SelectButton, CreateButtonContainer,
+// } from '../../components/Wallet/AccountCard/AccountCard';
 const CyberAccounts = (props) => {
     const {
         accounts, defaultAccount, defaultAccountBalance,
@@ -40,7 +49,7 @@ const CyberAccounts = (props) => {
                             CYB
                         </div>
                         <div>
-                            <Button onClick={ () => props.onCopyKey(defaultAccount) }>
+                            <Button color='blue' onClick={ () => props.onCopyKey(defaultAccount) }>
                             COPY PRIVATE KEY
                             </Button>
                         </div>
@@ -54,11 +63,13 @@ const CyberAccounts = (props) => {
         <AccountCard key={ account.address }>
             <AccountCardLeft>
                 <Avatar hash={ account.address } />
-                <SelectButton
+                <Button
+                  color='ogange'
+                  style={ { fontSize: 14 } }
                   onClick={ () => props.setDefaultCyberAccount(account) }
                 >
                     MAKE MAIN
-                </SelectButton>
+                </Button>
             </AccountCardLeft>
             <AccountCardRight>
                 <AccountCardContent>
@@ -83,7 +94,7 @@ const CyberAccounts = (props) => {
                             >
                                 REMOVE
                             </Button>
-                            <Button onClick={ () => props.onCopyKey(account.address) }>
+                            <Button color='blue' onClick={ () => props.onCopyKey(account.address) }>
                             COPY PRIVATE KEY
                             </Button>
                         </div>
@@ -97,12 +108,12 @@ const CyberAccounts = (props) => {
         <div>
             {defaultAccountComponent}
 
-            {defaultAccount && <hr />}
+            {defaultAccount && <hr style={ { marginBottom: 10 } } />}
 
             {accountsItem}
 
             <CreateButtonContainer>
-                <Button onClick={ () => props.createCyberAccount() }>CREATE NEW</Button>
+                <Button color='blue' onClick={ () => props.createCyberAccount() }>CREATE NEW</Button>
             </CreateButtonContainer>
         </div>
     );

@@ -1,18 +1,7 @@
 import React from 'react';
-import { Link as LinkRouter } from 'react-router';
+//import { Link as LinkRouter } from 'react-router';
 import CybLink from '../CybLink';
 import './Home.css';
-
-const Home = props => (
-    <div { ...props } className='home' />
-);
-
-
-export const Items = ({ children }) => (
-    <div className='items'>
-        {children}
-    </div>
-);
 
 export const Item = ({ children, dura, ...props }) => (
     props.disabled ? (
@@ -23,52 +12,12 @@ export const Item = ({ children, dura, ...props }) => (
         </CybLink>
     )
 );
-
-export const Arrow = () => (
-    <span className='arrow' />
-);
-
-export const ItemTitle = ({ children, gray }) => {
-    const className = `itemTitle  ${gray ? 'itemTitleGray' : ''}`;
-
-    return (
-        <span className={ className }>
-            {children}
-        </span>
-    );
-};
-
-export const Image = ({ type }) => (
-    <div className={ `image image${type}` } />
-);
-
-const Link = (props) => {
-    if (/^https?:\/\//.test(props.to)) {
-        return <a href={ props.to } { ...props } />;
-    }
-    return <LinkRouter { ...props } />;
-};
+// const Link = (props) => {
+//     if (/^https?:\/\//.test(props.to)) {
+//         return <a href={ props.to } { ...props } />;
+//     }
+//     return <LinkRouter { ...props } />;
+// };
 
 
-export const LinkList = ({ children }) => (
-    <nav className='linkList'>
-        {children}
-    </nav>
-);
 
-// export const LinkItem = ({ children, to, icon, ...props}) => (
-//     <Link to={to} className={`linkItem linkItem${icon}`} {...props}>
-//         {children}
-//     </Link>
-// );
-
-export const LinkItem = ({
-    children, to, icon, ...props
-}) => (
-    <a href={ to } className={ `linkItem linkItem${icon}` } { ...props }>
-        {children}
-    </a>
-);
-
-
-export default Home;

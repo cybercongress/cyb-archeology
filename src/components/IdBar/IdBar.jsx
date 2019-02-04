@@ -8,6 +8,10 @@ const IdBarComponent = ({ children }) => (
     </div>
 );
 
+export const NotificationLink = ({ notificationLinkCounter }) => (
+    <CybLink dura='txq.cyb' className='id-bar__txq'><span>{notificationLinkCounter !== 0 ? notificationLinkCounter : ''}</span></CybLink>
+);
+
 export const SettingsLink = () => (
     <CybLink dura='settings.cyb' className='id-bar__settings'>Settings</CybLink>
 );
@@ -33,7 +37,7 @@ export const CurrentUser = (props) => {
                   alt='user'
                   className='id-bar__user'
                   onClick={ toggle }
-                  src={`https://robohash.org/${defaultEthAccount}`}
+                  src={ `https://robohash.org/${defaultEthAccount}` }
                 />
             ) : (
                 <CybLink dura='wallet.cyb'>

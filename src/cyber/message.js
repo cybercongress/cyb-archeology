@@ -31,8 +31,8 @@ class MsgLink extends Msg {
     constructor(from, fromCid, toCid) {
         super();
         this.address = from;
-        this.cid1 = fromCid;
-        this.cid2 = toCid;
+        this.links = [{from: fromCid, to: toCid}];
+        console.log(this)
     }
 
     getSignObject() {
@@ -40,12 +40,14 @@ class MsgLink extends Msg {
     }
 
     validateBasic() {
-        if (utils.isEmpty(this.cid1)) {
-            throw new Error('from cid is empty');
-        }
-        if (utils.isEmpty(this.cid2)) {
-            throw new Error('to cid is empty');
-        }
+        this.links.forEach((link) => {
+            if (utils.isEmpty(link.from)) {
+                throw new Error('from cid is empty');
+            }
+            if (utils.isEmpty(link.to)) {
+                throw new Error('to cid is empty');
+            }
+        });
     }
 
     type() {
@@ -56,14 +58,14 @@ class MsgLink extends Msg {
 class Input {
     constructor(address, amount) {
         this.address = address;
-        this.coins = [new Coin(amount, 'CBD')];
+        this.coins = [new Coin(amount, 'cyb')];
     }
 }
 
 class Output {
     constructor(address, amount) {
         this.address = address;
-        this.coins = [new Coin(amount, 'CBD')];
+        this.coins = [new Coin(amount, 'cyb')];
     }
 }
 

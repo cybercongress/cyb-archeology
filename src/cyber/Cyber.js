@@ -79,8 +79,12 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
 
 
     function addTransactionLog(address, txHash, status) {
-        const jsonStr = localStorage.getItem(`cyb_transactions${address}`) || '[]';
+        const jsonStr = localStorage.getItem('cyb_transactions') || '{}';
         const transactions = JSON.parse(jsonStr);
+
+        if (!transactions[address]) {
+            transactions[address] = [];
+        }
 
         const newItem = {
             txHash,
@@ -88,9 +92,10 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
             type: 'cyber',
             status: 'pending',
         };
-        const newTransactions = transactions.concat([newItem]);
 
-        localStorage.setItem(`cyb_transactions${address}`, JSON.stringify(newTransactions));
+        transactions[address] = transactions[address].concat([newItem]);
+
+        localStorage.setItem('cyb_transactions', JSON.stringify(transactions));
     }
 
     self.link = (from, to, address = '') => Promise.all([
@@ -170,7 +175,7 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
                     balance: +balance,
                 });
             });
-            
+
         });
     });
 
@@ -193,8 +198,9 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
         });
     });
 
-    self.onNewBlock = (cb) => {
-        const websocket = new WebSocket(wsUrl);
+    let websocket;
+    const listenNewBlock = (cb) => {
+        websocket = new WebSocket(wsUrl);
 
         websocket.onopen = () => {
             websocket.send(JSON.stringify({
@@ -208,6 +214,18 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
         websocket.onmessage = (event) => {
             cb(event);
         };
+    };
+
+    self.onNewBlock = (cb) => {
+        if (websocket) {
+            websocket.onclose = () => {
+                listenNewBlock(cb);
+            };
+
+            websocket.close();
+        } else {
+            listenNewBlock(cb);
+        }
     };
 
     self.getAccounts = function () {
@@ -273,8 +291,6 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
 
             localStorage.setItem('cyberAccounts', JSON.stringify(__accounts));
 
-            this.claimFunds(account.address, defaultAmount);
-
             resolve();
         });
     };
@@ -306,7 +322,7 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
 
             const acc = {
                 address: account.address,
-                chain_id: chainId, // todo: get from node
+                chain_id: chainId,
                 account_number: parseInt(account.account_number, 10),
                 sequence: parseInt(account.sequence, 10),
             };
