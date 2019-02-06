@@ -649,7 +649,7 @@ export const updateStatusTransactions = () => (dispatch) => {
                             if (parseInt(receipt.status, 16) === 1) {
                                 item.status = 'success';
                             } else {
-                                item.status = 'cancelled';
+                                item.status = 'error';
                             }
                             localStorage.setItem('transactions', JSON.stringify(transactions));
                             dispatch({
