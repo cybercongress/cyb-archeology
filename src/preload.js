@@ -109,6 +109,17 @@ window.cyber = {
         });
     },
 
+    getValidators() {
+        return new Promise((resolve, reject) => {
+            ipcRenderer.sendToHost('cyber', {
+                method: 'getValidators',
+                params: [],
+            });
+            ipcRenderer.once('cyber_getValidators', (_, payload) => {
+                resolve(payload);
+            });
+        });
+    },
     onNewBlock(cb) {
         ipcRenderer.sendToHost('cyber', {
             method: 'subscribe',

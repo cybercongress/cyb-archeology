@@ -455,6 +455,7 @@ export const receiveMessage = e => (dispatch, getState) => {
 
         const wvCyber = e.target;
 
+            
         if (method !== 'subscribe'){
             window.cyber[method].apply(window.cyber, params).then((result) => {
                 wvCyber.send(`cyber_${method}`, result);
