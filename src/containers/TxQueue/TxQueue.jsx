@@ -59,7 +59,7 @@ class TxQueue extends Component {
                             <td>
                                 {
                                     item.status === 'pending' ? (
-                                        <Button onClick={ () => this.resend(item.txHash) }>Resend</Button>
+                                        <Button onClick={ () => this.resend(item.txHash) }>resend</Button>
                                     ) : (
                                         item.status
                                     )

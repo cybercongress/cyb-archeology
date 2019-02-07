@@ -3,7 +3,7 @@ import axios from 'axios';
 import Cyber from '../cyber/Cyber';
 import { navigate, goBack } from './browser';
 import { setEthNetworkName } from './settings';
-import { showSigner } from './signer';
+import { showSigner, hidePopup } from './signer';
 
 const IPFS = require('ipfs-api');
 
@@ -102,6 +102,13 @@ export const reducer = (state = initState, action) => {
         };
     }
 
+    case 'SHOW_SIGNER': {
+        return {
+            ...state,
+            signerError: '',
+        };
+    }
+
     default:
         return state;
     }
@@ -171,6 +178,8 @@ const saveTransaction = (payload, txHash) => {
     transactions[address] = transactions[address].concat(newPayload);
 
     localStorage.setItem('transactions', JSON.stringify(transactions));
+
+    return transactions[address];
 };
 
 
@@ -287,7 +296,7 @@ export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatc
         gasPrice: 20,
         gasLimit: 210000,
         value: amount,
-    })).then((data) => {
+    }, (data) => {
         console.log('>>', data, web3.utils.toWei(`${data.gasPrice}`, 'Gwei'));
         eth.sendTransaction({
             from: _from,
@@ -311,6 +320,7 @@ export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatc
                 type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
             });
 
+            dispatch(hidePopup());
         })
             .on('receipt', (receipt) => {
                 console.log('receipt', receipt);
@@ -321,9 +331,9 @@ export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatc
                     resolve();
                 }
             });
-    }).catch((e) => {
-        console.log('send error', e);
-    });
+    }, (error) => {
+        console.log('send error', error);
+    }));
 });
 
 export const getStatus = url => new Promise((resolve) => {
@@ -409,7 +419,7 @@ export const receiveMessage = e => (dispatch, getState) => {
                 gasPrice,
                 gasLimit,
                 value,
-            }))).then((data) => {
+            }, (data) => {
                 if (data.gasLimit) {
                     payload.params[0].gas = web3.utils.numberToHex(+data.gasLimit);
                 }
@@ -428,6 +438,8 @@ export const receiveMessage = e => (dispatch, getState) => {
                         dispatch({
                             type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
                         });
+
+                        dispatch(hidePopup());
                     } else {
                         dispatch({
                             type: 'SET_SIGNER_ERROR',
@@ -435,12 +447,12 @@ export const receiveMessage = e => (dispatch, getState) => {
                         });
                     }
                 });
-            }).catch(() => {
+            }, (error) => {
                 if (!wv) {
                     return;
                 }
                 wv.send('web3_eth_call_reject', payload);
-            });
+            })));
         } else {
             provider.sendAsync(payload, (error, result) => {
                 wv.send('web3_eth_call', result);
@@ -755,7 +767,7 @@ export const resend = (txHash) => (dispatch, getState) => {
 
     const jsonStr = localStorage.getItem('transactions') || '{}';
 
-    let transactions = JSON.parse(jsonStr);
+    const transactions = JSON.parse(jsonStr);
 
     if (!transactions[addressLowerCase]) {
         return;
@@ -764,7 +776,8 @@ export const resend = (txHash) => (dispatch, getState) => {
     const payload = transactions[addressLowerCase].find(x => x.txHash === txHash);
 
     if (payload.params[0]) {
-        let transaction = payload.params[0];
+        const transaction = payload.params[0];
+
         transaction.amount = web3.utils.fromWei(web3.utils.toBN(transaction.value), 'ether');
         web3.eth.getTransactionCount(addressLowerCase, 'pending')
             .then((nonce) => {
@@ -780,7 +793,7 @@ export const resend = (txHash) => (dispatch, getState) => {
                     gasPrice,
                     gasLimit,
                     value: transaction.amount,
-                }))).then((data) => {
+                }, (data) => {
                     console.log('>>', data, web3.utils.toWei(`${data.gasPrice}`, 'Gwei'));
                     eth.sendTransaction({
                         from: transaction.from,
@@ -793,7 +806,6 @@ export const resend = (txHash) => (dispatch, getState) => {
                     }).on('transactionHash', (hash) => {
                         console.log('transactionHash', hash);
 
-                        //transactions[addressLowerCase] = transactions[addressLowerCase].filter(x => x.txHash !== txHash);
                         //transactions[addressLowerCase].find(x => x.txHash === txHash).status = 'cancelled';
                         transactions[addressLowerCase] = transactions[addressLowerCase].map(item => {
                             if (item.txHash === txHash) {
@@ -808,7 +820,7 @@ export const resend = (txHash) => (dispatch, getState) => {
                             type: 'SET_NOTIFICATION_LINK_COUNTER_DEC',
                         });
 
-                        saveTransaction({
+                        transactions[addressLowerCase] = saveTransaction({
                             params: [{
                                 from: transaction.from,
                                 toAddress: transaction.to,
@@ -819,8 +831,15 @@ export const resend = (txHash) => (dispatch, getState) => {
                         }, hash);
 
                         dispatch({
+                            type: 'SET_ETH_TRANSACTIONS',
+                            payload: transactions[addressLowerCase],
+                        });
+
+                        dispatch({
                             type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
                         });
+
+                        dispatch(hidePopup());
                     }).on('receipt', (receipt) => {
                         console.log('receipt', receipt);
                     }).on('error', (error) => {
@@ -830,9 +849,9 @@ export const resend = (txHash) => (dispatch, getState) => {
                             payload: error.message,
                         });
                     });
-                }).catch((e) => {
-                    console.log('send error', e);
-                });
+                }, (error) => {
+                    console.log('send error', error);
+                })));
             });
     }
 };
