@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-    PageTitle, TableCybLink, ScrollContainer, MainContainer,
+    PageTitle, Table, ScrollContainer, MainContainer,
 } from '@cybercongress/ui';
 import moment from 'moment';
 
@@ -37,7 +37,7 @@ class History extends Component {
             <ScrollContainer>
                 <MainContainer>
                     <PageTitle>History</PageTitle>
-                    <TableCybLink>
+                    <Table>
                         <thead>
                             <tr>
                                 <th>Address</th>
@@ -45,7 +45,7 @@ class History extends Component {
                             </tr>
                         </thead>
                         <tbody>{historyWithoutLast.map(this.renderItem)}</tbody>
-                    </TableCybLink>
+                    </Table>
                 </MainContainer>
             </ScrollContainer>
         );
