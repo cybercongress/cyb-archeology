@@ -10,6 +10,7 @@ import { Hash } from '../../components/TxQueue/TxQueue';
 import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
 import Table from '../../components/Table/Table';
 import Button from '../../components/Button/Button';
+import Loader from 'react-loader-spinner';
 
 
 class TxQueue extends Component {
@@ -58,8 +59,11 @@ class TxQueue extends Component {
                             </td>
                             <td>
                                 {
-                                    item.status === 'pending' ? (
-                                        <Button onClick={ () => this.resend(item.txHash) }>resend</Button>
+                                    item.type === 'eth' && item.status === 'pending' ? (
+                                        <div>
+                                            <Loader type='Watch' color='#438cef' height={ 27 } width={ 27 } style={ 'TxQueue_spinner' } />
+                                            <Button onClick={ () => this.resend(item.txHash) }>resend</Button>
+                                        </div>
                                     ) : (
                                         item.status
                                     )

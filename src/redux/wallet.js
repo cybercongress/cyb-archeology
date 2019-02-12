@@ -611,7 +611,11 @@ export const login = (password) => (dispatch, getState) => {
             .then(() => {
                 dispatch(setDefaultAccount());
                 // dispatch({ type: 'MOVE_BACK' });
-                dispatch(goBack()); //back to page if start not from waalet
+                dispatch(goBack()); // back to page if start not from waalet
+                const address = web3.eth.defaultAccount;
+                const addressLowerCase = address.toLowerCase();
+
+                dispatch(getTransactions(addressLowerCase));
             });
     } catch (e) {
         dispatch({
@@ -666,6 +670,13 @@ export const updateStatusTransactions = () => (dispatch) => {
                             localStorage.setItem('transactions', JSON.stringify(transactions));
                             dispatch({
                                 type: 'SET_NOTIFICATION_LINK_COUNTER_DEC',
+                            });
+                            const transactionsSorted = transactions[address].slice(0);
+
+                            transactionsSorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+                            dispatch({
+                                type: 'SET_ETH_TRANSACTIONS',
+                                payload: transactionsSorted,
                             });
                         }
                     });
@@ -830,9 +841,12 @@ export const resend = (txHash) => (dispatch, getState) => {
                             }],
                         }, hash);
 
+                        const transactionsSorted = transactions[addressLowerCase].slice(0);
+
+                        transactionsSorted.sort((a, b) => new Date(b.date) - new Date(a.date));
                         dispatch({
                             type: 'SET_ETH_TRANSACTIONS',
-                            payload: transactions[addressLowerCase],
+                            payload: transactionsSorted,
                         });
 
                         dispatch({
