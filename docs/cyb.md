@@ -14,24 +14,32 @@ Cyb is a friendly software robot who helps you explore the universes. Put it sim
 
 Current state of web3 experience is non satisfactory. Still [we did not meet](https://github.com/cybercongress/cyb/blob/master/docs/comparison.md) any piece of software that is able to deliver deep, emotional web3 experience. So we decide to bring to the table one contender that strictly follows web3 principles defined by ourselves ;-) In a rush for this passion we define the following web3 apps which we believe together implement the full web3 vision in the context of a browsing for web3 agents and app developers:
 
-- `.main`: main page for every joe
-- `.path`: navigation bar and its backend
-- `.connect`: connection manager and state widget
-- `.keys`: keystore interface and id widget
+- `main.cyb`: main page for every joe
+- `keys.cyb`: keystore interface
+- `root.cyb`: cyb root registry
+- `apps.cyb`: app discovery app with access control
+- `state.cyb`: cyb state sync, import and export
+- `source.cyb`: cyb source code
+- `blog.cyb`: cyb community blog
+- `knowledge.cyb`: cyb community knowledge base
+- `path.cyb`: navigation bar and its backend => merge txq.cyb and history.cyb and feed.cyb for messages and transactions with scheduler
+- `pins.cyb`: pinned file explorer
+- `connect.cyb`: connection manager and state widget
+- `sign.cyb`: phishing resistant signer with different signatures support
+- `wallet.cyb`: embedded cyb wallet
+- `ipfs.cyb`: ipfs node manager and agent experience
+- `dev.cyb`: web3 development tool with support of contracts
+- `help.cyb`: cyb educational library and feedback mechanism including `roadmap.cyb` - cyb community roadmap
+
+
+Experimental not cyb team:
+- `.dragons`: Dragonereium with `is cyb`
+- `.chaingear`: all the things chaingearable
 - `.cyber`: cyberd node manager and app for link chains
-- `.pins`: favourites backend and application bar
-- `.sign`: phishing resistant signer for messages and transactions with scheduler
-- `.crr`: cyb root registry
-- `.cyb`: origianl web3 appstore
-- `.access`: permission manager that respects agents' resources
-- `.feed`: notification backend and feed app
-- `.ipfs`: ipfs node manager and agent experience
 - `.eth`: ethereum node manager + ens resolver
-- `.wallet`: universal wallet ux
-- `.help`: cyb educational library and feedback mechanism
-- `.dev`: web3 development tool with support of contracts
-- `.cg`: all the things chaingearable
-- `.settings`: cyb settings
+- `.wiki`: snapshot of some wikipedia state
+
+
 
 All this apps are considered as core apps and are included in every Cyb distribution. Let us describe in details every app as a pure concept.
 
