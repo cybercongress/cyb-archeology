@@ -22,6 +22,7 @@ import Status from './Status';
 import NavigationComponents from './Navigation';
 import ToggleMenu from './ToggleMenu';
 import SignerPopup from './SignerPopup';
+import Intro from './Intro';
 
 const Application = (props) => {
     const {
@@ -29,7 +30,14 @@ const Application = (props) => {
         openMenu,
         children,
         toggleMenu,
+        showIntro,
     } = props;
+
+    if (showIntro) {
+        return (
+            <Intro />
+        );
+    }
 
     return (
         <App openMenu={ openMenu }>
@@ -62,6 +70,7 @@ export default connect(
     state => ({
         homePage: state.browser.dura === '',
         openMenu: state.appMenu.openMenu,
+        showIntro: state.intro.showIntro,
     }),
     { toggleMenu: toggleMenuAction },
 )(Application);

@@ -36,6 +36,10 @@ import {
     reducer as signerReducer,
 } from './signer';
 
+import {
+    reducer as introReducer,
+} from './intro';
+
 const rootReducer = combineReducers({
     browser: browserReducer,
     wallet: walletReducer,
@@ -44,6 +48,7 @@ const rootReducer = combineReducers({
     appMenu: appMenuReducer,
     cyber: cyberReducer,
     signer: signerReducer,
+    intro: introReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
