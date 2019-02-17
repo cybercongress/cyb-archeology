@@ -79,6 +79,26 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
         });
     };
 
+    self.searchCids = function (text) {
+        return new Promise((resolve) => {
+            saveInIPFS(ipfs, text)
+                .then(cid => axios({
+                    method: 'get',
+                    url: `${nodeUrl}/search?cid="${cid}"`,
+                })).then((data) => {
+                    const { cids } = data.data.result;
+
+                    resolve(cids);
+                })
+                .catch(error => resolve([]));
+        });
+    };
+
+    self.loadContent = cid => new Promise((resolve) => {
+        getIPFS(ipfs, cid)
+            .then(content => resolve(content))
+            .catch(error => console.log('Cannot load search result with cid: ', cid, error));
+    });
 
     function addTransactionLog(address, txHash, status) {
         const jsonStr = localStorage.getItem('cyb_transactions') || '{}';

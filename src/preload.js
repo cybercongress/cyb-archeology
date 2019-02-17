@@ -79,6 +79,31 @@ window.cyber = {
             });
         }));
     },
+
+    searchCids(q) {
+        return new Promise(((resolve, reject) => {
+            ipcRenderer.sendToHost('cyber', {
+                method: 'searchCids',
+                params: [q],
+            });
+            ipcRenderer.once('cyber_searchCids', (_, payload) => {
+                resolve(payload);
+            });
+        }));
+    },
+
+    loadContent(cid) {
+        return new Promise(((resolve, reject) => {
+            ipcRenderer.sendToHost('cyber', {
+                method: 'loadContent',
+                params: [cid],
+            });
+            ipcRenderer.once('cyber_loadContent', (_, payload) => {
+                resolve(payload);
+            });
+        }));
+    },
+
     link(from, to, address) {
         if (!address) {
             return;
