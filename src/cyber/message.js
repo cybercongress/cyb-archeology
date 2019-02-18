@@ -77,7 +77,7 @@ class MsgSend extends Msg {
     }
 
     getSignObject() {
-        return utils.sortObjectKeys(this);
+        return amino.marshalJSON(this.type(), utils.sortObjectKeys(this));
     }
 
     validateBasic() {
