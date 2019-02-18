@@ -92,18 +92,6 @@ window.cyber = {
         }));
     },
 
-    loadContent(cid) {
-        return new Promise(((resolve, reject) => {
-            ipcRenderer.sendToHost('cyber', {
-                method: 'loadContent',
-                params: [cid],
-            });
-            ipcRenderer.once('cyber_loadContent', (_, payload) => {
-                resolve(payload);
-            });
-        }));
-    },
-
     link(from, to, address) {
         if (!address) {
             return;

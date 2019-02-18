@@ -94,12 +94,6 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
         });
     };
 
-    self.loadContent = cid => new Promise((resolve) => {
-        getIPFS(ipfs, cid)
-            .then(content => resolve(content))
-            .catch(error => console.log('Cannot load search result with cid: ', cid, error));
-    });
-
     function addTransactionLog(address, txHash, status) {
         const jsonStr = localStorage.getItem('cyb_transactions') || '{}';
         const transactions = JSON.parse(jsonStr);
