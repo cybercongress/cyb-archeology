@@ -31,6 +31,7 @@ class Browser extends Component {
         });
 
         webview.addEventListener('will-navigate', (event) => {
+            webview.stop();
             event.preventDefault();
             props.willNavigate(event.url);
         });
