@@ -4,6 +4,7 @@ import Cyber from '../cyber/Cyber';
 import { navigate, goBack } from './browser';
 import { setEthNetworkName } from './settings';
 import { showSigner } from './signer';
+import { getQuery } from '../utils';
 
 const IPFS = require('ipfs-api');
 
@@ -455,7 +456,7 @@ export const receiveMessage = e => (dispatch, getState) => {
 
         const wvCyber = e.target;
 
-            
+
         if (method !== 'subscribe'){
             window.cyber[method].apply(window.cyber, params).then((result) => {
                 wvCyber.send(`cyber_${method}`, result);
@@ -482,6 +483,17 @@ export const receiveMessage = e => (dispatch, getState) => {
             const config = getState().settings.ipfsWrite;
 
             wvCyber.send(`ipfs_config`, config);
+        }
+    }
+    if (e.channel === 'params') {
+        const method = e.args[0].method;
+        const params = e.args[0].params;
+
+        const wvCyber = e.target;
+
+
+        if (method === 'getQuery') {
+            wvCyber.send(`params_${method}`, getQuery());
         }
     }
 };

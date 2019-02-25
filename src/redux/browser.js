@@ -1,5 +1,5 @@
 import { hashHistory } from 'react-router';
-import { URLToDURA, DURAToURL } from '../utils';
+import { URLToDURA, DURAToURL, setQuery, getQuery } from '../utils';
 import { getRegistryItems } from './rootRegistry';
 import { getIpfsEndpoint } from './settings';
 import { toggleMenu } from './appMenu';
@@ -79,8 +79,9 @@ export const updateDURA = dura => (dispatch, getState) => {
 export const navigate = (_dura, init = false) => (dispatch, getState) => {
     const apps = getRegistryItems(getState());
     const ipfsEndpoint = getIpfsEndpoint(getState());
-    const { url, dura } = DURAToURL(_dura, apps, ipfsEndpoint);
+    const { url, dura, query } = DURAToURL(_dura, apps, ipfsEndpoint);
 
+    setQuery(query);
 
     if ((_dura === '' || dura === '') && getState().appMenu.openMenu) {
         dispatch(toggleMenu());
@@ -177,9 +178,8 @@ export const navigate = (_dura, init = false) => (dispatch, getState) => {
 
 export const willNavigate = url => (dispatch, getState) => {
     const apps = getRegistryItems(getState());
-    const ipfsEndpoint = getIpfsEndpoint(getState());
 
-    let dura = URLToDURA(url, apps, ipfsEndpoint);
+    let dura = URLToDURA(url, apps, getQuery());
 
     if (url.indexOf('cyb://') !== -1) {
         dura = url.split('cyb://')[1];
@@ -203,9 +203,8 @@ export const newWindow = e => (dispatch) => {
 
 export const didNavigateInPage = url => (dispatch, getState) => {
     const apps = getRegistryItems(getState());
-    const ipfsEndpoint = getIpfsEndpoint(getState());
 
-    const dura = URLToDURA(url, apps, ipfsEndpoint);
+    const dura = URLToDURA(url, apps, getQuery());
 
     console.log('did-navigate-in-page ');
     console.log('url', url);

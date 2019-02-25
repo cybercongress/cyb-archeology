@@ -67,6 +67,15 @@ window.getIpfsGateway = () => {
     });
 };
 
+window.getQuery = () => new Promise(((resolve) => {
+    ipcRenderer.sendToHost('params', {
+        method: 'getQuery',
+    });
+    ipcRenderer.once('params_getQuery', (_, payload) => {
+        resolve(payload);
+    });
+}));
+
 window.cyber = {
     search(q) {
         return new Promise(((resolve, reject) => {
