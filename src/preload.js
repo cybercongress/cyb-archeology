@@ -6,9 +6,12 @@ class ElectronProvider extends EventEmitter {
     constructor() {
         super();
 
+        console.log('[electron provider created]');
+
         this.isCyb = true;
 
         this._providerCallbacks = {};
+
         ipcRenderer.on('web3_eth_call', (_, payload) => {
             const id = payload.id || payload[0].id;
 
@@ -24,7 +27,6 @@ class ElectronProvider extends EventEmitter {
                 this._providerCallbacks[id]('reject');
             }
         });
-
 
         ipcRenderer.on('web3_eth_event_data', (_, payload) => {
             this.emit('data', payload);
@@ -45,36 +47,53 @@ class ElectronProvider extends EventEmitter {
     }
 }
 
-window.getIpfsConfig = () => {
-    return new Promise(resolve => {
-        ipcRenderer.sendToHost('ipfs', {
-            method: 'getIpfsConfig',
-        });
-        ipcRenderer.once('ipfs_config', (_, payload) => {
-            resolve(payload);
-        });
-    });
-};
+window.web3 = { currentProvider: new ElectronProvider() };
 
-window.getIpfsGateway = () => {
-    return new Promise(resolve => {
-        ipcRenderer.sendToHost('ipfs', {
-            method: 'getGateway',
-        });
-        ipcRenderer.once('ipfs_gateway', (_, payload) => {
-            resolve(payload);
-        });
+window.getIpfsConfig = () => new Promise((resolve) => {
+    ipcRenderer.sendToHost('ipfs', {
+        method: 'getIpfsConfig',
     });
-};
-
-window.getQuery = () => new Promise(((resolve) => {
-    ipcRenderer.sendToHost('params', {
-        method: 'getQuery',
-    });
-    ipcRenderer.once('params_getQuery', (_, payload) => {
+    ipcRenderer.once('ipfs_config', (_, payload) => {
         resolve(payload);
     });
-}));
+});
+
+window.getIpfsGateway = () => new Promise((resolve) => {
+    ipcRenderer.sendToHost('ipfs', {
+        method: 'getGateway',
+    });
+    ipcRenderer.once('ipfs_gateway', (_, payload) => {
+        resolve(payload);
+    });
+});
+
+window.navi = {
+    getQuery() {
+        return new Promise(((resolve) => {
+            ipcRenderer.sendToHost('params', {
+                method: 'getQuery',
+            });
+            ipcRenderer.once('params_getQuery', (_, payload) => {
+                resolve(payload);
+            });
+        }));
+    },
+
+    setQuery(query) {
+        console.log('[set query]: ', query);
+        ipcRenderer.sendToHost('params', {
+            method: 'setQuery',
+            params: [query],
+        });
+    },
+
+    onQueryUpdate(callback) {
+        ipcRenderer.on('params_newQuery', (_, payload) => {
+            console.log('[query updated]: ', payload);
+            callback(payload);
+        });
+    },
+};
 
 window.cyber = {
     search(q) {
@@ -119,6 +138,7 @@ window.cyber = {
             });
         }));
     },
+
     getStatistics() {
         return new Promise((resolve, reject) => {
             ipcRenderer.sendToHost('cyber', {
@@ -142,6 +162,7 @@ window.cyber = {
             });
         });
     },
+
     onNewBlock(cb) {
         ipcRenderer.sendToHost('cyber', {
             method: 'subscribe',
@@ -150,6 +171,13 @@ window.cyber = {
 
         ipcRenderer.on('cyber_subscribe_event', (_, payload) => {
             cb(payload);
+        });
+    },
+
+    unsubscribeNewBlock() {
+        ipcRenderer.sendToHost('cyber', {
+            method: 'unsubscribeNewBlock',
+            params: [],
         });
     },
 
@@ -165,4 +193,12 @@ window.cyber = {
     },
 };
 
-window.web3 = { currentProvider: new ElectronProvider() };
+window.removeAllListeners = () => {
+    console.log('[remove all listeners]');
+    ipcRenderer.removeAllListeners();
+    window.cyber.unsubscribeNewBlock();
+};
+
+ipcRenderer.on('removeAllListeners', () => {
+    window.removeAllListeners();
+});

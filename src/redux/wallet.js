@@ -4,7 +4,6 @@ import Cyber from '../cyber/Cyber';
 import { navigate, goBack } from './browser';
 import { setEthNetworkName } from './settings';
 import { showSigner } from './signer';
-import { getQuery } from '../utils';
 
 const IPFS = require('ipfs-api');
 
@@ -450,26 +449,33 @@ export const receiveMessage = e => (dispatch, getState) => {
             });
         }
     }
-    if (e.channel === 'cyber') {
-        const method = e.args[0].method;
-        const params = e.args[0].params;
 
+    if (e.channel === 'cyber') {
+        const { method, params } = e.args[0];
         const wvCyber = e.target;
 
-
-        if (method !== 'subscribe'){
-            window.cyber[method].apply(window.cyber, params).then((result) => {
-                wvCyber.send(`cyber_${method}`, result);
-            }).catch(e => {
-                wvCyber.send(`cyber_${method}_error`);
-            });
-        } else {
+        switch (method) {
+        case 'subscribe':
             window.cyber.onNewBlock((event) => {
                 wvCyber.send('cyber_subscribe_event', JSON.parse(event.data));
             });
-        }
+            break;
 
+        case 'unsubscribeNewBlock':
+            window.cyber.unsubscribeNewBlock();
+            break;
+
+        default:
+            window.cyber[method].apply(window.cyber, params)
+                .then((result) => {
+                    wvCyber.send(`cyber_${method}`, result);
+                }).catch((error) => {
+                    wvCyber.send(`cyber_${method}_error`);
+                });
+            break;
+        }
     }
+
     if (e.channel === 'ipfs') {
         const method = e.args[0].method;
         const wvCyber = e.target;
@@ -483,17 +489,6 @@ export const receiveMessage = e => (dispatch, getState) => {
             const config = getState().settings.ipfsWrite;
 
             wvCyber.send(`ipfs_config`, config);
-        }
-    }
-    if (e.channel === 'params') {
-        const method = e.args[0].method;
-        const params = e.args[0].params;
-
-        const wvCyber = e.target;
-
-
-        if (method === 'getQuery') {
-            wvCyber.send(`params_${method}`, getQuery());
         }
     }
 };

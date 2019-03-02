@@ -244,6 +244,13 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
         }
     };
 
+    self.unsubscribeNewBlock = () => {
+        if (websocket) {
+            websocket.close();
+            websocket = null;
+        }
+    };
+
     self.getAccounts = function () {
         return new Promise((resolve) => {
             __accounts = JSON.parse(localStorage.getItem('cyberAccounts') || '{}');
