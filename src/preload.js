@@ -67,7 +67,7 @@ window.getIpfsGateway = () => new Promise((resolve) => {
     });
 });
 
-window.navi = {
+window.cyb = {
     getQuery() {
         return new Promise(((resolve) => {
             ipcRenderer.sendToHost('params', {
