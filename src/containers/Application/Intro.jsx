@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import bip39 from 'bip39';
 const jswallet = require("ethereumjs-wallet");
 var hdkey = require('ethereumjs-wallet/hdkey')
+var passworder = require('browser-passworder')
 
 import { startBrowsing } from './../../redux/intro';
 import { Section, Logo } from './../../components/Intro/Intro';
@@ -170,7 +171,7 @@ const Congratulation = ({ onNext }) => (
 )
 
 class Intro extends React.Component {
-    state = { step: 'hello', address: '', privateKey: '', passphrase: '', mnemonic: '' }
+    state = { step: 'hello', address: '', privateKey: '', passphrase: '', mnemonic: '', error: '' }
 
     goToImportOrCreate = () => {
         this.setState({ step: 'inportOrCreate' });
@@ -214,25 +215,42 @@ class Intro extends React.Component {
         // const mnemonic = secret;
         // this.setState({ mnemonic });
 
+        const blob = localStorage.getItem('secret');
+        const password = this.refs.password.value;
 
-        const secret = localStorage.getItem('secret');
+        passworder.decrypt(password, blob)
+            .then(decryptResult => {
+                const { entropy } = decryptResult;
+                const mnemonic = bip39.entropyToMnemonic(entropy);
+                this.setState({ mnemonic, error: '' });
+            }).catch(e => {
+                this.setState({ error: 'incorrect password' });
+            })
 
-        const entropy = secret;
-        const mnemonic = bip39.entropyToMnemonic(entropy);
-        this.setState({ mnemonic });
     }
 
     loadFromLS = () => {
-        const secret = localStorage.getItem('secret');
-        // const password = this.refs.password.value;
-        const entropy = secret;
-        const mnemonic = bip39.entropyToMnemonic(entropy);
-        const seed = bip39.mnemonicToSeed(mnemonic, '');
-        const rootKey = hdkey.fromMasterSeed(seed);
+        const blob = localStorage.getItem('secret');
+        const password = this.refs.password.value;
 
-        const hardenedKey = rootKey.derivePath("m/44'/60'/0'/0/0");
-        const address = hardenedKey.getWallet().getAddressString();
-        const privateKey = hardenedKey.getWallet().getPrivateKey().toString('hex');
+        passworder.decrypt(password, blob)
+        .then((decryptResult) => {
+
+            // const entropy = secret;
+            const { entropy } = decryptResult;
+            const mnemonic = bip39.entropyToMnemonic(entropy);
+            const seed = bip39.mnemonicToSeed(mnemonic, '');
+            const rootKey = hdkey.fromMasterSeed(seed);
+
+            const hardenedKey = rootKey.derivePath("m/44'/60'/0'/0/0");
+            const address = hardenedKey.getWallet().getAddressString();
+            const privateKey = hardenedKey.getWallet().getPrivateKey().toString('hex');
+            this.setState({ address, privateKey, error: '' });            
+        }).catch(e => {
+            this.setState({ error: 'incorrect password' });
+        })
+        
+        // const password = this.refs.password.value;
 
 
         // const secret = bip39.mnemonicToSeedHex(mnemonic, password);
@@ -252,7 +270,7 @@ class Intro extends React.Component {
         // const privateKey = wallet.getPrivateKey();
         // debugger
         
-        this.setState({ address, privateKey });    
+         
     }
     createAccount = async () => {
         const mnemonic = this.refs.text.value;
@@ -281,7 +299,20 @@ class Intro extends React.Component {
 
         // const secret = bip39.mnemonicToSeedHex(mnemonic, password);
 
-        localStorage.setItem('secret', entropy);
+        var secrets = { entropy };
+        // var password = 'hunter55'
+
+        passworder.encrypt(password, secrets)
+        .then(function(blob) {
+            localStorage.setItem('secret', blob);
+            // debugger
+          // return passworder.decrypt(password, blob)
+        })
+        // .then(function(result) {
+        //   // assert.deepEqual(result, secrets)
+        // })
+
+        
 
 // const privateKey = "5f83be83fdd3c38bdc3f383896260604f42053fd4d6591af0cf946b841bbb4b1";
 
@@ -302,6 +333,18 @@ class Intro extends React.Component {
     generate = () => {
         const mnemonic = bip39.generateMnemonic();
         this.refs.text.value = mnemonic;
+
+        // var secrets = { coolStuff: 'all', ssn: 'livin large' }
+        // var password = 'hunter55'
+
+        // passworder.encrypt(password, secrets)
+        // .then(function(blob) {
+        //     debugger
+        //   // return passworder.decrypt(password, blob)
+        // })
+        // .then(function(result) {
+        //   // assert.deepEqual(result, secrets)
+        // })
     }
 
     render() {
@@ -408,6 +451,9 @@ class Intro extends React.Component {
                     <div>
                         {this.state.mnemonic}
                     </div>
+                </div>
+                <div>
+                    {this.state.error}
                 </div>
             </div>
         );
