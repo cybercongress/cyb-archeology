@@ -10,6 +10,7 @@ var passworder = require('browser-passworder')
 import { startBrowsing } from './../../redux/intro';
 import { Section, Logo } from './../../components/Intro/Intro';
 import { Button, Input } from '@cybercongress/ui';
+import { create as createCyberdAccount, recover } from '../../cyber/crypto';
 
 const Hello = ({ onNext }) => (
     <Section>
@@ -34,32 +35,40 @@ const ImportOrCreate = ({ onCreate, onImport }) => (
     </Section>
 );
 
-
+let mnemonicInput;
 const Import = ({ onBack, onNext }) => (
     <Section>
         <Logo />
         <p>
         Account import. If your seed phrase is incorrect you should create new account
         </p>
-        <textarea rows="4" cols="50"/>
+        <textarea ref={ node => { mnemonicInput = node; }} rows="4" cols="50"/>
         <div>
             <Button onClick={onBack}>back</Button>
-            <Button onClick={onNext}>Next Step</Button>
+            <Button onClick={() => onNext(mnemonicInput.value)}>Next Step</Button>
         </div>
     </Section>
 );
 
-const AccountCreated = ({ onNext }) => (
+const AccountCreated = ({ onNext, eth, cyber }) => (
     <Section>
         <div>
             <p>This is your new account</p>
             <div>
-                <div>0 ETH</div>
-                <div>0x92dF5e8886dA04fe4EB648d46e1Eeaaaa92256E5</div>
+                <div>
+                {eth.balance}
+                 ETH
+                </div>
+                <div>{eth.address}</div>
             </div>
             <div>
-                <div>0 GCYB</div>
-                <div>cyber1f9yjqmxh6prsmgpcaqj8lmjnxg644n5074zznm</div>
+                <div>
+                    {cyber.balance}
+                    GCYB
+                </div>
+                <div>
+                    {cyber.address}
+                </div>
             </div>
         </div>
         <div>
@@ -74,17 +83,17 @@ const AccountCreated = ({ onNext }) => (
     </Section>
 );
 
-const AccountImported = ({ onNext, onBack }) => (
+const AccountImported = ({ onNext, onBack, eth, cyber }) => (
     <Section>
         <div>
             <p>Check your imported account</p>
             <div>
-                <div>1.44 ETH</div>
-                <div>0x92dF5e8886dA04fe4EB648d46e1Eeaaaa92256E5</div>
+                <div>{eth.balance} ETH</div>
+                <div>{eth.address}</div>
             </div>
             <div>
-                <div>146 GCYB</div>
-                <div>cyber1f9yjqmxh6prsmgpcaqj8lmjnxg644n5074zznm</div>
+                <div>{cyber.balance} GCYB</div>
+                <div>{cyber.address}</div>
             </div>
         </div>
         <div>
@@ -100,49 +109,76 @@ const AccountImported = ({ onNext, onBack }) => (
     </Section>
 );
 
+class BackupMnemonic extends React.Component {
+    state = { isCopied: false }
 
-const BackupMnemonic = ({ onNext }) => (
-    <Section>
-        <div>
-            <Logo />
-        </div>
-        <div>
-            <textarea rows="4" cols="50">
-            elevator fit clay lottery pill usual drum flag post pill lecture country hotel logic album
-            </textarea>
-            <div>
-                <Button>Copy</Button>
-            </div>
-            <div>
-                <Button onClick={onNext}>Next Step</Button>
-            </div>
-        </div>
-    </Section>
-);
+    copy = () => {
+        // TODO: copy to clipboard
+        this.setState({ isCopied: true });
+    }
 
-const CreatePassword = ({ onNext }) => (
-    <Section>
-        <div>
-            <Logo/>
-        </div>
-        <div>
-            <div>
-                <p>Now let’s create a password for your account</p>
+    render() {
+        const { mnemonic, onNext } = this.props;
+        const { isCopied } = this.state;
+
+        return (
+            <Section>
                 <div>
-                    Password
-                    <Input />
+                    <Logo />
                 </div>
                 <div>
-                    Confirm password
-                    <Input />
+                    <textarea rows='4' cols='50'>
+                        { mnemonic }
+                    </textarea>
+                    <div>
+                        <Button onClick={ this.copy }>Copy</Button>
+                    </div>
+                    <div>
+                        <Button disabled={ !isCopied } onClick={ onNext }>Next Step</Button>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <Button onClick={ onNext }>Create password</Button>
-            </div>
-        </div>
-    </Section>
-);
+            </Section>
+        );
+    }
+}
+
+class CreatePassword extends React.Component {
+    next = () => {
+        const { onNext } = this.props;
+        const password = this.password.value;
+        const confirmPassword = this.confirmPassword.value;
+
+        if (password === confirmPassword) {
+            onNext(password);
+        }
+    }
+
+    render() {
+        return (
+            <Section>
+                <div>
+                    <Logo />
+                </div>
+                <div>
+                    <div>
+                        <p>Now let’s create a password for your account</p>
+                        <div>
+                            Password
+                            <Input inputRef={ node => this.password = node } />
+                        </div>
+                        <div>
+                            Confirm password
+                            <Input inputRef={ node => this.confirmPassword = node } />
+                        </div>
+                    </div>
+                    <div>
+                        <Button onClick={ this.next }>Create password</Button>
+                    </div>
+                </div>
+            </Section>
+        );
+    }
+}
 
 const Settings = ({ onNext }) => (
     <Section>
@@ -168,28 +204,107 @@ const Congratulation = ({ onNext }) => (
         <p>Well, now you are ready to enjoy your web3 experience! 🤟</p>
         <Button onClick={ onNext } >Start browsing</Button>
     </Section>
+);
+
+let loginPassord = null;
+const Login = ({ error, onLogin }) => (
+    <Section>
+        <p>/Login</p>
+        <div>
+            <Input inputRef={ node => loginPassord = node } />
+        </div>
+        <div>
+            {error}
+        </div>
+        <div>
+            <Button onClick={() => onLogin(loginPassord.value) }>login</Button>
+        </div>
+    </Section>
 )
 
 class Intro extends React.Component {
-    state = { step: 'hello', address: '', privateKey: '', passphrase: '', mnemonic: '', error: '' }
+    state = {
+        step: 'hello',
+        entropy: '',
+        mnemonic: '',
+        ethAccount: null,
+        cyberAccount: null,
+        password: '',
+        loginError: '',
+        // address: '',
+        // privateKey: '',
+        // passphrase: '',
+        // mnemonic: '',
+        // error: ''
+    }
+
+    componentDidMount() {
+        const accountExist = !!localStorage.getItem('secret');
+
+        if (accountExist) {
+            this.setState({ step: 'login' });
+            // this.props.startBrowsing(this.state);
+        } else {
+            this.setState({ step: 'hello' });
+        }
+    }
 
     goToImportOrCreate = () => {
         this.setState({ step: 'inportOrCreate' });
     }
 
     goToCreate = () => {
-        this.setState({ step: 'accountCreated' });
+        const mnemonic = bip39.generateMnemonic();
+
+        const entropy = bip39.mnemonicToEntropy(mnemonic);
+
+        const seed = bip39.mnemonicToSeed(mnemonic, '');
+        const rootKey = hdkey.fromMasterSeed(seed);
+
+        const ethKey = rootKey.derivePath("m/44'/60'/0'/0/0");
+        const ethAddress = ethKey.getWallet().getAddressString();
+        const ethPrivateKey = ethKey.getWallet().getPrivateKey().toString('hex');
+        const account = createCyberdAccount(entropy);
+
+        this.setState({
+            step: 'accountCreated',
+            entropy,
+            mnemonic,
+            ethAccount: { address: ethAddress, balance: 0, privateKey: ethPrivateKey },
+            cyberAccount: { address: account.address, balance: 0, privateKey: account.privateKey },
+        });
     }
 
     goToImport = () => {
         this.setState({ step: 'import' });
     }
 
-    saveSeedAndNext = (seed) => {
+    saveSeedAndNext = (mnemonic) => {
+        const entropy = bip39.mnemonicToEntropy(mnemonic);
+
+        const seed = bip39.mnemonicToSeed(mnemonic, '');
+        const rootKey = hdkey.fromMasterSeed(seed);
+
+        const ethKey = rootKey.derivePath("m/44'/60'/0'/0/0");
+        const ethAddress = ethKey.getWallet().getAddressString();
+        const ethPrivateKey = ethKey.getWallet().getPrivateKey().toString('hex');
+        const account = recover(entropy);
+
+        // TODO: calculate balance
+        this.setState({
+            step: 'accountCreated',
+            entropy,
+            mnemonic,
+            ethAccount: { address: ethAddress, balance: 0, privateKey: ethPrivateKey },
+            cyberAccount: { address: account.address, balance: 0, privateKey: account.privateKey },
+        });
+
         this.setState({ step: 'accountImported' });
     }
 
     goToBackupMnemonic = () => {
+        // this.refs.text.value = mnemonic;
+
         this.setState({ step: 'backupMnemonic' });
     }
 
@@ -197,8 +312,8 @@ class Intro extends React.Component {
         this.setState({ step: 'createPassword' });
     }
 
-    goToSettings = () => {
-        this.setState({ step: 'settings' });
+    goToSettings = (password) => {
+        this.setState({ password, step: 'settings' });
     }
 
     goToCongratulation = () => {
@@ -207,128 +322,118 @@ class Intro extends React.Component {
 
     startBrowsing = () => {
         // this.setState({ step: 'hello' });
-        this.props.startBrowsing();
+        const { entropy, password } = this.state;
+        const secrets = { entropy };
+
+        passworder.encrypt(password, secrets)
+            .then(blob => {
+                localStorage.setItem('secret', blob);
+                this.props.startBrowsing(this.state);
+            });
     }
 
-    exportMnemonic = () => {
-        // const secret = localStorage.getItem('secret');
-        // const mnemonic = secret;
-        // this.setState({ mnemonic });
-
+    login = password => {
         const blob = localStorage.getItem('secret');
-        const password = this.refs.password.value;
 
         passworder.decrypt(password, blob)
             .then(decryptResult => {
                 const { entropy } = decryptResult;
                 const mnemonic = bip39.entropyToMnemonic(entropy);
-                this.setState({ mnemonic, error: '' });
+
+                const seed = bip39.mnemonicToSeed(mnemonic, '');
+                const rootKey = hdkey.fromMasterSeed(seed);
+
+                const ethKey = rootKey.derivePath("m/44'/60'/0'/0/0");
+                const ethAddress = ethKey.getWallet().getAddressString();
+                const ethPrivateKey = ethKey.getWallet().getPrivateKey().toString('hex');
+
+                const account = recover(entropy);
+
+                // TODO: calculate balance
+                const newState = {
+                    password,
+                    entropy,
+                    mnemonic,
+                    ethAccount: { address: ethAddress, balance: 0, privateKey: ethPrivateKey },
+                    cyberAccount: { address: account.address, balance: 0, privateKey: account.privateKey },
+                };
+
+                this.setState({
+                    loginError: '',
+                    ...newState
+                }, () => {
+                    this.props.startBrowsing(this.state);
+                })
             }).catch(e => {
-                this.setState({ error: 'incorrect password' });
+                debugger
+                this.setState({ loginError: 'incorrect password' });
             })
-
     }
 
-    loadFromLS = () => {
-        const blob = localStorage.getItem('secret');
-        const password = this.refs.password.value;
+    // exportMnemonic = () => {
+    //     // const secret = localStorage.getItem('secret');
+    //     // const mnemonic = secret;
+    //     // this.setState({ mnemonic });
 
-        passworder.decrypt(password, blob)
-        .then((decryptResult) => {
+    //     const blob = localStorage.getItem('secret');
+    //     const password = this.refs.password.value;
 
-            // const entropy = secret;
-            const { entropy } = decryptResult;
-            const mnemonic = bip39.entropyToMnemonic(entropy);
-            const seed = bip39.mnemonicToSeed(mnemonic, '');
-            const rootKey = hdkey.fromMasterSeed(seed);
+    //     passworder.decrypt(password, blob)
+    //         .then(decryptResult => {
+    //             const { entropy } = decryptResult;
+    //             const mnemonic = bip39.entropyToMnemonic(entropy);
+    //             this.setState({ mnemonic, error: '' });
+    //         }).catch(e => {
+    //             this.setState({ error: 'incorrect password' });
+    //         })
 
-            const hardenedKey = rootKey.derivePath("m/44'/60'/0'/0/0");
-            const address = hardenedKey.getWallet().getAddressString();
-            const privateKey = hardenedKey.getWallet().getPrivateKey().toString('hex');
-            this.setState({ address, privateKey, error: '' });            
-        }).catch(e => {
-            this.setState({ error: 'incorrect password' });
-        })
-        
-        // const password = this.refs.password.value;
+    // }
 
+    // loadFromLS = () => {
+    //     const blob = localStorage.getItem('secret');
+    //     const password = this.refs.password.value;
 
-        // const secret = bip39.mnemonicToSeedHex(mnemonic, password);
+    //     passworder.decrypt(password, blob)
+    //     .then((decryptResult) => {
 
-        // localStorage.setItem('secret', mnemonic);
+    //         // const entropy = secret;
+    //         const { entropy } = decryptResult;
+    //         const mnemonic = bip39.entropyToMnemonic(entropy);
+    //         const seed = bip39.mnemonicToSeed(mnemonic, '');
+    //         const rootKey = hdkey.fromMasterSeed(seed);
 
-// const privateKey = "5f83be83fdd3c38bdc3f383896260604f42053fd4d6591af0cf946b841bbb4b1";
+    //         const hardenedKey = rootKey.derivePath("m/44'/60'/0'/0/0");
+    //         const address = hardenedKey.getWallet().getAddressString();
+    //         const privateKey = hardenedKey.getWallet().getPrivateKey().toString('hex');
+    //         this.setState({ address, privateKey, error: '' });            
+    //     }).catch(e => {
+    //         this.setState({ error: 'incorrect password' });
+    //     })
 
-        // const wallet = jswallet.fromPrivateKey(Buffer.from(privateKey, "hex"));
-        // const passphrase = wallet.toV3("password");
+    // }
 
-        // const hardenedKey = rootKey.derivePath("m/44'/60'/0'/0");
-        // const index = 0;
-        // const childKey = hardenedKey.deriveChild(index);
-        // const wallet = childKey.getWallet();
-        // const address = wallet.getAddress();
-        // const privateKey = wallet.getPrivateKey();
-        // debugger
-        
-         
-    }
-    createAccount = async () => {
-        const mnemonic = this.refs.text.value;
-        const password = this.refs.password.value;
-        // const seed = bip39.mnemonicToEntropy(mnemonic);
+    // createAccount = async () => {
+    //     const mnemonic = this.refs.text.value;
+    //     const password = this.refs.password.value;
+    //     const entropy = bip39.mnemonicToEntropy(mnemonic);
 
-        // debugger
-        // debugger
+    //     const seed = bip39.mnemonicToSeed(mnemonic, '');
+    //     const rootKey = hdkey.fromMasterSeed(seed);
 
-
-        // const HDNode = hdkey.fromExtendedKey('xprv9s21ZrQH143K2hmKFuFBWzGZDQks4WBKp9Sh4U36kFoinuSMhuuWSKuYSHuWuovpBaAfx1gXYPjsM7UusWgrGA1jAvWsDPPpZbFpqwgDHjd');
-
-        // HDNode.derivePath();
-        // const HDNode = hdkey.fromMasterSeed('017f21be606763150836aeaf1b1526dfe4a6671560e3141fa36539e9f22044e4547c1d16d3c8c7e6b6c1c605f7550d4ff346f49aa5ad5099178b0961b37398f8');
-        // const HDNode = hdkey.fromMasterSeed('razor connect stand unaware escape casino mansion prepare code because artefact hole');
-        // const mnemonic = "antique assume recycle glance agent habit penalty forum behave danger crop weekend";
-        const entropy =  bip39.mnemonicToEntropy(mnemonic);
-
-        const seed = bip39.mnemonicToSeed(mnemonic, '');
-        const rootKey = hdkey.fromMasterSeed(seed);
-
-        const hardenedKey = rootKey.derivePath("m/44'/60'/0'/0/0");
-        const address = hardenedKey.getWallet().getAddressString();
-        const privateKey = hardenedKey.getWallet().getPrivateKey().toString('hex');
+    //     const ethKey = rootKey.derivePath("m/44'/60'/0'/0/0");
+    //     const ethAddress = ethKey.getWallet().getAddressString();
+    //     const ethPrivateKey = ethKey.getWallet().getPrivateKey().toString('hex');
 
 
-        // const secret = bip39.mnemonicToSeedHex(mnemonic, password);
+    //     const secrets = { entropy };
 
-        var secrets = { entropy };
-        // var password = 'hunter55'
+    //     passworder.encrypt(password, secrets)
+    //         .then(blob => {
+    //             localStorage.setItem('secret', blob);
+    //         });
 
-        passworder.encrypt(password, secrets)
-        .then(function(blob) {
-            localStorage.setItem('secret', blob);
-            // debugger
-          // return passworder.decrypt(password, blob)
-        })
-        // .then(function(result) {
-        //   // assert.deepEqual(result, secrets)
-        // })
-
-        
-
-// const privateKey = "5f83be83fdd3c38bdc3f383896260604f42053fd4d6591af0cf946b841bbb4b1";
-
-        // const wallet = jswallet.fromPrivateKey(Buffer.from(privateKey, "hex"));
-        // const passphrase = wallet.toV3("password");
-
-        // const hardenedKey = rootKey.derivePath("m/44'/60'/0'/0");
-        // const index = 0;
-        // const childKey = hardenedKey.deriveChild(index);
-        // const wallet = childKey.getWallet();
-        // const address = wallet.getAddress();
-        // const privateKey = wallet.getPrivateKey();
-        // debugger
-        
-        this.setState({ address, privateKey });
-    }
+    //     this.setState({ address: ethAddress, privateKey: ethPrivateKey });
+    // }
 
     generate = () => {
         const mnemonic = bip39.generateMnemonic();
@@ -348,115 +453,127 @@ class Intro extends React.Component {
     }
 
     render() {
-        const { step } = this.state;
+        const { step, ethAccount, cyberAccount, mnemonic, loginError } = this.state;
 
-        // if (step === 'hello') {
-        //     return (
-        //         <Hello onNext={this.goToImportOrCreate} />
-        //     );
-        // }
+        if (step === 'hello') {
+            return (
+                <Hello onNext={this.goToImportOrCreate} />
+            );
+        }
 
-        // if (step === 'inportOrCreate') {
-        //     return (
-        //         <ImportOrCreate onCreate={this.goToCreate} onImport={this.goToImport} />
-        //     );
-        // }
+        if (step === 'inportOrCreate') {
+            return (
+                <ImportOrCreate onCreate={this.goToCreate} onImport={this.goToImport} />
+            );
+        }
 
-        // if (step === 'import') {
-        //     return (
-        //         <Import onBack={this.goToImportOrCreate} onNext={this.saveSeedAndNext} />
-        //     );
-        // }
-
-
-        // if (step === 'accountCreated') {
-        //     return (
-        //         <AccountCreated onNext={this.goToBackupMnemonic} />
-        //     );
-        // }
-
-        // if (step === 'accountImported') {
-        //     return (
-        //         <AccountImported
-        //           onBack={ this.goToImportOrCreate }
-        //           onNext={ this.goToCreatePassword }
-        //         />
-        //     );
-        // }
+        if (step === 'import') {
+            return (
+                <Import onBack={this.goToImportOrCreate} onNext={this.saveSeedAndNext} />
+            );
+        }
 
 
-        // if (step === 'backupMnemonic') {
-        //     return (
-        //         <BackupMnemonic onNext={ this.goToCreatePassword } />
-        //     );
-        // }
+        if (step === 'accountCreated') {
+            return (
+                <AccountCreated
+                  onNext={ this.goToBackupMnemonic }
+                  eth={ ethAccount }
+                  cyber={ cyberAccount }
+                />
+            );
+        }
 
-        // if (step === 'createPassword') {
-        //     return (
-        //         <CreatePassword onNext={ this.goToSettings } />
-        //     );
-        // }
+        if (step === 'accountImported') {
+            return (
+                <AccountImported
+                  onBack={ this.goToImportOrCreate }
+                  onNext={ this.goToCreatePassword }
+                  eth={ ethAccount }
+                  cyber={ cyberAccount }
+                />
+            );
+        }
 
-        // if (step === 'settings') {
-        //     return (
-        //         <Settings onNext={ this.goToCongratulation } />
-        //     );
-        // }
 
-        // if (step === 'congratulation') {
-        //     return (
-        //         <Congratulation onNext={this.startBrowsing} />
-        //     );
-        // }
+        if (step === 'backupMnemonic') {
+            return (
+                <BackupMnemonic mnemonic={mnemonic} onNext={ this.goToCreatePassword } />
+            );
+        }
 
-        // return null;
+        if (step === 'createPassword') {
+            return (
+                <CreatePassword onNext={ this.goToSettings } />
+            );
+        }
 
-        return (
-            <div>
-                <br/>
-                <div>create:</div>
-                <div>
-                    <div>
-                        <div>Mnemonic:</div>
-                        <textarea rows='4' cols='45' name='text' ref='text'>
+        if (step === 'settings') {
+            return (
+                <Settings onNext={ this.goToCongratulation } />
+            );
+        }
+
+        if (step === 'congratulation') {
+            return (
+                <Congratulation onNext={this.startBrowsing} />
+            );
+        }
+
+        if (step === 'login') {
+            return (
+                <Login error={ loginError } onLogin={this.login} />
+            );
+        }
+
+        return null;
+
+        // return (
+        //     <div>
+        //         <br/>
+        //         <div>create:</div>
+        //         <div>
+        //             <div>
+        //                 <div>Mnemonic:</div>
+        //                 <textarea rows='4' cols='45' name='text' ref='text'>
                             
-                        </textarea>
-                    </div>
-                    <div>
-                        <div>Password:</div>
-                        <input ref='password' />
-                    </div>
-                    <Button onClick={this.createAccount}>create</Button>
-                    <Button onClick={this.generate}>new</Button>
-                </div>
-                <div>
-                    <Button onClick={this.loadFromLS}>load from LS</Button>
-                </div>
-                <div>
-                    <div>
-                        account:
-                    </div>
-                    <div>
-                        {this.state.address}
-                    </div>
-                    <div>
-                        {this.state.privateKey}
-                    </div>
-                </div>
-                <div>
-                    {this.state.passphrase}
-                </div>
-                <div>
-                    <Button onClick={this.exportMnemonic}>export</Button>
-                    <div>
-                        {this.state.mnemonic}
-                    </div>
-                </div>
-                <div>
-                    {this.state.error}
-                </div>
-            </div>
-        );
+        //                 </textarea>
+        //             </div>
+        //             <div>
+        //                 <div>Password:</div>
+        //                 <input ref='password' />
+        //             </div>
+        //             <Button onClick={this.createAccount}>create</Button>
+        //             <Button onClick={this.generate}>new</Button>
+        //         </div>
+        //         <div>
+        //             <Button onClick={this.loadFromLS}>load from LS</Button>
+        //         </div>
+        //         <div>
+        //             <div>
+        //                 account:
+        //             </div>
+        //             <div>
+        //                 {this.state.address}
+        //             </div>
+        //             <div>
+        //                 {this.state.privateKey}
+        //             </div>
+        //         </div>
+        //         <div>
+        //             {this.state.passphrase}
+        //         </div>
+        //         <div>
+        //             <Button onClick={this.exportMnemonic}>export</Button>
+        //             <div>
+        //                 {this.state.mnemonic}
+        //             </div>
+        //         </div>
+        //         <div>
+        //             {this.state.error}
+        //         </div>
+        //     </div>
+        // );
     }
 }
 

@@ -17,9 +17,17 @@ export const reducer = (state = initState, action) => {
     }
 };
 
-export const startBrowsing = () => (dispatch) => {
-    dispatch(navigate(''));
+let moduleCallbacks = [];
+
+export const onApplicationStart = (cb) => {
+    moduleCallbacks.push(cb);
+};
+
+export const startBrowsing = (startConfig) => (dispatch) => {
+    dispatch(navigate('wallet.cyb'));
     dispatch({
         type: 'START_BROWSING',
     });
+
+    moduleCallbacks.forEach(cb => cb(startConfig, dispatch));
 };

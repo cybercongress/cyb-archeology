@@ -110,11 +110,11 @@ const CyberAccounts = (props) => {
 
             {defaultAccount && <hr style={ { marginBottom: 10 } } />}
 
-            {accountsItem}
+            {/*accountsItem*/}
 
-            <CreateButtonContainer>
+            {/*<CreateButtonContainer>
                 <Button color='blue' onClick={ () => props.createCyberAccount() }>CREATE NEW</Button>
-            </CreateButtonContainer>
+            </CreateButtonContainer>*/}
         </div>
     );
 };

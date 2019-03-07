@@ -9,6 +9,7 @@ import {
     WalletSidebar,
     WalletContent,
     ScrollContainer,
+    Button,
 } from '@cybercongress/ui';
 import EthAccounts from './EthAccounts';
 import ETHImport from './ETHImport';
@@ -24,6 +25,7 @@ class Page extends Component {
     state = {
         tab: 'eth',
         menu: 'accounts',
+        show: false,
     };
 
     select = (tab) => {
@@ -34,12 +36,18 @@ class Page extends Component {
         this.setState({ menu });
     };
 
-    render() {
-        const { password } = this.props;
+    showMnemonic = () => {
+        this.setState({
+            show: !this.state.show,
+        });
+    }
 
-        if (!password) {
-            return <RequirePassword />;
-        }
+    render() {
+        // const { password } = this.props;
+
+        // if (!password) {
+        //     return <RequirePassword />;
+        // }
 
         const { tab, menu } = this.state;
 
@@ -103,18 +111,18 @@ class Page extends Component {
                                     >
                                         accounts
                                     </WalletTab>
-                                    <WalletTab
+                                    {/*<WalletTab
                                       onClick={ () => this.selectMenu('import') }
                                       isActive={ menu === 'import' }
                                     >
                                         import account
-                                    </WalletTab>
-                                    <WalletTab
+                                    </WalletTab>*/}
+                                    {/*<WalletTab
                                       onClick={ () => this.selectMenu('send') }
                                       isActive={ menu === 'send' }
                                     >
                                         send tokens
-                                    </WalletTab>
+                                    </WalletTab>*/}
                                     <WalletTab
                                       onClick={ () => this.selectMenu('changePassword') }
                                       isActive={ menu === 'changePassword' }
@@ -124,7 +132,18 @@ class Page extends Component {
                                 </WalletTabs>
                             </div>
                         </WalletSidebar>
-                        <WalletContent>{content}</WalletContent>
+                        <WalletContent>
+                            <div>{content}</div>
+                            <div>
+                                <Button color='blue' onClick={ this.showMnemonic }>
+                                    EXPORT MNEMONIC
+                                </Button>
+                            </div>
+                            {this.state.show && <div>
+                                {this.props.mnemonic}
+                            </div>}
+                        </WalletContent>
+                        
                     </WalletLauout>
                 </MainContainer>
             </ScrollContainer>
@@ -134,4 +153,5 @@ class Page extends Component {
 
 export default connect(state => ({
     password: state.wallet.password,
+    mnemonic: state.wallet.mnemonic,
 }))(Page);

@@ -4,8 +4,18 @@ import Cyber from '../cyber/Cyber';
 import { navigate, goBack } from './browser';
 import { setEthNetworkName } from './settings';
 import { showSigner } from './signer';
+import { onApplicationStart } from './intro';
 
 const IPFS = require('ipfs-api');
+let eth;
+let provider;
+let web3;
+let wv = null;
+
+// window.cyber = null;
+
+const ZeroClientProvider = require('../preload/zero.js');
+
 
 const initState = {
     accounts: [],
@@ -22,6 +32,7 @@ const initState = {
     notificationLinkCounter: 0,
 
     signerError: '',
+    mnemonic: '',
 };
 
 export const reducer = (state = initState, action) => {
@@ -68,7 +79,12 @@ export const reducer = (state = initState, action) => {
         };
     }
 
-
+    case 'SET_MNEMONIC': {
+        return {
+            ...state,
+            mnemonic: action.payload
+        }
+    }
     case 'SET_ETH_TRANSACTIONS': {
         return {
             ...state,
@@ -107,46 +123,129 @@ export const reducer = (state = initState, action) => {
     }
 };
 
-let eth;
-let provider;
-let web3;
-let wv = null;
+const initProvider = (endpoint, ethAccount) => {
+     provider = new ZeroClientProvider({
+        rpcUrl: endpoint,
+        getAccounts(cb) {
+            // show address with low and upper literal
+            // const accounts = Object.keys(__accounts).map(address => __accounts[address].address.toLowerCase());
 
-window.cyber = null;
 
-const ZeroClientProvider = require('../preload/zero.js');
+            const accounts = [ethAccount.address];
+            // getState().wallet.defaultAccount ? [getState().wallet.defaultAccount.toLowerCase()] : [];
 
-export const loadAccounts = () => (dispatch, getState) => new Promise((resolve) => {
-    if (!eth) {
-        return;
-    }
+            cb(null, accounts);
+        },
 
-    //     //Object.keys(__accounts).map(address => __accounts[address].address);
-    // for(let n = 0; n < web3.eth.accounts.wallet.length; n++) {
-    //     _accounts.push(web3.eth.accounts.wallet[n].address);
-    // }
-    var indexes = web3.eth.accounts.wallet._currentIndexes();
-    const _accounts = indexes.map(index => {
-        return web3.eth.accounts.wallet[index].address;
+        getPrivateKey(address, cb) {
+            // const pk = __accounts[address].privateKey;
+            // const pk = web3.eth.accounts.wallet[address].privateKey;
+            const pk = ethAccount.privateKey;
+
+            if (pk) {
+                // const privateKey = new Buffer(pk.substr(2), 'hex');
+                const privateKey = new Buffer(pk, 'hex');
+                cb(null, privateKey);
+            } else {
+                cb('pk not found');
+            }
+        },
+    });
+    web3 = new Web3(provider);
+    ({ eth } = web3);
+    provider.start();
+
+    provider.on('data', (e, payload) => {
+        const message = payload;
+        const {
+            method,
+        } = message;
+
+        if (wv && method && method.indexOf('_subscription') > -1) {
+            // Emit subscription notification
+            wv.send('web3_eth_event_data', payload);
+        }
     });
 
+};
+
+const loadAccountBalance = (address) => {
+
+}
+
+onApplicationStart((browserState, dispatch) => {
+    // let password = '';
+    // ({ password } = browserState);
+
+
+    // if (password) {
+    //     dispatch({
+    //         type: 'SET_ETH_PASSWORD',
+    //         payload: password,
+    //     });
+    // }
+
+    initProvider('https://kovan.infura.io', browserState.ethAccount);
+
+    const accountAddress = [browserState.ethAccount.address];
+
     Promise.all(
-        _accounts.map(address => new Promise((resolve) => {
+        accountAddress.map(address => new Promise((resolve) => {
             eth.getBalance(address.toLowerCase()).then((_balance) => {
                 resolve({
                     balance: web3.utils.fromWei(_balance, 'ether'),
-                    address: address,
+                    address,
                 });
             });
         })),
-    ).then((accounts) => {
+    ).then((accounts) => {        
+        dispatch({
+            type: 'SET_DEFAULT_ACCOUNT',
+            payload: { address: accounts[0].address, balance: accounts[0].balance },
+        });
         dispatch({
             type: 'LOAD_ACCOUNTS',
             payload: accounts,
         });
-        resolve(accounts);
+        dispatch({
+            type: 'SET_MNEMONIC',
+            payload: browserState.mnemonic
+        });
     });
 });
+
+
+// export const loadAccounts = () => (dispatch, getState) => new Promise((resolve) => {
+//     if (!eth) {
+//         return;
+//     }
+
+//     //     //Object.keys(__accounts).map(address => __accounts[address].address);
+//     // for(let n = 0; n < web3.eth.accounts.wallet.length; n++) {
+//     //     _accounts.push(web3.eth.accounts.wallet[n].address);
+//     // }
+//     var indexes = web3.eth.accounts.wallet._currentIndexes();
+//     const _accounts = indexes.map(index => {
+//         return web3.eth.accounts.wallet[index].address;
+//     });
+
+//     Promise.all(
+//         _accounts.map(address => new Promise((resolve) => {
+//             eth.getBalance(address.toLowerCase()).then((_balance) => {
+//                 resolve({
+//                     balance: web3.utils.fromWei(_balance, 'ether'),
+//                     address: address,
+//                 });
+//             });
+//         })),
+//     ).then((accounts) => {
+//         dispatch({
+//             type: 'LOAD_ACCOUNTS',
+//             payload: accounts,
+//         });
+//         resolve(accounts);
+//     });
+// });
 
 
 const saveTransaction = (payload, txHash) => {
@@ -173,80 +272,80 @@ const saveTransaction = (payload, txHash) => {
 };
 
 
-export const setDefaultAccount = account => (dispatch) => {
-    let address = '';
-    let balance;
-    if (!account) {
-        const defaultAccount = localStorage.getItem('defaultEthAccount') || '';
-        if (web3.eth.accounts.wallet.length > 0) {
-            if (defaultAccount) {
-                address = defaultAccount;
-            } else {
-                address = web3.eth.accounts.wallet[0].address;
-                // Object.keys(__accounts).forEach(_address => {
-                //     address = __accounts[_address].address;
-                // });
-            }
-            balance = eth.getBalance(address);
-        }
-    } else {
-        ({ address, balance } = account);
-    }
+// export const setDefaultAccount = account => (dispatch) => {
+//     let address = '';
+//     let balance;
+//     if (!account) {
+//         const defaultAccount = localStorage.getItem('defaultEthAccount') || '';
+//         if (web3.eth.accounts.wallet.length > 0) {
+//             if (defaultAccount) {
+//                 address = defaultAccount;
+//             } else {
+//                 address = web3.eth.accounts.wallet[0].address;
+//                 // Object.keys(__accounts).forEach(_address => {
+//                 //     address = __accounts[_address].address;
+//                 // });
+//             }
+//             balance = eth.getBalance(address);
+//         }
+//     } else {
+//         ({ address, balance } = account);
+//     }
 
-    web3.eth.defaultAccount = address;
+//     web3.eth.defaultAccount = address;
 
-    if (balance && balance.then) {
-        balance.then(_balance => {
-            dispatch({
-                type: 'SET_DEFAULT_ACCOUNT',
-                payload: { address, balance: web3.utils.fromWei(_balance, 'ether') },
-            });
-        });
-    } else {
-        dispatch({
-            type: 'SET_DEFAULT_ACCOUNT',
-            payload: { address, balance },
-        });
-    }
+//     if (balance && balance.then) {
+//         balance.then(_balance => {
+//             dispatch({
+//                 type: 'SET_DEFAULT_ACCOUNT',
+//                 payload: { address, balance: web3.utils.fromWei(_balance, 'ether') },
+//             });
+//         });
+//     } else {
+//         dispatch({
+//             type: 'SET_DEFAULT_ACCOUNT',
+//             payload: { address, balance },
+//         });
+//     }
 
-    if (!!address) {
-        localStorage.setItem('defaultEthAccount', address);
-    }
-};
+//     if (!!address) {
+//         localStorage.setItem('defaultEthAccount', address);
+//     }
+// };
 
-export const importAccount = privateKey => (dispatch, getState) => new Promise((resolve) => {
-    const _privateKey = privateKey.startsWith('0x') ? privateKey : `0x${privateKey}`;
-    const data = web3.eth.accounts.privateKeyToAccount(_privateKey);
+// export const importAccount = privateKey => (dispatch, getState) => new Promise((resolve) => {
+//     const _privateKey = privateKey.startsWith('0x') ? privateKey : `0x${privateKey}`;
+//     const data = web3.eth.accounts.privateKeyToAccount(_privateKey);
 
-    // __accounts[data.address.toLowerCase()] = data;
-    // localStorage.setItem('accounts', JSON.stringify(__accounts));
+//     // __accounts[data.address.toLowerCase()] = data;
+//     // localStorage.setItem('accounts', JSON.stringify(__accounts));
 
-    web3.eth.accounts.wallet.add(data);
-    web3.eth.accounts.wallet.save(getState().wallet.password);
+//     web3.eth.accounts.wallet.add(data);
+//     web3.eth.accounts.wallet.save(getState().wallet.password);
 
-    dispatch(loadAccounts()).then((accounts) => {
-        if (accounts.length === 1) {
-            dispatch(setDefaultAccount());
-        }
-        resolve(data);
-    });
-});
+//     dispatch(loadAccounts()).then((accounts) => {
+//         if (accounts.length === 1) {
+//             dispatch(setDefaultAccount());
+//         }
+//         resolve(data);
+//     });
+// });
 
-export const createAccount = () => (dispatch, getState) => {
-    const data = web3.eth.accounts.create();
+// export const createAccount = () => (dispatch, getState) => {
+//     const data = web3.eth.accounts.create();
 
-    // __accounts[data.address.toLowerCase()] = data;
-    // localStorage.setItem('accounts', JSON.stringify(__accounts));
-    web3.eth.accounts.wallet.add(data);
-    web3.eth.accounts.wallet.save(getState().wallet.password);
+//     // __accounts[data.address.toLowerCase()] = data;
+//     // localStorage.setItem('accounts', JSON.stringify(__accounts));
+//     web3.eth.accounts.wallet.add(data);
+//     web3.eth.accounts.wallet.save(getState().wallet.password);
 
-    dispatch(loadAccounts()).then((accounts) => {
-        if (accounts.length === 1) {
-            dispatch(setDefaultAccount());
-        }
+//     dispatch(loadAccounts()).then((accounts) => {
+//         if (accounts.length === 1) {
+//             dispatch(setDefaultAccount());
+//         }
 
-    });
-};
+//     });
+// };
 
 export const changePassword = (newPassword) => (dispatch, getState) => {
     web3.eth.accounts.wallet.save(newPassword);
@@ -257,73 +356,73 @@ export const changePassword = (newPassword) => (dispatch, getState) => {
     });
 };
 
-export const deleteAccount = address => (dispatch, getState) => new Promise((resolve) => {
+// export const deleteAccount = address => (dispatch, getState) => new Promise((resolve) => {
 
-    // delete __accounts[address.toLowerCase()];
-    // localStorage.setItem('accounts', JSON.stringify(__accounts));
+//     // delete __accounts[address.toLowerCase()];
+//     // localStorage.setItem('accounts', JSON.stringify(__accounts));
 
-    const _address = address.toLowerCase();
+//     const _address = address.toLowerCase();
 
-    const index = web3.eth.accounts.wallet[_address].index;
-    web3.eth.accounts.wallet.remove(index);
-    web3.eth.accounts.wallet.save(getState().wallet.password);
-    web3.eth.accounts.wallet.load(getState().wallet.password);
+//     const index = web3.eth.accounts.wallet[_address].index;
+//     web3.eth.accounts.wallet.remove(index);
+//     web3.eth.accounts.wallet.save(getState().wallet.password);
+//     web3.eth.accounts.wallet.load(getState().wallet.password);
 
-    const { defaultAccount } = getState().wallet;
+//     const { defaultAccount } = getState().wallet;
 
-    if (address.toLowerCase() === defaultAccount.toLowerCase()) {
-        dispatch(setDefaultAccount());
-    }
+//     if (address.toLowerCase() === defaultAccount.toLowerCase()) {
+//         dispatch(setDefaultAccount());
+//     }
 
-    resolve(address);
-});
+//     resolve(address);
+// });
 
 
-export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatch => new Promise((resolve) => {
-    dispatch(showSigner({
-        fromAddress: _from,
-        toAddress: to,
-        gasPrice: 20,
-        gasLimit: 210000,
-        value: amount,
-    })).then((data) => {
-        console.log('>>', data, web3.utils.toWei(`${data.gasPrice}`, 'Gwei'));
-        eth.sendTransaction({
-            from: _from,
-            to,
-            value: web3.utils.toWei(amount.toString(), 'ether'),
-            gasPrice: web3.utils.toWei(`${data.gasPrice}`, 'Gwei'),
-            gas: data.gasLimit,
-        }).on('transactionHash', (hash) => {
-            console.log('transactionHash', hash);
-            saveTransaction({
-                params: [{
-                    from: _from.toLowerCase(),
-                    toAddress: to,
-                    gasPrice: 20,
-                    gasLimit: 210000,
-                    value: amount,
-                }],
-            }, hash);
+// export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatch => new Promise((resolve) => {
+//     dispatch(showSigner({
+//         fromAddress: _from,
+//         toAddress: to,
+//         gasPrice: 20,
+//         gasLimit: 210000,
+//         value: amount,
+//     })).then((data) => {
+//         console.log('>>', data, web3.utils.toWei(`${data.gasPrice}`, 'Gwei'));
+//         eth.sendTransaction({
+//             from: _from,
+//             to,
+//             value: web3.utils.toWei(amount.toString(), 'ether'),
+//             gasPrice: web3.utils.toWei(`${data.gasPrice}`, 'Gwei'),
+//             gas: data.gasLimit,
+//         }).on('transactionHash', (hash) => {
+//             console.log('transactionHash', hash);
+//             saveTransaction({
+//                 params: [{
+//                     from: _from.toLowerCase(),
+//                     toAddress: to,
+//                     gasPrice: 20,
+//                     gasLimit: 210000,
+//                     value: amount,
+//                 }],
+//             }, hash);
 
-            dispatch({
-                type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
-            });
+//             dispatch({
+//                 type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
+//             });
 
-        })
-            .on('receipt', (receipt) => {
-                console.log('receipt', receipt);
-            })
-            .on('confirmation', (confirmationNumber, receipt) => {
-                console.log('confirmation', confirmationNumber, receipt);
-                if (confirmationNumber === _confirmationNumber) {
-                    resolve();
-                }
-            });
-    }).catch((e) => {
-        console.log('send error', e);
-    });
-});
+//         })
+//             .on('receipt', (receipt) => {
+//                 console.log('receipt', receipt);
+//             })
+//             .on('confirmation', (confirmationNumber, receipt) => {
+//                 console.log('confirmation', confirmationNumber, receipt);
+//                 if (confirmationNumber === _confirmationNumber) {
+//                     resolve();
+//                 }
+//             });
+//     }).catch((e) => {
+//         console.log('send error', e);
+//     });
+// });
 
 export const getEthStatus = url => new Promise((resolve) => {
     axios.post(url, {
@@ -486,80 +585,80 @@ export const receiveMessage = e => (dispatch, getState) => {
     }
 };
 
-export const init = endpoint => (dispatch, getState) => {
-    provider = new ZeroClientProvider({
-        rpcUrl: endpoint,
-        getAccounts(cb) {
-            // show address with low and upper literal
-            // const accounts = Object.keys(__accounts).map(address => __accounts[address].address.toLowerCase());
+// export const init = endpoint => (dispatch, getState) => {
+//     provider = new ZeroClientProvider({
+//         rpcUrl: endpoint,
+//         getAccounts(cb) {
+//             // show address with low and upper literal
+//             // const accounts = Object.keys(__accounts).map(address => __accounts[address].address.toLowerCase());
 
-            if (!getState().wallet.password) {
-                dispatch(navigate('wallet.cyb'));
-            }
+//             if (!getState().wallet.password) {
+//                 dispatch(navigate('wallet.cyb'));
+//             }
 
-            const accounts = getState().wallet.defaultAccount ? [getState().wallet.defaultAccount.toLowerCase()] : [];
+//             const accounts = getState().wallet.defaultAccount ? [getState().wallet.defaultAccount.toLowerCase()] : [];
 
-            cb(null, accounts);
-        },
+//             cb(null, accounts);
+//         },
 
-        getPrivateKey(address, cb) {
-            // const pk = __accounts[address].privateKey;
-            const pk = web3.eth.accounts.wallet[address].privateKey;
+//         getPrivateKey(address, cb) {
+//             // const pk = __accounts[address].privateKey;
+//             const pk = web3.eth.accounts.wallet[address].privateKey;
 
-            if (pk) {
-                const privateKey = new Buffer(pk.substr(2), 'hex');
-                cb(null, privateKey);
-            } else {
-                cb('pk not found');
-            }
-        },
-    });
-    web3 = new Web3(provider);
-    ({ eth } = web3);
-    provider.start();
+//             if (pk) {
+//                 const privateKey = new Buffer(pk.substr(2), 'hex');
+//                 cb(null, privateKey);
+//             } else {
+//                 cb('pk not found');
+//             }
+//         },
+//     });
+//     web3 = new Web3(provider);
+//     ({ eth } = web3);
+//     provider.start();
 
-    provider.on('data', (e, payload) => {
-        const message = payload;
-        const {
-            method,
-        } = message;
+//     provider.on('data', (e, payload) => {
+//         const message = payload;
+//         const {
+//             method,
+//         } = message;
 
-        if (wv && method && method.indexOf('_subscription') > -1) {
-            // Emit subscription notification
-            wv.send('web3_eth_event_data', payload);
-        }
-    });
+//         if (wv && method && method.indexOf('_subscription') > -1) {
+//             // Emit subscription notification
+//             wv.send('web3_eth_event_data', payload);
+//         }
+//     });
 
-    web3.eth.net.getId((err, netId) => {
-        switch (netId) {
-            case 1:
-                dispatch(setEthNetworkName('Main'));
-                break;
-            case 42:
-                dispatch(setEthNetworkName('Kovan'));
-                break;
-            case 4:
-                dispatch(setEthNetworkName('Rinkeby'));
-                break;
-            default:
-                dispatch(setEthNetworkName(`ID: ${netId}`));
-        }
-    });
+//     web3.eth.net.getId((err, netId) => {
+//         switch (netId) {
+//             case 1:
+//                 dispatch(setEthNetworkName('Main'));
+//                 break;
+//             case 42:
+//                 dispatch(setEthNetworkName('Kovan'));
+//                 break;
+//             case 4:
+//                 dispatch(setEthNetworkName('Rinkeby'));
+//                 break;
+//             default:
+//                 dispatch(setEthNetworkName(`ID: ${netId}`));
+//         }
+//     });
 
-    const ipfsConfig = getState().settings.ipfsWrite;
-    const ipfs = new IPFS(ipfsConfig);
+//     const ipfsConfig = getState().settings.ipfsWrite;
+//     const ipfs = new IPFS(ipfsConfig);
 
-    window.cyber = new Cyber(
-        getState().settings.SEARCH_END_POINT, ipfs,
-        getState().settings.CYBERD_WS_END_POINT,
-    );
+//     window.cyber = new Cyber(
+//         getState().settings.SEARCH_END_POINT, ipfs,
+//         getState().settings.CYBERD_WS_END_POINT,
+//     );
 
-    if (getState().wallet.password) {
-        web3.eth.accounts.wallet.load(getState().wallet.password);
-    }
-    dispatch(loadAccounts())
-        .then(() => dispatch(setDefaultAccount()));
-};
+//     if (getState().wallet.password) {
+//         web3.eth.accounts.wallet.load(getState().wallet.password);
+//     }
+//     dispatch(loadAccounts())
+//         .then(() => dispatch(setDefaultAccount()));
+// };
 
 function financial(x) {
     return Number.parseFloat(x).toFixed(2);
@@ -591,29 +690,29 @@ export const onCopyKey = (address) => (dispatch, getState) => {
     });
 }
 
-export const login = (password) => (dispatch, getState) => {
-    try {
-        web3.eth.accounts.wallet.load(password);
-        if (web3.eth.accounts.wallet.length === 0) {
-            throw 'no accounts';
-        }
-        dispatch({
-            type: 'SET_ETH_PASSWORD',
-            payload: password,
-        });
-        dispatch(loadAccounts())
-            .then(() => {
-                dispatch(setDefaultAccount());
-                // dispatch({ type: 'MOVE_BACK' });
-                dispatch(goBack()); //back to page if start not from waalet
-            });
-    } catch (e) {
-        dispatch({
-            type: 'SET_ETH_PASSWORD_FAIL',
-        });
-    }
+// export const login = (password) => (dispatch, getState) => {
+//     try {
+//         web3.eth.accounts.wallet.load(password);
+//         if (web3.eth.accounts.wallet.length === 0) {
+//             throw 'no accounts';
+//         }
+//         dispatch({
+//             type: 'SET_ETH_PASSWORD',
+//             payload: password,
+//         });
+//         dispatch(loadAccounts())
+//             .then(() => {
+//                 dispatch(setDefaultAccount());
+//                 // dispatch({ type: 'MOVE_BACK' });
+//                 dispatch(goBack()); //back to page if start not from waalet
+//             });
+//     } catch (e) {
+//         dispatch({
+//             type: 'SET_ETH_PASSWORD_FAIL',
+//         });
+//     }
 
-}
+// }
 
 export const createPassword = (password) => (dispatch, getState) => {
     dispatch({

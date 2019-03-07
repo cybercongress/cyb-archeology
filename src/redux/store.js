@@ -57,10 +57,10 @@ const store = createStore(rootReducer, applyMiddleware(thunk));
 export const appStart = () => new Promise((resolve) => {
     store.dispatch(initSettings()).then(({ IPFS_END_POINT, PARITTY_END_POINT }) => {
         store.dispatch(initRootRegistry());
-        store.dispatch(initWallet(PARITTY_END_POINT));
+        // store.dispatch(initWallet(PARITTY_END_POINT));
         store.dispatch(initAppMenu());
         store.dispatch(initBrowser(IPFS_END_POINT));
-        store.dispatch(initCyber());
+        // store.dispatch(initCyber());
         resolve();
     });
 });

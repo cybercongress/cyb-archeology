@@ -2,6 +2,9 @@ const initState = {
     accounts: [],
     defaultAccount: '',
 };
+import Cyber from '../cyber/Cyber';
+const IPFS = require('ipfs-api');
+import { onApplicationStart } from './intro';
 
 export const reducer = (state = initState, action) => {
     switch (action.type) {
@@ -115,3 +118,23 @@ export const onCopyKey = (address) => (dispatch, getState) => {
         });
     });
 }
+
+onApplicationStart((browserState, dispatch) => {
+
+    const ipfsConfig = {
+        host: 'localhost',
+        port: 5001,
+        protocol: 'http',
+    };
+    const ipfs = new IPFS(ipfsConfig);
+
+    window.cyber = new Cyber('http://earth.cybernode.ai:34657', ipfs, 'ws://earth.cybernode.ai:34657/websocket');
+
+    const accounts = [browserState.cyberAccount];
+
+    dispatch({
+        type: 'SET_CYBER_ACCOUNTS',
+        payload: accounts,
+    });
+    dispatch(setDefaultCyberAccount(accounts[0]));
+});

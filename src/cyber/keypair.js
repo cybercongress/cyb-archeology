@@ -37,10 +37,10 @@ module.exports = {
         return addr.digest('hex').toUpperCase();
     },
 
-    create() {
+    create(_entropy) {
         const entropySize = 24 * 11 - 8;
         const entropy = Random(entropySize / 8);
-        const mnemonicS = bip39.entropyToMnemonic(entropy);
+        const mnemonicS = bip39.entropyToMnemonic(_entropy ? _entropy : entropy);
 
         const secretKey = this.getPrivateKeyFromSecret(mnemonicS);
 
@@ -99,6 +99,7 @@ const hd = {
 
     derivePrivateKeyForPath(privKeyBytes, chainCode, path) {
         let data = privKeyBytes;
+        
         const parts = path.split('/');
 
         parts.forEach((part) => {

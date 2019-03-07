@@ -285,7 +285,7 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
         });
     };
 
-    self.createAccount = function () {
+    self.createAccount = function (entropy) {
         return new Promise((resolve) => {
             const account = createCyberdAccount();
 

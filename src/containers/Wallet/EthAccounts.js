@@ -35,7 +35,7 @@ class EthAccounts extends Component {
     };
 
     componentWillMount() {
-        this.loadAccounts();
+        // this.loadAccounts();
     }
 
     forgetAccount = (address, e) => {
@@ -88,54 +88,55 @@ ETH
             </AccountCard>
         );
 
-        const accountsItem = accounts.filter(a => a.address !== defaultAccount).map(account => (
-            <AccountCard key={ account.address }>
-                <AccountCardLeft>
-                    <Avatar hash={ account.address } />
-                    <Button
-                      color='ogange'
-                      style={ { fontSize: 14 } }
-                      onClick={ () => this.setDefaultAccount(account) }
-                    >
-                        MAKE MAIN
-                    </Button>
-                </AccountCardLeft>
-                <AccountCardRight>
-                    <AccountCardContent>
-                        <AccountCardContentItem>
-Address:
-                            {account.address}
-                        </AccountCardContentItem>
-                        <AccountCardContentItem>
-                            <div>
-Balance:
-                                {' '}
-                                {account.balance}
-                                {' '}
-ETH
-                            </div>
-                            <div>
-                                <div>
-                                    <Button
-                                      color='red'
-                                      onClick={ e => this.forgetAccount(account.address, e) }
-                                      style={ { marginRight: 10 } }
-                                    >
-                                        REMOVE
-                                    </Button>
-                                    <Button
-                                      color='blue'
-                                      onClick={ () => this.props.onCopyKey(account.address) }
-                                    >
-                                        COPY PRIVATE KEY
-                                    </Button>
-                                </div>
-                            </div>
-                        </AccountCardContentItem>
-                    </AccountCardContent>
-                </AccountCardRight>
-            </AccountCard>
-        ));
+//         const accountsItem = accounts.filter(a => a.address !== defaultAccount).map(account => (
+//             <AccountCard key={ account.address }>
+//                 <AccountCardLeft>
+//                     <Avatar hash={ account.address } />
+//                     <Button
+//                       color='ogange'
+//                       style={ { fontSize: 14 } }
+//                       onClick={ () => this.setDefaultAccount(account) }
+//                     >
+//                         MAKE MAIN
+//                     </Button>
+//                 </AccountCardLeft>
+//                 <AccountCardRight>
+//                     <AccountCardContent>
+//                         <AccountCardContentItem>
+// Address:
+//                             {account.address}
+//                         </AccountCardContentItem>
+//                         <AccountCardContentItem>
+//                             <div>
+// Balance:
+//                                 {' '}
+//                                 {account.balance}
+//                                 {' '}
+// ETH
+//                             </div>
+//                             <div>
+//                                 <div>
+//                                     <Button
+//                                       color='red'
+//                                       onClick={ e => this.forgetAccount(account.address, e) }
+//                                       style={ { marginRight: 10 } }
+//                                     >
+//                                         REMOVE
+//                                     </Button>
+//                                     <Button
+//                                       color='blue'
+//                                       onClick={ () => this.props.onCopyKey(account.address) }
+//                                     >
+//                                         COPY PRIVATE KEY
+//                                     </Button>
+//                                 </div>
+//                             </div>
+//                         </AccountCardContentItem>
+//                     </AccountCardContent>
+//                 </AccountCardRight>
+//             </AccountCard>
+//         ));
+
 
         return (
             <div>
@@ -143,12 +144,13 @@ ETH
 
                 {defaultAccount && <hr style={ { marginBottom: 10 } } />}
 
-                {accountsItem}
+                {/*accountsItem*/}
 
                 <CreateButtonContainer>
-                    <Button color='blue' onClick={ this.create }>
+                    {/*<Button color='blue' onClick={ this.create }>
                         CREATE NEW
-                    </Button>
+                    </Button>*/}
+                    
                 </CreateButtonContainer>
             </div>
         );
