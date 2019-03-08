@@ -167,12 +167,15 @@ const saveTransaction = (payload, txHash) => {
         transactions[address] = [];
     }
 
+    const hasResendTxs = transactions[address].find(x => x.canResend === true);
+
     const newPayload = {
         ...payload,
         txHash,
         date: new Date(),
         type: 'eth',
         status: 'pending',
+        canResend: hasResendTxs ? false : true,
     };
 
     transactions[address] = transactions[address].concat(newPayload);
@@ -667,6 +670,17 @@ export const updateStatusTransactions = () => (dispatch) => {
                             } else {
                                 item.status = 'error';
                             }
+                            item.canResend = false;
+
+                            const hasResendTxs = transactions[address].find(x => x.canResend === true);
+
+                            transactions[address] = transactions[address].map(item => {
+                              if (item.status === 'pending') {
+                                  return { ...item, canResend: hasResendTxs ? false : true };
+                              }
+                              return item;
+                            });
+
                             localStorage.setItem('transactions', JSON.stringify(transactions));
                             dispatch({
                                 type: 'SET_NOTIFICATION_LINK_COUNTER_DEC',
@@ -820,9 +834,18 @@ export const resend = (txHash) => (dispatch, getState) => {
                         //transactions[addressLowerCase].find(x => x.txHash === txHash).status = 'cancelled';
                         transactions[addressLowerCase] = transactions[addressLowerCase].map(item => {
                             if (item.txHash === txHash) {
-                                return { ...item, status: 'cancelled' };
+                                return { ...item, status: 'cancelled', canResend: false };
                             }
                             return item;
+                        });
+
+                        const hasResendTxs = transactions[addressLowerCase].find(x => x.canResend === true);
+
+                        transactions[addressLowerCase] = transactions[addressLowerCase].map(item => {
+                          if (item.status === 'pending') {
+                              return { ...item, canResend: hasResendTxs ? false : true };
+                          }
+                          return item;
                         });
 
                         localStorage.setItem('transactions', JSON.stringify(transactions));

@@ -62,7 +62,9 @@ class TxQueue extends Component {
                                     item.type === 'eth' && item.status === 'pending' ? (
                                         <div>
                                             <Loader type='Watch' color='#438cef' height={ 27 } width={ 27 } style={ 'TxQueue_spinner' } />
+                                        { item.canResend ? (
                                             <Button onClick={ () => this.resend(item.txHash) }>resend</Button>
+                                        ) : '' }
                                         </div>
                                     ) : (
                                         item.status
