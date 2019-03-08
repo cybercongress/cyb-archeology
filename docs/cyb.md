@@ -8,8 +8,8 @@ Concept. Definitions are work in progress.
 
 ## Abstract
 
-Cyb is a friendly software robot who helps you explore the universes.
-Put it simply it just a [web3](cyb://QmXHiEVCFTN8hda93qZN6ay5bXJ1ZkaLCV68AefXPs1pXg.ipfs) browser.
+Cyb is a friendly personal immortal software robot who helps you explore the universes.
+Put it simply it just a [new web](cyb://QmXHiEVCFTN8hda93qZN6ay5bXJ1ZkaLCV68AefXPs1pXg.ipfs) machine.
 At the very beginning Cyb is focusing on developers and advanced blockchain users who are able to work with private keys and transactions.
 But we see how Cyb becomes friendly for everyone who wants to interact with consensus computers in a web of the third generation.
 This new web is designed to free developers from outdated things such as html and v8.
@@ -21,9 +21,9 @@ But suggested concepts can be easily used for mobile, voice, VR and robotics imp
 
 ## Introduction
 
-Current state of web3 experience is non satisfactory.
-We still [didn't meet](https://github.com/cybercongress/cyb/blob/master/docs/comparison.md) any piece of software that is able to deliver deep and emotional web3 experience. So we decide to bring to the table one contender that strictly follows web3 principles defined by ourselves ;-) 
-In a rush for this passion we define the following web3 apps which we believe together implement the full web3 vision in the context of a browsing for web3 agents and app developers:
+Current state of new web experience is non satisfactory.
+We still [didn't meet](https://github.com/cybercongress/cyb/blob/master/docs/comparison.md) any piece of software that is able to deliver deep and emotional new web experience. So we decide to bring to the table one contender that strictly follows new principles defined by ourselves ;-) 
+In a rush for this passion we define the following apps which we believe together implement the full new web vision in the context of a browsing for agents and app developers:
 
 ## CLI
 
@@ -46,23 +46,24 @@ Cyb has a lot of user and technical settings.
 They are implemented in the default browser app - .cyb:
 
 - `main.cyb`: main page for every joe
-- `path.cyb`: user's navigation history
-- `txq.cyb` : user's transaction activity
-- `pins.cyb`: pinned user's favourite apps or cyberlinks
+- `id.cyb`: keystore interface
+- `state.cyb`: cyb state sync, import and export
+
+- `timeline.cyb`: user's activity (transactions, navigation)
+- `files.cyb`: pinned files explorer (cyberlinks, files, syncing content - Chaingear domains snapshots) 
 - `connect.cyb`: connection manager
 
-- `root.cyb`: cyb root registry
 - `help.cyb`: cyb educational library and feedback mechanism
 - `dev.cyb`: web3 development tool with support of contracts
 
-- `keys.cyb`: keystore interface
 - `sign.cyb`: phishing resistant signer for messages and transactions with scheduler
-- `wallet.cyb`: universal wallet
-
-- `feed.cyb`: notification & feed app
 - `access.cyb`: permission manager that respects agents' resources
+- `source.cyb`: cyb source code
+- `blog.cyb`: cyb community blog
+- `knowledge.cyb`: cyb community knowledge base
 
-## Apps
+
+## Apps from partner teams
 
 Main apps for initial web3 experience
 
@@ -70,6 +71,7 @@ Main apps for initial web3 experience
 - `.ipfs`: ipfs node manager and agent experience
 - `.eth`: ethereum node manager + ens resolver
 - `.chaingear`: all the things chaingearable
+- `.dragons`: Dragonereium with `is cyb`
 - `.wiki`: wiki indexator
 
 All this apps are considered as core apps and are included in every Cyb distribution. 
