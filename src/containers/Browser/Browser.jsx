@@ -48,18 +48,17 @@ class Browser extends Component {
         const { props } = this;
 
         webview.addEventListener('did-navigate', (event) => {
-            this.removeAllListeners();
             props.setWebView(event.target);
         });
 
         webview.addEventListener('did-navigate-in-page', (e) => {
             e.preventDefault();
-            this.removeAllListeners();
             props.didNavigateInPage(e.url);
         });
 
         webview.addEventListener('will-navigate', (event) => {
             event.preventDefault();
+            this.removeAllListeners();
             props.willNavigate(event.url);
         });
 
