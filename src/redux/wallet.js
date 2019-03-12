@@ -167,15 +167,13 @@ const saveTransaction = (payload, txHash) => {
         transactions[address] = [];
     }
 
-    const hasResendTxs = transactions[address].find(x => x.canResend === true);
-
     const newPayload = {
         ...payload,
         txHash,
         date: new Date(),
         type: 'eth',
         status: 'pending',
-        canResend: hasResendTxs ? false : true,
+        canResend: false,
     };
 
     transactions[address] = transactions[address].concat(newPayload);
@@ -659,10 +657,32 @@ export const updateStatusTransactions = () => (dispatch) => {
         Object.keys(transactions).forEach((address) => {
             transactions[address].forEach((item) => {
                 if (item.status === 'pending') {
+                    if (!item.nonce) {
+                        Promise.all([
+                            web3.eth.getTransaction(item.txHash),
+                        ]).then(([transaction]) => {
+                            item.nonce = transaction.nonce;
+
+                            let hasResendTxs = transactions[address].find(x => x.canResend === true);
+
+                            if (!hasResendTxs) {
+                                item.canResend = true;
+                            }
+
+                            localStorage.setItem('transactions', JSON.stringify(transactions));
+                            const transactionsSorted = transactions[address].slice(0);
+
+                            transactionsSorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+                            dispatch({
+                                type: 'SET_ETH_TRANSACTIONS',
+                                payload: transactionsSorted,
+                            });
+                        });
+                    }
                     Promise.all([
                         // web3.eth.getTransaction(item.txHash),
                         web3.eth.getTransactionReceipt(item.txHash),
-                    ]).then(([/* transaction,  */receipt]) => {
+                    ]).then(([/* transaction, */receipt]) => {
                         // https://ethereum.stackexchange.com/a/6003
                         if (receipt && receipt.blockNumber) {
                             if (parseInt(receipt.status, 16) === 1) {
@@ -672,13 +692,14 @@ export const updateStatusTransactions = () => (dispatch) => {
                             }
                             item.canResend = false;
 
-                            const hasResendTxs = transactions[address].find(x => x.canResend === true);
+                            let hasResendTxs = transactions[address].find(x => x.canResend === true);
 
-                            transactions[address] = transactions[address].map(item => {
-                              if (item.status === 'pending') {
-                                  return { ...item, canResend: hasResendTxs ? false : true };
-                              }
-                              return item;
+                            transactions[address] = transactions[address].map((item2) => {
+                                if (item2.status === 'pending' && !hasResendTxs && !item2.canResend) {
+                                    hasResendTxs = true;
+                                    return { ...item2, canResend: true };
+                                }
+                                return item2;
                             });
 
                             localStorage.setItem('transactions', JSON.stringify(transactions));
@@ -781,7 +802,7 @@ export const checkPendingStatusTransactions = () => (dispatch) => {
 };
 
 
-export const resend = (txHash) => (dispatch, getState) => {
+export const resend = txHash => (dispatch, getState) => {
     const address = getState().wallet.defaultAccount;
 
     if (!address || !txHash) {
@@ -804,91 +825,88 @@ export const resend = (txHash) => (dispatch, getState) => {
         const transaction = payload.params[0];
 
         transaction.amount = web3.utils.fromWei(web3.utils.toBN(transaction.value), 'ether');
-        web3.eth.getTransactionCount(addressLowerCase, 'pending')
-            .then((nonce) => {
-                transaction.nonce = nonce - 1;
-                console.log('RESEND', transaction);
+        console.log('RESEND', transaction);
 
-                Promise.all([
-                    calculateGasLimit(payload),
-                    calculateGasPrice(payload),
-                ]).then(([gasLimit, gasPrice]) => dispatch(showSigner({
-                    fromAddress: transaction.from,
-                    toAddress: transaction.to,
-                    gasPrice,
-                    gasLimit,
-                    value: transaction.amount,
-                }, (data) => {
-                    console.log('>>', data, web3.utils.toWei(`${data.gasPrice}`, 'Gwei'));
-                    eth.sendTransaction({
+        Promise.all([
+            calculateGasLimit(payload),
+            calculateGasPrice(payload),
+        ]).then(([gasLimit, gasPrice]) => dispatch(showSigner({
+            fromAddress: transaction.from,
+            toAddress: transaction.to,
+            gasPrice,
+            gasLimit,
+            value: transaction.amount,
+        }, (data) => {
+            console.log('>>', data, web3.utils.toWei(`${data.gasPrice}`, 'Gwei'));
+            eth.sendTransaction({
+                from: transaction.from,
+                to: transaction.to,
+                value: web3.utils.toWei(transaction.amount, 'ether'),
+                gasPrice: web3.utils.toWei(`${data.gasPrice}`, 'Gwei'),
+                gas: data.gasLimit,
+                data: transaction.data,
+                nonce: web3.utils.toHex(transaction.nonce),
+            }).on('transactionHash', (hash) => {
+                console.log('transactionHash', hash);
+
+                transactions[addressLowerCase] = transactions[addressLowerCase].map((item) => {
+                    if (item.txHash === txHash) {
+                        return { ...item, status: 'cancelled', canResend: false };
+                    }
+                    return item;
+                });
+
+                let hasResendTxs = transactions[addressLowerCase].find(x => x.canResend === true);
+
+                transactions[addressLowerCase] = transactions[addressLowerCase].map((item2) => {
+                    if (item2.status === 'pending' && !hasResendTxs && !item2.canResend) {
+                        hasResendTxs = true;
+                        return { ...item2, canResend: true };
+                    }
+                    return item2;
+                });
+
+                localStorage.setItem('transactions', JSON.stringify(transactions));
+
+                dispatch({
+                    type: 'SET_NOTIFICATION_LINK_COUNTER_DEC',
+                });
+
+                transactions[addressLowerCase] = saveTransaction({
+                    params: [{
                         from: transaction.from,
-                        to: transaction.to,
-                        value: web3.utils.toWei(transaction.amount, 'ether'),
-                        gasPrice: web3.utils.toWei(`${data.gasPrice}`, 'Gwei'),
-                        gas: data.gasLimit,
-                        data: transaction.data,
-                        nonce: web3.utils.toHex(transaction.nonce),
-                    }).on('transactionHash', (hash) => {
-                        console.log('transactionHash', hash);
+                        toAddress: transaction.to,
+                        gasPrice: 20,
+                        gasLimit: 210000,
+                        value: transaction.amount,
+                        nonce: transaction.nonce,
+                    }],
+                }, hash);
 
-                        //transactions[addressLowerCase].find(x => x.txHash === txHash).status = 'cancelled';
-                        transactions[addressLowerCase] = transactions[addressLowerCase].map(item => {
-                            if (item.txHash === txHash) {
-                                return { ...item, status: 'cancelled', canResend: false };
-                            }
-                            return item;
-                        });
+                const transactionsSorted = transactions[addressLowerCase].slice(0);
 
-                        const hasResendTxs = transactions[addressLowerCase].find(x => x.canResend === true);
+                transactionsSorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+                dispatch({
+                    type: 'SET_ETH_TRANSACTIONS',
+                    payload: transactionsSorted,
+                });
 
-                        transactions[addressLowerCase] = transactions[addressLowerCase].map(item => {
-                          if (item.status === 'pending') {
-                              return { ...item, canResend: hasResendTxs ? false : true };
-                          }
-                          return item;
-                        });
+                dispatch({
+                    type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
+                });
 
-                        localStorage.setItem('transactions', JSON.stringify(transactions));
-
-                        dispatch({
-                            type: 'SET_NOTIFICATION_LINK_COUNTER_DEC',
-                        });
-
-                        transactions[addressLowerCase] = saveTransaction({
-                            params: [{
-                                from: transaction.from,
-                                toAddress: transaction.to,
-                                gasPrice: 20,
-                                gasLimit: 210000,
-                                value: transaction.amount,
-                            }],
-                        }, hash);
-
-                        const transactionsSorted = transactions[addressLowerCase].slice(0);
-
-                        transactionsSorted.sort((a, b) => new Date(b.date) - new Date(a.date));
-                        dispatch({
-                            type: 'SET_ETH_TRANSACTIONS',
-                            payload: transactionsSorted,
-                        });
-
-                        dispatch({
-                            type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
-                        });
-
-                        dispatch(hidePopup());
-                    }).on('receipt', (receipt) => {
-                        console.log('receipt', receipt);
-                    }).on('error', (error) => {
-                        console.log('send error', error.message);
-                        dispatch({
-                            type: 'SET_SIGNER_ERROR',
-                            payload: error.message,
-                        });
-                    });
-                }, (error) => {
-                    console.log('send error', error);
-                })));
+                dispatch(hidePopup());
+            }).on('receipt', (receipt) => {
+                console.log('receipt', receipt);
+            }).on('error', (error) => {
+                console.log('send error', error.message);
+                dispatch({
+                    type: 'SET_SIGNER_ERROR',
+                    payload: error.message,
+                });
             });
+        }, (error) => {
+            console.log('send error', error);
+        })));
     }
 };
