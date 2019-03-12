@@ -29,23 +29,35 @@ With help of Cyb developers can use any markup, execution and rendering engine t
 Designers can bring new life in established UI and UX paradigms, implement Zooming UI or [Gravity Design System]().
 Simple users can get access to the knowledge and own funds without restrictions and censorship.
 
-## Implementation
+## Representation
 
-That is why we don't focus on implementation of mentioned things.
-Instead this paper shows implementation agnostic concepts of browser that are simple enough to be adopted by web3 developers.
-Initially we design Cyb for conventional desktop browsing.
-But suggested concepts can be easily used for mobile, voice, VR and robotics implementations.
+Cyb can take different forms, but all functions are available on both low and high level platforms:
+
+- CLI. Basic command interactions, no GUI. Simple, fast and cross-platform.
+- Desktop. Basic UI version. Better UX than in CLI, cross-platform.
+- Mobile. Adaptive UI. Same UX as on Desktop.
+- Web. Autonomous existing Cyb, available by demand.
+- VR. Full deep, web3 UX. Gravity UI.
+- Hardware. Different variation of robots.
+- NUI. Cyb and you are in the unified process, UI is unlimited =)
+
+Cyb supports several ways to interact with him, such as:
+
+- keyboard
+- mouse/touchpad
+- voice
+- camera
+- neuro impulses
+
+These concepts are massive, that is why currently we don't focus on implementation of all mentioned things. Only desktop [version](https://github.com/cybercongress/cyb/releases) is developing now.
+But this paper will try to show implementation agnostic concepts of Cyb that are simple enough to be adopted by web3 developers.
 
 
+##Cyb anatomy
 
-
-## Problem
-
-Current state of new web experience is non satisfactory.
-We still [didn't meet] any piece of software that is able to deliver deep and emotional new web experience. S
 In a rush for this passion we define the following apps which we believe together implement the full new web vision in the context of a browsing for agents and app developers:
 
-## CLI
+
 
 ## Shell
 
