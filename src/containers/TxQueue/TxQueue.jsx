@@ -13,9 +13,11 @@ import moment from 'moment';
 import { getTransactions, resend } from '../../redux/wallet';
 import CybLink from '../../components/CybLink';
 
-// import { Hash } from '../../components/TxQueue/TxQueue';
-// import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
-// import Table from '../../components/Table/Table';
+import { Hash } from '../../components/TxQueue/TxQueue';
+import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
+import Table from '../../components/Table/Table';
+import Button from '../../components/Button/Button';
+import Loader from 'react-loader-spinner';
 
 class TxQueue extends Component {
     componentDidMount() {
@@ -31,37 +33,54 @@ class TxQueue extends Component {
 
         return (
             <ScrollContainer>
-                <MainContainer>
-                    <PageTitle>transaction</PageTitle>
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>type</th>
-                                <th>hash</th>
-                                <th>date</th>
-                                <th>status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {transactions.map(item => (
-                                <tr key={ item.txHash }>
-                                    <td>{item.type}</td>
-                                    <td>
-                                        {item.type === 'eth' ? (
-                                            <CybLink dura={ `${item.txHash}.eth` }>
-                                                <Hash>{item.txHash}</Hash>
-                                            </CybLink>
-                                        ) : (
+                <Title>/transaction</Title>
+                <Table>
+                    <thead>
+                        <tr>
+                            <th>type</th>
+                            <th>hash</th>
+                            <th>date</th>
+                            <th>status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {transactions.map(item => (
+                        <tr key={item.txHash}>
+                            <td>
+                                {item.type}
+                            </td>
+                            <td>
+                                {
+                                    item.type === 'eth' ? (
+                                        <CybLink dura={`${item.txHash}.eth`}>
                                             <Hash>{item.txHash}</Hash>
-                                        )}
-                                    </td>
-                                    <td>{moment(item.date).format('D/MM YYYY h:mm:ss')}</td>
-                                    <td>pending</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
-                </MainContainer>
+                                        </CybLink>
+                                    ) : (
+                                        <Hash>{item.txHash}</Hash>
+                                    )
+                                }                                
+                            </td>
+                            <td>
+                                {moment(item.date).format('D/MM YYYY h:mm:ss')}
+                            </td>
+                            <td>
+                                {
+                                    item.type === 'eth' && item.status === 'pending' ? (
+                                        <div>
+                                            <Loader type='Watch' color='#438cef' height={ 27 } width={ 27 } style={ 'TxQueue_spinner' } />
+                                        { item.canResend ? (
+                                            <Button onClick={ () => this.resend(item.txHash) }>resend</Button>
+                                        ) : '' }
+                                        </div>
+                                    ) : (
+                                        item.status
+                                    )
+                                }
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </Table>
             </ScrollContainer>
         );
     }

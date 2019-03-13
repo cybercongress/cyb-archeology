@@ -26,6 +26,7 @@
     "rc-tooltip": "3.7.3",
     "react": "16.5.2",
     "react-dom": "16.5.2",
+    "react-loader-spinner": "^2.3.0",
     "react-redux": "5.0.7",
     "react-router": "3.2.0",
     "react-scripts": "2.0.4",

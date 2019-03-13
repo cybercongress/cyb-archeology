@@ -3,7 +3,7 @@ import axios from 'axios';
 import Cyber from '../cyber/Cyber';
 import { navigate, goBack } from './browser';
 import { setEthNetworkName } from './settings';
-import { showSigner } from './signer';
+import { showSigner, hidePopup } from './signer';
 
 const IPFS = require('ipfs-api');
 
@@ -102,6 +102,13 @@ export const reducer = (state = initState, action) => {
         };
     }
 
+    case 'SHOW_SIGNER': {
+        return {
+            ...state,
+            signerError: '',
+        };
+    }
+
     default:
         return state;
     }
@@ -165,11 +172,14 @@ const saveTransaction = (payload, txHash) => {
         date: new Date(),
         type: 'eth',
         status: 'pending',
+        canResend: false,
     };
 
     transactions[address] = transactions[address].concat(newPayload);
 
     localStorage.setItem('transactions', JSON.stringify(transactions));
+
+    return transactions[address];
 };
 
 
@@ -286,7 +296,7 @@ export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatc
         gasPrice: 20,
         gasLimit: 210000,
         value: amount,
-    })).then((data) => {
+    }, (data) => {
         console.log('>>', data, web3.utils.toWei(`${data.gasPrice}`, 'Gwei'));
         eth.sendTransaction({
             from: _from,
@@ -310,6 +320,7 @@ export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatc
                 type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
             });
 
+            dispatch(hidePopup());
         })
             .on('receipt', (receipt) => {
                 console.log('receipt', receipt);
@@ -320,9 +331,9 @@ export const sendFunds = (_from, to, amount, _confirmationNumber = 3) => dispatc
                     resolve();
                 }
             });
-    }).catch((e) => {
-        console.log('send error', e);
-    });
+    }, (error) => {
+        console.log('send error', error);
+    }));
 });
 
 export const getEthStatus = url => new Promise((resolve) => {
@@ -411,7 +422,7 @@ export const receiveMessage = e => (dispatch, getState) => {
                 gasPrice,
                 gasLimit,
                 value,
-            }))).then((data) => {
+            }, (data) => {
                 if (data.gasLimit) {
                     payload.params[0].gas = web3.utils.numberToHex(+data.gasLimit);
                 }
@@ -430,6 +441,8 @@ export const receiveMessage = e => (dispatch, getState) => {
                         dispatch({
                             type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
                         });
+
+                        dispatch(hidePopup());
                     } else {
                         dispatch({
                             type: 'SET_SIGNER_ERROR',
@@ -437,12 +450,12 @@ export const receiveMessage = e => (dispatch, getState) => {
                         });
                     }
                 });
-            }).catch(() => {
+            }, (error) => {
                 if (!wv) {
                     return;
                 }
                 wv.send('web3_eth_call_reject', payload);
-            });
+            })));
         } else {
             provider.sendAsync(payload, (error, result) => {
                 wv.send('web3_eth_call', result);
@@ -605,7 +618,11 @@ export const login = (password) => (dispatch, getState) => {
             .then(() => {
                 dispatch(setDefaultAccount());
                 // dispatch({ type: 'MOVE_BACK' });
-                dispatch(goBack()); //back to page if start not from waalet
+                dispatch(goBack()); // back to page if start not from waalet
+                const address = web3.eth.defaultAccount;
+                const addressLowerCase = address.toLowerCase();
+
+                dispatch(getTransactions(addressLowerCase));
             });
     } catch (e) {
         dispatch({
@@ -646,16 +663,61 @@ export const updateStatusTransactions = () => (dispatch) => {
         Object.keys(transactions).forEach((address) => {
             transactions[address].forEach((item) => {
                 if (item.status === 'pending') {
+                    if (!item.nonce) {
+                        Promise.all([
+                            web3.eth.getTransaction(item.txHash),
+                        ]).then(([transaction]) => {
+                            item.nonce = transaction.nonce;
+
+                            let hasResendTxs = transactions[address].find(x => x.canResend === true);
+
+                            if (!hasResendTxs) {
+                                item.canResend = true;
+                            }
+
+                            localStorage.setItem('transactions', JSON.stringify(transactions));
+                            const transactionsSorted = transactions[address].slice(0);
+
+                            transactionsSorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+                            dispatch({
+                                type: 'SET_ETH_TRANSACTIONS',
+                                payload: transactionsSorted,
+                            });
+                        });
+                    }
                     Promise.all([
                         // web3.eth.getTransaction(item.txHash),
                         web3.eth.getTransactionReceipt(item.txHash),
-                    ]).then(([/* transaction,  */receipt]) => {
+                    ]).then(([/* transaction, */receipt]) => {
                         // https://ethereum.stackexchange.com/a/6003
-                        if (receipt.blockNumber && parseInt(receipt.status, 16) === 1) {
-                            item.status = 'success';
+                        if (receipt && receipt.blockNumber) {
+                            if (parseInt(receipt.status, 16) === 1) {
+                                item.status = 'success';
+                            } else {
+                                item.status = 'error';
+                            }
+                            item.canResend = false;
+
+                            let hasResendTxs = transactions[address].find(x => x.canResend === true);
+
+                            transactions[address] = transactions[address].map((item2) => {
+                                if (item2.status === 'pending' && !hasResendTxs && !item2.canResend) {
+                                    hasResendTxs = true;
+                                    return { ...item2, canResend: true };
+                                }
+                                return item2;
+                            });
+
                             localStorage.setItem('transactions', JSON.stringify(transactions));
                             dispatch({
                                 type: 'SET_NOTIFICATION_LINK_COUNTER_DEC',
+                            });
+                            const transactionsSorted = transactions[address].slice(0);
+
+                            transactionsSorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+                            dispatch({
+                                type: 'SET_ETH_TRANSACTIONS',
+                                payload: transactionsSorted,
                             });
                         }
                     });
@@ -746,7 +808,7 @@ export const checkPendingStatusTransactions = () => (dispatch) => {
 };
 
 
-export const resend = (txHash) => (dispatch, getState) => {
+export const resend = txHash => (dispatch, getState) => {
     const address = getState().wallet.defaultAccount;
 
     if (!address || !txHash) {
@@ -754,16 +816,103 @@ export const resend = (txHash) => (dispatch, getState) => {
     }
 
     const addressLowerCase = address.toLowerCase();
-    const jsonStr = localStorage.getItem('transactions') || '{}';
-    let transactions = JSON.parse(jsonStr);
 
-    if (transactions[addressLowerCase]) {
-        transactions = transactions[addressLowerCase];
-    } else {
-        transactions = [];
+    const jsonStr = localStorage.getItem('transactions') || '{}';
+
+    const transactions = JSON.parse(jsonStr);
+
+    if (!transactions[addressLowerCase]) {
+        return;
     }
 
-    const payload = transactions.find(x => x.txHash === txHash);
+    const payload = transactions[addressLowerCase].find(x => x.txHash === txHash);
 
-    // TODO: show singer
+    if (payload.params[0]) {
+        const transaction = payload.params[0];
+
+        transaction.amount = web3.utils.fromWei(web3.utils.toBN(transaction.value), 'ether');
+        console.log('RESEND', transaction);
+
+        Promise.all([
+            calculateGasLimit(payload),
+            calculateGasPrice(payload),
+        ]).then(([gasLimit, gasPrice]) => dispatch(showSigner({
+            fromAddress: transaction.from,
+            toAddress: transaction.to,
+            gasPrice,
+            gasLimit,
+            value: transaction.amount,
+        }, (data) => {
+            console.log('>>', data, web3.utils.toWei(`${data.gasPrice}`, 'Gwei'));
+            eth.sendTransaction({
+                from: transaction.from,
+                to: transaction.to,
+                value: web3.utils.toWei(transaction.amount, 'ether'),
+                gasPrice: web3.utils.toWei(`${data.gasPrice}`, 'Gwei'),
+                gas: data.gasLimit,
+                data: transaction.data,
+                nonce: web3.utils.toHex(transaction.nonce),
+            }).on('transactionHash', (hash) => {
+                console.log('transactionHash', hash);
+
+                transactions[addressLowerCase] = transactions[addressLowerCase].map((item) => {
+                    if (item.txHash === txHash) {
+                        return { ...item, status: 'cancelled', canResend: false };
+                    }
+                    return item;
+                });
+
+                let hasResendTxs = transactions[addressLowerCase].find(x => x.canResend === true);
+
+                transactions[addressLowerCase] = transactions[addressLowerCase].map((item2) => {
+                    if (item2.status === 'pending' && !hasResendTxs && !item2.canResend) {
+                        hasResendTxs = true;
+                        return { ...item2, canResend: true };
+                    }
+                    return item2;
+                });
+
+                localStorage.setItem('transactions', JSON.stringify(transactions));
+
+                dispatch({
+                    type: 'SET_NOTIFICATION_LINK_COUNTER_DEC',
+                });
+
+                transactions[addressLowerCase] = saveTransaction({
+                    params: [{
+                        from: transaction.from,
+                        toAddress: transaction.to,
+                        gasPrice: 20,
+                        gasLimit: 210000,
+                        value: transaction.amount,
+                        nonce: transaction.nonce,
+                    }],
+                }, hash);
+
+                const transactionsSorted = transactions[addressLowerCase].slice(0);
+
+                transactionsSorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+                dispatch({
+                    type: 'SET_ETH_TRANSACTIONS',
+                    payload: transactionsSorted,
+                });
+
+                dispatch({
+                    type: 'SET_NOTIFICATION_LINK_COUNTER_INC',
+                });
+
+                dispatch(hidePopup());
+            }).on('receipt', (receipt) => {
+                console.log('receipt', receipt);
+            }).on('error', (error) => {
+                console.log('send error', error.message);
+                dispatch({
+                    type: 'SET_SIGNER_ERROR',
+                    payload: error.message,
+                });
+            });
+        }, (error) => {
+            console.log('send error', error);
+        })));
+    }
 };
