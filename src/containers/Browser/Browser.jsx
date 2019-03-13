@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
+import {
+    BrowserWindow, BrowserContainer, Loading,
+} from '@cybercongress/ui';
 import { didNavigateInPage, willNavigate, newWindow } from '../../redux/browser';
 import { receiveMessage } from '../../redux/wallet';
 import { getPreloadPath, isDevMode } from '../../utils';
-import BrowserWindow, { BrowserContainer, Loading } from '../../components/BrowserWindow/BrowserWindow';
+
+//  import BrowserWindow, { BrowserContainer, Loading } from '../../components/BrowserWindow/BrowserWindow';
 
 /*
 TODO: fix bug /#/ => /#/page => click /#/

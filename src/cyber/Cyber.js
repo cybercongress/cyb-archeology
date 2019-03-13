@@ -7,6 +7,8 @@ import {
 
 import builder from './builder';
 
+const nodeUrl2 = 'http://earth.cybernode.ai:34660'; // we need more endopints
+
 let chainId = 'euler-dev0';
 const defaultAmount = 10000;
 
@@ -145,7 +147,7 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
                 reject();
                 // addTransactionLog(address, data.data.hash, 'fail');
             });
-        })
+        });
     }));
 
 
@@ -175,7 +177,7 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
                     balance: +balance,
                 });
             });
-            
+
         });
     });
 
@@ -198,8 +200,9 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
         });
     });
 
-    self.onNewBlock = (cb) => {
-        const websocket = new WebSocket(wsUrl);
+    let websocket;
+    const listenNewBlock = (cb) => {
+        websocket = new WebSocket(wsUrl);
 
         websocket.onopen = () => {
             websocket.send(JSON.stringify({
@@ -213,6 +216,18 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
         websocket.onmessage = (event) => {
             cb(event);
         };
+    };
+
+    self.onNewBlock = (cb) => {
+        if (websocket) {
+            websocket.onclose = () => {
+                listenNewBlock(cb);
+            };
+
+            websocket.close();
+        } else {
+            listenNewBlock(cb);
+        }
     };
 
     self.getAccounts = function () {
@@ -278,8 +293,6 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
 
             localStorage.setItem('cyberAccounts', JSON.stringify(__accounts));
 
-            this.claimFunds(account.address, defaultAmount);
-
             resolve();
         });
     };
@@ -311,7 +324,7 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
 
             const acc = {
                 address: account.address,
-                chain_id: chainId, // todo: get from node
+                chain_id: chainId,
                 account_number: parseInt(account.account_number, 10),
                 sequence: parseInt(account.sequence, 10),
             };
@@ -333,6 +346,14 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
             }).then(data => console.log('Send results: ', data)).catch(error => console.log('Cannot send', error));
         });
     };
+
+    self.getValidators = () => new Promise(resolve => axios({
+        method: 'get',
+        url: `${nodeUrl}/staking/validators`,
+    }).then((response) => {
+        resolve(response.data.result);
+    }).catch((e) => {}));
 }
+
 
 export default Cyber;

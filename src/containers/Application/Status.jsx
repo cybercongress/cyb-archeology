@@ -1,6 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+/*import {
+    StatusContainer,
+    Indicator,
+} from '@cybercongress/ui';*/
+
 import Indicator, { StatusContainer } from '../../components/Indicator/Indicator';
 
 const NoConnection = ({ status, children }) => {

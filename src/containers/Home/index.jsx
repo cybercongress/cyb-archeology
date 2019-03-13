@@ -1,12 +1,22 @@
 import React from 'react';
 
-import Home, {
+import {
+    Home,
     Items,
-    Item,
-    ItemTitle,
     Image,
     Arrow,
-    LinkList, LinkItem,
+    LinkItem,
+    LinkList,
+    ItemTitle,
+} from '@cybercongress/ui';
+import {
+    Item,
+    // ItemTitle,
+    // Image,
+    // Arrow,
+    // LinkList,
+    // Items,
+    // LinkItem,
 } from '../../components/Home/Home';
 
 const HomePage = props => (
@@ -32,12 +42,7 @@ const HomePage = props => (
         </Items>
 
         <LinkList>
-
-            <LinkItem
-              target='_blank'
-              to='https://github.com/cybercongress'
-              icon='github'
-            >
+            <LinkItem target='_blank' to='https://github.com/cybercongress' icon='github'>
                 GitHub
             </LinkItem>
             <LinkItem
@@ -47,15 +52,12 @@ const HomePage = props => (
             >
                 Roadmap
             </LinkItem>
-            <LinkItem
-              target='_blank'
-              to='https://wiki.cybercongress.ai'
-              icon='knowledge'
-            >
+            <LinkItem target='_blank' to='https://wiki.cybercongress.ai' icon='knowledge'>
                 Knowledge
             </LinkItem>
-            <LinkItem target='_blank' to='https://steemit.com/@cybercongress' icon='blog'>Blog</LinkItem>
-
+            <LinkItem target='_blank' to='https://steemit.com/@cybercongress' icon='blog'>
+                Blog
+            </LinkItem>
         </LinkList>
     </Home>
 );

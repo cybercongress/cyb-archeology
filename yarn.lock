@@ -736,10 +736,10 @@
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
 
-"@cybercongress/ui@>=0.0.16":
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/@cybercongress/ui/-/ui-0.0.16.tgz#eee49f10b394fd3a016bb1341defb9aaaf158814"
-  integrity sha512-49jnYNSqkIiv3NsbpmCcF4Hzw19140M0bHAC29aU5FK5KcTTNFpXTUdIlXAT3brsl19FWK7337S8dDzhe2ZXfA==
+"@cybercongress/ui@>=0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@cybercongress/ui/-/ui-0.0.17.tgz#8aaccd9f5c2bee1ca169d2f7fda5828266caddeb"
+  integrity sha512-JfQh8cfTznYOBFYhJCMBQfXlISWBaMDcYRGOPFWgneMOUwXNGZCPTm2llijYUgW7WbjSdYiWDlfbYJ6pKFSILQ==
   dependencies:
     "@storybook/addon-centered" "4.0.12"
     acorn-jsx "^5.0.1"
@@ -750,9 +750,13 @@
     eslint-config-standard-react "^7.0.2"
     google-palette "1.1.0"
     highlight.js "9.12.0"
+    less "^3.9.0"
+    moment "^2.24.0"
+    prop-types "^15.6.2"
+    rc-tooltip "^3.7.3"
     react "16.6.3"
     react-chartjs-2 "2.7.4"
-    react-click-outside "github:tj/react-click-outside"
+    react-click-outside "^3.0.1"
     react-dom "16.6.3"
     react-router "3.0.5"
     url-loader "1.1.2"
@@ -5792,9 +5796,10 @@ hoist-non-react-statics@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
 
-hoist-non-react-statics@^2.5.0:
+hoist-non-react-statics@^2.1.1, hoist-non-react-statics@^2.5.0:
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
+  integrity sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw==
 
 home-or-tmp@^2.0.0:
   version "2.0.0"
@@ -7345,6 +7350,22 @@ less@3.8.1:
     request "^2.83.0"
     source-map "~0.6.0"
 
+less@^3.9.0:
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/less/-/less-3.9.0.tgz#b7511c43f37cf57dc87dffd9883ec121289b1474"
+  integrity sha512-31CmtPEZraNUtuUREYjSqRkeETFdyEHSEPAGq4erDlUXtda7pzNmctdljdIagSb589d/qXGWiiP31R5JVf+v0w==
+  dependencies:
+    clone "^2.1.2"
+  optionalDependencies:
+    errno "^0.1.1"
+    graceful-fs "^4.1.2"
+    image-size "~0.5.0"
+    mime "^1.4.1"
+    mkdirp "^0.5.0"
+    promise "^7.1.1"
+    request "^2.83.0"
+    source-map "~0.6.0"
+
 level-codec@~7.0.0:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/level-codec/-/level-codec-7.0.1.tgz#341f22f907ce0f16763f24bddd681e395a0fb8a7"
@@ -8025,7 +8046,7 @@ moment:
   version "2.22.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
 
-moment@^2.10.2:
+moment@^2.10.2, moment@^2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
@@ -9867,7 +9888,7 @@ rc-animate@2.x:
     raf "^3.4.0"
     react-lifecycles-compat "^3.0.4"
 
-rc-tooltip@3.7.3:
+rc-tooltip@3.7.3, rc-tooltip@^3.7.3:
   version "3.7.3"
   resolved "https://registry.yarnpkg.com/rc-tooltip/-/rc-tooltip-3.7.3.tgz#280aec6afcaa44e8dff0480fbaff9e87fc00aecc"
   integrity sha512-dE2ibukxxkrde7wH9W8ozHKUO4aQnPZ6qBHtrTH9LoO836PjDdiaWO73fgPB05VfJs9FbZdmGPVEbXCeOP99Ww==
@@ -9933,6 +9954,13 @@ react-chartjs-2@2.7.4:
   dependencies:
     lodash "^4.17.4"
     prop-types "^15.5.8"
+
+react-click-outside@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/react-click-outside/-/react-click-outside-3.0.1.tgz#6e77e84d2f17afaaac26dbad743cbbf909f5e24c"
+  integrity sha512-d0KWFvBt+esoZUF15rL2UBB7jkeAqLU8L/Ny35oLK6fW6mIbOv/ChD+ExF4sR9PD26kVx+9hNfD0FTIqRZEyRQ==
+  dependencies:
+    hoist-non-react-statics "^2.1.1"
 
 "react-click-outside@github:tj/react-click-outside":
   version "1.1.1"

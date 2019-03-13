@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { Title } from '@cybercongress/ui';
+import {
+    //    Title,
+    PageTitle,
+    Table,
+    MainContainer,
+    Hash,
+    ScrollContainer,
+} from '@cybercongress/ui';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
@@ -12,7 +19,6 @@ import Table from '../../components/Table/Table';
 import Button from '../../components/Button/Button';
 import Loader from 'react-loader-spinner';
 
-
 class TxQueue extends Component {
     componentDidMount() {
         this.props.getTransactions(this.props.defaultAccount);
@@ -20,7 +26,7 @@ class TxQueue extends Component {
 
     resend = (txHash) => {
         this.props.resend(txHash);
-    }
+    };
 
     render() {
         const { transactions } = this.props;

@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
 import connect from 'react-redux/es/connect/connect';
 import web3 from 'web3';
-import * as actions from '../../redux/wallet';
-import { Avatar, SendFunds } from '../../components/Wallet/Wallet';
-import AccountCard, {
+import {
+    Avatar,
+    AccountCard,
     AccountCardContent, AccountCardContentItem,
     AccountCardLeft, AccountCardRight,
     MainIndecator,
-} from '../../components/Wallet/AccountCard/AccountCard';
+} from '@cybercongress/ui';
+import * as actions from '../../redux/wallet';
+import { SendFunds } from '../../components/Wallet/Wallet';
+// import { Avatar, SendFunds } from '../../components/Wallet/Wallet';
+// import AccountCard, {
+//     AccountCardContent, AccountCardContentItem,
+//     AccountCardLeft, AccountCardRight,
+//     MainIndecator,
+// } from '../../components/Wallet/AccountCard/AccountCard';
 
 class EthSend extends Component {
     sendFunds = (defaultAddress, recipientAddress, amount) => {
@@ -19,9 +27,7 @@ class EthSend extends Component {
             });
     };
 
-    validateAddress = (address) => {
-        return address.indexOf('0x') === 0 && web3.utils.isAddress(address);
-    }
+    validateAddress = address => address.indexOf('0x') === 0 && web3.utils.isAddress(address);
 
     render() {
         const { defaultAccount, defaultAccountBalance } = this.props;
@@ -29,7 +35,7 @@ class EthSend extends Component {
         const defaultAccountComponent = defaultAccount && (
             <AccountCard>
                 <AccountCardLeft>
-                    <Avatar hash={defaultAccount} />
+                    <Avatar hash={ defaultAccount } />
                     <MainIndecator />
                 </AccountCardLeft>
                 <AccountCardRight>
@@ -60,7 +66,7 @@ class EthSend extends Component {
                         <SendFunds
                           defaultAddress={ defaultAccount }
                           sendCallback={ this.sendFunds }
-                          validateAddress={this.validateAddress}
+                          validateAddress={ this.validateAddress }
                         />
                     </div>
                 ) : (
