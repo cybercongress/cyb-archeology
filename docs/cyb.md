@@ -53,9 +53,11 @@ These concepts are massive, that is why currently we don't focus on implementati
 But this paper will try to show implementation agnostic concepts of Cyb that are simple enough to be adopted by web3 developers.
 
 
-##Cyb anatomy
+## Cyb anatomy
 
-In a rush for this passion we define the following apps which we believe together implement the full new web vision in the context of a browsing for agents and app developers:
+Cyb interacts with web3 apps and web3 content. Main cyb app is '.cyb'. You can think of it as a heart of the robot.
+
+We define the following apps-companions, which we believe together implement the full new web vision in the context of a browsing for agents and app developers:
 
 
 
