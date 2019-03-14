@@ -1,10 +1,11 @@
 import { hashHistory } from 'react-router';
+
 import { URLToDURA, DURAToURL } from '../utils';
 import { getRegistryItems } from './rootRegistry';
 import { getIpfsEndpoint } from './settings';
 import { toggleMenu } from './appMenu';
 
-// TODO: proccess loading
+const { shell } = window.require('electron');
 
 const START_DURA = '';
 
@@ -175,7 +176,11 @@ export const navigate = (_dura, init = false) => (dispatch, getState) => {
     hashHistory.push('/browser');
 };
 
-export const willNavigate = url => (dispatch, getState) => {
+export const willNavigate = (url) => (dispatch, getState) => {
+    if (url.indexOf('http') === 0 || url.indexOf('https') === 0) {
+        shell.openExternal(url);
+        return;
+    }
     const apps = getRegistryItems(getState());
     const ipfsEndpoint = getIpfsEndpoint(getState());
 
