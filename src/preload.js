@@ -181,15 +181,16 @@ window.cyber = {
         });
     },
 
-    getDefaultAddress(cb) {
-        ipcRenderer.sendToHost('cyber', {
-            method: 'getDefaultAddress',
-            params: [],
-        });
-        ipcRenderer.on('cyber_getDefaultAddress', (_, payload) => {
-            console.log('p:', payload);
-            cb(payload);
-        });
+    getDefaultAddress() {
+        return new Promise(((resolve) => {
+            ipcRenderer.sendToHost('cyber', {
+                method: 'getDefaultAddress',
+                params: [],
+            });
+            ipcRenderer.on('cyber_getDefaultAddress', (_, payload) => {
+                resolve(payload);
+            });
+        }));
     },
 };
 

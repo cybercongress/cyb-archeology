@@ -84,7 +84,7 @@ class MsgSend extends Msg {
     }
 
     type() {
-        return 'cosmos-sdk/Send';
+        return 'cosmos-sdk/MsgMultiSend';
     }
 }
 
