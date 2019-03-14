@@ -13,10 +13,10 @@ import moment from 'moment';
 import { getTransactions, resend } from '../../redux/wallet';
 import CybLink from '../../components/CybLink';
 
-import { Hash } from '../../components/TxQueue/TxQueue';
-import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
-import Table from '../../components/Table/Table';
-import Button from '../../components/Button/Button';
+// import { Hash } from '../../components/TxQueue/TxQueue';
+// import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
+// import Table from '../../components/Table/Table';
+// import Button from '../../components/Button/Button';
 import Loader from 'react-loader-spinner';
 
 class TxQueue extends Component {
@@ -33,7 +33,8 @@ class TxQueue extends Component {
 
         return (
             <ScrollContainer>
-                <Title>/transaction</Title>
+                <MainContainer>
+                <PageTitle>/transaction</PageTitle>
                 <Table>
                     <thead>
                         <tr>
@@ -81,6 +82,7 @@ class TxQueue extends Component {
                     ))}
                     </tbody>
                 </Table>
+                </MainContainer>
             </ScrollContainer>
         );
     }
