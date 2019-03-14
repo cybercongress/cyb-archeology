@@ -33,15 +33,15 @@ export const reducer = (state = initState, action) => {
 };
 
 
-let resolveFunc = null;
-let rejectFunc = null;
+let callbackSuccess = null;
+let callbackError = null;
 
 export const showSigner = ({
     fromAddress, toAddress,
     value, gasPrice, gasLimit,
-}) => dispatch => new Promise((resolve, reject) => {
-    resolveFunc = resolve;
-    rejectFunc = reject;
+}, cbSuccess, cbError) => dispatch => {
+    callbackSuccess = cbSuccess;
+    callbackError = cbError;
     dispatch({
         type: 'SHOW_SIGNER',
         payload: {
@@ -49,17 +49,16 @@ export const showSigner = ({
             value, gasPrice, gasLimit,
         },
     });
-});
+};
 
-const hidePopup = () => ({ type: 'HIDE_SIGNER' });
+export const hidePopup = () => ({ type: 'HIDE_SIGNER' });
 
 export const approve = (gasPrice, gasLimit) => (dispatch) => {
-    resolveFunc({ gasPrice, gasLimit });
-    dispatch(hidePopup());
+    callbackSuccess({ gasPrice, gasLimit });
 };
 
 
 export const reject = () => (dispatch) => {
-    rejectFunc();
+    callbackError();
     dispatch(hidePopup());
 };
