@@ -60,8 +60,7 @@ Cyb interacts with web3 apps and web3 content. Main cyb app is '.cyb'. You can t
 We define the following apps-companions, which we believe together implement the full new web vision in the context of a browsing for agents and app developers:
 
 
-
-## Shell
+Shell
 
 Here are the default UX elements, that Cyb uses to provide basic web3 UX:
 
@@ -73,6 +72,89 @@ Here are the default UX elements, that Cyb uses to provide basic web3 UX:
 <div align="center">
   <img src="/docs/img/shell-components.png"></a>
 </div>
+
+
+## First launch
+
+
+
+## Achievements
+
+
+1. **Soul**
+
+
+Given when a user decides to dive into the web3 world.
+
+Grades:
+
+- Enlightened new web user
+
+
+2. **Body**
+
+Given when a user generates an identity -  a pair of ETH and CYB cryptoaddresses.
+
+Grades:
+
+- Observer. Has no CYB and ETH tokens.
+- Worker. Has only ETH tokens.
+- Traveler. Has only CYB tokens.
+- Pioneer. Has CYB and ETH tokens.
+
+
+3. **Immortality**
+
+Given when a user backups a mnemonic phrase.
+
+Grades:
+
+- Master of Keys
+
+
+4. **Shield**
+
+Given when a user creates a password and encrypts mnemonic phrase.
+
+Grades:
+
+- Defended identity
+
+
+5. **Oracle**
+
+Given when a user establishes a connection to web3 providers.
+
+Grades:
+
+- First words. Used default remote connections.
+- Advanced communication. Used custom remote connections.
+- Voice inside. All connections are local.
+
+
+6. **Collection**
+
+Given when a user adds DURA bookmarks or pins IPFS content.
+
+Grades:
+
+- Root. Used default root domains.
+- Antiquarian. When first pin or file is added.
+- Contributor. When files are added through local IPFS node.
+
+
+7. **Timeline**
+
+
+7. **State**
+
+
+7. **Wisdom**
+
+
+
+## Apps
+
 
 ## .cyb
 
