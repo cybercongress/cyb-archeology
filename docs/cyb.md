@@ -29,7 +29,54 @@ With help of Cyb developers can use any markup, execution and rendering engine t
 Designers can bring new life in established UI and UX paradigms, implement Zooming UI or [Gravity Design System]().
 Simple users can get access to the knowledge and own funds without restrictions and censorship.
 
-## Representation
+## Cyb anatomy
+
+Cyb follows [web3 architecture](https://github.com/w3f/Web3-wiki/wiki#web-3-tech-stack) with some additions and modifications:
+
+- for low level interaction he uses web3 providers: consensus machines (Ethereum, Cyber) decentralized file storage (Filecoin) and content addressing mechanism (IPFS, DAT)
+- for application level Cyb provides own app and a bunch of corresponding apps for complete web3 experience
+- Cyb UI representations are different according to devices and interfaces, but all of them provide original functionality
+
+
+## Low level providers
+
+
+## Apps
+
+Cyb has a lot of user and technical settings.
+They are implemented in the default browser app - .cyb:
+
+- `main.cyb`: main page for every joe
+- `id.cyb`: keystore interface
+- `state.cyb`: cyb state sync, import and export
+
+- `timeline.cyb`: user's activity (transactions, navigation)
+- `files.cyb`: pinned files explorer (cyberlinks, files, syncing content - Chaingear domains snapshots)
+- `connect.cyb`: connection manager
+
+- `help.cyb`: cyb educational library and feedback mechanism
+- `dev.cyb`: web3 development tool with support of contracts
+
+- `sign.cyb`: phishing resistant signer for messages and transactions with scheduler
+- `access.cyb`: permission manager that respects agents' resources
+- `source.cyb`: cyb source code
+- `blog.cyb`: cyb community blog
+- `knowledge.cyb`: cyb community knowledge base
+
+Main apps for initial web3 experience
+
+- `.cyber`: cyberd node manager and app for link chains + - `apps.cyber`: search appstore -
+- `.ipfs`: ipfs node manager and agent experience
+- `.eth`: ethereum node manager + ens resolver
+- `.chaingear`: all the things chaingearable
+- `.dragons`: Dragonereium with `is cyb`
+- `.wiki`: wiki indexator
+
+All this apps are considered as core apps and are included in every Cyb distribution.
+Let us describe in details every app as a pure concept.
+
+
+## UI Representation
 
 Cyb can take different forms, but all functions are available on both low and high level platforms:
 
@@ -39,7 +86,7 @@ Cyb can take different forms, but all functions are available on both low and hi
 - Web. Autonomous existing Cyb, available by demand.
 - VR. Full deep, web3 UX. Gravity UI.
 - Hardware. Different variation of robots.
-- NUI. Cyb and you are in the unified process, UI is unlimited =)
+- Neuro UI. Cyb and you are in the unified process, UI is unlimited =)
 
 Cyb supports several ways to interact with him, such as:
 
@@ -53,9 +100,7 @@ These concepts are massive, that is why currently we don't focus on implementati
 But this paper will try to show implementation agnostic concepts of Cyb that are simple enough to be adopted by web3 developers.
 
 
-## Cyb anatomy
-
-Cyb interacts with web3 apps and web3 content. Main cyb app is '.cyb'. You can think of it as a heart of the robot.
+interacts with web3 apps and web3 content. Main cyb app is '.cyb'. You can think of it as a heart of the robot.
 
 We define the following apps-companions, which we believe together implement the full new web vision in the context of a browsing for agents and app developers:
 
@@ -143,55 +188,35 @@ Grades:
 - Contributor. When files are added through local IPFS node.
 
 
-7. **Timeline**
+7. **Map**
+
+Given when a user makes first several transitions with DURA or several transactions.
+
+Grades:
+
+- Historian. Only DURA transition history.
+- Diplomat. DURA and transaction history.
+
+8. **Heritage**
+
+Given when a user accumulates some data in files.cyb, timeline.cyb or connect.cyb.
+
+Grades:
+
+- Preservation of traditions
+
+9. **Wisdom**
+
+Given when a user finds a congress wiki page.
+
+Grades:
+
+- Sharing knowledge
 
 
-7. **State**
-
-
-7. **Wisdom**
 
 
 
-## Apps
-
-
-## .cyb
-
-Cyb has a lot of user and technical settings.
-They are implemented in the default browser app - .cyb:
-
-- `main.cyb`: main page for every joe
-- `id.cyb`: keystore interface
-- `state.cyb`: cyb state sync, import and export
-
-- `timeline.cyb`: user's activity (transactions, navigation)
-- `files.cyb`: pinned files explorer (cyberlinks, files, syncing content - Chaingear domains snapshots)
-- `connect.cyb`: connection manager
-
-- `help.cyb`: cyb educational library and feedback mechanism
-- `dev.cyb`: web3 development tool with support of contracts
-
-- `sign.cyb`: phishing resistant signer for messages and transactions with scheduler
-- `access.cyb`: permission manager that respects agents' resources
-- `source.cyb`: cyb source code
-- `blog.cyb`: cyb community blog
-- `knowledge.cyb`: cyb community knowledge base
-
-
-## Apps from partner teams
-
-Main apps for initial web3 experience
-
-- `.cyber`: cyberd node manager and app for link chains + - `apps.cyber`: search appstore -
-- `.ipfs`: ipfs node manager and agent experience
-- `.eth`: ethereum node manager + ens resolver
-- `.chaingear`: all the things chaingearable
-- `.dragons`: Dragonereium with `is cyb`
-- `.wiki`: wiki indexator
-
-All this apps are considered as core apps and are included in every Cyb distribution.
-Let us describe in details every app as a pure concept.
 
 ## Navigation Bar
 
