@@ -34,7 +34,7 @@ Simple users can get access to the knowledge and own funds without restrictions 
 Cyb follows [web3 architecture](https://github.com/w3f/Web3-wiki/wiki#web-3-tech-stack) with some additions and modifications:
 
 - for low level interaction he uses web3 providers: consensus machines (Ethereum, Cyber) decentralized file storage (Filecoin) and content addressing mechanism (IPFS, DAT)
-- for application level Cyb provides own app and a bunch of corresponding apps for complete web3 experience
+- for application level Cyb provides own app and a set of necessary apps for complete web3 experience
 - Cyb UI representations are different according to devices and interfaces, but all of them provide original functionality
 
 
@@ -43,42 +43,41 @@ Cyb follows [web3 architecture](https://github.com/w3f/Web3-wiki/wiki#web-3-tech
 
 ## Apps
 
-Cyb has a lot of user and technical settings.
-They are implemented in the default browser app - .cyb:
+According to [DURA scheme](https://github.com/cybercongress/cyb/blob/master/docs/web3-vision.md#dura-scheme) apps are available by typing ".appname" in search field of Cyb.
+Main app is ".cyb" which includes pages:
 
-- `main.cyb`: main page for every joe
-- `id.cyb`: keystore interface
-- `state.cyb`: cyb state sync, import and export
+- `main.cyb`: main page with search field and panels with relevant user content
+- `id.cyb`: user idintity and balances
+- `shield.cyb`: encryption interface
+- `keys.cyb`: keystore interface
+- `state.cyb`: user state sync, import and export
 
 - `timeline.cyb`: user's activity (transactions, navigation)
 - `files.cyb`: pinned files explorer (cyberlinks, files, syncing content - Chaingear domains snapshots)
-- `connect.cyb`: connection manager
+- `connect.cyb`: web3 providers connection manager
 
-- `help.cyb`: cyb educational library and feedback mechanism
-- `dev.cyb`: web3 development tool with support of contracts
+- `dev.cyb`: web3 development tool with support of smart contracts
 
 - `sign.cyb`: phishing resistant signer for messages and transactions with scheduler
 - `access.cyb`: permission manager that respects agents' resources
-- `source.cyb`: cyb source code
-- `blog.cyb`: cyb community blog
-- `knowledge.cyb`: cyb community knowledge base
+- `knowledge.cyb`: Сyb community knowledge base, web3 blog, help articles
+- `source.cyb`: Сyb source code
 
-Main apps for initial web3 experience
+Main core apps for initial web3 experience:
 
-- `.cyber`: cyberd node manager and app for link chains + - `apps.cyber`: search appstore -
+- `.cyber`: cyberd node manager and app for link chains
 - `.ipfs`: ipfs node manager and agent experience
 - `.eth`: ethereum node manager + ens resolver
 - `.chaingear`: all the things chaingearable
-- `.dragons`: Dragonereium with `is cyb`
+- `.dragons`: Dragonereium with `is Сyb`
 - `.wiki`: wiki indexator
 
-All this apps are considered as core apps and are included in every Cyb distribution.
-Let us describe in details every app as a pure concept.
+These apps and pages will be described in details below.
 
 
 ## UI Representation
 
-Cyb can take different forms, but all functions are available on both low and high level platforms:
+Cyb can take different visual forms, but all functions are available on both low and high level platforms:
 
 - CLI. Basic command interactions, no GUI. Simple, fast and cross-platform.
 - Desktop. Basic UI version. Better UX than in CLI, cross-platform.
@@ -96,13 +95,9 @@ Cyb supports several ways to interact with him, such as:
 - camera
 - neuro impulses
 
-These concepts are massive, that is why currently we don't focus on implementation of all mentioned things. Only desktop [version](https://github.com/cybercongress/cyb/releases) is developing now.
+These concepts are massive, that is why currently we don't focus on implementation of all mentioned things.
+Only desktop [version](https://github.com/cybercongress/cyb/releases) is developing now.
 But this paper will try to show implementation agnostic concepts of Cyb that are simple enough to be adopted by web3 developers.
-
-
-interacts with web3 apps and web3 content. Main cyb app is '.cyb'. You can think of it as a heart of the robot.
-
-We define the following apps-companions, which we believe together implement the full new web vision in the context of a browsing for agents and app developers:
 
 
 Shell
