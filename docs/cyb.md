@@ -40,6 +40,10 @@ Cyb follows [web3 architecture](https://github.com/w3f/Web3-wiki/wiki#web-3-tech
 
 ## Low level providers
 
+- IPFS
+- Ethereum 
+- Cyber
+
 
 ## Apps
 
