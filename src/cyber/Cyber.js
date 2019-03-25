@@ -8,8 +8,7 @@ import {
 import builder from './builder';
 
 const Unixfs = require('ipfs-unixfs');
-const multihashing = require('multihashing-async');
-const CID = require('cids');
+const { DAGNode, util: DAGUtil } = require('ipld-dag-pb');
 
 const codec = require('./codec');
 
@@ -32,38 +31,17 @@ const saveInIPFS = (ipfs, jsonStr) => new Promise((resolve, reject) => {
 });
 
 const getIpfsHash = (ipfs, string) => new Promise((resolve, reject) =>  {
-    const buffer = Buffer.from(string);
+    const unixFsFile = new Unixfs('file', Buffer.from(string));
+    const buffer = unixFsFile.marshal();
 
-/*    const obj = new Unixfs('file', buffer);
-    const wrapper = obj.marshal();
-
-    multihashing(wrapper, 'sha2-256', (error, multihash) => {
-        const cid = new CID(0, 'dag-pb', multihash);
-
-        console.log('GENERATED CID: ', cid.toBaseEncodedString());
-        console.log('GEN CID JSON: ', cid.toJSON());
-    });*/
-
-    const opts = {
-        onlyHash: true,
-        pin: false,
-    };
-
-    ipfs.add(buffer, opts, (err, ipfsHash) => {
+    DAGNode.create(buffer, (err, dagNode) => {
         if (err) {
-            reject(err);
-        } else {
-            const { hash } = ipfsHash[0];
-
-
-            console.log(`IPFS get CID: ${string} --> ${hash}`);
-/*
-            const cid = new CID(hash);
-            console.log('IPFS get CID JSON: ', cid.toJSON());
-*/
-
-            resolve(hash);
+            reject(new Error('Cannot create ipfs DAGNode'));
         }
+
+        DAGUtil.cid(dagNode, (error, cid) => {
+            resolve(cid.toBaseEncodedString());
+        });
     });
 });
 
