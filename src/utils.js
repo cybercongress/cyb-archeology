@@ -157,8 +157,6 @@ export const getPreloadPath = () => {
 
     const { remote } = window.require('electron');
 
-    console.log('>>> ', remote.getGlobal('dirname'));
-
     if (isDevMode()) {
         return `file://${path.join(remote.app.getAppPath(), 'src', 'preload.js')}`;
     }

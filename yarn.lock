@@ -2810,6 +2810,16 @@ ci-info@^1.5.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-1.6.0.tgz#2ca20dbb9ceb32d4524a683303313f0304b1e497"
 
+cids@0.5.8:
+  version "0.5.8"
+  resolved "https://registry.yarnpkg.com/cids/-/cids-0.5.8.tgz#3d5000c3856a2d3c00967b21265aa57142611aa0"
+  integrity sha512-Ye8TZP3YQfy0j+i5k+LPHdTY3JOvTwN1pxds44p6BRUv8PTMOAF/Vt4Bc+oiIQ0Sktn0iftkUHgqKNHIMwhshA==
+  dependencies:
+    class-is "^1.1.0"
+    multibase "~0.6.0"
+    multicodec "~0.5.0"
+    multihashes "~0.4.14"
+
 cids@~0.5.4, cids@~0.5.5, cids@~0.5.6:
   version "0.5.6"
   resolved "https://registry.yarnpkg.com/cids/-/cids-0.5.6.tgz#0f79b14695f2b16c4265a17777de46fcae0964b6"
@@ -6217,9 +6227,10 @@ ipfs-block@~0.8.0:
     cids "~0.5.5"
     class-is "^1.1.0"
 
-ipfs-unixfs@~0.1.16:
+ipfs-unixfs@^0.1.16, ipfs-unixfs@~0.1.16:
   version "0.1.16"
   resolved "https://registry.yarnpkg.com/ipfs-unixfs/-/ipfs-unixfs-0.1.16.tgz#41140f4359f1b8fe7a970052663331091c5f54c4"
+  integrity sha512-TX9Dyu77MxpLzGh/LcQne95TofOyvOeW0oOi72aBMMcV1ItP3684e6NTG9KY1qzdrC+ZUR8kT7y18J058n8KXg==
   dependencies:
     protons "^1.0.1"
 
@@ -7027,6 +7038,11 @@ js-sha3@^0.3.1:
 js-sha3@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/js-sha3/-/js-sha3-0.7.0.tgz#0a5c57b36f79882573b2d84051f8bb85dd1bd63a"
+
+js-sha3@~0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/js-sha3/-/js-sha3-0.8.0.tgz#b9b7a5da73afad7dedd0f8c463954cbde6818840"
+  integrity sha512-gF1cRrHhIzNfToc802P800N8PpXS+evLLXfsVpowqmAFR9uwbi89WvXg2QspOmXL8QL86J4T1EpFu+yUkwJY3Q==
 
 js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
@@ -8142,12 +8158,30 @@ multicodec@~0.2.7:
   dependencies:
     varint "^5.0.0"
 
+multicodec@~0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/multicodec/-/multicodec-0.5.0.tgz#5605267226ed02fc3a0a7b041947c19641737b7f"
+  integrity sha512-lKsJeT4cKeSq0rVEWhO3oSBgDN4sMY1sNZKlvl68g/ZAahjPS1KIVyF4IqhuYmCdtOyKs4Q4hQ6M0C3iqRnuqQ==
+  dependencies:
+    varint "^5.0.0"
+
 multihashes@~0.4.13, multihashes@~0.4.14:
   version "0.4.14"
   resolved "https://registry.yarnpkg.com/multihashes/-/multihashes-0.4.14.tgz#774db9a161f81a8a27dc60788f91248e020f5244"
   dependencies:
     bs58 "^4.0.1"
     varint "^5.0.0"
+
+multihashing-async@0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/multihashing-async/-/multihashing-async-0.5.2.tgz#4af40e0dde2f1dbb12a7c6b265181437ac26b9de"
+  integrity sha512-mmyG6M/FKxrpBh9xQDUvuJ7BbqT93ZeEeH5X6LeMYKoYshYLr9BDdCsvDtZvn+Egf+/Xi+aOznrWL4vp3s+p0Q==
+  dependencies:
+    blakejs "^1.1.0"
+    js-sha3 "~0.8.0"
+    multihashes "~0.4.13"
+    murmurhash3js "^3.0.1"
+    nodeify "^1.0.1"
 
 multihashing-async@~0.4.6, multihashing-async@~0.4.7, multihashing-async@~0.4.8:
   version "0.4.8"

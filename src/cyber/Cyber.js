@@ -7,16 +7,15 @@ import {
 
 import builder from './builder';
 
-const nodeUrl2 = 'http://earth.cybernode.ai:34660'; // we need more endopints
+const Unixfs = require('ipfs-unixfs');
+const multihashing = require('multihashing-async');
+const CID = require('cids');
 
-let chainId = 'euler-dev0';
-const defaultAmount = 10000;
-
-let __accounts = {};
-
-const IPFS = require('ipfs-api');
 const codec = require('./codec');
 
+let chainId = 'euler-dev0';
+
+let __accounts = {};
 
 const saveInIPFS = (ipfs, jsonStr) => new Promise((resolve, reject) => {
     const buffer = Buffer.from(jsonStr);
@@ -26,6 +25,42 @@ const saveInIPFS = (ipfs, jsonStr) => new Promise((resolve, reject) => {
             reject(err);
         } else {
             const hash = ipfsHash[0].path;
+
+            resolve(hash);
+        }
+    });
+});
+
+const getIpfsHash = (ipfs, string) => new Promise((resolve, reject) =>  {
+    const buffer = Buffer.from(string);
+
+/*    const obj = new Unixfs('file', buffer);
+    const wrapper = obj.marshal();
+
+    multihashing(wrapper, 'sha2-256', (error, multihash) => {
+        const cid = new CID(0, 'dag-pb', multihash);
+
+        console.log('GENERATED CID: ', cid.toBaseEncodedString());
+        console.log('GEN CID JSON: ', cid.toJSON());
+    });*/
+
+    const opts = {
+        onlyHash: true,
+        pin: false,
+    };
+
+    ipfs.add(buffer, opts, (err, ipfsHash) => {
+        if (err) {
+            reject(err);
+        } else {
+            const { hash } = ipfsHash[0];
+
+
+            console.log(`IPFS get CID: ${string} --> ${hash}`);
+/*
+            const cid = new CID(hash);
+            console.log('IPFS get CID JSON: ', cid.toJSON());
+*/
 
             resolve(hash);
         }
@@ -81,7 +116,7 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
 
     self.searchCids = function (text) {
         return new Promise((resolve) => {
-            saveInIPFS(ipfs, text)
+            getIpfsHash(ipfs, text)
                 .then(cid => axios({
                     method: 'get',
                     url: `${nodeUrl}/search?cid="${cid}"`,
