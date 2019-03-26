@@ -4,7 +4,7 @@ import CybLink from '../CybLink';
 
 import './Button.css';
 
-const Button = ({
+const ButtonDura = ({
     dura, color, fullWidth, ...props
 }) => {
     let css = 'button';
@@ -31,4 +31,4 @@ const Button = ({
     );
 };
 
-export default Button;
+export default ButtonDura;

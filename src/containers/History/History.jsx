@@ -1,63 +1,57 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Title } from '@cybercongress/ui';
+import {
+    PageTitle, TableCybLink, ScrollContainer, MainContainer,
+} from '@cybercongress/ui';
 import moment from 'moment';
 
 import CybLink from '../../components/CybLink';
-import RootRegistry, { Table } from '../../components/RootRegistry/RootRegistry';
+// import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
+// import Table from '../../components/Table/Table';
 
 class History extends Component {
     renderItem = (item, index) => {
         const { dura, date } = item;
-        let content = (
-            <CybLink dura={dura}>{dura}</CybLink>
-        );
+        let content = <CybLink dura={ dura }>{dura}</CybLink>;
 
         if (dura === 'history.cyb') {
-            content = (
-                <span>
-                    {dura}
-                </span>
-            );
+            content = <span>{dura}</span>;
         }
 
         return (
-            <tr key={index}>
+            <tr key={ index }>
                 <td>{content}</td>
                 <td>{moment(date).format('D/MM YYYY h:mm:ss')}</td>
             </tr>
         );
-    }
+    };
 
     render() {
         const { history } = this.props;
-        console.log(history);
 
-        const _history = history.slice(0, history.length - 1);
+        const historyWithoutLast = history.slice(0, history.length - 1);
 
-        _history.reverse();
+        historyWithoutLast.reverse();
 
         return (
-            <RootRegistry>
-                <Title>/History</Title>
-                <Table>
-                    <thead>
-                        <tr>
-                            <th>Address</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {_history.map(this.renderItem)}
-                    </tbody>
-                </Table>
-            </RootRegistry>
+            <ScrollContainer>
+                <MainContainer>
+                    <PageTitle>History</PageTitle>
+                    <TableCybLink>
+                        <thead>
+                            <tr>
+                                <th>Address</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>{historyWithoutLast.map(this.renderItem)}</tbody>
+                    </TableCybLink>
+                </MainContainer>
+            </ScrollContainer>
         );
     }
 }
 
-export default connect(
-    state => ({
-        history: state.browser.history,
-    }),
-)(History);
+export default connect(state => ({
+    history: state.browser.history,
+}))(History);

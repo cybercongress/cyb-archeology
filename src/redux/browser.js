@@ -2,6 +2,7 @@ import { hashHistory } from 'react-router';
 import { URLToDURA, DURAToURL } from '../utils';
 import { getRegistryItems } from './rootRegistry';
 import { getIpfsEndpoint } from './settings';
+import { toggleMenu } from './appMenu';
 
 // TODO: proccess loading
 
@@ -80,6 +81,11 @@ export const navigate = (_dura, init = false) => (dispatch, getState) => {
     const ipfsEndpoint = getIpfsEndpoint(getState());
     const { url, dura } = DURAToURL(_dura, apps, ipfsEndpoint);
 
+
+    if ((_dura === '' || dura === '') && getState().appMenu.openMenu) {
+        dispatch(toggleMenu());
+    }
+
     if (_dura === 'rr.cyb') {
         // if (!init)
         hashHistory.push('/rootregistry');
@@ -110,6 +116,15 @@ export const navigate = (_dura, init = false) => (dispatch, getState) => {
     if (_dura === 'txq.cyb') {
         hashHistory.push('/txq');
         dispatch(updateDURA(_dura));
+        return;
+    }
+
+    if (_dura.indexOf('help.cyb') === 0) {
+        const url = `/help${_dura.split('help.cyb')[1]}`;
+        const dura = `help.cyb${_dura.split('help.cyb')[1]}`;
+
+        hashHistory.push(url);
+        dispatch(updateDURA(dura));
         return;
     }
 
@@ -198,6 +213,15 @@ export const didNavigateInPage = url => (dispatch, getState) => {
 
 
     dispatch(updateDURA(dura));
+
+    // dispatch({ // update URL in webview component, fix problem with links
+    //     type: 'NAVIGATE',
+    //     payload: {
+    //         url,
+    //         dura,
+    //         loading: false,
+    //     },
+    // });
 };
 
 export const init = _IPFS_END_POINT => (dispatch, getState) => {

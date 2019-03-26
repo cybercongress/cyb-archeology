@@ -14,10 +14,13 @@ The new web, or [web3](https://github.com/cybercongress/cyb/blob/master/docs/web
 Leading role in this story belongs to browsers. We see different [approaches](https://github.com/cybercongress/cyb/blob/master/docs/comparison.md) to deliver such experience, but none of them looks completed and convenient.
 So we decide to bring our vision of the future software, called Cyb, that follows new principles, defined by ourselves.
 
+
 ## Who is Cyb?
+
 
 We think web3 browser should be more than passive boring piece of code.
 And here helps our first principles - gamification and anthropomorphism.
+
 
 **Cyb is a friendly personal immortal software robot who helps you explore the universes.**
 
@@ -33,12 +36,15 @@ Simple users can get access to the knowledge and own funds without restrictions 
 
 Cyb follows [web3 architecture](https://github.com/w3f/Web3-wiki/wiki#web-3-tech-stack) with some additions and modifications:
 
+
 - for low level interaction he uses web3 providers: consensus machines (Ethereum, Cyber) decentralized file storage (Filecoin) and content addressing mechanism (IPFS, DAT)
 - for application level Cyb provides own app and a set of necessary apps for complete web3 experience
 - Cyb UI representations are different according to devices and interfaces, but all of them provide original functionality
 
 
+
 ## Low level providers
+
 
 - IPFS
 - Ethereum 
@@ -508,7 +514,7 @@ We believe it will help developers to adopt web3 easier the same they MySQL help
 ## Saga on privacy and anonymity
 
 ...
-
+ 
 ## On censorship resistance
 
 ...
