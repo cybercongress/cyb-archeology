@@ -192,6 +192,18 @@ window.cyber = {
             });
         }));
     },
+
+    checkLotteryTicket(ticketAddress) {
+        return new Promise(((resolve) => {
+            ipcRenderer.sendToHost('cyber', {
+                method: 'checkLotteryTicket',
+                params: [ticketAddress],
+            });
+            ipcRenderer.on('cyber_checkLotteryTicket', (_, payload) => {
+                resolve(payload);
+            });
+        }));
+    },
 };
 
 window.removeAllListeners = () => {

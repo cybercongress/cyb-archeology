@@ -11,8 +11,9 @@ const Unixfs = require('ipfs-unixfs');
 const { DAGNode, util: DAGUtil } = require('ipld-dag-pb');
 
 const codec = require('./codec');
+const lottery = require('../resources/cyberd_lottery.json');
 
-let chainId = 'euler-dev0';
+let chainId;
 
 let __accounts = {};
 
@@ -45,67 +46,27 @@ const getIpfsHash = (ipfs, string) => new Promise((resolve, reject) =>  {
     });
 });
 
-const getIPFS = (ipfs, ipfsHash) => new Promise((resolve) => {
-    ipfs.get(ipfsHash, (err, files) => {
-        const buf = files[0].content;
-        resolve(buf.toString());
-    });
-});
-
 function Cyber(nodeUrl, ipfs, wsUrl) {
     const self = this;
 
     let defaultAccount = null;
 
-
     self.setChainId = (newChainId) => {
         chainId = newChainId;
     };
 
-    self.search = function (text) {
-        return new Promise((resolve) => {
-            saveInIPFS(ipfs, text)
-                .then(cid => axios({
-                    method: 'get',
-                    url: `${nodeUrl}/search?cid="${cid}"`,
-                })).then((data) => {
-                    const cids = data.data.result.cids;
-                    const links = cids.map(cid => ({ ...cid, hash: cid.rank }));
+    self.searchCids = text => new Promise((resolve) => {
+        getIpfsHash(ipfs, text)
+            .then(cid => axios({
+                method: 'get',
+                url: `${nodeUrl}/search?cid="${cid}"`,
+            })).then((data) => {
+                const { cids } = data.data.result;
 
-                    const itemsPromises = links.map(item => {
-                        return Promise.all([
-                            getIPFS(ipfs, item.cid),
-                            Promise.resolve(item)
-                        ]).then(([content, _item]) => {
-                            return {
-                                ..._item,
-                                content
-                            }
-                        });
-                    });
-
-                    Promise.all(itemsPromises).then(items => {
-                        resolve(items)
-                    });
-                })
-                .catch(error => resolve([]));
-        });
-    };
-
-    self.searchCids = function (text) {
-        return new Promise((resolve) => {
-            getIpfsHash(ipfs, text)
-                .then(cid => axios({
-                    method: 'get',
-                    url: `${nodeUrl}/search?cid="${cid}"`,
-                })).then((data) => {
-                    const { cids } = data.data.result;
-
-                    resolve(cids);
-                })
-                .catch(error => resolve([]));
-        });
-    };
+                resolve(cids);
+            })
+            .catch(error => resolve([]));
+    });
 
     function addTransactionLog(address, txHash, status) {
         const jsonStr = localStorage.getItem('cyb_transactions') || '{}';
@@ -176,7 +137,6 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
             });
         });
     }));
-
 
     let __setDefaultAddress;
 
@@ -343,7 +303,7 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
 
     self.getAccount = (address) => new Promise(resolve => {
         resolve(__accounts[address]);
-    })
+    });
 
     self.sendFunds = function (defaultAddress, recipientAddress, amount) {
         return axios({
@@ -373,7 +333,6 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
             const txRequest = builder.buildAndSignTxRequest(sendRequest, __accounts[defaultAddress].privateKey, chainId);
             const signedSendHex = codec.hex.stringToHex(JSON.stringify(txRequest));
 
-//            console.log(tx);
             return axios({
                 method: 'get',
                 url: `${nodeUrl}/submit_signed_send?data="${signedSendHex}"`,
@@ -387,7 +346,10 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
     }).then((response) => {
         resolve(response.data.result);
     }).catch((e) => {}));
-}
 
+    self.checkLotteryTicket = ticketAddress => new Promise((resolve) => {
+        resolve(lottery[ticketAddress]);
+    });
+}
 
 export default Cyber;
