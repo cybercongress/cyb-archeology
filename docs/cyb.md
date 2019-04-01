@@ -8,6 +8,7 @@ Contributions and critics are highly welcome.
 
 [Current implementation](https://github.com/cybercongress/cyb) and [design layouts](https://github.com/cybercongress/ui.cyb) are not fully covered by documentation yet.
 
+
 ## Introduction
 
 The new web, or [web3](https://github.com/cybercongress/cyb/blob/master/docs/web3-vision.md) software is one of the most relevant things developing now.
@@ -17,9 +18,8 @@ So we decide to bring our vision of the future software, called Cyb, that follow
 
 ## Who is Cyb?
 
-
 We think web3 browser should be more than passive boring piece of code.
-And here helps our first principles - gamification and anthropomorphism.
+And here helps our first principle - anthropomorphism.
 
 
 **Cyb is a friendly personal immortal software robot who helps you explore the universes.**
@@ -32,26 +32,115 @@ With help of Cyb developers can use any markup, execution and rendering engine t
 Designers can bring new life in established UI and UX paradigms, implement Zooming UI or [Gravity Design System]().
 Simple users can get access to the knowledge and own funds without restrictions and censorship.
 
+
 ## Cyb anatomy
 
-Cyb follows [web3 architecture](https://github.com/w3f/Web3-wiki/wiki#web-3-tech-stack) with some additions and modifications:
+We can imagine Cyb as  a living organism with certain anatomy: skeleton, internal organs and skin.
+Such concept follows follows [web3 architecture](https://github.com/w3f/Web3-wiki/wiki#web-3-tech-stack) with some additions and modifications:
 
 
-- for low level interaction he uses web3 providers: consensus machines (Ethereum, Cyber) decentralized file storage (Filecoin) and content addressing mechanism (IPFS, DAT)
-- for application level Cyb provides own app and a set of necessary apps for complete web3 experience
-- Cyb UI representations are different according to devices and interfaces, but all of them provide original functionality
+- Skeleton: low level interaction, web3 providers: consensus machines (Ethereum, Cyber) decentralized file storage (Filecoin) and content addressing mechanism (IPFS, DAT)
+- Internal organs: application level, Cyb provides own app (like brain and nervous system) and a set of necessary apps for complete web3 experience
+- Skin: shell, UI representations (can be different according to devices and interfaces, but all of them provide original functionality)
+
+We will start from skin, gradually describing each level step by step. First concepts will be easy to understand, but the deeper we dive the harder the information will be.
+
+
+## Skin. UI Representation
+
+Cyb can take different visual forms, but all functions are available on both low and high level platforms:
+
+- CLI. Basic command interactions, no GUI. Simple, fast and cross-platform.
+- Desktop. Basic UI version. Better UX than in CLI, cross-platform.
+- Mobile. Adaptive UI. Same UX as on Desktop.
+- Web. Autonomous existing Cyb, available by demand.
+- VR. Full deep, web3 UX. Gravity UI.
+- Hardware. Different variation of robots.
+- Neuro UI. Cyb and you are in the unified process, UI is unlimited =)
+
+Cyb supports several ways to interact with him, such as:
+
+- keyboard
+- mouse/touchpad
+- voice
+- camera
+- neuro impulses
+
+These concepts are massive, that is why currently we don't focus on implementation of all mentioned things.
+Only desktop [version](https://github.com/cybercongress/cyb/releases) is developing now.
+But this paper will try to show implementation agnostic concepts of Cyb that are simple enough to be adopted by web3 developers.
+
+
+### Cyb Shell
+
+Cyb shell a set of main [UI elements](https://github.com/cybercongress/ui.cyb/blob/graphics/gravity.sketch) that integrates all necessary function for quick access.
+Think of it as a face of Cyb:
+
+- `Navigation Bar` - search field, back & forward buttons, pin button
+- `App Bar` - list of pinned favorite cyberlinks
+- `Timeline Bar` - main identity data, user event history
+- `Action Bar` - set of main function of certain page
+
+```
+<Gravity max picture>
+```
+
+These concepts will be described in details below.
+
+
+### Navigation Bar
+
+Navigation bar in Cyb is based on the following elements:
+
+- back button - returns user to the previous state of web3 app
+- search field - provides direct access to certain state
+- Earth button - allow users to pin cyberlinks
+- forward button - brings user to the future state based on Cyb prediction
+- connection status - shows web3 connection status
+- user id icon - shows current active id
+
+Search field is used to browse web3.
+With the help of DURA and knowledge of application involved (<content-address>.<app>) it can get content across different content addressing protocols such as IPFS, DAT, SWARM, and inside blockchains, tangles and DAGs thus forming heterogeneous environment of web3.
+
+In [web3 vision doc](cyb/docs/web3-vision.md) we describe in details a concept of web3 browsing based on DURA specs.
+So, in web3 appending "dot" works different in comparison with web2.
+Dot is literally a search query to a particular app that also has a content address in heterogeneous network.
+All symbols after "dot" make a map with content address of a domain in [Chaingear](https://github.com/cybercongress/chaingear), and all data before "dot" is a query parameter to an app.
+
+For example:
+
+`.cyb` query will open Cyb main app. `id.cyb` will open `id` page in the `.cyb` app.
+Query without "dot" will be automatically redirected to search in cyber knowledge graph (Note: queries without dot is synonym to `<your-query>.cyber`).
+
+Empty query always leads to the `.cyb` .
+
+
+### App Bar
+
+App bar is a place where user can quickly get access to pinned web3 objects.
+User can pin such objects by clicking on button "Earth" on navigation bar and then it will appear in app bar.
+Cyberlink manager "files.cyb" is an attached page that allow agents to group and tag pins, as well as import and export them.
+
+
+### Timeline bar
+
+Purpose of timeline bar is to enable the concept of identity and its state during time:
+
+- past: a user can see previous state: all his transactions, events , navigation history
+- present: current token balance
+- future: scheduled or delayed transactions, balance estimation
+
+Timeline also provides quick access to main Cyb pages.
+
+
+### Action Bar
+
+Cyb saves user's time and as a result every page or app has only several main functions: add item, edit fields and etc.
+These functions are implemented in external panel at the bottom of the page.
 
 
 
-## Low level providers
-
-
-- IPFS
-- Ethereum
-- Cyber
-
-
-## Apps
+## Internal organs. Applications
 
 
 Apps in web3 are just simply IPFS hashes. Some of them can represent static content, others are dynamic and interactive.
@@ -84,119 +173,15 @@ Main core apps for initial web3 experience are:
 - `.dragons`: Dragonereium game
 - `.wiki`: wikipedia indexator
 
-These apps and pages will be described in details below.
+To make web3 experience more fascinating we use second principle - gamification.
+Cyb uses achievement system to stimulate a user to interact with web3 content and another web3 agents.
+These apps, pages and achievements will be described in details below.
 
 
-## UI Representation
-
-Cyb can take different visual forms, but all functions are available on both low and high level platforms:
-
-- CLI. Basic command interactions, no GUI. Simple, fast and cross-platform.
-- Desktop. Basic UI version. Better UX than in CLI, cross-platform.
-- Mobile. Adaptive UI. Same UX as on Desktop.
-- Web. Autonomous existing Cyb, available by demand.
-- VR. Full deep, web3 UX. Gravity UI.
-- Hardware. Different variation of robots.
-- Neuro UI. Cyb and you are in the unified process, UI is unlimited =)
-
-Cyb supports several ways to interact with him, such as:
-
-- keyboard
-- mouse/touchpad
-- voice
-- camera
-- neuro impulses
-
-These concepts are massive, that is why currently we don't focus on implementation of all mentioned things.
-Only desktop [version](https://github.com/cybercongress/cyb/releases) is developing now.
-But this paper will try to show implementation agnostic concepts of Cyb that are simple enough to be adopted by web3 developers.
-
-
-## Cyb Shell
-
-According to [Gravity design system](https://github.com/cybercongress/ui.cyb/blob/graphics/gravity.sketch) main UI elements of Cyb are:
-
-- `Navigation Bar` - search field, back & forward buttons, pin button
-- `App Bar` - list of pinned favorite cyberlinks
-- `Timeline Bar` - main identity data
-- `Action Bar` - node connection statuses
-
-<div align="center">
-  <img src="/docs/img/shell-components.png"></a>
-</div>
-
-These concepts will be described in details below.
-
-
-
-
-
-### Navigation Bar
-
-Navigation bar in Cyb is based on the following UI elements:
-
-- back button - returns user to the previous state of web3 agent
-- search field - provides direct access to certain state
-- Earth button - allow users to pin cyberlinks
-- forward button - brings user to the future state based on Cyb prediction
-
-Search bar is used to browse web3.
-With the help of DURA and knowledge of application involved (<content-address>.<app>) it can get content across different content addressing protocols such as IPFS, DAT, SWARM, and inside blockchains, tangles and DAGs thus forming heterogeneous environment of web3.
-
-In [web3 vision doc](cyb/docs/web3-vision.md) we describe in details a concept of web3 browsing based on DURA specs.
-So, in web3 appending "dot" works very different in comparison with web2.
-Dot is literally a search query to a particular app that also has a content address in heterogeneous network.
-All symbols after "dot" make a map with content address of an app in root registry, and all data before "dot" is a query parameter to an app.
-
-```
-<illustration>
-```
-
-For example:
-
-`.cyb` query will open Cyb default app. `id.cyb` will open `id`  page in the `.cyb` app.
-Query without "dot" will be automatically redirected to search in cyberd (Note: queries without dot is synonym to `<your-query>.cyber`).
-
-Empty query always leads to the `.cyb` .
-
-`.` query returns a root registry that is being used by default in Cyb.
-
-```
-<api-definition>
-```
-
-### App Bar
-
-```
-cyb accounts, keys
-```
-
-App bar is a place where user can quickly get access to most used web3 objects.
-User can pin such objects by clicking on button "heart" on navigation bar and then it will appear in app bar.
-Cyberlink manager "pins.cyb" is an attached page that allow agents to group and tag pins, as well as import and export them.
-
-### Timeline bar
-
-Purpose of id bar is to enable the concept of identity.
-Using identity an agent is able to authenticate messages and sign transactions in web3.
-Cyb assumes that an agent which interacts with web3 is using active identity, but offers ability to change id of a signed transaction during signing.
-
-Agent understand which id is active using identicon.
-Cyb computes unique and deterministic identicons for every id, but offer agent to set any identicon for local pleasure. Clicking on id bar allow agent to choose active identity from a `keys` app.
-
-ID bar also provides quick access to the main account data - balances, transaction notifictions and has links to wallet.cyb, path.cyb, pins.cyb, connect.cyb, txq.cyb.
-
-### Action Bar
-
-Cyb is hiding all complexities of web3 connections under one colorful indicator that range from green to red.
-Ideally it works like indicator of internet connection we all used to see in smartphones.  
-Connection indicator is cyberlinked to a `connect.cyb` app.
-It gives an ability for an agent to understand status of connections and chose web3 providers.
-
-
-## .cyb
+### .cyb
 
 Achievement: **Soul**
+
 Given when a user decides to dive into the web3 world.
 
 Grades:
@@ -211,7 +196,7 @@ Main page of the browser contains of 2 parts:
 - related content, based on user's behavior.
 
 
-## id.cyb
+### id.cyb
 
 Achievement: **Body**
 
@@ -225,7 +210,14 @@ Grades:
 - Pioneer. Has CYB and ETH tokens.
 
 
-## keys.cyb
+Using identity an agent is able to authenticate messages and sign transactions in web3.
+Cyb assumes that an agent which interacts with web3 is using active identity, but offers ability to change id of a signed transaction during signing.
+
+Agent understand which id is active using identicon.
+Cyb computes unique and deterministic identicons for every id using master private key, generated from mnemonic phrase.
+
+
+### keys.cyb
 
 Achievement: **Immortality**
 
@@ -236,11 +228,10 @@ Grades:
 - Master of Keys
 
 
-Keys app is inherent component of id bar and is embedded in Cyb.
 This app allows to store cryptographic secrets.
 Think of it as lastpass you don't need to trust that is able to compute different addresses, one time passwords and signatures in the context of an app.
 
-The following convention is used for `keys`:
+The following convention is used for `keys.cyb`:
 
 ```
 id: String,
@@ -255,7 +246,7 @@ type: String
 subtype: String
 ```
 
-The following API is being used to programmatically interact with id bar:
+The following API is being used to programmatically interact with navigation bar:
 
 ```
 setDefaultId(addressIndex: Number): Promise <Boolean>
@@ -265,7 +256,7 @@ verifyMessage(verificationObject: Object): Promise <Boolean>
 ```
 
 
-## shield.cyb
+### shield.cyb
 
 Achievement: **Shield**
 
@@ -275,10 +266,10 @@ Grades:
 
 - Defended identity
 
+Password is used to encrypt mnemonic and state of a user.
 
 
-## connect.cyb
-
+### connect.cyb
 
 Achievement: **Oracle**
 
@@ -297,22 +288,16 @@ Our purpose is to build web3 browser that is agnostic from addressing, identity 
 But currently we use IPFS, Ethereum and Cyberd nodes to show off possible experience at early stage of web3 development.
 It is not necessary to connect to own web3 providers for basic needs such as popular static content surfing and simple transfers of tokens.
 
-```
-<illustration> -
-```
-
-```
-<api-definition>
-```
-
 Ultimate purpose of `connect.cyb` is to remove necessity of agents to manually switch between networks.
-Agent doesn't need to think about switching across networks.
 It is a goal of app developers and browser vendors to define an approach that allows seamless interaction during web3 experience with all network magic, which happenes underneath.
 Cyb is developing in a way which allows async interactions with several peer-to-peer networks in an app context.
 
 
+Cyb is hiding all complexities of web3 connections under one colorful indicator that range from green to red and is placed in the eye of robot in the upper left corner .
+Such connection indicator is cyberlinked to a `connect.cyb` app.
 
-## files.cyb
+
+### files.cyb
 
 
 Achievement: **Collection**
@@ -325,8 +310,11 @@ Grades:
 - Antiquarian. When first pin or file is added.
 - Contributor. When files are added through local IPFS node.
 
+`files.cyb` is a decentralized file manager. It can work with IPFS hashes: locally pinned files, syncing Chaingear content.
+A user can add files or bookmarks and share them with web3 world.
 
-## timeline.cyb
+
+### timeline.cyb
 
 Achievement: **Map**
 
@@ -338,38 +326,7 @@ Grades:
 - Diplomat. DURA and transaction history.
 
 
-### root.cyb
-
-According to [3 rules of root registry](https://github.com/cybercongress/cyb/blob/master/docs/web3-vision.md#three-rules-of-a-root-registry) every developer can deliver best possible experience for their agents.
-That is why we want to mix the best from every word in our worlds in our implementation of root registry.
-To bring better user experience about 3k of records will be cybersquatted to align interests of existing app developers and agents who look for a beautiful, simple and trustful experience.
-
-`root.cyb` is a mix of the most well known concepts consolidated under one namespace!
-Let me introduce what is included in the shake:
-
-- [programming languages](https://gist.github.com/aymen-mouelhi/82c93fbcd25f091f2c13faa5e0d61760): up to 200 names
-- [common programs](https://fileinfo.com/filetypes/common): up to 100 names
-- [tokens](https://coinmarketcap.com/): Up to 1k names
-- [top-level domains](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains): up to 300 names
-- [top english words](https://github.com/first20hours/google-10000-english/blob/master/google-10000-english-no-swears.txt): up to 1k names
-- [utf symbols](https://www.compart.com/en/unicode/category/So): up to 300 names
-
-Initially cyber•Congress will own all this cybersquatted records.
-In order to improve probability of adoption of `root.cyb` cyber•Congres will distribute this names to original app developers based on proof of dns mechanism.
-That is, names for programming languages, common programs, tokens and top-level domains will be distributed based on a proof of dns according to verified registry produced by cyber•Congress.
-
-Top english words and utf symbols will be distributed using competitions, grants and awards produced by cyber•Congress.
-
-Initially unregistered names in `root.cyb` will be distributed under flat fee for cyb root registry owner in Chaingear.
-We are going to start from 1 ETH for every name and will see will it be enough to protect from abusive squatting or not.
-It is possible that we will switch to auction form of distribution in a future.
-
-
-
-
-
-
-## state.cyb
+### state.cyb
 
 Achievement: **Heritage**
 
@@ -380,11 +337,7 @@ Grades:
 - Preservation of traditions
 
 
-
-
-
-## knowledge.cyb
-
+### knowledge.cyb
 
 Achievement: **Wisdom**
 
@@ -394,62 +347,32 @@ Grades:
 
 - Sharing knowledge
 
-
-
-### help
-
-Help is a two way help app.
-Using this app cyb helps agents to use itself. Using `help.cyb` agents help Cyb evolve.
-
-As an open source project we are welcome for contributions.
-Gitcoin is an excellent instrument that we use for delegating tasks for community a processing payments for completed ones.
-
-We have our vision of how to develop browser and what kind of features develop first.
-But we give an opportunity for community to decide and vote with tokens what kind of browser we need to see in near future. Our product [Chaingear](https://github.com/cybercongress/chaingear) is also made for this.
-
-We use user's feedback to make products better.
-So we provide options for bug reporting and feedback leaving on every page.
-
-
-
-
-
-
-
-
-## dev.cyb
-
-Developers experience is critical for the whole web3 adoption.
-This app helps to develop and publish web3 apps.
-
-
-
-
+Knowledge page contains project documentation, help articles and web3 blog.
 
 
 ## sign.cyb
 
 `sign.cyb` allows users to sign messages and transactions in a way that brings web3 experience to the whole new level.
 
-Browser use embedded app for signing transactions so user can be always sure that transaction details are valid.
+Cyb usee embedded instrument for signing transactions so user can be always sure that transaction details are valid.
 In a web2 there is no inherent mechanism to be sure that overlay of an app is produced by a browser and not an app itself.
 Cyb solves this problem deterministically generating background and sound of overlay window in a way that an underlying app cannot know the seed for generating desired sound and visual pattern.
-The user need to remember its unique pattern once to safely interacting with different apps including not so trusted.
+The user needs to remember its unique pattern once to safely interacting with different apps including not so trusted.
 
-Another problem we are approach to solve with `sign.cyb` is deferred transactions.
+Another problem we are approach to solve with `sign.cyb` is delayed transactions.
 Cyb has its own address for which an agent can delegate some rights.
 Using this API app developer can create a logic that allow create and execute complex sequences of transactions client side.
 Since inception of Ethereum we sign thousands of transactions and miss even more.
 That is why we believe this feature is critical for awesome web3 experience.
 
 
-## wallet.cyb
+### .dev
 
-We believe that transfer of tokens is very basic experience in a web3 thus want to provide embedded in browser wallet app as soon as possible.
-Thus we consider either to develop our own bicycle or partner with some 3d party wallet developer.
+Developers experience is critical for the whole web3 adoption.
+This app helps to develop and publish web3 apps.
 
 
-## feed.cyb
+### feed.cyb
 
 1. what is web3 feed
 2. subscription on events
@@ -457,25 +380,25 @@ Thus we consider either to develop our own bicycle or partner with some 3d party
 4. privacy
 
 
-## access.cyb
+### access.cyb
 
-Permission management is of paramount importance in the process of safe application distribution.
+Permission management is important the process of safe application distribution.
 We want to improve upon 3 critical aspects of permission management in web:
 
 - app authentication
 - resource management
 - dynamic permissions
 
-*App authentication* is hard in web2.
-You need somehow know the origin and this is practically hard in a face of government level adversaries, than you must compute hash of received file and compare it with a file hash received from origin.
+*App authentication* is currently hard in web2.
+Users need somehow know the origin and this is practically hard in a face of government level adversaries, than they should compute hash of received file and compare it with a file hash received from origin.
 Due to practical complexity nobody do that. In web3 if you know that address is correct authentication is done automagically.
-That is why browser can easily verify that permission is granted for expected app and not malicious.
+That is why Cyb can easily verify that permission is granted for expected app and not malicious.
 
 *Resource management* was not in place.
 In web2 all permission systems was primarily build around a concept of granting access to a particular data which browser has access to.
 While this approach find itself useful it just not enough to run any application from untrusted developers.
 Computing resources has fundamental value now, thus must be carefully managed and metered.
-In web3 its weird that any untrusted app can eat all resources of a machine in no time.
+In web3 is weird that any untrusted app can eat all resources of a machine in no time.
 Moreover, if an application is executed in a sandbox all we need to feel ourselves safe (in addition to authenticated permissions) is ensure that app do not eat more resources than expected.
 Libraries that help app developers to mine some proof-of-work algorithms using visitor machine become ubiquitous.
 Practically that means that in addition to shity ads web2 users will experience even more worse web experience: greedy, slow and battery consuming apps are coming.
@@ -520,6 +443,64 @@ Else resolve ENS.
 
 [Chaingear](https://github.com/cybercongress/chaingear) is an app that help developers create ethereum based CRUD databases.
 We believe it will help developers to adopt web3 easier the same they MySQL helped to site developers in the very beginning of web.
+
+
+According to [3 rules of root registry](https://github.com/cybercongress/cyb/blob/master/docs/web3-vision.md#three-rules-of-a-root-registry) every developer can deliver best possible experience for their agents.
+That is why we want to mix the best from every word in our worlds in our implementation of root registry.
+To bring better user experience about 3k of records will be cybersquatted to align interests of existing app developers and agents who look for a beautiful, simple and trustful experience.
+
+Folder `/root` is a mix of the most well known concepts consolidated under one namespace!
+Let me introduce what is included in the shake:
+
+- [programming languages](https://gist.github.com/aymen-mouelhi/82c93fbcd25f091f2c13faa5e0d61760): up to 200 names
+- [common programs](https://fileinfo.com/filetypes/common): up to 100 names
+- [tokens](https://coinmarketcap.com/): Up to 1k names
+- [top-level domains](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains): up to 300 names
+- [top english words](https://github.com/first20hours/google-10000-english/blob/master/google-10000-english-no-swears.txt): up to 1k names
+- [utf symbols](https://www.compart.com/en/unicode/category/So): up to 300 names
+
+Initially cyber•Congress will own all this cybersquatted records.
+In order to improve probability of adoption of `root.cyb` cyber•Congres will distribute this names to original app developers based on proof of dns mechanism.
+That is, names for programming languages, common programs, tokens and top-level domains will be distributed based on a proof of dns according to verified registry produced by cyber•Congress.
+
+Top english words and utf symbols will be distributed using competitions, grants and awards produced by cyber•Congress.
+
+Initially unregistered names in `root.cyb` will be distributed under flat fee for cyb root registry owner in Chaingear.
+We are going to start from 1 ETH for every name and will see will it be enough to protect from abusive squatting or not.
+It is possible that we will switch to auction form of distribution in a future.
+
+
+
+
+
+As an open source project we are welcome for contributions.
+Gitcoin is an excellent instrument that we use for delegating tasks for community a processing payments for completed ones.
+
+
+We use user's feedback to make products better.
+So we provide options for bug reporting and feedback leaving on every page.
+
+
+We have our vision of how to develop browser and what kind of features develop first.
+But we give an opportunity for community to decide and vote with tokens what kind of browser we need to see in near future. Our product [Chaingear](https://github.com/cybercongress/chaingear) is also made for this.
+
+
+## Skeleton. Low level providers
+
+
+
+- IPFS
+- Ethereum
+- Cyber
+
+
+
+
+
+
+
+
+
 
 
 
