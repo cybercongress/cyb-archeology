@@ -174,17 +174,38 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
     };
 
     self.getStatistics = () => new Promise((resolve) => {
-        axios({
+        const indexStatsPromise = axios({
             method: 'get',
             url: `${nodeUrl}/index_stats`,
-        }).then(response => response.data.result).then(stats => {
-            axios({
-                method: 'get',
-                url: `${nodeUrl}/status`,
-            }).then(r => r.data.result).then((data) => {
-                resolve({ ...stats, latest_block_time: data.sync_info.latest_block_time});
+        }).then(response => response.data.result);
+
+        const stakingPromise = axios({
+            method: 'get',
+            url: `${nodeUrl}/staking/pool`,
+        }).then(response => response.data.result);
+
+        const bandwidthPricePromise = axios({
+            method: 'get',
+            url: `${nodeUrl}/current_bandwidth_price`,
+        }).then(response => response.data.result);
+
+        const latestBlockPromise = axios({
+            method: 'get',
+            url: `${nodeUrl}/block`,
+        }).then(response => response.data.result);
+
+        Promise.all([indexStatsPromise, stakingPromise, bandwidthPricePromise, latestBlockPromise])
+            .then(([indexStats, staking, bandwidthPrice, latestBlock]) => {
+                const response = {
+                    ...indexStats,
+                    bondedTokens: staking.bonded_tokens,
+                    notBondedTokens: staking.not_bonded_tokens,
+                    bandwidthPrice: bandwidthPrice.price,
+                    txCount: latestBlock.block_meta.header.total_txs,
+                };
+
+                resolve(response);
             });
-        });
     });
 
     let websocket;
