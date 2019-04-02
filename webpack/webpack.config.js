@@ -56,12 +56,12 @@ module.exports = (env = {}, argv = {}) => {
                     include: /src/,
                     use: [
                         { loader: 'babel-loader' },
-                        {
+/*                        {
                             loader: 'eslint-loader',
                             options: {
                                 emitWarning: true,
                             },
-                        },
+                        },*/
                     ],
                 },
                 {

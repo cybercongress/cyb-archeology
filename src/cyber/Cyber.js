@@ -6,6 +6,7 @@ import {
 } from './crypto';
 
 import builder from './builder';
+import { getBalanceByAddress } from '../redux/wallet';
 
 const Unixfs = require('ipfs-unixfs');
 const { DAGNode, util: DAGUtil } = require('ipld-dag-pb');
@@ -369,7 +370,26 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
     }).catch((e) => {}));
 
     self.checkLotteryTicket = ticketAddress => new Promise((resolve) => {
-        resolve(lottery[ticketAddress]);
+        const result = lottery[ticketAddress];
+
+        const lotteryResult = {
+            addressEth: ticketAddress,
+            balanceEth: 0,
+            addressCyberd: result ? result.address : '',
+            balanceCyberd: result ? result.balance : 0,
+        };
+
+        getBalanceByAddress(ticketAddress)
+            .then((balanceEth) => {
+                lotteryResult.balanceEth = balanceEth;
+
+                resolve(lotteryResult);
+            })
+            .catch((error) => {
+                console.log(`Cant get eth balance for ${ticketAddress}. Error: ${error}`);
+
+                resolve(lotteryResult);
+            });
     });
 }
 

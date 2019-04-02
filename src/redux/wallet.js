@@ -774,3 +774,14 @@ export const resend = (txHash) => (dispatch, getState) => {
 
     // TODO: show singer
 };
+
+export const getBalanceByAddress = addressEth => new Promise((resolve, reject) => {
+    eth
+        .getBalance(addressEth.toLowerCase())
+        .then((balance) => {
+            resolve(web3.utils.fromWei(balance, 'ether'));
+        })
+        .catch((error) => {
+            reject(error);
+        });
+});
