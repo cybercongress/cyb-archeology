@@ -157,12 +157,12 @@ Main browser app is accessible by typing ".cyb" and has modules (pages):
 - `files.cyb`: pinned files explorer (cyberlinks, files, syncing content - Chaingear domains snapshots)
 - `connect.cyb`: web3 providers connection manager
 
-- `dev.cyb`: web3 development tool with support of smart contracts
-
 - `sign.cyb`: phishing resistant signer for messages and transactions with scheduler
 - `access.cyb`: permission manager that respects agents' resources
 - `knowledge.cyb`: Сyb community knowledge base, web3 blog, help articles
 - `source.cyb`: Сyb source code
+
+- `dev.cyb`: web3 development tool with support of smart contracts
 
 Main core apps for initial web3 experience are:
 
@@ -217,6 +217,19 @@ Agent understand which id is active using identicon.
 Cyb computes unique and deterministic identicons for every id using master private key, generated from mnemonic phrase.
 
 
+### shield.cyb
+
+Achievement: **Shield**
+
+Given when a user creates a password and encrypts mnemonic phrase.
+
+Grades:
+
+- Defended identity
+
+Password is used to encrypt mnemonic and state of a user.
+
+
 ### keys.cyb
 
 Achievement: **Immortality**
@@ -256,17 +269,49 @@ verifyMessage(verificationObject: Object): Promise <Boolean>
 ```
 
 
-### shield.cyb
+### state.cyb
 
-Achievement: **Shield**
+Achievement: **Heritage**
 
-Given when a user creates a password and encrypts mnemonic phrase.
+Given when a user accumulates some data in files.cyb, timeline.cyb or connect.cyb.
 
 Grades:
 
-- Defended identity
+- Preservation of traditions
 
-Password is used to encrypt mnemonic and state of a user.
+All user's data (timeline, pins, connections) are compiled into one JSON file.
+Such file can be exported and imported to support continuous web3 experience.
+
+
+### timeline.cyb
+
+Achievement: **Map**
+
+Given when a user makes first several transitions with DURA or several transactions.
+
+Grades:
+
+- Historian. Only DURA transition history.
+- Diplomat. DURA and transaction history.
+
+Timeline contains all historical user's activity: transactions, events, navigation, as well as future events: delayed transactions, balance estimation.
+
+
+### files.cyb
+
+
+Achievement: **Collection**
+
+Given when a user adds DURA bookmarks or pins IPFS content.
+
+Grades:
+
+- Root. Used default root domains.
+- Antiquarian. When first pin or file is added.
+- Contributor. When files are added through local IPFS node.
+
+`files.cyb` is a decentralized file manager. It can work with IPFS hashes: locally pinned files, syncing Chaingear content.
+A user can add files or bookmarks and share them with web3 world.
 
 
 ### connect.cyb
@@ -297,60 +342,7 @@ Cyb is hiding all complexities of web3 connections under one colorful indicator 
 Such connection indicator is cyberlinked to a `connect.cyb` app.
 
 
-### files.cyb
-
-
-Achievement: **Collection**
-
-Given when a user adds DURA bookmarks or pins IPFS content.
-
-Grades:
-
-- Root. Used default root domains.
-- Antiquarian. When first pin or file is added.
-- Contributor. When files are added through local IPFS node.
-
-`files.cyb` is a decentralized file manager. It can work with IPFS hashes: locally pinned files, syncing Chaingear content.
-A user can add files or bookmarks and share them with web3 world.
-
-
-### timeline.cyb
-
-Achievement: **Map**
-
-Given when a user makes first several transitions with DURA or several transactions.
-
-Grades:
-
-- Historian. Only DURA transition history.
-- Diplomat. DURA and transaction history.
-
-
-### state.cyb
-
-Achievement: **Heritage**
-
-Given when a user accumulates some data in files.cyb, timeline.cyb or connect.cyb.
-
-Grades:
-
-- Preservation of traditions
-
-
-### knowledge.cyb
-
-Achievement: **Wisdom**
-
-Given when a user finds a congress wiki page.
-
-Grades:
-
-- Sharing knowledge
-
-Knowledge page contains project documentation, help articles and web3 blog.
-
-
-## sign.cyb
+### sign.cyb
 
 `sign.cyb` allows users to sign messages and transactions in a way that brings web3 experience to the whole new level.
 
@@ -364,20 +356,6 @@ Cyb has its own address for which an agent can delegate some rights.
 Using this API app developer can create a logic that allow create and execute complex sequences of transactions client side.
 Since inception of Ethereum we sign thousands of transactions and miss even more.
 That is why we believe this feature is critical for awesome web3 experience.
-
-
-### .dev
-
-Developers experience is critical for the whole web3 adoption.
-This app helps to develop and publish web3 apps.
-
-
-### feed.cyb
-
-1. what is web3 feed
-2. subscription on events
-3. import/export/sharing
-4. privacy
 
 
 ### access.cyb
@@ -413,6 +391,53 @@ Permissions of a third party developers are not native for a browsers either.
 Browser just don't care about what data with which apps agent want to share.
 We ask ourselves what if a browser can ask apps what kind of permissions they can provide thus exposing this permission system to any other apps?
 We believe this approach will allow web3 developers provide experience inaccessible for previous architectures.
+
+
+### knowledge.cyb
+
+Achievement: **Wisdom**
+
+Given when a user finds a congress wiki page.
+
+Grades:
+
+- Sharing knowledge
+
+Knowledge page contains project documentation and web3 blog.
+Project documentation consists of whitepapers and development guidelines.
+Web3 blog facilitate immersion into the web3 browsing: it contains help articles, announces, development news.
+
+
+### source.cyb
+
+Achievement: **Heart**
+
+Given when a user downloads and builds Cyb by himself.
+
+Grades:
+
+-  True love
+
+This module contains all design and development sources of Cyb.  
+This should be a single point of truth for developers.
+
+
+### .dev
+
+Developers experience is critical for the whole web3 adoption.
+This app helps to develop and publish web3 apps.
+
+By default .dev app listens 5000 port to display and debug your app.
+
+
+### feed.cyb
+
+1. what is web3 feed
+2. subscription on events
+3. import/export/sharing
+4. privacy
+
+
 
 
 
