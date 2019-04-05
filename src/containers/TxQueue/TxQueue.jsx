@@ -33,7 +33,7 @@ class TxQueue extends Component {
             <ScrollContainer>
                 <MainContainer>
                     <PageTitle>transaction</PageTitle>
-                    <Table>
+                    <table>
                         <thead>
                             <tr>
                                 <th>type</th>
@@ -60,7 +60,7 @@ class TxQueue extends Component {
                                 </tr>
                             ))}
                         </tbody>
-                    </Table>
+                    </table>
                 </MainContainer>
             </ScrollContainer>
         );

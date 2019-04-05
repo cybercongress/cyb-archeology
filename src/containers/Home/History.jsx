@@ -40,7 +40,7 @@ class History extends Component {
         return (
             <ScrollContainer>
                 <Title>/History</Title>
-                <Table>
+                <table>
                     <thead>
                         <tr>
                             <th>Address</th>
@@ -50,7 +50,7 @@ class History extends Component {
                     <tbody>
                         {historyWithoutLast.map(this.renderItem)}
                     </tbody>
-                </Table>
+                </table>
             </ScrollContainer>
         );
     }
