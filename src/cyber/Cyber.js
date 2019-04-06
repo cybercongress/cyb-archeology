@@ -12,7 +12,8 @@ const Unixfs = require('ipfs-unixfs');
 const { DAGNode, util: DAGUtil } = require('ipld-dag-pb');
 
 const codec = require('./codec');
-const lottery = require('../resources/cyberd_lottery.json');
+
+export const lotteryHash = 'QmWtLKDNaDsah2i8PBkJKFNx6xt1vALiE4qNoMXzxfW2xQ';
 
 let chainId;
 
@@ -370,26 +371,31 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
     }).catch((e) => {}));
 
     self.checkLotteryTicket = ticketAddress => new Promise((resolve) => {
-        const result = lottery[ticketAddress];
+        ipfs.files.get(lotteryHash, (err, files) => {
+            const lotteryJson = files[0].content.toString('utf8');
+            const lottery = JSON.parse(lotteryJson);
 
-        const lotteryResult = {
-            addressEth: ticketAddress,
-            balanceEth: 0,
-            addressCyberd: result ? result.address : '',
-            balanceCyberd: result ? result.balance : 0,
-        };
+            const result = lottery[ticketAddress];
 
-        getBalanceByAddress(ticketAddress)
-            .then((balanceEth) => {
-                lotteryResult.balanceEth = balanceEth;
+            const lotteryResult = {
+                addressEth: ticketAddress,
+                balanceEth: 0,
+                addressCyberd: result ? result.address : '',
+                balanceCyberd: result ? result.balance : 0,
+            };
 
-                resolve(lotteryResult);
-            })
-            .catch((error) => {
-                console.log(`Cant get eth balance for ${ticketAddress}. Error: ${error}`);
+            getBalanceByAddress(ticketAddress)
+                .then((balanceEth) => {
+                    lotteryResult.balanceEth = balanceEth;
 
-                resolve(lotteryResult);
-            });
+                    resolve(lotteryResult);
+                })
+                .catch((error) => {
+                    console.log(`Cant get eth balance for ${ticketAddress}. Error: ${error}`);
+
+                    resolve(lotteryResult);
+                });
+        });
     });
 }
 

@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 import axios from 'axios';
-import Cyber from '../cyber/Cyber';
+import Cyber, { lotteryHash } from '../cyber/Cyber';
 import { navigate, goBack } from './browser';
 import { setEthNetworkName } from './settings';
 import { showSigner } from './signer';
@@ -555,6 +555,7 @@ export const init = endpoint => (dispatch, getState) => {
 
     const ipfsConfig = getState().settings.ipfsWrite;
     const ipfs = new IPFS(ipfsConfig);
+    pinLotteryResults(ipfs);
 
     window.cyber = new Cyber(
         getState().settings.SEARCH_END_POINT, ipfs,
@@ -571,6 +572,18 @@ export const init = endpoint => (dispatch, getState) => {
 function financial(x) {
     return Number.parseFloat(x).toFixed(2);
 }
+
+const pinLotteryResults = (ipfs) => {
+    ipfs.pin.add(lotteryHash, (err, res) => {
+        if (err) {
+            console.log('Pin lottery results error: ', err);
+        }
+
+        if (res) {
+            console.log('Pinned lottery results: ', res);
+        }
+    });
+};
 
 export const getDefaultAccountBalance = (state) => {
     const {
