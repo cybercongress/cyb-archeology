@@ -4,7 +4,7 @@ import {
     //    Title,
     MainContainer,
     PageTitle,
-    TableCybLink,
+    Table,
     Button,
     Input,
     FlexContainer,
@@ -68,7 +68,7 @@ class RootRegistryPage extends Component {
                         </Button>
                     </div>
                     <div>
-                        <TableCybLink>
+                        <table>
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -137,7 +137,7 @@ ipns */}
                                     </td>
                                 </tr>
                             </tbody>
-                        </TableCybLink>
+                        </table>
                     </div>
                 </MainContainer>
             </ScrollContainer>

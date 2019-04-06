@@ -1,9 +1,17 @@
 import path from 'path';
 
-export const URLToDURA = (url, apps, IPFS_END_POINT = '') => {
+let query;
+
+export const getQuery = () => query;
+
+export const setQuery = (newQuery) => {
+    query = newQuery;
+};
+
+export const URLToDURA = (url, apps, newQuery = '') => {
     let hash;
     let path = '';
-    let q = '';
+    query = newQuery;
     let app = 'ipfs';
     let ipfsIndex = url.indexOf('ipfs');
 
@@ -30,44 +38,53 @@ export const URLToDURA = (url, apps, IPFS_END_POINT = '') => {
         });
 
         if (!find) {
-            q = hash;
+            query = hash;
         }
     }
 
     if (url.indexOf('localhost') > 0 && url.indexOf('ipfs') === -1) {
         const rawPort = url.split('localhost:')[1];
         const slashIndex = rawPort.indexOf('/');
+        const port = rawPort.substring(0, slashIndex);
 
-        q = rawPort.substring(0, slashIndex);
         path = rawPort.substring(slashIndex, rawPort.length);
-        app = 'dev';
+
+        return `${query}.dev:${port}${path}`;
     }
 
-    return `${q}.${app}${path}`;
+    return `${query}.${app}${path}`;
 };
 
 export const parseURL = (url) => {
-    let q = '';
+    let query = '';
     let app = '';
     let path = '';
+    let port = '5000';
 
     const dotIndex = url.indexOf('.');
 
     if (dotIndex !== -1) {
-        q = url.substr(0, dotIndex);
+        query = url.substr(0, dotIndex);
         app = url.substr(dotIndex + 1, url.length);
+
         const slashIndex = app.indexOf('/');
 
         if (slashIndex !== -1) {
             path = app.substr(slashIndex + 1, url.length);
             app = app.substr(0, slashIndex);
         }
+
+        const colonIndex = app.indexOf(':');
+        if (colonIndex !== -1) {
+            port = app.substr(colonIndex + 1, slashIndex !== -1 ? slashIndex : app.length);
+            app = app.substr(0, colonIndex);
+        }
     } else {
-        q = url;
+        query = url;
         app = 'cyber';
     }
 
-    return { q, app, path };
+    return { query, app, path, port };
 };
 
 export const DURAToURL = (dura, apps = {}, IPFS_END_POINT = 'http://localhost:8080') => {
@@ -78,20 +95,21 @@ export const DURAToURL = (dura, apps = {}, IPFS_END_POINT = 'http://localhost:80
         };
     }
 
-    const { q, app, path } = parseURL(dura);
+    const { query, app, path, port } = parseURL(dura);
 
     if (apps[app]) {
         const { hash, protocol } = apps[app];
 
         return {
-            url: `${IPFS_END_POINT}/${protocol}/${hash}/${path}${q ? `?query=${q}` : ''}`,
-            dura: `${q || ''}.${app}${path ? `/${path}` : ''}`,
+            url: `${IPFS_END_POINT}/${protocol}/${hash}/${path}`,
+            dura: `${query || ''}.${app}${path ? `/${path}` : ''}`,
+            query,
         };
     }
 
     if (app === 'ipfs' || app === 'ipns') {
         const protocol = app;
-        const hash = q;
+        const hash = query;
 
         return {
             url: `${IPFS_END_POINT}/${protocol}/${hash}/`,
@@ -100,17 +118,17 @@ export const DURAToURL = (dura, apps = {}, IPFS_END_POINT = 'http://localhost:80
     }
 
     if (app === 'dev') {
-        const port = q || '5000';
-
         return {
             url: `http://localhost:${port}${path ? `/${path}` : ''}`,
-            dura: `${port}.${app}${path ? `/${path}` : ''}`,
+            dura: `${query}.${app}:${port}${path ? `/${path}` : ''}`,
+            query,
         };
     }
 
     return {
         url: '',
         dura: 'notfound.cyb',
+        query,
     };
 };
 
@@ -138,8 +156,6 @@ export const getPreloadPath = () => {
     // return buildPath;
 
     const { remote } = window.require('electron');
-
-    console.log('>>> ', remote.getGlobal('dirname'));
 
     if (isDevMode()) {
         return `file://${path.join(remote.app.getAppPath(), 'src', 'preload.js')}`;

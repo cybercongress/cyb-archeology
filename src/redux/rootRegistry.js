@@ -3,7 +3,7 @@ const localStorageItemName = 'rootRegistry';
 const initState = {
     items: {
         cyber: {
-            hash: 'QmbzVCxPXseAWScVEMPAKCZRtVub29DXuQAooSTD3dH2WX',
+            hash: 'QmZsKKsBNa2NmhknAdXM2xtigqWcMXnjy29YkGcx417hvo',
             protocol: 'ipfs',
         },
         wiki: {

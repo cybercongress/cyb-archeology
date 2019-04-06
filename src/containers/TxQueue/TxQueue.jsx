@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
     //    Title,
     PageTitle,
-    TableCybLink,
+    Table,
     MainContainer,
     Hash,
     ScrollContainer,
@@ -33,7 +33,7 @@ class TxQueue extends Component {
             <ScrollContainer>
                 <MainContainer>
                     <PageTitle>transaction</PageTitle>
-                    <TableCybLink>
+                    <table>
                         <thead>
                             <tr>
                                 <th>type</th>
@@ -60,7 +60,7 @@ class TxQueue extends Component {
                                 </tr>
                             ))}
                         </tbody>
-                    </TableCybLink>
+                    </table>
                 </MainContainer>
             </ScrollContainer>
         );
