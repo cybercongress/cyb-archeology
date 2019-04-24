@@ -2,7 +2,7 @@ const initState = {
     accounts: [],
     defaultAccount: '',
 };
-import Cyber from '../cyber/Cyber';
+import Cyber, { lotteryHash } from '../cyber/Cyber';
 const IPFS = require('ipfs-api');
 import { onApplicationStart } from './intro';
 
@@ -117,7 +117,19 @@ export const onCopyKey = (address) => (dispatch, getState) => {
             console.error('Async: Could not copy text: ', err);
         });
     });
-}
+};
+
+const pinLotteryResults = (ipfs) => {
+    ipfs.pin.add(lotteryHash, (err, res) => {
+        if (err) {
+            console.log('Pin lottery results error: ', err);
+        }
+
+        if (res) {
+            console.log('Pinned lottery results: ', res);
+        }
+    });
+};
 
 onApplicationStart((browserState, dispatch) => {
 
@@ -127,6 +139,8 @@ onApplicationStart((browserState, dispatch) => {
         protocol: 'http',
     };
     const ipfs = new IPFS(ipfsConfig);
+
+    pinLotteryResults(ipfs);
 
     window.cyber = new Cyber('http://earth.cybernode.ai:34657', ipfs, 'ws://earth.cybernode.ai:34657/websocket');
 

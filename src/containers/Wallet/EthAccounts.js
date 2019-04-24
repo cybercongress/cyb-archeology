@@ -13,11 +13,11 @@ import {
 } from '@cybercongress/ui';
 import {
     getDefaultAccountBalance,
-    deleteAccount,
-    loadAccounts,
-    createAccount,
+    // deleteAccount,
+    // loadAccounts,
+    // createAccount,
     onCopyKey,
-    setDefaultAccount,
+    // setDefaultAccount,
 } from '../../redux/wallet';
 // import { Avatar } from '../../components/Wallet/Wallet';
 // import Button from '../../components/Button/Button';
@@ -150,7 +150,7 @@ ETH
                     {/*<Button color='blue' onClick={ this.create }>
                         CREATE NEW
                     </Button>*/}
-                    
+
                 </CreateButtonContainer>
             </div>
         );
@@ -164,10 +164,10 @@ export default connect(
         defaultAccountBalance: getDefaultAccountBalance({ wallet }),
     }),
     {
-        deleteAccount,
-        loadAccounts,
-        createAccount,
+        // deleteAccount,
+        // loadAccounts,
+        // createAccount,
         onCopyKey,
-        setDefaultAccount,
+        // setDefaultAccount,
     },
 )(EthAccounts);

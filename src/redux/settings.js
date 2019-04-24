@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { init as initWallet, getEthStatus, login } from './wallet';
+import { getEthStatus } from './wallet';
 import { init as initCyberdWallet } from './cyber';
 
 const initState = {

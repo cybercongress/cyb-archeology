@@ -736,7 +736,7 @@
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
 
-"@cybercongress/ui@>=0.0.17":
+"@cybercongress/ui@0.0.17":
   version "0.0.17"
   resolved "https://registry.yarnpkg.com/@cybercongress/ui/-/ui-0.0.17.tgz#8aaccd9f5c2bee1ca169d2f7fda5828266caddeb"
   integrity sha512-JfQh8cfTznYOBFYhJCMBQfXlISWBaMDcYRGOPFWgneMOUwXNGZCPTm2llijYUgW7WbjSdYiWDlfbYJ6pKFSILQ==
