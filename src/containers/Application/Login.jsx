@@ -54,7 +54,7 @@ class Login extends React.Component {
                                     style={ { wordSpacing: '1px', lineHeight: 1.5 } }
                                     marginBottom={ 5 }
                                 >
-                                    Welcome back, xhipster.
+                                    Welcome back.
                                 </TextIlineBlock>
                                 <TextIlineBlock style={ { wordSpacing: '1px' } }>
                                     Please, unlock your state.
