@@ -1,16 +1,14 @@
 import React from 'react';
-const ethers = require('ethers');
 import { connect } from 'react-redux';
-
-import bip39 from 'bip39';
-const jswallet = require("ethereumjs-wallet");
-var hdkey = require('ethereumjs-wallet/hdkey')
-var passworder = require('browser-passworder')
-
-import { startBrowsing } from './../../redux/intro';
-import { Section, Logo } from './../../components/Intro/Intro';
 import { Button, Input } from '@cybercongress/ui';
+import bip39 from 'bip39';
+import Login from './Login';
+import { startBrowsing } from '../../redux/intro';
+import { Section, Logo } from '../../components/Intro/Intro';
 import { create as createCyberdAccount, recover } from '../../cyber/crypto';
+
+const hdkey = require('ethereumjs-wallet/hdkey');
+const passworder = require('browser-passworder');
 
 const Hello = ({ onNext }) => (
     <Section>
@@ -206,22 +204,6 @@ const Congratulation = ({ onNext }) => (
     </Section>
 );
 
-let loginPassord = null;
-const Login = ({ error, onLogin }) => (
-    <Section>
-        <p>/Login</p>
-        <div>
-            <Input inputRef={ node => loginPassord = node } />
-        </div>
-        <div>
-            {error}
-        </div>
-        <div>
-            <Button onClick={() => onLogin(loginPassord.value) }>login</Button>
-        </div>
-    </Section>
-)
-
 class Intro extends React.Component {
     state = {
         step: 'hello',
@@ -365,7 +347,6 @@ class Intro extends React.Component {
                     this.props.startBrowsing(this.state);
                 })
             }).catch(e => {
-                debugger
                 this.setState({ loginError: 'incorrect password' });
             })
     }
@@ -405,7 +386,7 @@ class Intro extends React.Component {
     //         const hardenedKey = rootKey.derivePath("m/44'/60'/0'/0/0");
     //         const address = hardenedKey.getWallet().getAddressString();
     //         const privateKey = hardenedKey.getWallet().getPrivateKey().toString('hex');
-    //         this.setState({ address, privateKey, error: '' });            
+    //         this.setState({ address, privateKey, error: '' });
     //     }).catch(e => {
     //         this.setState({ error: 'incorrect password' });
     //     })
@@ -522,7 +503,7 @@ class Intro extends React.Component {
 
         if (step === 'login') {
             return (
-                <Login error={ loginError } onLogin={this.login} />
+                <Login error={ loginError } onLogin={ this.login } />
             );
         }
 
@@ -536,7 +517,7 @@ class Intro extends React.Component {
         //             <div>
         //                 <div>Mnemonic:</div>
         //                 <textarea rows='4' cols='45' name='text' ref='text'>
-                            
+
         //                 </textarea>
         //             </div>
         //             <div>
