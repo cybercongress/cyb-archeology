@@ -18,7 +18,6 @@ import EthSend from './EthSend';
 import CyberAccounts from './CyberAccounts';
 import CyberImport from './CyberImport';
 import CyberSend from './CyberSend';
-import RequirePassword from '../Application/Login';
 import ChangePassword from '../Application/ChangePassword';
 
 class Page extends Component {
@@ -143,7 +142,7 @@ class Page extends Component {
                                 {this.props.mnemonic}
                             </div>}
                         </WalletContent>
-                        
+
                     </WalletLauout>
                 </MainContainer>
             </ScrollContainer>
