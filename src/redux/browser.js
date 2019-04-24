@@ -1,6 +1,7 @@
 import { hashHistory } from 'react-router';
-
-import { URLToDURA, DURAToURL } from '../utils';
+import {
+    URLToDURA, DURAToURL, setQuery, getQuery,
+} from '../utils';
 import { getRegistryItems } from './rootRegistry';
 import { getIpfsEndpoint } from './settings';
 import { toggleMenu } from './appMenu';
@@ -8,6 +9,8 @@ import { toggleMenu } from './appMenu';
 const { shell } = window.require('electron');
 
 const START_DURA = '';
+
+let webview = null;
 
 const initState = {
     url: DURAToURL(START_DURA).url,
@@ -19,6 +22,7 @@ const initState = {
 
 export const reducer = (state = initState, action) => {
     switch (action.type) {
+
     case 'NAVIGATE': {
         return {
             ...state,
@@ -66,6 +70,12 @@ export const reducer = (state = initState, action) => {
     }
 };
 
+const emitUpdateQuery = query => (dispatch, getState) => {
+    if (webview) {
+        webview.send('params_newQuery', query);
+    }
+};
+
 export const updateDURA = dura => (dispatch, getState) => {
     localStorage.setItem('LAST_DURA', dura);
     dispatch({
@@ -80,8 +90,10 @@ export const updateDURA = dura => (dispatch, getState) => {
 export const navigate = (_dura, init = false) => (dispatch, getState) => {
     const apps = getRegistryItems(getState());
     const ipfsEndpoint = getIpfsEndpoint(getState());
-    const { url, dura } = DURAToURL(_dura, apps, ipfsEndpoint);
+    const { url, dura, query } = DURAToURL(_dura, apps, ipfsEndpoint);
 
+    setQuery(query);
+    dispatch(emitUpdateQuery(query));
 
     if ((_dura === '' || dura === '') && getState().appMenu.openMenu) {
         dispatch(toggleMenu());
@@ -182,9 +194,8 @@ export const willNavigate = (url) => (dispatch, getState) => {
         return;
     }
     const apps = getRegistryItems(getState());
-    const ipfsEndpoint = getIpfsEndpoint(getState());
 
-    let dura = URLToDURA(url, apps, ipfsEndpoint);
+    let dura = URLToDURA(url, apps, getQuery());
 
     if (url.indexOf('cyb://') !== -1) {
         dura = url.split('cyb://')[1];
@@ -208,9 +219,8 @@ export const newWindow = e => (dispatch) => {
 
 export const didNavigateInPage = url => (dispatch, getState) => {
     const apps = getRegistryItems(getState());
-    const ipfsEndpoint = getIpfsEndpoint(getState());
 
-    const dura = URLToDURA(url, apps, ipfsEndpoint);
+    const dura = URLToDURA(url, apps, getQuery());
 
     console.log('did-navigate-in-page ');
     console.log('url', url);
@@ -250,4 +260,45 @@ export const goBack = () => (dispatch, getState) => {
         dispatch({ type: 'MOVE_BACK' });
         dispatch({ type: 'MOVE_BACK' });
     }
+};
+
+const updateQuery = query => (dispatch, getState) => {
+    const { dura } = getState().browser;
+
+    const dotIndex = dura.indexOf('.');
+    const newDura = query.concat(dura.substring(dotIndex, dura.length));
+
+    dispatch(updateDURA(newDura));
+};
+
+export const receiveMessage = message => (dispatch, getState) => {
+    if (message.channel === 'params') {
+        const { method, params } = message.args[0];
+
+        // const webview = message.target;
+
+        switch (method) {
+        case 'getQuery':
+            webview.send(`params_${method}`, getQuery());
+            break;
+        case 'setQuery':
+            dispatch(updateQuery(params[0]));
+            break;
+        default:
+            break;
+        }
+    }
+
+    // _callback();
+};
+
+// todo: subscribe to message from modules
+/*
+export const onReceiveMessage = (callback) => (dispatch, getState) => {
+    //_callback = callback;
+};
+*/
+
+export const setWebView = newWebview => (dispatch, getState) => {
+    webview = newWebview;
 };

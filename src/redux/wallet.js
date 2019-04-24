@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 import axios from 'axios';
-import Cyber from '../cyber/Cyber';
+import Cyber, { lotteryHash } from '../cyber/Cyber';
 import { navigate, goBack } from './browser';
 import { setEthNetworkName } from './settings';
 import { showSigner, hidePopup } from './signer';
@@ -176,10 +176,6 @@ const initProvider = (endpoint, ethAccount) => {
 
 };
 
-const loadAccountBalance = (address) => {
-
-}
-
 onApplicationStart((browserState, dispatch) => {
     // let password = '';
     // ({ password } = browserState);
@@ -205,7 +201,7 @@ onApplicationStart((browserState, dispatch) => {
                 });
             });
         })),
-    ).then((accounts) => {        
+    ).then((accounts) => {
         dispatch({
             type: 'SET_DEFAULT_ACCOUNT',
             payload: { address: accounts[0].address, balance: accounts[0].balance },
@@ -561,26 +557,33 @@ export const receiveMessage = e => (dispatch, getState) => {
             });
         }
     }
-    if (e.channel === 'cyber') {
-        const method = e.args[0].method;
-        const params = e.args[0].params;
 
+    if (e.channel === 'cyber') {
+        const { method, params } = e.args[0];
         const wvCyber = e.target;
 
-            
-        if (method !== 'subscribe'){
-            window.cyber[method].apply(window.cyber, params).then((result) => {
-                wvCyber.send(`cyber_${method}`, result);
-            }).catch(e => {
-                wvCyber.send(`cyber_${method}_error`);
-            });
-        } else {
+        switch (method) {
+        case 'subscribe':
             window.cyber.onNewBlock((event) => {
                 wvCyber.send('cyber_subscribe_event', JSON.parse(event.data));
             });
-        }
+            break;
 
+        case 'unsubscribeNewBlock':
+            window.cyber.unsubscribeNewBlock();
+            break;
+
+        default:
+            window.cyber[method].apply(window.cyber, params)
+                .then((result) => {
+                    wvCyber.send(`cyber_${method}`, result);
+                }).catch((error) => {
+                    wvCyber.send(`cyber_${method}_error`);
+                });
+            break;
+        }
     }
+
     if (e.channel === 'ipfs') {
         const method = e.args[0].method;
         const wvCyber = e.target;
@@ -1013,3 +1016,14 @@ export const resend = txHash => (dispatch, getState) => {
         })));
     }
 };
+
+export const getBalanceByAddress = addressEth => new Promise((resolve, reject) => {
+    eth
+        .getBalance(addressEth.toLowerCase())
+        .then((balance) => {
+            resolve(web3.utils.fromWei(balance, 'ether'));
+        })
+        .catch((error) => {
+            reject(error);
+        });
+});

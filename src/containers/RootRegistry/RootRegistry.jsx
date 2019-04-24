@@ -68,7 +68,7 @@ class RootRegistryPage extends Component {
                         </Button>
                     </div>
                     <div>
-                        <Table>
+                        <table>
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -137,7 +137,7 @@ ipns */}
                                     </td>
                                 </tr>
                             </tbody>
-                        </Table>
+                        </table>
                     </div>
                 </MainContainer>
             </ScrollContainer>

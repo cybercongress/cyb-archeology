@@ -37,7 +37,7 @@ class History extends Component {
             <ScrollContainer>
                 <MainContainer>
                     <PageTitle>History</PageTitle>
-                    <Table>
+                    <table>
                         <thead>
                             <tr>
                                 <th>Address</th>
@@ -45,7 +45,7 @@ class History extends Component {
                             </tr>
                         </thead>
                         <tbody>{historyWithoutLast.map(this.renderItem)}</tbody>
-                    </Table>
+                    </table>
                 </MainContainer>
             </ScrollContainer>
         );

@@ -6,17 +6,18 @@ import {
 } from './crypto';
 
 import builder from './builder';
+import { getBalanceByAddress } from '../redux/wallet';
 
-const nodeUrl2 = 'http://earth.cybernode.ai:34660'; // we need more endopints
+const Unixfs = require('ipfs-unixfs');
+const { DAGNode, util: DAGUtil } = require('ipld-dag-pb');
 
-let chainId = 'euler-dev0';
-const defaultAmount = 10000;
-
-let __accounts = {};
-
-const IPFS = require('ipfs-api');
 const codec = require('./codec');
 
+export const lotteryHash = 'QmWtLKDNaDsah2i8PBkJKFNx6xt1vALiE4qNoMXzxfW2xQ';
+
+let chainId;
+
+let __accounts = {};
 
 const saveInIPFS = (ipfs, jsonStr) => new Promise((resolve, reject) => {
     const buffer = Buffer.from(jsonStr);
@@ -32,10 +33,18 @@ const saveInIPFS = (ipfs, jsonStr) => new Promise((resolve, reject) => {
     });
 });
 
-const getIPFS = (ipfs, ipfsHash) => new Promise((resolve) => {
-    ipfs.get(ipfsHash, (err, files) => {
-        const buf = files[0].content;
-        resolve(buf.toString());
+const getIpfsHash = (ipfs, string) => new Promise((resolve, reject) =>  {
+    const unixFsFile = new Unixfs('file', Buffer.from(string));
+    const buffer = unixFsFile.marshal();
+
+    DAGNode.create(buffer, (err, dagNode) => {
+        if (err) {
+            reject(new Error('Cannot create ipfs DAGNode'));
+        }
+
+        DAGUtil.cid(dagNode, (error, cid) => {
+            resolve(cid.toBaseEncodedString());
+        });
     });
 });
 
@@ -44,41 +53,22 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
 
     let defaultAccount = null;
 
-
     self.setChainId = (newChainId) => {
         chainId = newChainId;
     };
 
-    self.search = function (text) {
-        return new Promise((resolve) => {
-            saveInIPFS(ipfs, text)
-                .then(cid => axios({
-                    method: 'get',
-                    url: `${nodeUrl}/search?cid="${cid}"`,
-                })).then((data) => {
-                    const cids = data.data.result.cids;
-                    const links = cids.map(cid => ({ ...cid, hash: cid.rank }));
+    self.searchCids = text => new Promise((resolve) => {
+        getIpfsHash(ipfs, text)
+            .then(cid => axios({
+                method: 'get',
+                url: `${nodeUrl}/search?cid="${cid}"`,
+            })).then((data) => {
+                const { cids } = data.data.result;
 
-                    const itemsPromises = links.map(item => {
-                        return Promise.all([
-                            getIPFS(ipfs, item.cid),
-                            Promise.resolve(item)
-                        ]).then(([content, _item]) => {
-                            return {
-                                ..._item,
-                                content
-                            }
-                        });
-                    });
-
-                    Promise.all(itemsPromises).then(items => {
-                        resolve(items)
-                    });
-                })
-                .catch(error => resolve([]));
-        });
-    };
-
+                resolve(cids);
+            })
+            .catch(error => resolve([]));
+    });
 
     function addTransactionLog(address, txHash, status) {
         const jsonStr = localStorage.getItem('cyb_transactions') || '{}';
@@ -150,7 +140,6 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
         });
     }));
 
-
     let __setDefaultAddress;
 
     self.getDefaultAddress = () => new Promise((resolve) => {
@@ -187,17 +176,38 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
     };
 
     self.getStatistics = () => new Promise((resolve) => {
-        axios({
+        const indexStatsPromise = axios({
             method: 'get',
             url: `${nodeUrl}/index_stats`,
-        }).then(response => response.data.result).then(stats => {
-            axios({
-                method: 'get',
-                url: `${nodeUrl}/status`,
-            }).then(r => r.data.result).then((data) => {
-                resolve({ ...stats, latest_block_time: data.sync_info.latest_block_time});
+        }).then(response => response.data.result);
+
+        const stakingPromise = axios({
+            method: 'get',
+            url: `${nodeUrl}/staking/pool`,
+        }).then(response => response.data.result);
+
+        const bandwidthPricePromise = axios({
+            method: 'get',
+            url: `${nodeUrl}/current_bandwidth_price`,
+        }).then(response => response.data.result);
+
+        const latestBlockPromise = axios({
+            method: 'get',
+            url: `${nodeUrl}/block`,
+        }).then(response => response.data.result);
+
+        Promise.all([indexStatsPromise, stakingPromise, bandwidthPricePromise, latestBlockPromise])
+            .then(([indexStats, staking, bandwidthPrice, latestBlock]) => {
+                const response = {
+                    ...indexStats,
+                    bondedTokens: staking.bonded_tokens,
+                    notBondedTokens: staking.not_bonded_tokens,
+                    bandwidthPrice: bandwidthPrice.price,
+                    txCount: latestBlock.block_meta.header.total_txs,
+                };
+
+                resolve(response);
             });
-        });
     });
 
     let websocket;
@@ -227,6 +237,13 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
             websocket.close();
         } else {
             listenNewBlock(cb);
+        }
+    };
+
+    self.unsubscribeNewBlock = () => {
+        if (websocket) {
+            websocket.close();
+            websocket = null;
         }
     };
 
@@ -309,7 +326,7 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
 
     self.getAccount = (address) => new Promise(resolve => {
         resolve(__accounts[address]);
-    })
+    });
 
     self.sendFunds = function (defaultAddress, recipientAddress, amount) {
         return axios({
@@ -339,7 +356,6 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
             const txRequest = builder.buildAndSignTxRequest(sendRequest, __accounts[defaultAddress].privateKey, chainId);
             const signedSendHex = codec.hex.stringToHex(JSON.stringify(txRequest));
 
-//            console.log(tx);
             return axios({
                 method: 'get',
                 url: `${nodeUrl}/submit_signed_send?data="${signedSendHex}"`,
@@ -353,7 +369,34 @@ function Cyber(nodeUrl, ipfs, wsUrl) {
     }).then((response) => {
         resolve(response.data.result);
     }).catch((e) => {}));
-}
 
+    self.checkLotteryTicket = ticketAddress => new Promise((resolve) => {
+        ipfs.files.get(lotteryHash, (err, files) => {
+            const lotteryJson = files[0].content.toString('utf8');
+            const lottery = JSON.parse(lotteryJson);
+
+            const result = lottery[ticketAddress];
+
+            const lotteryResult = {
+                addressEth: ticketAddress,
+                balanceEth: 0,
+                addressCyberd: result ? result.address : '',
+                balanceCyberd: result ? result.balance : 0,
+            };
+
+            getBalanceByAddress(ticketAddress)
+                .then((balanceEth) => {
+                    lotteryResult.balanceEth = balanceEth;
+
+                    resolve(lotteryResult);
+                })
+                .catch((error) => {
+                    console.log(`Cant get eth balance for ${ticketAddress}. Error: ${error}`);
+
+                    resolve(lotteryResult);
+                });
+        });
+    });
+}
 
 export default Cyber;
