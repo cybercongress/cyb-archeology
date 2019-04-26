@@ -19,6 +19,8 @@ const initState = {
         port: 5001,
         protocol: 'http',
     },
+
+    username: '',
 };
 
 export const reducer = (state = initState, action) => {
@@ -48,6 +50,7 @@ export const reducer = (state = initState, action) => {
             SEARCH_END_POINT: action.payload,
         };
     }
+
     case 'SET_SEARCH_WS_END_POINT': {
         return {
             ...state,
@@ -55,6 +58,12 @@ export const reducer = (state = initState, action) => {
         };
     }
 
+    case 'SET_USERNAME': {
+        return {
+            ...state,
+            username: action.payload,
+        };
+    }
 
     case 'SET_STATUS': {
         return {
@@ -132,6 +141,15 @@ const saveSettingsInLS = () => (dispatch, getState) => {
     const { settings } = getState();
 
     localStorage.setItem('settings', JSON.stringify(settings));
+};
+
+export const setUsername = username => (dispatch, getState) => {
+    dispatch({
+        type: 'SET_USERNAME',
+        payload: username,
+    });
+
+    dispatch(saveSettingsInLS());
 };
 
 export const setIPFS = IPFS_END_POINT => (dispatch, getState) => {

@@ -1,30 +1,31 @@
 import React from 'react';
 import {
-    HelloContainer, HelloContainerLeftCol, BigImg, ButtonEverGreen,
-    HelloContainerRightCol, HelloContainerRightColContent, Card,
-    HelloContainerRightColBtn, Pane, TextIlineBlock, TextInput,
-    Text, Icon,
+    HelloContainer, HelloContainerLeftCol, BigImg, HelloContainerRightCol,
+    HelloContainerRightColContent, Card, Pane, TextIlineBlock,
+    HelloContainerRightColBtn, ButtonEverGreen, TextInput,
 } from '@cybercongress/ui';
 import connect from 'react-redux/es/connect/connect';
+import { setUsername } from '../../redux/settings';
 
-class Login extends React.Component {
+class Hello extends React.Component {
     state = {
-        password: '',
+        username: '',
     };
 
-    onLogin = () => {
-        this.props.onLogin(this.state.password);
-    };
-
-    onPasswordChange = (event) => {
+    onUsernameChange = (event) => {
         this.setState({
-            password: event.target.value,
+            username: event.target.value,
         });
     };
 
+    goNext = () => {
+        this.props.setUsername(this.state.username);
+
+        this.props.onNext();
+    };
+
     render() {
-        const { password } = this.state;
-        const { username, error } = this.props;
+        const { username } = this.state;
 
         return (
             <HelloContainer>
@@ -38,10 +39,10 @@ class Login extends React.Component {
                             flexDirection='column'
                             alignItems='center'
                             boxShadow='0 0 1px #fff'
-                            maxWidth='80%'
-                            paddingX='3vh'
-                            paddingY='3vh'
-                            minWidth={ 500 }
+                            width='100%'
+                            paddingX='4vh'
+                            paddingY='4.5vh'
+                            maxWidth={ 500 }
                             maxHeight={ 500 }
                             height='100%'
                         >
@@ -52,17 +53,18 @@ class Login extends React.Component {
                                 alignItems='flex-center'
                             >
                                 <TextIlineBlock
-                                    style={ { wordSpacing: '1px', lineHeight: 1.5 } }
+                                    style={ { wordSpacing: '2px', lineHeight: 2 } }
                                     marginBottom={ 5 }
                                 >
-                                    Welcome back, {username}.
+                                    Hi, I’m cyb - your friendly robot, and I want to show you the new
+                                    Internet.
                                 </TextIlineBlock>
-                                <TextIlineBlock style={ { wordSpacing: '1px' } }>
-                                    Please, unlock your state.
+                                <TextIlineBlock style={ { wordSpacing: '2px' } }>
+                                    How do I call you?
                                 </TextIlineBlock>
                             </Pane>
                             <Pane
-                                width='80%'
+                                width='75%'
                                 display='flex'
                                 flexDirection='column'
                                 justifyContent='center'
@@ -77,28 +79,10 @@ class Login extends React.Component {
                                             color='#fff'
                                             height='6vh'
                                             maxHeight={ 42 }
-                                            isInvalid={ !!error }
                                             paddingX={ 10 }
-                                            onChange={ e => this.onPasswordChange(e) }
-                                            value={ password }
+                                            value={ username }
+                                            onChange={ e => this.onUsernameChange(e) }
                                         />
-                                        {error && (
-                                            <Pane
-                                                position='absolute'
-                                                left={ 0 }
-                                                bottom='-50%'
-                                                width='100%'
-                                                display='flex'
-                                                alignItems='center'
-                                            >
-                                                <Icon icon='info-sign' color='danger' size={ 11 } marginRight={ 5 } />
-                                                <Pane>
-                                                    <Text fontSize='11px' color='#ec4c47'>
-                                                        {error}
-                                                    </Text>
-                                                </Pane>
-                                            </Pane>
-                                        )}
                                     </Pane>
                                 </Pane>
                             </Pane>
@@ -106,9 +90,9 @@ class Login extends React.Component {
                     </HelloContainerRightColContent>
                     <HelloContainerRightColBtn center>
                         <ButtonEverGreen
-                            onClick={this.onLogin}
+                            onClick={ this.goNext }
                         >
-                            Unlock
+                            Let's go
                         </ButtonEverGreen>
                     </HelloContainerRightColBtn>
                 </HelloContainerRightCol>
@@ -119,4 +103,6 @@ class Login extends React.Component {
 
 export default connect(state => ({
     username: state.settings.username,
-}), null)(Login);
+}), {
+    setUsername,
+})(Hello);

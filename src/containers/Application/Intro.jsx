@@ -6,32 +6,11 @@ import Login from './Login';
 import { startBrowsing } from '../../redux/intro';
 import { Section, Logo } from '../../components/Intro/Intro';
 import { create as createCyberdAccount, recover } from '../../cyber/crypto';
+import Hello from '../Hello/Hello';
+import ImportOrCreate from '../Hello/ImportOrCreate';
 
 const hdkey = require('ethereumjs-wallet/hdkey');
 const passworder = require('browser-passworder');
-
-const Hello = ({ onNext }) => (
-    <Section>
-        <Logo />
-        <p>Hi! 🤟
-I’m CYB - a friendly robot, and I want to show you the new internet. 🙀
-    </p>
-        <Button onClick={onNext}>Let’s go</Button>
-    </Section>
-);
-
-const ImportOrCreate = ({ onCreate, onImport }) => (
-    <Section>
-        <Logo />
-        <p>
-            But firstly, let me help🤓 you to get ready for the adventure.🚀 If you are a new user I will show you how to complete all configurations. If you’ve used Cyb before you can easely import account, settings and bookmarks and start browsing!🖖
-        </p>
-        <div>
-            <Button onClick={onImport}>I’ve used cyb before</Button>
-            <Button onClick={onCreate}>I’m new user</Button>
-        </div>
-    </Section>
-);
 
 let mnemonicInput;
 const Import = ({ onBack, onNext }) => (
