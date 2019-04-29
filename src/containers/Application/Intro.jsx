@@ -8,11 +8,21 @@ import { Section, Logo } from '../../components/Intro/Intro';
 import { create as createCyberdAccount, recover } from '../../cyber/crypto';
 import Hello from '../Hello/Hello';
 import ImportOrCreate from '../Hello/ImportOrCreate';
+import ShowMeTheMatrix from '../Hello/ShowMeTheMatrix';
+import ImportAccount from '../Hello/ImportAccount';
+import AccountImported from '../Hello/AccountImported';
+import StayAsleep from '../Hello/StayAsleep';
+import WakeUp from '../Hello/WakeUp';
+import LastChance from '../Hello/LastChance';
+import ShowMyIdentity from '../Hello/ShowMyIdentity';
+import AccountCreated from '../Hello/AccountCreated';
+import BackupMnemonic from '../Hello/BackupMnemonic';
+import CreatePassword from '../Hello/CreatePassword';
 
 const hdkey = require('ethereumjs-wallet/hdkey');
 const passworder = require('browser-passworder');
 
-let mnemonicInput;
+/*let mnemonicInput;
 const Import = ({ onBack, onNext }) => (
     <Section>
         <Logo />
@@ -25,9 +35,9 @@ const Import = ({ onBack, onNext }) => (
             <Button onClick={() => onNext(mnemonicInput.value)}>Next Step</Button>
         </div>
     </Section>
-);
+);*/
 
-const AccountCreated = ({ onNext, eth, cyber }) => (
+/*const AccountCreated = ({ onNext, eth, cyber }) => (
     <Section>
         <div>
             <p>This is your new account</p>
@@ -58,9 +68,9 @@ const AccountCreated = ({ onNext, eth, cyber }) => (
             </div>
         </div>
     </Section>
-);
+);*/
 
-const AccountImported = ({ onNext, onBack, eth, cyber }) => (
+/*const AccountImported = ({ onNext, onBack, eth, cyber }) => (
     <Section>
         <div>
             <p>Check your imported account</p>
@@ -84,9 +94,9 @@ const AccountImported = ({ onNext, onBack, eth, cyber }) => (
             </div>
         </div>
     </Section>
-);
+);*/
 
-class BackupMnemonic extends React.Component {
+/*class BackupMnemonic extends React.Component {
     state = { isCopied: false }
 
     copy = () => {
@@ -117,9 +127,9 @@ class BackupMnemonic extends React.Component {
             </Section>
         );
     }
-}
+}*/
 
-class CreatePassword extends React.Component {
+/*class CreatePassword extends React.Component {
     next = () => {
         const { onNext } = this.props;
         const password = this.password.value;
@@ -155,7 +165,7 @@ class CreatePassword extends React.Component {
             </Section>
         );
     }
-}
+}*/
 
 const Settings = ({ onNext }) => (
     <Section>
@@ -279,6 +289,26 @@ class Intro extends React.Component {
 
     goToCongratulation = () => {
         this.setState({ step: 'congratulation' });
+    }
+
+    goToWhatTruth = () => {
+        this.setState({ step: 'whatTruth' });
+    }
+
+    goToLastChance = () => {
+        this.setState({ step: 'lastChance' });
+    }
+
+    goToStayAsleep = () => {
+        this.setState({ step: 'stayAsleep' });
+    }
+
+    goToWakeUp = () => {
+        this.setState({ step: 'wakeUp' });
+    }
+
+    goToShowMyIdentity = () => {
+        this.setState({ step: 'showMyIdentity' });
     }
 
     startBrowsing = () => {
@@ -423,16 +453,45 @@ class Intro extends React.Component {
 
         if (step === 'inportOrCreate') {
             return (
-                <ImportOrCreate onCreate={this.goToCreate} onImport={this.goToImport} />
+                <ImportOrCreate onImport={this.goToImport} onWhatTruth={this.goToWhatTruth} />
             );
         }
 
         if (step === 'import') {
             return (
-                <Import onBack={this.goToImportOrCreate} onNext={this.saveSeedAndNext} />
+                <ImportAccount onBack={ this.goToImportOrCreate } onNext={ this.saveSeedAndNext } />
             );
         }
 
+        if (step === 'whatTruth') {
+            return (
+                <ShowMeTheMatrix onNext={ this.goToLastChance } />
+            );
+        }
+
+        if (step === 'lastChance') {
+            return (
+                <LastChance onStayAsleep={ this.goToStayAsleep() } onWakeUp={ this.goToWakeUp() } />
+            );
+        }
+
+        if (step === 'stayAsleep') {
+            return (
+                <StayAsleep />
+            );
+        }
+
+        if (step === 'wakeUp') {
+            return (
+                <WakeUp onNext={ this.goToShowMyIdentity } />
+            );
+        }
+
+        if (step === 'showMyIdentity') {
+            return (
+                <ShowMyIdentity onNext={ this.goToCreate } />
+            );
+        }
 
         if (step === 'accountCreated') {
             return (

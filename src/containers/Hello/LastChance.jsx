@@ -5,7 +5,9 @@ import {
     ButtonEverGreen,
 } from '@cybercongress/ui';
 
-const LastChance = () => (
+const CybMatrix = require('./img/cyb_animation.gif');
+
+const LastChance = ({ onStayAsleep, onWakeUp }) => (
     <HelloContainer>
         <HelloContainerLeftCol>
             <BigImg srcBigImg={ CybMatrix } />
@@ -31,8 +33,18 @@ const LastChance = () => (
                 </Pane>
             </HelloContainerRightColContent>
             <HelloContainerRightColBtn>
-                <ButtonEverGreen custonClass='btn-blue'>Stay asleep</ButtonEverGreen>
-                <ButtonEverGreen custonClass='btn-red'>Wake up</ButtonEverGreen>
+                <ButtonEverGreen
+                    custonClass='btn-blue'
+                    onClick={ onStayAsleep }
+                >
+                    Stay asleep
+                </ButtonEverGreen>
+                <ButtonEverGreen
+                    custonClass='btn-red'
+                    onClick={ onWakeUp }
+                >
+                    Wake up
+                </ButtonEverGreen>
             </HelloContainerRightColBtn>
         </HelloContainerRightCol>
     </HelloContainer>

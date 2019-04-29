@@ -45,7 +45,7 @@ class ImportOrCreate extends React.Component {
                             I know the keys
                         </ButtonEverGreen>
                         <ButtonEverGreen
-                            onClick={ this.props.onCreate }
+                            onClick={ this.props.onWhatTruth }
                         >
                             What truth?
                         </ButtonEverGreen>
