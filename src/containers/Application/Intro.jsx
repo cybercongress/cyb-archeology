@@ -65,11 +65,14 @@ class Intro extends React.Component {
     }
 
     componentDidMount() {
-        const accountExist = !!localStorage.getItem('secret');
+        const secret = localStorage.getItem('secret');
+        const accountExist = !!secret;
 
-        if (accountExist) {
+        if (accountExist && secret !== 'stayAsleep') {
             this.setState({ step: 'login' });
             // this.props.startBrowsing(this.state);
+        } else if (secret === 'stayAsleep') {
+            this.setState({ step: 'stayAsleep' });
         } else {
             this.setState({ step: 'hello' });
         }
@@ -155,6 +158,8 @@ class Intro extends React.Component {
     }
 
     goToStayAsleep = () => {
+        localStorage.setItem('secret', 'stayAsleep');
+
         this.setState({ step: 'stayAsleep' });
     }
 
@@ -225,13 +230,13 @@ class Intro extends React.Component {
 
         if (step === 'hello') {
             return (
-                <Hello onNext={this.goToImportOrCreate} />
+                <Hello onNext={ this.goToImportOrCreate } />
             );
         }
 
         if (step === 'inportOrCreate') {
             return (
-                <ImportOrCreate onImport={this.goToImport} onWhatTruth={this.goToWhatTruth} />
+                <ImportOrCreate onImport={ this.goToImport } onWhatTruth={ this.goToWhatTruth } />
             );
         }
 
@@ -249,7 +254,7 @@ class Intro extends React.Component {
 
         if (step === 'lastChance') {
             return (
-                <LastChance onStayAsleep={ this.goToStayAsleep() } onWakeUp={ this.goToWakeUp() } />
+                <LastChance onStayAsleep={ this.goToStayAsleep } onWakeUp={ this.goToWakeUp } />
             );
         }
 
