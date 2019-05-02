@@ -6,7 +6,7 @@ import AppRouter from './router';
 import { checkPendingStatusTransactions, updateStatusTransactions } from './redux/wallet';
 
 import './index.css';
-import '@cybercongress/ui/lib/styles.css';
+//import '@cybercongress/ui/lib/styles.css';
 
 appStart(store).then(() => {
     ReactDOM.render(

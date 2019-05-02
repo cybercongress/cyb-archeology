@@ -4,13 +4,28 @@ import ClickOutside from 'react-click-outside';
 import IdBarComponent, {
     NotificationLink,
     SettingsLink,
-    CurrentUser,
+    //CurrentUser,
 } from '../../components/IdBar/IdBar';
 import { toggleMenu } from '../../redux/appMenu';
 import { getDefaultAccountBalance } from '../../redux/wallet';
 import { getDefaultAccountBalance as getDefaultAccountBalanceCyb } from '../../redux/cyber';
+import { CurrentUser } from '@cybercongress/ui';
 
-
+const menuItems = [
+    {
+        items: '1',
+        rootDura: 'ds',
+        name: 'Chaingear',
+        pill: '7',
+        status: 'remote',
+    },
+    {
+        items: '2',
+        name: 'cyber•Congress',
+        rootDura: 'tbcds',
+        status: 'local',
+    },
+]
 class IdBar extends Component {
     state = {
         open: false,
@@ -56,6 +71,7 @@ class IdBar extends Component {
                       favoriteClick={ this.favoriteClick }
                       ethBalance={ defaultAccountBalance }
                       cybBalance={ defaultAccountBalanceCyb }
+                      menuItems={menuItems}
                     />
                 </ClickOutside>
                 <SettingsLink />
