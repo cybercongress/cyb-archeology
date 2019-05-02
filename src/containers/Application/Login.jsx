@@ -3,7 +3,7 @@ import {
     HelloContainer, HelloContainerLeftCol, BigImg, ButtonEverGreen,
     HelloContainerRightCol, HelloContainerRightColContent, Card,
     HelloContainerRightColBtn, Pane, TextIlineBlock, TextInput,
-    Text, Icon,
+    TextEv as Text, Icon,
 } from '@cybercongress/ui';
 import connect from 'react-redux/es/connect/connect';
 
@@ -57,7 +57,10 @@ class Login extends React.Component {
                                     style={ { wordSpacing: '1px', lineHeight: 1.5 } }
                                     marginBottom={ 5 }
                                 >
-                                    Welcome back, {username}.
+                                    Welcome back,&nbsp;
+                                    <Text color='#FFF' fontSize='16px'>
+                                        {username}
+                                    </Text>.
                                 </TextIlineBlock>
                                 <TextIlineBlock style={ { wordSpacing: '1px' } }>
                                     Please, unlock your state.
@@ -74,6 +77,7 @@ class Login extends React.Component {
                                 <Pane width='100%' marginBottom='6%'>
                                     <Pane position='relative'>
                                         <TextInput
+                                            type='password'
                                             width='100%'
                                             backgroundColor='transparent'
                                             color='#fff'

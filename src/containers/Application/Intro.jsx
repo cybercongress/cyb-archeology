@@ -1,52 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Input } from '@cybercongress/ui';
 import bip39 from 'bip39';
 import Login from './Login';
 import { startBrowsing } from '../../redux/intro';
-import { Section, Logo } from '../../components/Intro/Intro';
 import { create as createCyberdAccount, recover } from '../../cyber/crypto';
-import Hello from '../Hello/Hello';
-import ImportOrCreate from '../Hello/ImportOrCreate';
 import ShowMeTheMatrix from '../Hello/ShowMeTheMatrix';
-import ImportAccount from '../Hello/ImportAccount';
 import AccountImported from '../Hello/AccountImported';
-import StayAsleep from '../Hello/StayAsleep';
-import WakeUp from '../Hello/WakeUp';
-import LastChance from '../Hello/LastChance';
 import ShowMyIdentity from '../Hello/ShowMyIdentity';
+import ImportOrCreate from '../Hello/ImportOrCreate';
 import AccountCreated from '../Hello/AccountCreated';
 import BackupMnemonic from '../Hello/BackupMnemonic';
 import CreatePassword from '../Hello/CreatePassword';
+import ImportSettings from '../Hello/ImportSettings';
+import Congratulation from '../Hello/Congratulation';
+import ImportAccount from '../Hello/ImportAccount';
+import StayAsleep from '../Hello/StayAsleep';
+import LastChance from '../Hello/LastChance';
+import WakeUp from '../Hello/WakeUp';
+import Hello from '../Hello/Hello';
+import Connections from '../Hello/Connections';
+import { getBalanceByAddress } from '../../redux/wallet';
 
 const hdkey = require('ethereumjs-wallet/hdkey');
 const passworder = require('browser-passworder');
-
-const Settings = ({ onNext }) => (
-    <Section>
-        <div>
-            <p>Add instruction </p>
-        </div>
-        <div>
-            <p>Ok, the final step - web3 providers. You can choose default settings or enter custom endpoints.</p>
-            <input type='file' />
-            <div>
-                settings
-            </div>
-            <div>
-                <Button onClick={ onNext } >Next Step</Button>
-            </div>
-        </div>
-    </Section>
-)
-
-const Congratulation = ({ onNext }) => (
-    <Section>
-        <Logo />
-        <p>Well, now you are ready to enjoy your web3 experience! 🤟</p>
-        <Button onClick={ onNext } >Start browsing</Button>
-    </Section>
-);
 
 class Intro extends React.Component {
     state = {
@@ -62,7 +38,7 @@ class Intro extends React.Component {
         // passphrase: '',
         // mnemonic: '',
         // error: ''
-    }
+    };
 
     componentDidMount() {
         const secret = localStorage.getItem('secret');
@@ -171,6 +147,10 @@ class Intro extends React.Component {
         this.setState({ step: 'showMyIdentity' });
     }
 
+    goToConnections = () => {
+        this.setState({ step: 'connections' });
+    }
+
     startBrowsing = () => {
         // this.setState({ step: 'hello' });
         const { entropy, password } = this.state;
@@ -186,6 +166,7 @@ class Intro extends React.Component {
     login = password => {
         const blob = localStorage.getItem('secret');
 
+        let ethBalance = 0;
         passworder.decrypt(password, blob)
             .then(decryptResult => {
                 const { entropy } = decryptResult;
@@ -312,7 +293,13 @@ class Intro extends React.Component {
 
         if (step === 'settings') {
             return (
-                <Settings onNext={ this.goToCongratulation } />
+                <ImportSettings onNext={ this.goToConnections } />
+            );
+        }
+
+        if (step === 'connections') {
+            return (
+                <Connections onNext={ this.goToCongratulation } />
             );
         }
 
@@ -334,5 +321,8 @@ class Intro extends React.Component {
 
 export default connect(
     null,
-    { startBrowsing },
+    {
+        startBrowsing,
+        getBalanceByAddress,
+    },
 )(Intro);

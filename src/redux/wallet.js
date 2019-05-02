@@ -751,7 +751,7 @@ export const isLoginExist = () => {
 
 
 export const updateStatusTransactions = () => (dispatch) => {
-    if (!web3.eth.defaultAccount) {
+    if (!web3 || !web3.eth.defaultAccount) {
         return;
     }
 

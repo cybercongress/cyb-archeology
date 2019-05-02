@@ -164,4 +164,47 @@ export const getPreloadPath = () => {
     return `file://${path.join(remote.app.getAppPath(), './build/preload.js')}`;
 };
 
-// export {URLToDURA, DURAToURL, parseURL}
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+        var context = this, args = arguments;
+        var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+};
+
+export const getColorByStatus = (status) => {
+    let color;
+
+    switch (status) {
+    case 'local':
+        color = 'green';
+        break;
+    case 'remote':
+        color = 'yellow';
+        break;
+    default:
+        color = 'red';
+    }
+
+    return color;
+};
+
+export const downloadObjectAsJson = (exportObj, exportName) => {
+    const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(exportObj))}`;
+    const downloadAnchorNode = document.createElement('a');
+
+    downloadAnchorNode.setAttribute('href', dataStr);
+    downloadAnchorNode.setAttribute('download', `${exportName}.json`);
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+};
+
+export { debounce };
