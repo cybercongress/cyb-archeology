@@ -23,12 +23,16 @@ class Hello extends React.Component {
     };
 
     goNext = () => {
-        const { username, emptyUsername } = this.state;
+        const { username } = this.state;
 
-        if (!emptyUsername) {
+        if (!(username === '')) {
             this.props.setUsername(username);
 
             this.props.onNext();
+        } else {
+            this.setState({
+                emptyUsername: true,
+            });
         }
     };
 
