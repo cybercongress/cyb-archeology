@@ -2,7 +2,7 @@ import React from 'react';
 import {
     HelloContainerLeftCol, HelloContainer, HelloContainerRightCol,
     HelloContainerRightColContent, TextIlineBlock, HelloContainerRightColBtn,
-    ButtonEverGreen, SlallImgText, BntGroup, Pane, Textarea, IconButton, Text,
+    ButtonEverGreen, SlallImgText, BntGroup, Pane, Textarea, IconButton, TextEv as Text,
 } from '@cybercongress/ui';
 import connect from 'react-redux/es/connect/connect';
 

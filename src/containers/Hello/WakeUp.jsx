@@ -2,7 +2,7 @@ import React from 'react';
 import {
     HelloContainer, HelloContainerLeftCol, BigImg, HelloContainerRightCol,
     HelloContainerRightColContent, Pane, TextIlineBlock, HelloContainerRightColBtn,
-    ButtonEverGreen, Text, BntGroup,
+    ButtonEverGreen, TextEv as Text, BntGroup,
 } from '@cybercongress/ui';
 import connect from 'react-redux/es/connect/connect';
 
@@ -21,14 +21,14 @@ class WakeUp extends React.Component {
                     <HelloContainerRightColContent>
                         <Pane>
                             <TextIlineBlock marginBottom={ 20 }>
-                                Welcome to the new world,
+                                Welcome to the new world,&nbsp;
                                 <Text fontSize='18px' color='#fff'>
                                     {username}
                                 </Text>
                                 .
                             </TextIlineBlock>
                             <TextIlineBlock marginBottom={ 20 }>
-                                I'm trying to free your mind,
+                                I'm trying to free your mind,&nbsp;
                                 <Text fontSize='18px' color='#fff'>
                                     {username}
                                 </Text>

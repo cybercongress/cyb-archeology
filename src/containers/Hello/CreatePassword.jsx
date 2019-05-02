@@ -2,7 +2,7 @@ import React from 'react';
 import {
     HelloContainerLeftCol, HelloContainer, HelloContainerRightCol,
     HelloContainerRightColContent, TextIlineBlock, HelloContainerRightColBtn,
-    ButtonEverGreen, SlallImgText, BntGroup, Pane, Icon, Text, TextInput, Card,
+    ButtonEverGreen, SlallImgText, BntGroup, Pane, Icon, TextEv as Text, TextInput, Card,
 } from '@cybercongress/ui';
 import connect from 'react-redux/es/connect/connect';
 
@@ -17,11 +17,19 @@ class CreatePassword extends React.Component {
     };
 
     onPasswordChange = (event) => {
-        this.setState({ password: event.target.value });
+        this.setState({
+            password: event.target.value,
+            emptyPassword: false,
+            passwordDontMatch: false,
+        });
     };
 
     onPasswordConfirmationChange = (event) => {
-        this.setState({ confirmPassword: event.target.value });
+        this.setState({
+            confirmPassword: event.target.value,
+            emptyPassword: false,
+            passwordDontMatch: false,
+        });
     };
 
     onNext = () => {
@@ -49,7 +57,9 @@ class CreatePassword extends React.Component {
     };
 
     render() {
-        const { password, confirmPassword, emptyPassword, passwordDontMatch } = this.state;
+        const {
+            password, confirmPassword, emptyPassword, passwordDontMatch,
+        } = this.state;
         const { username } = this.props;
 
         return (
@@ -57,8 +67,7 @@ class CreatePassword extends React.Component {
                 <HelloContainerLeftCol>
                     <SlallImgText imgCyb={ cybRed }>
                         <TextIlineBlock marginBottom={ 10 }>
-                            Okay. What do you need now,
-                            {' '}
+                            Okay. What do you need now,&nbsp;
                             <Text fontSize='16px' lineHeight={ 1.88 } color='#fff'>
                                 {username}
                             </Text>
@@ -96,6 +105,7 @@ class CreatePassword extends React.Component {
                                     </Text>
                                     <Pane position='relative'>
                                         <TextInput
+                                            type='password'
                                             width='100%'
                                             backgroundColor='transparent'
                                             color='#fff'
@@ -118,6 +128,7 @@ class CreatePassword extends React.Component {
                                     </Text>
                                     <Pane position='relative'>
                                         <TextInput
+                                            type='password'
                                             width='100%'
                                             backgroundColor='transparent'
                                             color='#fff'
@@ -128,7 +139,7 @@ class CreatePassword extends React.Component {
                                             value={ confirmPassword }
                                             onChange={ e => this.onPasswordConfirmationChange(e) }
                                         />
-                                        {passwordDontMatch && (
+                                        {(passwordDontMatch || emptyPassword) && (
                                             <Pane
                                                 position='absolute'
                                                 left={ 0 }
@@ -140,7 +151,7 @@ class CreatePassword extends React.Component {
                                                 <Icon icon='info-sign' color='danger' size={ 11 } marginRight={ 5 } />
                                                 <Pane>
                                                     <Text fontSize='11px' color='#ec4c47'>
-                                                        Passwords don't mutch
+                                                        {passwordDontMatch ? 'Passwords don\'t match' : 'Empty password'}
                                                     </Text>
                                                 </Pane>
                                             </Pane>
@@ -152,7 +163,6 @@ class CreatePassword extends React.Component {
                     </HelloContainerRightColContent>
                     <HelloContainerRightColBtn center>
                         <ButtonEverGreen
-                            disabled={ emptyPassword }
                             onClick={ e => this.onNext(e) }
                         >
                             Encrypt mnemonic

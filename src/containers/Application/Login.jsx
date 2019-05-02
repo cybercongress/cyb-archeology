@@ -7,6 +7,8 @@ import {
 } from '@cybercongress/ui';
 import connect from 'react-redux/es/connect/connect';
 
+const CybMatrix = require('../Hello/img/cyb_animation.gif');
+
 class Login extends React.Component {
     state = {
         password: '',
@@ -29,7 +31,7 @@ class Login extends React.Component {
         return (
             <HelloContainer>
                 <HelloContainerLeftCol>
-                    <BigImg />
+                    <BigImg srcBigImg={ CybMatrix } />
                 </HelloContainerLeftCol>
                 <HelloContainerRightCol>
                     <HelloContainerRightColContent>

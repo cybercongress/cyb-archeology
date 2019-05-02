@@ -1,23 +1,25 @@
 import React from 'react';
 import {
     HelloContainerLeftCol, HelloContainer, BigImg, HelloContainerRightCol,
-    HelloContainerRightColContent, Pane, TextIlineBlock, Text, HelloContainerRightColBtn,
+    HelloContainerRightColContent, Pane, TextIlineBlock, TextEv as Text, HelloContainerRightColBtn,
     ButtonEverGreen,
 } from '@cybercongress/ui';
 import connect from 'react-redux/es/connect/connect';
+
+const CybMatrix = require('./img/cyb_animation.gif');
 
 class ImportOrCreate extends React.Component {
     render() {
         return (
             <HelloContainer>
                 <HelloContainerLeftCol>
-                    <BigImg />
+                    <BigImg srcBigImg={ CybMatrix } />
                 </HelloContainerLeftCol>
                 <HelloContainerRightCol>
                     <HelloContainerRightColContent>
                         <Pane>
                             <TextIlineBlock marginBottom={ 20 }>
-                                <Text color='#fff' fontSize='18px'>
+                                <Text color='#fff' fontSize='18px' display='inline'>
                                     {this.props.username}
                                 </Text>
                                 , The Matrix is everywhere. It is all around us.

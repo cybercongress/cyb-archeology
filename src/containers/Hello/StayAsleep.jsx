@@ -4,10 +4,12 @@ import {
     HelloContainerRightColContent, TextIlineBlock,
 } from '@cybercongress/ui';
 
+const CybMatrix = require('./img/cyb_animation.gif');
+
 const StayAsleep = () => (
     <HelloContainer>
         <HelloContainerLeftCol>
-            <BigImg />
+            <BigImg srcBigImg={ CybMatrix } />
         </HelloContainerLeftCol>
         <HelloContainerRightCol>
             <HelloContainerRightColContent>

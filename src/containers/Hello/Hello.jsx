@@ -2,35 +2,43 @@ import React from 'react';
 import {
     HelloContainer, HelloContainerLeftCol, BigImg, HelloContainerRightCol,
     HelloContainerRightColContent, Card, Pane, TextIlineBlock,
-    HelloContainerRightColBtn, ButtonEverGreen, TextInput,
+    HelloContainerRightColBtn, ButtonEverGreen, TextInput, Icon, TextEv as Text,
 } from '@cybercongress/ui';
 import connect from 'react-redux/es/connect/connect';
 import { setUsername } from '../../redux/settings';
 
+const CybMatrix = require('./img/cyb_animation.gif');
+
 class Hello extends React.Component {
     state = {
         username: '',
+        emptyUsername: false,
     };
 
     onUsernameChange = (event) => {
         this.setState({
             username: event.target.value,
+            emptyUsername: event.target.value === '',
         });
     };
 
     goNext = () => {
-        this.props.setUsername(this.state.username);
+        const { username, emptyUsername } = this.state;
 
-        this.props.onNext();
+        if (!emptyUsername) {
+            this.props.setUsername(username);
+
+            this.props.onNext();
+        }
     };
 
     render() {
-        const { username } = this.state;
+        const { username, emptyUsername } = this.state;
 
         return (
             <HelloContainer>
                 <HelloContainerLeftCol>
-                    <BigImg />
+                    <BigImg srcBigImg={ CybMatrix } />
                 </HelloContainerLeftCol>
                 <HelloContainerRightCol>
                     <HelloContainerRightColContent>
@@ -82,7 +90,25 @@ class Hello extends React.Component {
                                             paddingX={ 10 }
                                             value={ username }
                                             onChange={ e => this.onUsernameChange(e) }
+                                            isInvalid={ emptyUsername }
                                         />
+                                        {emptyUsername && (
+                                            <Pane
+                                                position='absolute'
+                                                left={ 0 }
+                                                bottom='-50%'
+                                                width='100%'
+                                                display='flex'
+                                                alignItems='center'
+                                            >
+                                                <Icon icon='info-sign' color='danger' size={ 11 } marginRight={ 5 } />
+                                                <Pane>
+                                                    <Text fontSize='11px' color='#ec4c47'>
+                                                        Empty username
+                                                    </Text>
+                                                </Pane>
+                                            </Pane>
+                                        )}
                                     </Pane>
                                 </Pane>
                             </Pane>

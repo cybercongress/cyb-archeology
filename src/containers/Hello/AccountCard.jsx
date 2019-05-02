@@ -5,7 +5,7 @@ import {
     Pane,
     PaneBalance,
     Pill,
-    Text
+    TextEv as Text,
 } from '@cybercongress/ui';
 
 const AccountCard = ({ username, eth, cyber }) => (
