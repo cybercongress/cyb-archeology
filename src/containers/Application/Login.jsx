@@ -14,6 +14,12 @@ class Login extends React.Component {
         password: '',
     };
 
+    handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            this.props.onLogin(this.state.password);
+        }
+    };
+
     onLogin = () => {
         this.props.onLogin(this.state.password);
     };
@@ -87,6 +93,7 @@ class Login extends React.Component {
                                             paddingX={ 10 }
                                             onChange={ e => this.onPasswordChange(e) }
                                             value={ password }
+                                            onKeyPress={ this.handleKeyPress }
                                         />
                                         {error && (
                                             <Pane
