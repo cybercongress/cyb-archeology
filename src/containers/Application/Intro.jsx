@@ -163,48 +163,39 @@ class Intro extends React.Component {
             });
     }
 
-    login = password => {
+    login = (password) => {
         const blob = localStorage.getItem('secret');
 
-        let ethBalance = 0;
         passworder.decrypt(password, blob)
-            .then(decryptResult => {
+            .then((decryptResult) => {
                 const { entropy } = decryptResult;
                 const mnemonic = bip39.entropyToMnemonic(entropy);
-
-                const seed = bip39.mnemonicToSeed(mnemonic, '');
-                const rootKey = hdkey.fromMasterSeed(seed);
-
-                const ethKey = rootKey.derivePath("m/44'/60'/0'/0/0");
-                const ethAddress = ethKey.getWallet().getAddressString();
-                const ethPrivateKey = ethKey.getWallet().getPrivateKey().toString('hex');
-
                 const account = recover(entropy);
 
-                // TODO: calculate balance
                 const newState = {
                     password,
                     entropy,
                     mnemonic,
-                    ethAccount: { address: ethAddress, balance: 0, privateKey: ethPrivateKey },
-                    cyberAccount: { address: account.address, balance: 0, privateKey: account.privateKey },
+                    cyberAccount: {
+                        address: account.address, balance: 0, privateKey: account.privateKey
+                    },
                 };
 
                 this.setState({
                     loginError: '',
-                    ...newState
+                    ...newState,
                 }, () => {
                     this.props.startBrowsing(this.state);
-                })
-            }).catch(e => {
+                });
+            }).catch((e) => {
                 this.setState({ loginError: 'incorrect password' });
-            })
-    }
+            });
+    };
 
     generate = () => {
         const mnemonic = bip39.generateMnemonic();
         this.refs.text.value = mnemonic;
-    }
+    };
 
     render() {
         const { step, ethAccount, cyberAccount, mnemonic, loginError } = this.state;

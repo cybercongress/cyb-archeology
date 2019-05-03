@@ -1,11 +1,12 @@
 import Web3 from 'web3';
 import axios from 'axios';
+import bip39 from 'bip39';
+const hdkey = require('ethereumjs-wallet/hdkey');
 import Cyber, { lotteryHash } from '../cyber/Cyber';
 import { navigate, goBack } from './browser';
-import { setEthNetworkName } from './settings';
+import { initSettingsState, setEthNetworkName } from './settings';
 import { showSigner, hidePopup } from './signer';
 import { onApplicationStart } from './intro';
-
 const IPFS = require('ipfs-api');
 let eth;
 let provider;
@@ -173,24 +174,38 @@ const initProvider = (endpoint, ethAccount) => {
             wv.send('web3_eth_event_data', payload);
         }
     });
-
 };
 
-onApplicationStart((browserState, dispatch) => {
-    // let password = '';
-    // ({ password } = browserState);
+const getEthAccountFromMnemonic = (mnemonic) => {
+    const seed = bip39.mnemonicToSeed(mnemonic, '');
+    const rootKey = hdkey.fromMasterSeed(seed);
 
+    const ethKey = rootKey.derivePath("m/44'/60'/0'/0/0");
+    const ethAddress = ethKey.getWallet().getAddressString();
+    const ethPrivateKey = ethKey.getWallet().getPrivateKey().toString('hex');
 
-    // if (password) {
-    //     dispatch({
-    //         type: 'SET_ETH_PASSWORD',
-    //         payload: password,
-    //     });
-    // }
+    return {
+        address: ethAddress,
+        privateKey: ethPrivateKey,
+    };
+};
 
-    initProvider('https://kovan.infura.io', browserState.ethAccount);
+export const initEthWallet = mnemonic => (dispatch, getState) => {
+    const settingsString = localStorage.getItem('settings');
 
-    const accountAddress = [browserState.ethAccount.address];
+    let settings;
+
+    if (settingsString) {
+        settings = JSON.parse(settingsString);
+    } else {
+        settings = initSettingsState;
+    }
+
+    const ethAccount = getEthAccountFromMnemonic(mnemonic);
+
+    initProvider(settings.ethUrl, ethAccount);
+
+    const accountAddress = [ethAccount.address];
 
     Promise.all(
         accountAddress.map(address => new Promise((resolve) => {
@@ -212,9 +227,51 @@ onApplicationStart((browserState, dispatch) => {
         });
         dispatch({
             type: 'SET_MNEMONIC',
-            payload: browserState.mnemonic
+            payload: mnemonic,
         });
     });
+};
+
+onApplicationStart((browserState, dispatch) => {
+    dispatch(initEthWallet(browserState.ethAccount, browserState.mnemonic));
+    // let password = '';
+    // ({ password } = browserState);
+
+
+    // if (password) {
+    //     dispatch({
+    //         type: 'SET_ETH_PASSWORD',
+    //         payload: password,
+    //     });
+    // }
+
+    // initProvider('https://kovan.infura.io', browserState.ethAccount);
+    //
+    // const accountAddress = [browserState.ethAccount.address];
+    //
+    // Promise.all(
+    //     accountAddress.map(address => new Promise((resolve) => {
+    //         eth.getBalance(address.toLowerCase()).then((_balance) => {
+    //             resolve({
+    //                 balance: web3.utils.fromWei(_balance, 'ether'),
+    //                 address,
+    //             });
+    //         });
+    //     })),
+    // ).then((accounts) => {
+    //     dispatch({
+    //         type: 'SET_DEFAULT_ACCOUNT',
+    //         payload: { address: accounts[0].address, balance: accounts[0].balance },
+    //     });
+    //     dispatch({
+    //         type: 'LOAD_ACCOUNTS',
+    //         payload: accounts,
+    //     });
+    //     dispatch({
+    //         type: 'SET_MNEMONIC',
+    //         payload: browserState.mnemonic
+    //     });
+    // });
 });
 
 
@@ -589,7 +646,7 @@ export const receiveMessage = e => (dispatch, getState) => {
         const wvCyber = e.target;
 
         if (method === 'getGateway') {
-            const gateway = getState().settings.IPFS_END_POINT;
+            const gateway = getState().settings.ipfsUrl;
 
             wvCyber.send(`ipfs_gateway`, gateway);
         }
@@ -665,8 +722,8 @@ export const receiveMessage = e => (dispatch, getState) => {
 //     const ipfs = new IPFS(ipfsConfig);
 
 //     window.cyber = new Cyber(
-//         getState().settings.SEARCH_END_POINT, ipfs,
-//         getState().settings.CYBERD_WS_END_POINT,
+//         getState().settings.cyberdUrl, ipfs,
+//         getState().settings.cyberdWsUrl,
 //     );
 
 //     if (getState().wallet.password) {

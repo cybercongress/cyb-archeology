@@ -55,8 +55,8 @@ export default connect(({ settings }) => ({
     ipfsStatus: settings.ipfsStatus,
     ipfsWriteStatus: settings.ipfsWriteStatus,
 
-    cyberdStatus: settings.cyberNodeStatus,
+    cyberdStatus: settings.cyberdStatus,
     cyberdWsStatus: settings.cyberdWsStatus,
 
-    ethStatus: settings.ethNodeStatus,
+    ethStatus: settings.ethStatus,
 }), null)(Connections);

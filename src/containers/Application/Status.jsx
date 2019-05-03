@@ -89,16 +89,16 @@ export default connect(
     state => ({
         homePage: state.browser.dura === '',
         ipfsStatus: state.settings.ipfsStatus,
-        ethNodeStatus: state.settings.ethNodeStatus,
-        cyberNodeStatus: state.settings.cyberNodeStatus,
+        ethStatus: state.settings.ethStatus,
+        cyberdStatus: state.settings.cyberdStatus,
         pending: state.settings.pending,
         ethNetworkName: state.settings.ethNetworkName,
 
 
-        IPFS_END_POINT: state.settings.IPFS_END_POINT,
-        PARITTY_END_POINT: state.settings.PARITTY_END_POINT,
-        SEARCH_END_POINT: state.settings.SEARCH_END_POINT,
+        ipfsUrl: state.settings.ipfsUrl,
+        ethUrl: state.settings.ethUrl,
+        cyberdUrl: state.settings.cyberdUrl,
 
-        cyberNetwork: state.settings.cyberNetwork,
+        cyberdNetworkName: state.settings.cyberdNetworkName,
     }),
 )(Status);

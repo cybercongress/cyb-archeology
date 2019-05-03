@@ -19,7 +19,7 @@ class Settings extends Component {
     onExportSettings = () => {
         const settings = this.props.exportSettings();
 
-        downloadObjectAsJson(settings, 'cyb_settings.json');
+        downloadObjectAsJson(settings, 'cyb_settings');
     };
 
     render() {

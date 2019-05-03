@@ -8,7 +8,6 @@ import {
 
 import {
     reducer as walletReducer,
-    init as initWallet,
 } from './wallet';
 
 import {
@@ -28,7 +27,6 @@ import {
 
 import {
     reducer as cyberReducer,
-    init as initCyber,
 } from './cyber';
 
 
@@ -57,10 +55,8 @@ const store = createStore(rootReducer, applyMiddleware(thunk));
 export const appStart = () => new Promise((resolve) => {
     store.dispatch(initSettings()).then(() => {
         store.dispatch(initRootRegistry());
-        // store.dispatch(initWallet(PARITTY_END_POINT));
         store.dispatch(initAppMenu());
         store.dispatch(initBrowser());
-        // store.dispatch(initCyber());
         resolve();
     });
 });

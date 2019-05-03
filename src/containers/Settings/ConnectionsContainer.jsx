@@ -6,8 +6,8 @@ import {
 import {
     setIPFS,
     setIpfsWriteUrl,
-    setSearch,
-    setSearchWS,
+    setCyberdUrl,
+    setCyberdWsUrl,
     setEthEndpoint,
     checkStatus,
     getIpfsWriteUrl,
@@ -21,6 +21,10 @@ class ConnectionsContainer extends Component {
         this.checkStatuses = debounce(this.props.checkStatus, 500);
     }
 
+    componentWillMount() {
+        this.props.checkStatus();
+    }
+
     onIpfsChange = (e) => {
         this.props.setIPFS(e.target.value);
         this.checkStatuses();
@@ -32,12 +36,12 @@ class ConnectionsContainer extends Component {
     };
 
     onCyberdChange = (e) => {
-        this.props.setSearch(e.target.value);
+        this.props.setCyberdUrl(e.target.value);
         this.checkStatuses();
     };
 
     onCyberdWsChange = (e) => {
-        this.props.setSearchWS(e.target.value);
+        this.props.setCyberdWsUrl(e.target.value);
         this.checkStatuses();
     };
 
@@ -170,25 +174,25 @@ class ConnectionsContainer extends Component {
 }
 
 export default connect(({ settings }) => ({
-    ipfsUrl: settings.IPFS_END_POINT,
+    ipfsUrl: settings.ipfsUrl,
     ipfsWriteUrl: getIpfsWriteUrl({ settings }),
 
     ipfsStatus: settings.ipfsStatus,
     ipfsWriteStatus: settings.ipfsWriteStatus,
 
-    cyberdUrl: settings.SEARCH_END_POINT,
-    cyberdWsUrl: settings.CYBERD_WS_END_POINT,
+    cyberdUrl: settings.cyberdUrl,
+    cyberdWsUrl: settings.cyberdWsUrl,
 
-    cyberdStatus: settings.cyberNodeStatus,
+    cyberdStatus: settings.cyberdStatus,
     cyberdWsStatus: settings.cyberdWsStatus,
 
-    ethUrl: settings.PARITTY_END_POINT,
-    ethStatus: settings.ethNodeStatus,
+    ethUrl: settings.ethUrl,
+    ethStatus: settings.ethStatus,
 }), {
     setIPFS,
     setIpfsWriteUrl,
-    setSearch,
-    setSearchWS,
+    setCyberdUrl,
+    setCyberdWsUrl,
     setEthEndpoint,
     checkStatus,
     getIpfsWriteUrl,

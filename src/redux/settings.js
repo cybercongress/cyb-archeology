@@ -1,31 +1,32 @@
 import axios from 'axios';
-import { getEthStatus } from './wallet';
-import { init as initCyberdWallet } from './cyber';
+import { getEthStatus, initEthWallet } from './wallet';
+import { initCyber, loadCyberdAccounts } from './cyber';
 
-const initState = {
-    IPFS_END_POINT: 'http://earth.cybernode.ai:34402',
-    PARITTY_END_POINT: 'http://earth.cybernode.ai:34645',
-    SEARCH_END_POINT: 'http://earth.cybernode.ai:34657',
-    CYBERD_WS_END_POINT: 'ws://earth.cybernode.ai:34657/websocket',
-
-    pending: false,
-    ipfsStatus: 'fail',
-    ipfsWriteStatus: 'fail',
-    ethNodeStatus: 'fail',
-    cyberNodeStatus: 'fail',
-    cyberdWsStatus: 'fail',
-    ethNetworkName: null,
-    cyberNetwork: '',
+export const initSettingsState = {
+    ipfsUrl: 'http://earth.cybernode.ai:34402',
+    ethUrl: 'http://earth.cybernode.ai:34645',
+    cyberdUrl: 'http://earth.cybernode.ai:34657',
+    cyberdWsUrl: 'ws://earth.cybernode.ai:34657/websocket',
     ipfsWrite: {
         host: 'localhost',
         port: 5001,
         protocol: 'http',
     },
 
+    ethNetworkName: null,
+    cyberdNetworkName: '',
+
+    pending: false,
+    ipfsStatus: 'fail',
+    ipfsWriteStatus: 'fail',
+    ethStatus: 'fail',
+    cyberdStatus: 'fail',
+    cyberdWsStatus: 'fail',
+
     username: '',
 };
 
-export const reducer = (state = initState, action) => {
+export const reducer = (state = initSettingsState, action) => {
     switch (action.type) {
     case 'INIT_SETTINGS': {
         return {
@@ -36,27 +37,27 @@ export const reducer = (state = initState, action) => {
     case 'SET_IPFS_END_POINT': {
         return {
             ...state,
-            IPFS_END_POINT: action.payload,
+            ipfsUrl: action.payload,
         };
     }
     case 'SET_PARITTY_END_POINT': {
         return {
             ...state,
-            PARITTY_END_POINT: action.payload,
+            ethUrl: action.payload,
         };
     }
 
     case 'SET_SEARCH_END_POINT': {
         return {
             ...state,
-            SEARCH_END_POINT: action.payload,
+            cyberdUrl: action.payload,
         };
     }
 
     case 'SET_SEARCH_WS_END_POINT': {
         return {
             ...state,
-            CYBERD_WS_END_POINT: action.payload,
+            cyberdWsUrl: action.payload,
         };
     }
 
@@ -101,9 +102,9 @@ export const reducer = (state = initState, action) => {
     }
 };
 
-export const getIpfsEndpoint = state => state.settings.IPFS_END_POINT;
+export const getIpfsEndpoint = state => state.settings.ipfsUrl;
 
-export const getIpfsWriteUrl = state => {
+export const getIpfsWriteUrl = (state) => {
     const { ipfsWrite: { protocol, host, port } } = state.settings;
 
     return `${protocol}://${host}:${port}`;
@@ -112,13 +113,12 @@ export const getIpfsWriteUrl = state => {
 export const init = () => (dispatch, getState) => new Promise((resolve) => {
     const __settings = localStorage.getItem('settings')
         ? JSON.parse(localStorage.getItem('settings'))
-        : initState;
+        : initSettingsState;
 
     dispatch({
         type: 'INIT_SETTINGS',
         payload: __settings,
     });
-    dispatch(checkStatus());
     resolve(__settings);
 });
 
@@ -153,7 +153,7 @@ export const getIpfsStatus = url => new Promise((resolve) => {
 export const setIPFS = ipfsUrl => (dispatch, getState) => {
     dispatch({ type: 'SET_IPFS_END_POINT', payload: ipfsUrl });
     dispatch(saveSettingsInLS());
-    //dispatch(getIpfsStatus(ipfsUrl));
+    dispatch(checkStatus());
 };
 
 export const setIpfsWriteUrl = url => (dispatch, getState) => {
@@ -171,30 +171,35 @@ export const setIpfsWriteUrl = url => (dispatch, getState) => {
         },
     });
     dispatch(saveSettingsInLS());
+    dispatch(checkStatus());
+
+    dispatch(initCyber());
 };
 
 export const setEthEndpoint = PARITTY_END_POINT => (dispatch, getState) => {
     dispatch({ type: 'SET_PARITTY_END_POINT', payload: PARITTY_END_POINT });
     dispatch(saveSettingsInLS());
-    //dispatch(initWallet(PARITTY_END_POINT));
-    //dispatch(checkStatus());
+    dispatch(checkStatus());
 
-    // const { password } = getState().wallet;
-    // if (!!password) {
-    //     dispatch(login(password));
-    // }
+    dispatch(initEthWallet(getState().wallet.mnemonic));
 };
 
-export const setSearch = SEARCH_END_POINT => (dispatch, getState) => {
+export const setCyberdUrl = SEARCH_END_POINT => (dispatch, getState) => {
     dispatch({ type: 'SET_SEARCH_END_POINT', payload: SEARCH_END_POINT });
     dispatch(saveSettingsInLS());
-    //dispatch(initCyberdWallet());
-    //dispatch(checkStatus());
+    dispatch(checkStatus());
+
+    dispatch(initCyber());
+    dispatch(loadCyberdAccounts());
 };
 
-export const setSearchWS = CYBERD_WS_END_POINT => (dispatch, getState) => {
+export const setCyberdWsUrl = CYBERD_WS_END_POINT => (dispatch, getState) => {
     dispatch({ type: 'SET_SEARCH_WS_END_POINT', payload: CYBERD_WS_END_POINT });
     dispatch(saveSettingsInLS());
+    dispatch(checkStatus());
+
+    dispatch(initCyber());
+    dispatch(loadCyberdAccounts());
 };
 
 export const setEthNetworkName = ethNetworkName => (dispatch, getState) => {
@@ -249,13 +254,12 @@ export const getCyberWsStatus = url => new Promise((resolve) => {
     };
 });
 
-
 export const checkStatus = () => (dispatch, getState) => {
     const {
-        IPFS_END_POINT,
-        PARITTY_END_POINT,
-        SEARCH_END_POINT,
-        CYBERD_WS_END_POINT,
+        ipfsUrl,
+        ethUrl,
+        cyberdUrl,
+        cyberdWsUrl,
     } = getState().settings;
 
     const ipfsWriteUrl = getIpfsWriteUrl(getState());
@@ -263,12 +267,12 @@ export const checkStatus = () => (dispatch, getState) => {
     dispatch({ type: 'SET_CHECKING_PENDING' });
 
     Promise.all([
-        getIpfsStatus(IPFS_END_POINT),
+        getIpfsStatus(ipfsUrl),
         getIpfsWriteStatus(ipfsWriteUrl),
-        getEthStatus(PARITTY_END_POINT),
-        getCyberStatus(SEARCH_END_POINT),
-        getCyberWsStatus(CYBERD_WS_END_POINT),
-    ]).then(([ipfsStatus, ipfsWriteStatus, ethNodeStatus, cyberNodeStatus, cyberdWsStatus]) => {
+        getEthStatus(ethUrl),
+        getCyberStatus(cyberdUrl),
+        getCyberWsStatus(cyberdWsUrl),
+    ]).then(([ipfsStatus, ipfsWriteStatus, ethStatus, cyberNodeStatus, cyberdWsStatus]) => {
 
         if (cyberNodeStatus.status !== 'fail' && window.cyber) {
             window.cyber.setChainId(cyberNodeStatus.network);
@@ -279,10 +283,10 @@ export const checkStatus = () => (dispatch, getState) => {
             payload: {
                 ipfsStatus,
                 ipfsWriteStatus,
-                ethNodeStatus,
-                cyberNodeStatus: cyberNodeStatus.status,
+                ethStatus,
+                cyberdStatus: cyberNodeStatus.status,
                 cyberdWsStatus,
-                cyberNetwork: cyberNodeStatus.network,
+                cyberdNetworkName: cyberNodeStatus.network,
             },
         });
     });
@@ -292,9 +296,12 @@ export const resetAllSettings = () => (dispatch, getState) => {
     localStorage.removeItem('settings');
     dispatch(init())
         .then(() => {
-            //dispatch(initWallet(getState().settings.PARITTY_END_POINT));
-            dispatch(initCyberdWallet());
             dispatch(checkStatus());
+
+            dispatch(initCyber());
+            dispatch(loadCyberdAccounts());
+
+            dispatch(initEthWallet(getState().wallet.mnemonic));
         });
 };
 

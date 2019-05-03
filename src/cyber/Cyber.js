@@ -48,7 +48,7 @@ const getIpfsHash = (ipfs, string) => new Promise((resolve, reject) =>  {
     });
 });
 
-function Cyber(nodeUrl, ipfs, wsUrl) {
+function Cyber(nodeUrl, wsUrl, ipfs) {
     const self = this;
 
     let defaultAccount = null;
