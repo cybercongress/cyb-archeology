@@ -10,6 +10,14 @@ import {
     FlexContainer,
     Text,
     ScrollContainer,
+    TableEv,
+    Pane,
+    IconButton,
+    Popover,
+    Menu,
+    TextEv,
+    TextInput,
+    Dialog,
 } from '@cybercongress/ui';
 import {
     addRegistryItem,
@@ -24,14 +32,42 @@ import {
 // import Table from '../../components/Table/Table';
 
 class RootRegistryPage extends Component {
+    state = {
+        isShownRemove: false,
+        isShownRename: false,
+        isShownAdd: false,
+        name: '',
+        emptyName: false,
+        hash: '',
+        emptyHash: false,
+    };
+
     addRegistryItem = () => {
-        const name = this.name.value;
-        const hash = this.hash.value;
+        const name = this.state.name;
+        const hash = this.state.hash;
         const isIpfs = !!this.refs.ipfs.checked;
 
-        this.props.addRegistryItem(name, hash, isIpfs ? 'ipfs' : 'ipns').then(() => {
-            this.name.value = '';
-            this.hash.value = '';
+        this.props.addRegistryItem(name, hash).then(() => {
+            this.state.name = '';
+            this.state.hash = '';
+        });
+    };
+
+    isShownAdd = () => {
+        this.setState({
+            isShownAdd: !this.state.isShownAdd,
+        });
+    };
+
+    isShownRemove = () => {
+        this.setState({
+            isShownRemove: !this.state.isShownRemove,
+        });
+    };
+
+    isShownRename = () => {
+        this.setState({
+            isShownRename: !this.state.isShownRename,
         });
     };
 
@@ -39,47 +75,85 @@ class RootRegistryPage extends Component {
         this.props.deleteRegistryItem(itemName);
     };
 
+    nameApp = (event) => {
+        this.setState({
+            name: event.target.value,
+        });
+    };
+
+    ipfsApp = (event) => {
+        this.setState({
+            hash: event.target.value,
+        });
+    };
+
     render() {
         const { registryItems } = this.props;
 
+        const MenuRow = ({ items }) => (
+            <Menu>
+                {/* <Menu.Group>
+                     <Menu.Item icon='edit' onClick={ () => this.isShownRename() }>
+                        Rename
+                    </Menu.Item>
+                </Menu.Group> */}
+                {/* <Menu.Divider /> */}
+                <Menu.Group>
+                    <Menu.Item
+                      icon='trash'
+                      intent='danger'
+                      onClick={ () => this.deleteRegistryItem(items) }
+                    >
+                        Remove
+                    </Menu.Item>
+                </Menu.Group>
+            </Menu>
+        );
+
         const rows = registryItems.map(item => (
-            <tr key={ item.name }>
-                <td>
+            <TableEv.Row paddingLeft={ 20 } height={ 50 } isSelectable key={ item.name }>
+                <TableEv.TextCell>
 .
                     {item.name}
-                </td>
-                <td>{item.hash}</td>
-                <td>{item.protocol}</td>
-                <td>
-                    <Button sizeSm color='blue' onClick={ () => this.deleteRegistryItem(item.name) }>
+                </TableEv.TextCell>
+                <TableEv.TextCell flexGrow={ 3 }>{item.hash}</TableEv.TextCell>
+                <TableEv.Cell width={ 60 } flex='none'>
+                    {/* <Button sizeSm color='blue' onClick={ () => this.deleteRegistryItem(item.name) }>
                         REMOVE
-                    </Button>
-                </td>
-            </tr>
+                    </Button> */}
+                    <Popover content={ <MenuRow items={ item.name } /> }>
+                        <Pane paddingY={ 5 } paddingX={ 5 } width='100%'>
+                            <IconButton iconSize={ 12 } appearance='minimal' icon='more' />
+                        </Pane>
+                    </Popover>
+                </TableEv.Cell>
+            </TableEv.Row>
         ));
 
         return (
             <ScrollContainer>
                 <MainContainer>
-                    <PageTitle>Cyb root registry</PageTitle>
                     <div style={ { paddingBottom: 20 } }>
-                        <Button sizeSm color='blue' onClick={ this.props.resetToDefault }>
-                            RESET TO DEFAULT
+                        <Button onClick={ this.props.resetToDefault }>RESET TO DEFAULT</Button>
+                        <Button
+                          iconBefore='add'
+                          height={ 32 }
+                          paddingX={ 15 }
+                          onClick={ () => this.isShownAdd() }
+                        >
+                            Add
                         </Button>
                     </div>
                     <div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>hash</th>
-                                    <th>Protocol</th>
-                                    <th />
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <TableEv>
+                            <TableEv.Head paddingLeft={ 20 }>
+                                <TableEv.TextHeaderCell>Name</TableEv.TextHeaderCell>
+                                <TableEv.TextHeaderCell flexGrow={ 3 }>hash</TableEv.TextHeaderCell>
+                                <TableEv.TextHeaderCell flex='none' width={ 60 } />
+                            </TableEv.Head>
+                            <TableEv.Body style={ { backgroundColor: '#fff', overflowY: 'hidden' } }>
                                 {rows}
-                                <tr className='addRow' key='add_row'>
+                                {/* <tr className='addRow' key='add_row'>
                                     <td>
                                         <Input
                                           inputRef={ (node) => {
@@ -118,14 +192,14 @@ class RootRegistryPage extends Component {
                                             <Text color='black' size='lg'>
                                                 ipns
                                             </Text>
-                                        </FlexContainer>
+                                        </FlexContainer> */}
 
-                                        {/* <input type='radio' defaultChecked ref='ipfs' name='protocol' />
+                                {/* <input type='radio' defaultChecked ref='ipfs' name='protocol' />
 ipfs
 
                                         <input type='radio' defaultChecked={ false } ref='ipns' name='protocol' />
 ipns */}
-                                    </td>
+                                {/* </td>
                                     <td>
                                         <Button
                                           sizeSm
@@ -135,10 +209,39 @@ ipns */}
                                             ADD
                                         </Button>
                                     </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                </tr> */}
+                            </TableEv.Body>
+                        </TableEv>
                     </div>
+                    <Dialog
+                      isShown={ this.state.isShownAdd }
+                      title='Add domain'
+                      onCloseComplete={ () => this.setState({ isShownAdd: false }) }
+                      confirmLabel='Update'
+                      width={ 450 }
+                      onConfirm={ close => close(this.addRegistryItem) }
+                    >
+                        <Pane
+                          paddingTop={ 20 }
+                          paddingBottom={ 30 }
+                          paddingX={ 40 }
+                          display='flex'
+                          flexDirection='column'
+                        >
+                            <Pane display='flex' flexDirection='column' marginBottom={ 25 }>
+                                <Text display='inline-block' marginBottom={ 10 }>
+                                    Name
+                                </Text>
+                                <TextInput width='100%' onChange={ e => this.nameApp(e) } />
+                            </Pane>
+                            <Pane display='flex' flexDirection='column'>
+                                <Text display='inline-block' marginBottom={ 10 }>
+                                    IPFS Hash
+                                </Text>
+                                <TextInput width='100%' onChange={ e => this.ipfsApp(e) } />
+                            </Pane>
+                        </Pane>
+                    </Dialog>
                 </MainContainer>
             </ScrollContainer>
         );

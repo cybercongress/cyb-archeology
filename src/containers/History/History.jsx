@@ -1,28 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-    PageTitle, Table, ScrollContainer, MainContainer,
+    PageTitle, ScrollContainer, MainContainer, TableEv,
 } from '@cybercongress/ui';
 import moment from 'moment';
 
 import CybLink from '../../components/CybLink';
 // import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
-// import Table from '../../components/Table/Table';
+// import TableEv from '../../components/TableEv/TableEv';
 
 class History extends Component {
     renderItem = (item, index) => {
         const { dura, date } = item;
-        let content = <CybLink dura={ dura }>{dura}</CybLink>;
+        let content = <CybLink style={{color: '#1976d2'}} dura={ dura }>{dura}</CybLink>;
 
         if (dura === 'history.cyb') {
             content = <span>{dura}</span>;
         }
 
         return (
-            <tr key={ index }>
-                <td>{content}</td>
-                <td>{moment(date).format('D/MM YYYY h:mm:ss')}</td>
-            </tr>
+            <TableEv.Row paddingLeft={ 20 } isSelecTableEv key={ index }>
+                <TableEv.TextCell>{content}</TableEv.TextCell>
+                <TableEv.TextCell width={160} flex='none' alginItems='center' isNumber>{moment(date).format('D/MM YYYY h:mm:ss')}</TableEv.TextCell>
+            </TableEv.Row>
         );
     };
 
@@ -35,18 +35,15 @@ class History extends Component {
 
         return (
             <ScrollContainer>
-                <MainContainer>
-                    <PageTitle>History</PageTitle>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Address</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>{historyWithoutLast.map(this.renderItem)}</tbody>
-                    </table>
-                </MainContainer>
+            <MainContainer>
+                    <TableEv>
+                        <TableEv.Head paddingLeft={ 20 }>
+                                <TableEv.TextHeaderCell>Dura</TableEv.TextHeaderCell>
+                                <TableEv.TextHeaderCell textAlign='center' width={160} flex='none'>Date</TableEv.TextHeaderCell>
+                        </TableEv.Head>
+                        <TableEv.Body style={ { backgroundColor: '#fff', overflowY: 'hidden' } }>{historyWithoutLast.map(this.renderItem)}</TableEv.Body>
+                    </TableEv>
+            </MainContainer>
             </ScrollContainer>
         );
     }

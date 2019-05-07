@@ -57,16 +57,6 @@ class AppMenu extends Component {
 
         return (
             <MenuContainer>
-                <LogoLink onClick={ this.clickLogo } />
-
-                <Message
-                  style={ {
-                    margin: 15,
-                  } }
-                  type='error'
-                >
-                Cyb in Ethereum Mainnet may not be secure yet. We recommend to operate accounts with small balance at your own risk.
-                </Message>
                 <Bookmarks
                   items={ menuItems }
                   deleteMenuItem={ deleteMenuItem }
@@ -86,12 +76,12 @@ class AppMenu extends Component {
                     </ClickOutside>
                 )}
                 <ReportLinkContainer>
-                    <a
+                    {/* <a
                       target='__blank'
                       href='https://github.com/cybercongress/cyb'
                     >
                     Find a bug?
-                    </a>
+                    </a> */}
                 </ReportLinkContainer>
             </MenuContainer>
         );
