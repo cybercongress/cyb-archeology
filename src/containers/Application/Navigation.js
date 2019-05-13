@@ -53,58 +53,73 @@ import { isFavoritedPage, toggleFavorited } from '../../redux/appMenu';
 // );
 
 class Navigation extends Component {
-    componentWillReceiveProps(nextProps) {
-        if (this.props.dura !== nextProps.dura) {
-            this.input.value = nextProps.dura;
+    state = {
+        inputValue: '',
+    };
+
+    componentWillMount() {
+        const { dura } = this.props;
+
+        if (dura) {
+            this.setState({
+                inputValue: dura,
+            });
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.dura !== nextProps.dura) {
+            this.setState({ inputValue: nextProps.dura });
+        }
+    }
+
+    onSearchStringChange = (e) => {
+        this.setState({ inputValue: e.target.value });
+    };
+
     _handleKeyPress = (e) => {
         if (e.key === 'Enter') {
-            const { value } = this.input;
+            const { inputValue } = this.state;
 
-            this.props.navigate(value);
+            this.props.navigate(inputValue);
         }
     };
 
     render() {
-        const { dura, canBack, isFavorited } = this.props;
+        const {
+            inputValue,
+        } = this.state;
+        const {
+            dura, canBack, isFavorited,
+        } = this.props;
         const homePage = dura === '';
 
         return (
             <NavigationContainer>
-                {!homePage && <BackButton disabled={ !canBack } onClick={ this.props.goBack } />}
+                { !homePage && <BackButton style={{ padding: '0 10px', cursor: 'pointer'}} disabled={ !canBack } onClick={ this.props.goBack } /> }
                 <FavoriteButtonContainer>
-                    {!!homePage && <SearchIcon />}
+                    { !!homePage && <SearchIcon /> }
                     <SearchInput
                       textAlign='center'
                       width='100%'
                       height={ 41 }
                       fontSize='35px'
-                      inputRef={ (node) => {
-                            this.input = node;
-                        } }
-                      defaultValue={ dura }
+                      value={ inputValue }
+                      onChange={ e => this.onSearchStringChange(e) }
                       onKeyPress={ this._handleKeyPress }
                     />
-                    {!homePage && (
-                        // <Popover
-                        //   bringFocusInside
-                        //   content={ isFavorited ? <RenameApp dura={dura} /> : <AddNewApp /> }
-                        // >
-                            <FavoriteButton
-                              isFavorited={ isFavorited }
-                              onClick={ this.props.toggleFavorited }
-                            />
-                        // </Popover>
-                    )}
+                    { !homePage && (
+                    <FavoriteButton
+                      isFavorited={ isFavorited }
+                      onClick={ this.props.toggleFavorited }
+                    />
+) }
                 </FavoriteButtonContainer>
-                {!homePage && <ForwardButton disabled />}
+                { !homePage && <ForwardButton style={{ padding: '0 10px', cursor: 'pointer'}} disabled /> }
             </NavigationContainer>
         );
     }
 }
-
 export default connect(
     state => ({
         dura: state.browser.dura,
