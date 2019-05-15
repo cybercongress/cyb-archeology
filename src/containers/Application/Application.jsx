@@ -31,7 +31,7 @@ import SignerPopup from './SignerPopup';
 
 const Application = (props) => {
     const {
-        homePage, openMenu, children, toggleMenu,
+        homePage, openMenu, children, toggleMenu, defaultEthAccount,
     } = props;
 
     const ContenTooltip = ({ bwRemained, bwMaxValue, linkPrice }) => (
@@ -82,7 +82,9 @@ BP.
                     </NavigationCenter>
                     <NavigationRight>
                         <Pane display='flex' alignItems='center'>
-                            <SkillBar maxHeight={ 16 } minWidth={ 100 } bwPercent={ remained } contentTooltip={ <ContenTooltip /> } />
+                            {defaultEthAccount && (
+                                <SkillBar maxHeight={ 16 } minWidth={ 100 } bwPercent={10} contentTooltip={ <ContenTooltip /> } />
+                            )}
                             <IdBar />
                         </Pane>
                     </NavigationRight>
@@ -97,6 +99,7 @@ export default connect(
     state => ({
         homePage: state.browser.dura === '',
         openMenu: state.appMenu.openMenu,
+        defaultEthAccount: state.wallet.defaultAccount,
     }),
     { toggleMenu: toggleMenuAction },
 )(Application);

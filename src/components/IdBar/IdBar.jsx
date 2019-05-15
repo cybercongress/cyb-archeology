@@ -191,6 +191,7 @@ export const CurrentUser = (props) => {
         ethBalance,
         cybBalance,
         menuItems,
+        username,
     } = props;
 
     return (
@@ -198,7 +199,7 @@ export const CurrentUser = (props) => {
             {defaultEthAccount ? (
                 <Pane display='flex' alignItems='center'>
                     <Text marginX={ 10 } color='#fff' fontSize='1em'>
-                        User
+                        {username}
                     </Text>
                     <img
                       alt='user'
