@@ -88,6 +88,7 @@ class Login extends React.Component {
                                             backgroundColor='transparent'
                                             color='#fff'
                                             height='6vh'
+                                            boxShadow='0 0 5px #36d6ae'
                                             maxHeight={ 42 }
                                             isInvalid={ !!error }
                                             paddingX={ 10 }
