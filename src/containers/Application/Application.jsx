@@ -32,7 +32,8 @@ import Intro from './Intro';
 
 const Application = (props) => {
     const {
-        homePage, openMenu, children, toggleMenu, defaultEthAccount, showIntro,
+        homePage, openMenu, children, toggleMenu, defaultEthAccount,
+        showIntro, bwRemained, bwMaxValue, linkPrice,
     } = props;
 
     if (showIntro) {
@@ -63,10 +64,10 @@ BP.
             </Pane>
             <Pane display='flex' marginBottom={ 12 }>
                 <Text size={ 300 }>
-Current rate for 1 cyberlink is
+Current rate for 1 cyberlink is {' '}
                     {linkPrice}
                     {' '}
-BP.
+                    BP.
                 </Text>
             </Pane>
         </Pane>
@@ -90,7 +91,16 @@ BP.
                     <NavigationRight>
                         <Pane display='flex' alignItems='center'>
                             {defaultEthAccount && (
-                                <SkillBar maxHeight={ 16 } minWidth={ 100 } bwPercent={10} contentTooltip={ <ContenTooltip /> } />
+                                <SkillBar
+                                    maxHeight={ 16 }
+                                    minWidth={ 100 }
+                                    bwPercent={ (bwRemained / bwMaxValue * 100).toFixed(0) }
+                                    contentTooltip={ <ContenTooltip
+                                        bwRemained={ bwRemained }
+                                        bwMaxValue={ bwMaxValue }
+                                        linkPrice={ linkPrice }
+                                    /> }
+                                />
                             )}
                             <IdBar />
                         </Pane>
@@ -108,6 +118,10 @@ export default connect(
         openMenu: state.appMenu.openMenu,
         defaultEthAccount: state.wallet.defaultAccount,
         showIntro: state.intro.showIntro,
+
+        bwRemained: state.cyber.bwRemained,
+        bwMaxValue: state.cyber.bwMaxValue,
+        linkPrice: state.cyber.linkPrice,
     }),
     { toggleMenu: toggleMenuAction },
 )(Application);

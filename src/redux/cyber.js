@@ -1,3 +1,4 @@
+import * as axios from 'axios';
 import { initSettingsState } from './settings';
 import Cyber, { lotteryHash } from '../cyber/Cyber';
 import { onApplicationStart } from './intro';
@@ -5,6 +6,9 @@ import { onApplicationStart } from './intro';
 const initState = {
     accounts: [],
     defaultAccount: '',
+
+    bwRemained: 0,
+    bwMaxValue: 0,
 };
 const IPFS = require('ipfs-api');
 
@@ -21,6 +25,21 @@ export const reducer = (state = initState, action) => {
         return {
             ...state,
             defaultAccount: address,
+        };
+
+    case 'SET_BANDWIDTH':
+        const { bwRemained, bwMaxValue } = action.payload;
+
+        return {
+            ...state,
+            bwRemained,
+            bwMaxValue,
+        };
+
+    case 'SET_LINK_PRICE':
+        return {
+            ...state,
+            linkPrice: action.payload,
         };
 
     default:
@@ -135,6 +154,40 @@ const pinLotteryResults = (ipfs) => {
     });
 };
 
+export const getBandwidthInfo = () => (dispatch, getState) => {
+    const { cyberdUrl } = getState().settings;
+    const { defaultAccount } = getState().cyber;
+
+    axios({
+        method: 'get',
+        url: `${cyberdUrl}/account_bandwidth?address="${defaultAccount}"`,
+    }).then((res) => {
+        dispatch({
+            type: 'SET_BANDWIDTH',
+            payload: {
+                bwRemained: res.data.result.remained,
+                bwMaxValue: res.data.result.max_value,
+            },
+        });
+    });
+};
+
+export const getLinkPrice = () => (dispatch, getState) => {
+    const { cyberdUrl } = getState().settings;
+
+    axios({
+        method: 'get',
+        url: `${cyberdUrl}/current_bandwidth_price`,
+    }).then((response) => {
+        const linkPrice = (400 * +response.data.result.price).toFixed(0);
+
+        dispatch({
+            type: 'SET_LINK_PRICE',
+            payload: linkPrice,
+        });
+    });
+};
+
 export const initCyber = () => (dispatch, getState) => {
     const settingsString = localStorage.getItem('settings');
 
@@ -149,6 +202,9 @@ export const initCyber = () => (dispatch, getState) => {
     const ipfs = new IPFS(settings.ipfsWrite);
 
     window.cyber = new Cyber(settings.cyberdUrl, settings.cyberdWsUrl, ipfs);
+
+    dispatch(getBandwidthInfo());
+    dispatch(getLinkPrice());
 
     pinLotteryResults(ipfs);
 };
