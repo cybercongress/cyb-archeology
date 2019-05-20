@@ -818,7 +818,7 @@ export const isLoginExist = () => {
 
 
 export const updateStatusTransactions = () => (dispatch) => {
-    if (!web3 || !web3.eth.defaultAccount) {
+    if (!web3) {
         return;
     }
 
@@ -948,6 +948,8 @@ export const getTransactions = address => (dispatch, getState) => {
         type: 'SET_ETH_TRANSACTIONS',
         payload: transactionsSorted,
     });
+
+    dispatch(updateStatusTransactions());
 };
 
 
