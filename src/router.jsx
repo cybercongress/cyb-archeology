@@ -5,7 +5,7 @@ import {
 import Application from './containers/Application/Application';
 import RootRegistry from './containers/RootRegistry/RootRegistry';
 import Settings from './containers/Settings/Settings';
-import Wallet from './containers/Wallet';
+import Wallet from './containers/Wallet/Wallet';
 import NotFound from './containers/NotFound/NotFound';
 import Browser from './containers/Browser/Browser';
 import Home from './containers/Home';

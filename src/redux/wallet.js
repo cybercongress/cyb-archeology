@@ -7,6 +7,7 @@ import { navigate, goBack } from './browser';
 import { initSettingsState, setEthNetworkName } from './settings';
 import { showSigner, hidePopup } from './signer';
 import { onApplicationStart } from './intro';
+import { financial } from '../utils';
 const IPFS = require('ipfs-api');
 let eth;
 let provider;
@@ -733,9 +734,6 @@ export const receiveMessage = e => (dispatch, getState) => {
 //         .then(() => dispatch(setDefaultAccount()));
 // };
 
-function financial(x) {
-    return Number.parseFloat(x).toFixed(2);
-}
 
 export const getDefaultAccountBalance = (state) => {
     const {

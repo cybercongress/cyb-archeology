@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-    ScrollContainer,
-    FlexContainer,
-    FlexContainerLeft,
-    FlexContainerRight,
-    MainContainer,
-    Section,
     Button,
+    Pane,
+    HelloContainerLeftCol,
+    BigImg,
+    HelloContainerRightCol,
+    HelloContainerRightColContent,
 } from '@cybercongress/ui';
 import { exportSettings, resetAllSettings } from '../../redux/settings';
 import ConnectionsContainer from './ConnectionsContainer';
 import { downloadObjectAsJson } from '../../utils';
+
+const idRobot = require('../Hello/img/idrobot.png');
 
 class Settings extends Component {
     onExportSettings = () => {
@@ -22,32 +23,42 @@ class Settings extends Component {
 
     render() {
         return (
-            <ScrollContainer>
-                <MainContainer>
-                    <Section>
-                        <ConnectionsContainer />
-                    </Section>
+            <Pane
+                height='100%'
+                paddingX='10em'
+                display='grid'
+                gridTemplateColumns='1fr 1fr'
+                gridGap='1em'
+            >
+                <HelloContainerLeftCol>
+                    <BigImg srcBigImg={ idRobot } />
+                </HelloContainerLeftCol>
 
-                    <FlexContainer>
-                        <FlexContainerLeft>
+                <HelloContainerRightCol>
+                    <HelloContainerRightColContent>
+                        <ConnectionsContainer />
+                        <Pane
+                            width='100%'
+                            display='flex'
+                            justifyContent='space-between'
+                            marginTop={10}
+                        >
                             <Button
-                              className='btn'
-                              onClick={ this.onExportSettings }
+                                className='btn'
+                                onClick={ this.onExportSettings }
                             >
                                 EXPORT SETTINGS
                             </Button>
-                        </FlexContainerLeft>
-                        <FlexContainerRight style={ { paddingRight: 20 } }>
                             <Button
-                              className='btn'
-                              onClick={ this.props.resetAllSettings }
+                                className='btn'
+                                onClick={ this.props.resetAllSettings }
                             >
                                 RESET SETTINGS
                             </Button>
-                        </FlexContainerRight>
-                    </FlexContainer>
-                </MainContainer>
-            </ScrollContainer>
+                        </Pane>
+                    </HelloContainerRightColContent>
+                </HelloContainerRightCol>
+            </Pane>
         );
     }
 }

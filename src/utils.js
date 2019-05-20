@@ -196,6 +196,8 @@ export const getColorByStatus = (status) => {
     return color;
 };
 
+export const financial = x => Number.parseFloat(x).toFixed(0);
+
 export const downloadObjectAsJson = (exportObj, exportName) => {
     const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(exportObj))}`;
     const downloadAnchorNode = document.createElement('a');

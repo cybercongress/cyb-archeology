@@ -2,6 +2,7 @@ import * as axios from 'axios';
 import { initSettingsState } from './settings';
 import Cyber, { lotteryHash } from '../cyber/Cyber';
 import { onApplicationStart } from './intro';
+import { financial } from '../utils';
 
 const initState = {
     accounts: [],
@@ -96,10 +97,6 @@ export const restoreAccount = text => (dispatch, getState) => {
         return window.cyber.importAccount(text).then(account => dispatch(loadCyberdAccounts()));
     }
 };
-
-function financial(x) {
-    return Number.parseFloat(x).toFixed(2);
-}
 
 export const getDefaultAccountBalance = (state) => {
     const {
