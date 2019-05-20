@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
+import { ScrollContainer, Button } from '@cybercongress/ui';
 import CybLink from '../../components/CybLink';
-import ScrollContainer from '@cybercongress/ui';
 
 class HelpApp extends Component {
     render() {
         return (
             <ScrollContainer>
-                <div>
-                    <CybLink dura='help.cyb'>go Home</CybLink>
+                <div style={{ paddingTop: 10, paddingLeft: 10}}>
+                <CybLink style={{ textDecoration: 'none' }} dura='help.cyb'>
+                    <Button className='btn'>
+                        go Home
+                    </Button>
+                </CybLink>
+
                 </div>
                 {this.props.children}
             </ScrollContainer>

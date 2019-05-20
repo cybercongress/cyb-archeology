@@ -1,28 +1,38 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-    PageTitle, Table, ScrollContainer, MainContainer,
+    PageTitle, ScrollContainer, MainContainer, TableEv,
 } from '@cybercongress/ui';
 import moment from 'moment';
 
 import CybLink from '../../components/CybLink';
 // import ScrollContainer from '../../components/ScrollContainer/ScrollContainer';
-// import Table from '../../components/Table/Table';
+// import TableEv from '../../components/TableEv/TableEv';
 
 class History extends Component {
     renderItem = (item, index) => {
         const { dura, date } = item;
-        let content = <CybLink dura={ dura }>{dura}</CybLink>;
+        let content = (
+            <CybLink style={ { color: '#1e86ff' } } dura={ dura }>
+                {dura}
+            </CybLink>
+        );
 
         if (dura === 'history.cyb') {
             content = <span>{dura}</span>;
         }
 
         return (
-            <tr key={ index }>
-                <td>{content}</td>
-                <td>{moment(date).format('D/MM YYYY h:mm:ss')}</td>
-            </tr>
+            <TableEv.Row borderBottom='none' paddingLeft={ 20 } isSelectable key={ index }>
+                <TableEv.TextCell>
+                    <span style={ { color: '#fff', fontSize: '16px' } }>{content}</span>
+                </TableEv.TextCell>
+                <TableEv.TextCell width={ 200 } flex='none' textAlign='end' isNumber>
+                    <span style={ { color: '#fff', fontSize: '16px' } }>
+                        {moment(date).format('D/MM YYYY h:mm:ss')}
+                    </span>
+                </TableEv.TextCell>
+            </TableEv.Row>
         );
     };
 
@@ -36,16 +46,22 @@ class History extends Component {
         return (
             <ScrollContainer>
                 <MainContainer>
-                    <PageTitle>History</PageTitle>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Address</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>{historyWithoutLast.map(this.renderItem)}</tbody>
-                    </table>
+                    <TableEv>
+                        <TableEv.Head
+                          style={ { backgroundColor: '#000', borderBottom: '1px solid #ffffff80' } }
+                          paddingLeft={ 20 }
+                        >
+                            <TableEv.TextHeaderCell>
+                                <span style={ { color: '#fff', fontSize: '17px' } }>Dura</span>
+                            </TableEv.TextHeaderCell>
+                            <TableEv.TextHeaderCell textAlign='end' width={ 200 } flex='none'>
+                                <span style={ { color: '#fff', fontSize: '17px' } }>Date</span>
+                            </TableEv.TextHeaderCell>
+                        </TableEv.Head>
+                        <TableEv.Body style={ { backgroundColor: '#000', overflowY: 'hidden' } }>
+                            {historyWithoutLast.map(this.renderItem)}
+                        </TableEv.Body>
+                    </TableEv>
                 </MainContainer>
             </ScrollContainer>
         );

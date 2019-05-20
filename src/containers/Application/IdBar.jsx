@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ClickOutside from 'react-click-outside';
+//import { CurrentUser } from '@cybercongress/ui';
 import IdBarComponent, {
     NotificationLink,
     SettingsLink,
@@ -8,9 +9,20 @@ import IdBarComponent, {
 } from '../../components/IdBar/IdBar';
 import { toggleMenu } from '../../redux/appMenu';
 import { getDefaultAccountBalance } from '../../redux/wallet';
+import {
+    CybLink,
+} from '../../components/CybLink';
 import { getDefaultAccountBalance as getDefaultAccountBalanceCyb } from '../../redux/cyber';
 
-
+const menuItems = [
+    {
+        items: '1',
+        rootDura: 'ds',
+        name: 'Chaingear',
+        pill: '7',
+        status: 'remote',
+    }
+]
 class IdBar extends Component {
     state = {
         open: false,
@@ -37,13 +49,18 @@ class IdBar extends Component {
 
     render() {
         const { open } = this.state;
+        const { history } = this.props;
         const {
             defaultEthAccount,
             defaultCyberAccount,
             defaultAccountBalance,
             defaultAccountBalanceCyb,
             notificationLinkCounter,
+            username,
         } = this.props;
+
+         const historyWithoutLast = history.slice(0, history.length);
+         historyWithoutLast.reverse();
 
         return (
             <IdBarComponent>
@@ -56,14 +73,16 @@ class IdBar extends Component {
                       favoriteClick={ this.favoriteClick }
                       ethBalance={ defaultAccountBalance }
                       cybBalance={ defaultAccountBalanceCyb }
+                      menuItems={historyWithoutLast}
+                      username={username}
                     />
                 </ClickOutside>
-                <SettingsLink />
+                {/* <SettingsLink />
                 {defaultEthAccount && (
                     <NotificationLink
                       notificationLinkCounter={ notificationLinkCounter }
                     />
-                )}
+                )} */}
             </IdBarComponent>
         );
     }
@@ -77,6 +96,8 @@ export default connect(
         defaultAccountBalance: getDefaultAccountBalance(state),
         defaultAccountBalanceCyb: getDefaultAccountBalanceCyb(state),
         notificationLinkCounter: state.wallet.notificationLinkCounter,
+        history: state.browser.history,
+        username: state.settings.username,
     }),
     { toggleMenu },
 )(IdBar);
