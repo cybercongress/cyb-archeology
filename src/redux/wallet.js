@@ -748,6 +748,18 @@ export const getDefaultAccountBalance = (state) => {
     return financial(acc.balance);
 }
 
+export const getDefaultAccountBalanceEth = (state) => {
+    const {
+        accounts,
+        defaultAccount
+    } = state.wallet;
+
+    const acc = accounts.find(a => a.address === defaultAccount);
+
+    if (!acc ) return 0;
+
+    return acc.balance;
+};
 
 export const onCopyKey = (address) => (dispatch, getState) => {
     // const account = __accounts[address.toLowerCase()];

@@ -23,7 +23,7 @@ import {
 // import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 
-import { getDefaultAccountBalance } from '../../redux/wallet';
+import { getDefaultAccountBalance, getDefaultAccountBalanceEth } from '../../redux/wallet';
 import { approve, reject } from '../../redux/signer';
 
 class SignerPopup extends React.Component {
@@ -59,7 +59,7 @@ class SignerPopup extends React.Component {
 
         props.reject();
     }
-    
+
 
     approve = () => {
         const { props } = this;
@@ -224,7 +224,7 @@ class SignerPopup extends React.Component {
 
 export default connect(
     state => ({
-        defaultAccountBalance: getDefaultAccountBalance(state),
+        defaultAccountBalance: getDefaultAccountBalanceEth(state),
 
         isSignerPopup: state.signer.isSignerPopup,
         fromAddress: state.signer.fromAddress,
