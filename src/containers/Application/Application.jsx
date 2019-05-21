@@ -12,9 +12,9 @@ import {
     SkillBar,
     Pane,
     Text,
-    BntGroup,
 } from '@cybercongress/ui';
 import { toggleMenu as toggleMenuAction } from '../../redux/appMenu';
+import BntGroupFull from '../../components/ButtonGroupFull/ButtonGroupFull';
 
 // import App, {
 //     AppHeader, AppContent, AppSideBar,
@@ -33,14 +33,19 @@ import Intro from './Intro';
 
 const Application = (props) => {
     const {
-        homePage, openMenu, children, toggleMenu, defaultEthAccount,
-        showIntro, bwRemained, bwMaxValue, linkPrice,
+        homePage,
+        openMenu,
+        children,
+        toggleMenu,
+        defaultEthAccount,
+        showIntro,
+        bwRemained,
+        bwMaxValue,
+        linkPrice,
     } = props;
 
     if (showIntro) {
-        return (
-            <Intro />
-        );
+        return <Intro />;
     }
 
     const ContenTooltip = ({ bwRemained, bwMaxValue, linkPrice }) => (
@@ -65,10 +70,10 @@ BP.
             </Pane>
             <Pane display='flex' marginBottom={ 12 }>
                 <Text size={ 300 }>
-Current rate for 1 cyberlink is {' '}
+Current rate for 1 cyberlink is
                     {linkPrice}
                     {' '}
-                    BP.
+BP.
                 </Text>
             </Pane>
         </Pane>
@@ -93,15 +98,17 @@ Current rate for 1 cyberlink is {' '}
                         <Pane display='flex' justifyContent='flex-end' alignItems='center'>
                             {defaultEthAccount && (
                                 <SkillBar
-                                    maxHeight={ 16 }
-                                    minWidth={ 100 }
-                                    maxWidth={200}
-                                    bwPercent={ (bwRemained / bwMaxValue * 100).toFixed(0) }
-                                    contentTooltip={ <ContenTooltip
+                                  maxHeight={ 16 }
+                                  minWidth={ 100 }
+                                  maxWidth={ 200 }
+                                  bwPercent={ ((bwRemained / bwMaxValue) * 100).toFixed(0) }
+                                  contentTooltip={ (
+                                      <ContenTooltip
                                         bwRemained={ bwRemained }
                                         bwMaxValue={ bwMaxValue }
                                         linkPrice={ linkPrice }
-                                    /> }
+                                      />
+) }
                                 />
                             )}
                             <IdBar />
@@ -111,7 +118,9 @@ Current rate for 1 cyberlink is {' '}
             </AppHeader>
             <AppContent>
                 {children}
-                <BntGroup />
+                <Pane position='fixed' top={0} right='5px' height='inherit' marginTop={60} display='flex' alignItems='center'>
+                    <BntGroupFull />
+                </Pane>
             </AppContent>
         </App>
     );
