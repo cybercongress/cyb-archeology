@@ -21,11 +21,18 @@ class Wallet extends React.Component {
 
         return (
             <Pane
+    height='100%'
+    maxWidth={1200}
+    marginX='auto'
+>
+
+
+            <Pane
                 height='100%'
-                paddingX='1em'
                 display='grid'
                 gridTemplateColumns='1fr 1fr'
                 gridGap='1em'
+                paddingX='1em'
             >
                 <HelloContainerLeftCol>
                     <BigImg srcBigImg={ idRobot } />
@@ -91,6 +98,7 @@ class Wallet extends React.Component {
                         </Pane>
                     </HelloContainerRightColContent>
                 </HelloContainerRightCol>
+            </Pane>
             </Pane>
         );
     }

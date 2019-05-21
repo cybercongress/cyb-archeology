@@ -1,7 +1,7 @@
 .id_bar {
     display: flex;
     align-items: center;
-    margin-left: auto;
+    margin-left: 1em;
     flex-direction: row-reverse;
   }
   

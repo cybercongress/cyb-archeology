@@ -7,6 +7,8 @@ import {
     BigImg,
     HelloContainerRightCol,
     HelloContainerRightColContent,
+    MainContainer,
+    ScrollContainer,
 } from '@cybercongress/ui';
 import { exportSettings, resetAllSettings } from '../../redux/settings';
 import ConnectionsContainer from './ConnectionsContainer';
@@ -23,12 +25,19 @@ class Settings extends Component {
 
     render() {
         return (
+<Pane
+    height='100%'
+    maxWidth={1200}
+    marginX='auto'
+>
+
+
             <Pane
                 height='100%'
-                paddingX='10em'
                 display='grid'
                 gridTemplateColumns='1fr 1fr'
                 gridGap='1em'
+                paddingX='1em'
             >
                 <HelloContainerLeftCol>
                     <BigImg srcBigImg={ idRobot } />
@@ -41,7 +50,7 @@ class Settings extends Component {
                             width='100%'
                             display='flex'
                             justifyContent='space-between'
-                            marginTop={10}
+                            marginTop='2em'
                         >
                             <Button
                                 className='btn'
@@ -58,6 +67,7 @@ class Settings extends Component {
                         </Pane>
                     </HelloContainerRightColContent>
                 </HelloContainerRightCol>
+            </Pane>
             </Pane>
         );
     }

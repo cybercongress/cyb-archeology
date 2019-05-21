@@ -89,11 +89,12 @@ Current rate for 1 cyberlink is {' '}
                         <NavigationComponents />
                     </NavigationCenter>
                     <NavigationRight>
-                        <Pane display='flex' alignItems='center'>
+                        <Pane display='flex' justifyContent='flex-end' alignItems='center'>
                             {defaultEthAccount && (
                                 <SkillBar
                                     maxHeight={ 16 }
                                     minWidth={ 100 }
+                                    maxWidth={200}
                                     bwPercent={ (bwRemained / bwMaxValue * 100).toFixed(0) }
                                     contentTooltip={ <ContenTooltip
                                         bwRemained={ bwRemained }
