@@ -3,6 +3,7 @@ import {
     HelloContainerLeftCol,
     HelloContainerRightCol,
     HelloContainerRightColContent,
+    HelloContainer,
     Pane,
     BigImg,
     TextEv as Text,
@@ -20,19 +21,9 @@ class Wallet extends React.Component {
         const { ethAddress, ethBalance, cyberdAddress, cyberdBalance } = this.props;
 
         return (
-            <Pane
-    height='100%'
-    maxWidth={1200}
-    marginX='auto'
->
-
-
-            <Pane
-                height='100%'
-                display='grid'
-                gridTemplateColumns='1fr 1fr'
-                gridGap='1em'
-                paddingX='1em'
+            <HelloContainer
+              height='calc(100% - 60px)'
+              marginTop={60}
             >
                 <HelloContainerLeftCol>
                     <BigImg srcBigImg={ idRobot } />
@@ -98,8 +89,7 @@ class Wallet extends React.Component {
                         </Pane>
                     </HelloContainerRightColContent>
                 </HelloContainerRightCol>
-            </Pane>
-            </Pane>
+                </HelloContainer>
         );
     }
 }

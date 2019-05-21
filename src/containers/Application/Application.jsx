@@ -12,6 +12,7 @@ import {
     SkillBar,
     Pane,
     Text,
+    BntGroup,
 } from '@cybercongress/ui';
 import { toggleMenu as toggleMenuAction } from '../../redux/appMenu';
 
@@ -108,7 +109,10 @@ Current rate for 1 cyberlink is {' '}
                     </NavigationRight>
                 </Navigation>
             </AppHeader>
-            <AppContent>{children}</AppContent>
+            <AppContent>
+                {children}
+                <BntGroup />
+            </AppContent>
         </App>
     );
 };

@@ -7,8 +7,7 @@ import {
     BigImg,
     HelloContainerRightCol,
     HelloContainerRightColContent,
-    MainContainer,
-    ScrollContainer,
+    HelloContainer,
 } from '@cybercongress/ui';
 import { exportSettings, resetAllSettings } from '../../redux/settings';
 import ConnectionsContainer from './ConnectionsContainer';
@@ -25,20 +24,7 @@ class Settings extends Component {
 
     render() {
         return (
-<Pane
-    height='100%'
-    maxWidth={1200}
-    marginX='auto'
->
-
-
-            <Pane
-                height='100%'
-                display='grid'
-                gridTemplateColumns='1fr 1fr'
-                gridGap='1em'
-                paddingX='1em'
-            >
+            <HelloContainer height='calc(100% - 60px)' marginTop={ 60 }>
                 <HelloContainerLeftCol>
                     <BigImg srcBigImg={ idRobot } />
                 </HelloContainerLeftCol>
@@ -47,33 +33,29 @@ class Settings extends Component {
                     <HelloContainerRightColContent>
                         <ConnectionsContainer />
                         <Pane
-                            width='100%'
-                            display='flex'
-                            justifyContent='space-between'
-                            marginTop='2em'
+                          width='100%'
+                          display='flex'
+                          justifyContent='space-between'
+                          marginTop='2em'
                         >
-                            <Button
-                                className='btn'
-                                onClick={ this.onExportSettings }
-                            >
+                            <Button className='btn' onClick={ this.onExportSettings }>
                                 EXPORT SETTINGS
                             </Button>
-                            <Button
-                                className='btn'
-                                onClick={ this.props.resetAllSettings }
-                            >
+                            <Button className='btn' onClick={ this.props.resetAllSettings }>
                                 RESET SETTINGS
                             </Button>
                         </Pane>
                     </HelloContainerRightColContent>
                 </HelloContainerRightCol>
-            </Pane>
-            </Pane>
+            </HelloContainer>
         );
     }
 }
 
-export default connect(({ settings }) => ({}), {
-    resetAllSettings,
-    exportSettings,
-})(Settings);
+export default connect(
+    ({ settings }) => ({}),
+    {
+        resetAllSettings,
+        exportSettings,
+    },
+)(Settings);
