@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 
 // import * as actions from '../../redux/settings';
 import {
@@ -67,16 +67,16 @@ class Pins extends Component {
 
     render() {
         const {
-            registryItems, isShown, isShownRename, isShownAdd,
+            registryItems, isShown, isShownRename, isShownAdd, menuItems,
         } = this.props;
 
-        const rows = addRegistryItem.map(item => (
+        const rows = menuItems.map((item, index) => (
             <Table.Row
               borderBottom='none'
               paddingLeft={ 20 }
               height={ 50 }
               isSelectable
-              key={ item.name }
+              key={ index }
             >
                 <Table.TextCell>
                     <span style={ { color: '#fff', fontSize: 16 } }>
@@ -85,7 +85,7 @@ class Pins extends Component {
                     </span>
                 </Table.TextCell>
                 <Table.TextCell flexShrink={ 0 } flexGrow={ 1.5 }>
-                    <span style={ { color: '#fff', fontSize: 16 } }>{item.hash}</span>
+                    <span style={ { color: '#fff', fontSize: 16 } }>{item.rootDura}</span>
                 </Table.TextCell>
                 {/* <Table.TextCell>{item.protocol}</Table.TextCell> */}
                 <Table.Cell width={ 60 } flex='none'>
@@ -177,4 +177,8 @@ class Pins extends Component {
     }
 }
 
-export default Pins;
+export default connect(
+    state => ({
+        menuItems: state.appMenu.items,
+    }),
+)(Pins);

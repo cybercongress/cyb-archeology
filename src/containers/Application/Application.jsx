@@ -51,38 +51,6 @@ const Application = (props) => {
         return <Intro />;
     }
 
-    const ContenTooltip = ({ bwRemained, bwMaxValue, linkPrice }) => (
-        <Pane minWidth={ 200 } paddingX={ 18 } paddingY={ 14 } borderRadius={ 4 } backgroundColor='#fff'>
-            <Pane marginBottom={ 12 }>
-                <Text size={ 300 }>
-                    You have
-                    {' '}
-                    {bwRemained}
-                    {' '}
-BP out of
-                    {' '}
-                    {bwMaxValue}
-                    {' '}
-BP.
-                </Text>
-            </Pane>
-            <Pane marginBottom={ 12 }>
-                <Text size={ 300 }>
-                    Full regeneration of bandwidth points or BP happens in 24 hours.
-                </Text>
-            </Pane>
-            <Pane display='flex' marginBottom={ 12 }>
-                <Text size={ 300 }>
-Current rate for 1 cyberlink is
-                    {linkPrice}
-                    {' '}
-BP.
-                </Text>
-            </Pane>
-        </Pane>
-    );
-console.log(dura);
-console.log(regexCyb);
     return (
         <App openMenu={ openMenu }>
             <SignerPopup />
@@ -99,7 +67,7 @@ console.log(regexCyb);
                         <NavigationComponents />
                     </NavigationCenter>
                     <NavigationRight>
-                        <Pane display='flex' justifyContent='flex-end' alignItems='center'>
+                        {/* <Pane display='flex' justifyContent='flex-end' alignItems='center'>
                             {defaultEthAccount && (
                                 <SkillBar
                                   maxHeight={ 16 }
@@ -114,9 +82,9 @@ console.log(regexCyb);
                                       />
 ) }
                                 />
-                            )}
+                            )} */}
                             <IdBar />
-                        </Pane>
+                        {/* </Pane> */}
                     </NavigationRight>
                 </Navigation>
             </AppHeader>

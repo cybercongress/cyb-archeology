@@ -57,6 +57,9 @@ class IdBar extends Component {
             defaultAccountBalanceCyb,
             notificationLinkCounter,
             username,
+            bwRemained,
+            bwMaxValue,
+            linkPrice,
         } = this.props;
 
          const historyWithoutLast = history.slice(0, history.length);
@@ -75,6 +78,9 @@ class IdBar extends Component {
                       cybBalance={ defaultAccountBalanceCyb }
                       menuItems={historyWithoutLast}
                       username={username}
+                      bwRemained={ bwRemained }
+                      bwMaxValue={ bwMaxValue }
+                      linkPrice={ linkPrice }
                     />
                 </ClickOutside>
                 {/* <SettingsLink />
@@ -98,6 +104,10 @@ export default connect(
         notificationLinkCounter: state.wallet.notificationLinkCounter,
         history: state.browser.history,
         username: state.settings.username,
+
+        bwRemained: state.cyber.bwRemained,
+        bwMaxValue: state.cyber.bwMaxValue,
+        linkPrice: state.cyber.linkPrice,
     }),
     { toggleMenu },
 )(IdBar);

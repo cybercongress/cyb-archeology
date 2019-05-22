@@ -1,7 +1,7 @@
 import React from 'react';
 import './IdBar.css';
 import {
-    Pane, TextEv as Text, Tooltip, Button,
+    Pane, TextEv as Text, Tooltip, Button, SkillBar,
 } from '@cybercongress/ui';
 import CybLink from '../CybLink';
 
@@ -182,6 +182,36 @@ export const BookmarksTimeline = ({ items, ...props }) => (
     </div>
 );
 
+const ContenTooltip = ({ bwRemained, bwMaxValue, linkPrice }) => (
+    <Pane minWidth={ 200 } paddingX={ 18 } paddingY={ 14 } borderRadius={ 4 } backgroundColor='#fff'>
+        <Pane marginBottom={ 12 }>
+            <Text size={ 300 }>
+                You have
+                {' '}
+                {bwRemained}
+                {' '}
+BP out of
+                {' '}
+                {bwMaxValue}
+                {' '}
+BP.
+            </Text>
+        </Pane>
+        <Pane marginBottom={ 12 }>
+            <Text size={ 300 }>Full regeneration of bandwidth points or BP happens in 24 hours.</Text>
+        </Pane>
+        <Pane display='flex' marginBottom={ 12 }>
+            <Text size={ 300 }>
+                Current rate for 1 cyberlink is
+                {' '}
+                {linkPrice}
+                {' '}
+BP.
+            </Text>
+        </Pane>
+    </Pane>
+);
+
 export const CurrentUser = (props) => {
     const {
         defaultEthAccount,
@@ -192,6 +222,9 @@ export const CurrentUser = (props) => {
         cybBalance,
         menuItems,
         username,
+        bwRemained,
+        bwMaxValue,
+        linkPrice,
     } = props;
 
     return (
@@ -215,6 +248,20 @@ export const CurrentUser = (props) => {
             )}
             {defaultEthAccount && (
                 <div className={ `user_popup ${open ? 'user_popup__open' : ''}` }>
+                    <Pane width='100%' marginBottom='1.5em' paddingX='1em'>
+                        <SkillBar
+                          maxHeight={ 16 }
+                          bwPercent={ 10 }
+                          bwPercent={ ((bwRemained / bwMaxValue) * 100).toFixed(0) }
+                          contentTooltip={ (
+                              <ContenTooltip
+                                bwRemained={ bwRemained }
+                                bwMaxValue={ bwMaxValue }
+                                linkPrice={ linkPrice }
+                              />
+) }
+                        />
+                    </Pane>
                     <WaleetAppMenu
                       marginBottom={ 46 }
                       ethBalance={ ethBalance }
