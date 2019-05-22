@@ -46,7 +46,7 @@ const Identity = ({
 const itemBnt = [
     {
         title: 'Soul',
-        dura: '',
+        dura: '.cyb',
         description: 'Enlightened new web user',
         btnClass: 'btn-group-soul',
     },
@@ -59,13 +59,13 @@ const itemBnt = [
     },
     {
         title: 'Immortality',
-        dura: '',
+        dura: 'keys.cyb',
         description: 'Master of keys',
         btnClass: 'btn-group-imortality',
     },
     {
         title: 'Security',
-        dura: '',
+        dura: 'shield.cyb',
         description: 'Defended identity',
         btnClass: 'btn-group-security',
     },
@@ -95,16 +95,16 @@ const itemBnt = [
     },
     {
         title: 'Collection',
-        dura: '',
+        dura: 'pins.cyb',
         description: 'Aquired values',
         btnClass: 'btn-group-earth',
     },
-    {
-        title: 'Heritage',
-        dura: '',
-        description: 'Preservation of traditions',
-        btnClass: 'btn-group-heritage',
-    },
+    // {
+    //     title: 'Heritage',
+    //     dura: 'state.cyb',
+    //     description: 'Preservation of traditions',
+    //     btnClass: 'btn-group-heritage',
+    // },
     {
         title: 'Wisdom',
         dura: '.wiki/wiki/',

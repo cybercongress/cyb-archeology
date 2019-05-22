@@ -31,6 +31,8 @@ import ToggleMenu from './ToggleMenu';
 import SignerPopup from './SignerPopup';
 import Intro from './Intro';
 
+const regexCyb = /\.cyb/;
+
 const Application = (props) => {
     const {
         homePage,
@@ -42,6 +44,7 @@ const Application = (props) => {
         bwRemained,
         bwMaxValue,
         linkPrice,
+        dura,
     } = props;
 
     if (showIntro) {
@@ -78,7 +81,8 @@ BP.
             </Pane>
         </Pane>
     );
-
+console.log(dura);
+console.log(regexCyb);
     return (
         <App openMenu={ openMenu }>
             <SignerPopup />
@@ -118,9 +122,12 @@ BP.
             </AppHeader>
             <AppContent>
                 {children}
-                <Pane position='fixed' top={0} right='5px' height='inherit' marginTop={60} display='flex' alignItems='center'>
-                    <BntGroupFull />
-                </Pane>
+                { dura.match(/\.cyb\b/gi) && ( 
+                    <Pane position='fixed' top={0} right='5px' height='inherit' marginTop={60} display='flex' alignItems='center'>
+                        <BntGroupFull />
+                    </Pane>)
+                } 
+                
             </AppContent>
         </App>
     );
@@ -132,6 +139,7 @@ export default connect(
         openMenu: state.appMenu.openMenu,
         defaultEthAccount: state.wallet.defaultAccount,
         showIntro: state.intro.showIntro,
+        dura: state.browser.dura,
 
         bwRemained: state.cyber.bwRemained,
         bwMaxValue: state.cyber.bwMaxValue,

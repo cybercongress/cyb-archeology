@@ -126,6 +126,36 @@ export const navigate = (_dura, init = false) => (dispatch, getState) => {
         return;
     }
 
+    if (_dura === 'shield.cyb') {
+        hashHistory.push('/shield');
+        dispatch(updateDURA(_dura));
+        return;
+    }
+
+    if (_dura === 'keys.cyb') {
+        hashHistory.push('/keys');
+        dispatch(updateDURA(_dura));
+        return;
+    }
+
+    if (_dura === '.cyb') {
+        hashHistory.push('/cyb');
+        dispatch(updateDURA(_dura));
+        return;
+    }
+
+    if (_dura === 'pins.cyb') {
+        hashHistory.push('/pins');
+        dispatch(updateDURA(_dura));
+        return;
+    }
+
+    if (_dura === 'state.cyb') {
+        hashHistory.push('/state');
+        dispatch(updateDURA(_dura));
+        return;
+    }
+
     if (_dura === 'txq.cyb') {
         hashHistory.push('/txq');
         dispatch(updateDURA(_dura));

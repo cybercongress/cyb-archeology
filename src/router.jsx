@@ -22,6 +22,11 @@ import Favourites from './containers/Help/Favourites';
 import Switch from './containers/Help/Switch';
 import HelpLink from './containers/Help/HelpLink';
 import HelpApp from './containers/Help/HelpApp';
+import ShieldCyb from './containers/Shield/Shield';
+import KeysCyb from './containers/Keys/Keys';
+import Cyb from './containers/Cyb/Cyb';
+import Pins from './containers/Pins/Pins';
+import State from './containers/State/State';
 
 const AppRouter = () => (
     <Router history={ hashHistory }>
@@ -34,6 +39,11 @@ const AppRouter = () => (
             <Route path='/txq' component={ TxQueue } />
             <Route path='/notfound' component={ NotFound } />
             <Route path='/browser' component={ Browser } />
+            <Route path='/shield' component={ ShieldCyb } />
+            <Route path='/keys' component={ KeysCyb } />
+            <Route path='/cyb' component={ Cyb } />
+            <Route path='/pins' component={ Pins } />
+            <Route path='/state' component={ State } />
 
             <Route path='/help' component={ HelpApp }>
                 <Route path='/help/create' component={ Create } />

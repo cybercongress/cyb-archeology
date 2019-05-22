@@ -1,0 +1,28 @@
+.CardCyb{
+    position: relative;
+    cursor: pointer;
+}
+
+.CardCyb:hover{
+    box-shadow: 0 0 30px #36d6ae;
+}
+
+.CardCyb img{
+    width: 100%;
+    min-height: 60%;
+    border-radius: 5px 5px 0 0;
+   /* object-fit: fill; */
+    max-height: 70%;
+}
+
+
+.CardCyb::before{
+    content: '';
+    top: 60%;
+    height: 40%;
+    width: 100%;
+    background-color: #000000;
+    position: absolute;
+    border-radius: 50% 50% 5px 5px / 6% 6% 5px 5px;
+    
+}
