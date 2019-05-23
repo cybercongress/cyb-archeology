@@ -77,7 +77,7 @@ const itemBnt = [
     },
     {
         title: 'Root',
-        dura: 'rr.cyb',
+        dura: 'root.cyb',
         description: 'Base for growth',
         btnClass: 'btn-group-root',
     },

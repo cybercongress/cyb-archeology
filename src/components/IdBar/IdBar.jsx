@@ -73,7 +73,7 @@ const UserCard = ({ ...props }) => (
           paddingX={ 20 }
         >
             <Identity
-              dura='rr.cyb'
+              dura='root.cyb'
               title='Root'
               description='Base for growth'
               btnClass='btn-group-root'

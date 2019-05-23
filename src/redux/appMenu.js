@@ -19,7 +19,7 @@ const initState = {
         },
         {
             name: 'Root registry',
-            rootDura: 'rr.cyb',
+            rootDura: 'root.cyb',
             subItems: {},
         },
         {

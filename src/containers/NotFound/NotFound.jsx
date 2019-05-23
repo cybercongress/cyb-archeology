@@ -44,7 +44,7 @@ const NotFound = (props) => {
                                 and Cyb will understand it!
                             </Text>
                         </CentredPanel>
-                        <ButtonDura color='green' dura='rr.cyb'>
+                        <ButtonDura color='green' dura='root.cyb'>
                             Go to Root Registry!
                         </ButtonDura>
                     </FlexContainerLeft>

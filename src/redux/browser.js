@@ -99,7 +99,7 @@ export const navigate = (_dura, init = false) => (dispatch, getState) => {
         dispatch(toggleMenu());
     }
 
-    if (_dura === 'rr.cyb') {
+    if (_dura === 'root.cyb') {
         // if (!init)
         hashHistory.push('/rootregistry');
         dispatch(updateDURA(_dura));
