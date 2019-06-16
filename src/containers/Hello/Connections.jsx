@@ -39,7 +39,7 @@ class Connections extends React.Component {
                     </HelloContainerRightColContent>
                     <HelloContainerRightColBtn center>
                         <ButtonEverGreen
-                            disabled={ disableSaveButton }
+                            // disabled={ disableSaveButton }
                             onClick={ this.props.onNext }
                         >
                             Save settings
