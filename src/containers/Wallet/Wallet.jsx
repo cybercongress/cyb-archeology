@@ -95,8 +95,8 @@ class Wallet extends React.Component {
 }
 
 export default connect(state => ({
-    ethAddress: state.wallet.mnemonic.address,
-    ethBalance: state.wallet.mnemonic.balance,
+    ethAddress: state.wallet.defaultAccount,
+    ethBalance: getEthBalance(state),
     mnemonic: state.wallet.mnemonic,
 
     cyberdAddress: state.cyber.defaultAccount,

@@ -97,9 +97,9 @@ class IdBar extends Component {
 
 export default connect(
     state => ({
-        defaultEthAccount: state.wallet.mnemonic.address,
+        defaultEthAccount: state.wallet.defaultAccount,
         defaultCyberAccount: state.cyber.defaultAccount,
-        defaultAccountBalance: state.wallet.mnemonic.balance,
+        defaultAccountBalance: getDefaultAccountBalance(state),
         defaultAccountBalanceCyb: getDefaultAccountBalanceCyb(state),
         notificationLinkCounter: state.wallet.notificationLinkCounter,
         history: state.browser.history,
