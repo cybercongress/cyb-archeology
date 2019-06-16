@@ -18,7 +18,7 @@ const idRobot = require('../Hello/img/idrobot.png');
 
 class Wallet extends React.Component {
     render() {
-        const { ethAddress, ethBalance, cyberdAddress, cyberdBalance } = this.props;
+        const { ethAddress, ethBalance, cyberdAddress, cyberdBalance, mnemonic } = this.props;
 
         return (
             <HelloContainer
@@ -95,8 +95,9 @@ class Wallet extends React.Component {
 }
 
 export default connect(state => ({
-    ethAddress: state.wallet.defaultAccount,
-    ethBalance: getEthBalance(state),
+    ethAddress: state.wallet.mnemonic.address,
+    ethBalance: state.wallet.mnemonic.balance,
+    mnemonic: state.wallet.mnemonic,
 
     cyberdAddress: state.cyber.defaultAccount,
     cyberdBalance: getCyberdBalance(state),
