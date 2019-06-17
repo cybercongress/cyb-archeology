@@ -314,6 +314,6 @@ export default connect(
     null,
     {
         startBrowsing,
-        getBalanceByAddress,
+        // getBalanceByAddress,
     },
 )(Intro);

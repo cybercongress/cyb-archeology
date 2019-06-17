@@ -42,7 +42,7 @@ class KeysCyb extends React.Component {
 
     render() {
         const { mnemonic } = this.props;
- 
+
         return (
             <HelloContainer height='calc(100% - 60px)' marginTop={ 60 }>
                 <HelloContainerLeftCol>
@@ -88,4 +88,6 @@ class KeysCyb extends React.Component {
 }
 
 
-export default KeysCyb;
+export default connect(state => ({
+    mnemonic: state.wallet.mnemonic,
+}))(KeysCyb);

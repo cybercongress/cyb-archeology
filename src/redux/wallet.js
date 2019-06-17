@@ -206,50 +206,8 @@ export const initEthWallet = mnemonic => (dispatch, getState) => {
 
     initProvider(settings.ethUrl, ethAccount);
 
-    const accountAddress = [ethAccount.address];
+    // const accountAddress = [ethAccount.address];
 
-    Promise.all(
-        accountAddress.map(address => new Promise((resolve) => {
-            eth.getBalance(address.toLowerCase()).then((_balance) => {
-                resolve({
-                    balance: web3.utils.fromWei(_balance, 'ether'),
-                    address,
-                });
-            });
-        })),
-    ).then((accounts) => {
-        dispatch({
-            type: 'SET_DEFAULT_ACCOUNT',
-            payload: { address: accounts[0].address, balance: accounts[0].balance },
-        });
-        dispatch({
-            type: 'LOAD_ACCOUNTS',
-            payload: accounts,
-        });
-        dispatch({
-            type: 'SET_MNEMONIC',
-            payload: mnemonic,
-        });
-    });
-};
-
-onApplicationStart((browserState, dispatch) => {
-    dispatch(initEthWallet(browserState.ethAccount, browserState.mnemonic));
-    // let password = '';
-    // ({ password } = browserState);
-
-
-    // if (password) {
-    //     dispatch({
-    //         type: 'SET_ETH_PASSWORD',
-    //         payload: password,
-    //     });
-    // }
-
-    // initProvider('https://kovan.infura.io', browserState.ethAccount);
-    //
-    // const accountAddress = [browserState.ethAccount.address];
-    //
     // Promise.all(
     //     accountAddress.map(address => new Promise((resolve) => {
     //         eth.getBalance(address.toLowerCase()).then((_balance) => {
@@ -270,9 +228,53 @@ onApplicationStart((browserState, dispatch) => {
     //     });
     //     dispatch({
     //         type: 'SET_MNEMONIC',
-    //         payload: browserState.mnemonic
+    //         payload: mnemonic,
     //     });
     // });
+};
+
+onApplicationStart((browserState, dispatch) => {
+    dispatch(initEthWallet(browserState.ethAccount, browserState.mnemonic));
+    console.log(browserState);
+    // let password = '';
+    // ({ password } = browserState);
+
+
+    // if (password) {
+    //     dispatch({
+    //         type: 'SET_ETH_PASSWORD',
+    //         payload: password,
+    //     });
+    // }
+
+    // initProvider('https://kovan.infura.io', browserState.ethAccount);
+    //
+    const ethAccount = getEthAccountFromMnemonic(browserState.mnemonic);
+    const accountAddress = [ethAccount.address];
+    
+    Promise.all(
+        accountAddress.map(address => new Promise((resolve) => {
+            eth.getBalance(address.toLowerCase()).then((_balance) => {
+                resolve({
+                    balance: web3.utils.fromWei(_balance, 'ether'),
+                    address,
+                });
+            });
+        })),
+    ).then((accounts) => {
+        dispatch({
+            type: 'SET_DEFAULT_ACCOUNT',
+            payload: { address: accounts[0].address, balance: accounts[0].balance },
+        });
+        dispatch({
+            type: 'LOAD_ACCOUNTS',
+            payload: accounts,
+        });
+        dispatch({
+            type: 'SET_MNEMONIC',
+            payload: browserState.mnemonic
+        });
+    });
 });
 
 
