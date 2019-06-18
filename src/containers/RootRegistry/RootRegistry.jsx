@@ -103,7 +103,7 @@ class RootRegistryPage extends Component {
                       icon='trash'
                       intent='danger'
                       onClick={ () => this.deleteRegistryItem(items) }
-                      //onClick={ () => this.isShownRemove()}
+                        // onClick={ () => this.isShownRemove()}
                     >
                         Remove
                     </Menu.Item>
@@ -112,21 +112,34 @@ class RootRegistryPage extends Component {
         );
 
         const rows = registryItems.map(item => (
-            <TableEv.Row paddingLeft={ 20 } height={ 50 } borderBottom='none' isSelectable key={ item.name }>
-                <TableEv.TextCell flexGrow={1}>
-                <span style={{color: '#fff', fontSize: '16px'}}>
-                .
-                    {item.name}
-                </span>
+            <TableEv.Row
+              paddingLeft={ 20 }
+              height={ 50 }
+              borderBottom='none'
+              isSelectable
+              key={ item.name }
+            >
+                <TableEv.TextCell flexGrow={ 1 }>
+                    <span style={ { color: '#fff', fontSize: '16px' } }>
+.
+                        {item.name}
+                    </span>
                 </TableEv.TextCell>
-                <TableEv.TextCell flexGrow={ 2 }><span style={{color: '#fff', fontSize: '16px'}}>{item.hash}</span></TableEv.TextCell>
+                <TableEv.TextCell flexGrow={ 2 }>
+                    <span style={ { color: '#fff', fontSize: '16px' } }>{item.hash}</span>
+                </TableEv.TextCell>
                 <TableEv.Cell width={ 60 } flex='none'>
                     {/* <Button sizeSm color='blue' onClick={ () => this.deleteRegistryItem(item.name) }>
                         REMOVE
                     </Button> */}
                     <Popover content={ <MenuRow items={ item.name } /> }>
                         <Pane paddingY={ 5 } paddingX={ 5 } width='100%'>
-                            <IconButton iconSize={ 12 } className='color-white-svg icon-btn' appearance='minimal' icon='more' />
+                            <IconButton
+                              iconSize={ 12 }
+                              className='color-white-svg icon-btn'
+                              appearance='minimal'
+                              icon='more'
+                            />
                         </Pane>
                     </Popover>
                 </TableEv.Cell>
@@ -134,63 +147,87 @@ class RootRegistryPage extends Component {
         ));
 
         return (
-            <ScrollContainer>
-                <MainContainer>
-                    <Pane marginBottom={15} width='100%' display='flex' justifyContent='flex-end'>
-                        <Button className='btn' marginRight={10} onClick={ this.props.resetToDefault }>RESET TO DEFAULT</Button>
-                        <Button
-                          iconBefore='add'
-                          height={ 32 }
-                          className='btn'
-                          paddingX={ 15 }
-                          onClick={ () => this.isShownAdd() }
+            <div style={ { height: '100%' } }>
+                <ScrollContainer style={ { height: 'calc(100% - 75px)' } }>
+                    <MainContainer>
+                        {/* <Pane
+                          marginBottom={ 15 }
+                          width='100%'
+                          display='flex'
+                          justifyContent='flex-end'
                         >
-                            Add
-                        </Button>
-                    </Pane>
-                    <div>
+                            <Button
+                              className='btn'
+                              marginRight={ 10 }
+                              onClick={ this.props.resetToDefault }
+                            >
+                                RESET TO DEFAULT
+                            </Button>
+                            <Button
+                              iconBefore='add'
+                              height={ 32 }
+                              className='btn'
+                              paddingX={ 15 }
+                              onClick={ () => this.isShownAdd() }
+                            >
+                                Add
+                            </Button>
+                        </Pane> */}
+
                         <TableEv>
-                            <TableEv.Head style={ { backgroundColor: 'transparent', borderBottom: '1px solid #ffffff80' } } paddingLeft={ 20 }>
-                                <TableEv.TextHeaderCell><span style={{color: '#fff', fontSize: '17px'}}>Name</span></TableEv.TextHeaderCell>
-                                <TableEv.TextHeaderCell flexGrow={ 2 }><span style={{color: '#fff', fontSize: '17px'}}>IPFS Hash</span></TableEv.TextHeaderCell>
+                            <TableEv.Head
+                              style={ {
+                                    backgroundColor: '#000',
+                                    borderBottom: '1px solid #ffffff80',
+                                } }
+                              paddingLeft={ 20 }
+                            >
+                                <TableEv.TextHeaderCell>
+                                    <span style={ { color: '#fff', fontSize: '17px' } }>Name</span>
+                                </TableEv.TextHeaderCell>
+                                <TableEv.TextHeaderCell flexGrow={ 2 }>
+                                    <span style={ { color: '#fff', fontSize: '17px' } }>
+                                        IPFS Hash
+                                    </span>
+                                </TableEv.TextHeaderCell>
                                 <TableEv.TextHeaderCell flex='none' width={ 60 } />
                             </TableEv.Head>
                             <TableEv.Body style={ { backgroundColor: '#000', overflowY: 'hidden' } }>
                                 {rows}
                             </TableEv.Body>
                         </TableEv>
-                    </div>
-                    <Dialog
-                      isShown={ this.state.isShownAdd }
-                      title='Add domain'
-                      onCloseComplete={ () => this.setState({ isShownAdd: false }) }
-                      confirmLabel='Update'
-                      width={ 450 }
-                      onConfirm={ close => close(this.addRegistryItem()) }
-                    >
-                        <Pane
-                          paddingTop={ 20 }
-                          paddingBottom={ 30 }
-                          paddingX={ 40 }
-                          display='flex'
-                          flexDirection='column'
-                        >
-                            <Pane display='flex' flexDirection='column' marginBottom={ 25 }>
-                                <Text display='inline-block' marginBottom={ 10 }>
-                                    Name
-                                </Text>
-                                <TextInput width='100%' onChange={ e => this.nameApp(e) } />
-                            </Pane>
-                            <Pane display='flex' flexDirection='column'>
-                                <Text display='inline-block' marginBottom={ 10 }>
-                                    IPFS Hash
-                                </Text>
-                                <TextInput width='100%' onChange={ e => this.ipfsApp(e) } />
-                            </Pane>
-                        </Pane>
-                    </Dialog>
 
-                    {/* <Dialog
+                        <Dialog
+                          isShown={ this.state.isShownAdd }
+                          title='Add domain'
+                          onCloseComplete={ () => this.setState({ isShownAdd: false }) }
+                          confirmLabel='Update'
+                          width={ 450 }
+                          onConfirm={ close => close(this.addRegistryItem()) }
+                        >
+                            <Pane
+                              paddingTop={ 20 }
+                              paddingBottom={ 30 }
+                              paddingX={ 40 }
+                              display='flex'
+                              flexDirection='column'
+                            >
+                                <Pane display='flex' flexDirection='column' marginBottom={ 25 }>
+                                    <Text display='inline-block' marginBottom={ 10 }>
+                                        Name
+                                    </Text>
+                                    <TextInput width='100%' onChange={ e => this.nameApp(e) } />
+                                </Pane>
+                                <Pane display='flex' flexDirection='column'>
+                                    <Text display='inline-block' marginBottom={ 10 }>
+                                        IPFS Hash
+                                    </Text>
+                                    <TextInput width='100%' onChange={ e => this.ipfsApp(e) } />
+                                </Pane>
+                            </Pane>
+                        </Dialog>
+
+                        {/* <Dialog
                       isShown={ this.state.isShownRename }
                       title='Rename domain'
                       onCloseComplete={() => this.setState({ isShownRename: false })}
@@ -220,19 +257,64 @@ class RootRegistryPage extends Component {
                         </Pane>
                     </Dialog> */}
 
-                    <Dialog
-                      isShown={ this.state.isShownRemove }
-                      title='Remove domain'
-                      intent='danger'
-                      onCloseComplete={() => this.setState({ isShownRemove: false })}
-                      confirmLabel='Delete'
-                      width={ 450 }
-                      onConfirm={ close => close(this.deleteRegistryItem(this.items)) }
+                        <Dialog
+                          isShown={ this.state.isShownRemove }
+                          title='Remove domain'
+                          intent='danger'
+                          onCloseComplete={ () => this.setState({ isShownRemove: false }) }
+                          confirmLabel='Delete'
+                          width={ 450 }
+                          onConfirm={ close => close(this.deleteRegistryItem(this.items)) }
+                        >
+                            Are you sure you want to delete Presentation?
+                        </Dialog>
+                    </MainContainer>
+                </ScrollContainer>
+                <Pane
+                  display='flex'
+                  alignItems='center'
+                  justifyContent='center'
+                  position='fixed'
+                  bottom={ 0 }
+                  width='100%'
+                  backgroundColor='#000000'
+                  paddingY={ 15 }
+                  zIndex={ 2 }
+                >
+                    <Pane
+                      alignItems='center'
+                      justifyContent='center'
+                      display='flex'
+                      width='100%'
+                      maxWidth={ 1000 }
                     >
-                        Are you sure you want to delete Presentation?
-                    </Dialog>
-                </MainContainer>
-            </ScrollContainer>
+                        <Button
+                          height={ 32 }
+                          paddingX={ 15 }
+                          marginX={ 10 }
+                          className='btn'
+                          minWidth={ 130 }
+                          fontSize='14px'
+                          onClick={ this.props.resetToDefault }
+                        >
+                            RESET TO DEFAULT
+                        </Button>
+                        <Button
+                          iconBefore='add'
+                          height={ 32 }
+                          paddingX={ 15 }
+                          marginX={ 10 }
+                          className='btn'
+                          minWidth={ 130 }
+                          justifyContent='center'
+                          fontSize='14px'
+                          onClick={ () => this.isShownAdd() }
+                        >
+                            Add
+                        </Button>
+                    </Pane>
+                </Pane>
+            </div>
         );
     }
 }

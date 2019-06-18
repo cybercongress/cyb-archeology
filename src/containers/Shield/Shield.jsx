@@ -8,6 +8,7 @@ import {
     HelloContainerRightColBtn,
     BigImg,
     ButtonEverGreen,
+    Button,
     TextInputError,
     Pane,
     TextEv as Text,
@@ -21,49 +22,44 @@ const idrobot = require('../Hello/img/idrobot.png');
 class ShieldCyb extends Component {
 
     render() {
+        const { password } = this.props;
+      console.log(password);
 
+      
         return (
-            <HelloContainer height='calc(100% - 60px)' marginTop={ 60 }>
-                <HelloContainerLeftCol>
+            <div>
+            <HelloContainer
+              customClassContainer='connectionContainer'
+              customClassGrig='connectionContainerGrid'
+            >
+                <HelloContainerLeftCol customClass='connectionContainer-left-col'>
                     <BigImg srcBigImg={ idrobot } />
                 </HelloContainerLeftCol>
                 <HelloContainerRightCol>
                     <HelloContainerRightColContent>
-                        <Card
-                          display='flex'
-                          flexDirection='column'
-                          alignItems='center'
-                          boxShadow='0 0 1px #fff'
-                          maxWidth='80%'
-                          paddingX='8vh'
-                          paddingY='8vh'
-                          minWidth={ 500 }
-                          maxHeight={ 500 }
-                          height='100%'
-                        >
+                    <Card
+                      display='flex'
+                      flexDirection='column'
+                      alignItems='center'
+                      boxShadow='0 0 1px #fff'
+                      maxWidth={ 500 }
+                      paddingX='8vh'
+                      paddingY='8vh'
+                      minWidth='80%'
+                      maxHeight={ 500 }
+                      height='80%'
+                    >
+                        <Pane width='100%' marginBottom='6%'>
                             <Pane width='100%' marginBottom='6%'>
-                                <Pane width='100%' marginBottom='6%'>
-                                    <Text
-                                      marginBottom='3%'
-                                      display='inline-block'
-                                      fontSize='1.12rem'
-                                      color='#fff'
-                                    >
-                                        Current password
-                                    </Text>
-                                    <TextInputError boxShadow='0 0 5px #36d6ae' />
-                                </Pane>
-                                <Pane width='100%'>
-                                    <Text
-                                      marginBottom='3%'
-                                      display='inline-block'
-                                      fontSize='1.12rem'
-                                      color='#fff'
-                                    >
-                                        New password
-                                    </Text>
-                                    <TextInputError boxShadow='0 0 5px #36d6ae' />
-                                </Pane>
+                                <Text
+                                  marginBottom='3%'
+                                  display='inline-block'
+                                  fontSize='1.12rem'
+                                  color='#fff'
+                                >
+                                    Current password
+                                </Text>
+                                <TextInputError />
                             </Pane>
                             <Pane width='100%'>
                                 <Text
@@ -72,21 +68,56 @@ class ShieldCyb extends Component {
                                   fontSize='1.12rem'
                                   color='#fff'
                                 >
-                                    Confirm new password
+                                    New password
                                 </Text>
-                                <TextInputError boxShadow='0 0 5px #36d6ae' />
+                                <TextInputError />
                             </Pane>
-                        </Card>
+                        </Pane>
+                        <Pane width='100%'>
+                            <Text
+                              marginBottom='3%'
+                              display='inline-block'
+                              fontSize='1.12rem'
+                              color='#fff'
+                            >
+                                Confirm new password
+                            </Text>
+                            <TextInputError />
+                        </Pane>
+                    </Card>
                     </HelloContainerRightColContent>
-                    <HelloContainerRightColBtn center>
-                        <ButtonEverGreen>
-                            Save Password
-                        </ButtonEverGreen>
-                    </HelloContainerRightColBtn>
                 </HelloContainerRightCol>
             </HelloContainer>
+            <Pane
+          display='flex'
+          alignItems='center'
+          justifyContent='center'
+          width='100%'
+          position='absolute'
+          bottom={ 0 }
+          paddingY={ 20 }
+          backgroundColor='#000000'
+          zIndex={ 2 }
+        >
+            <Pane
+              flexGrow={ 1 }
+              maxWidth={ 1000 }
+              display='flex'
+              alignItems='center'
+              justifyContent='center'
+              flexDirection='row'
+              paddingX='3vw'
+            >
+                <Button paddingX={ 30 } fontSize='16px' className='btn'>
+                    Save Password
+                </Button>
+            </Pane>
+        </Pane>
+            </div>
         );
     }
 }
 
-export default ShieldCyb;
+export default connect(state => ({
+    password: state.wallet.password,
+}), { changePassword })(ShieldCyb);

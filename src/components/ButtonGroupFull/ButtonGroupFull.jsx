@@ -119,14 +119,14 @@ class BntGroupFull extends React.Component {
 
         return (
             <Pane
-              justifyContent='space-between'
-                /* position: relative; */
-              alignItems='center'
-              flexDirection='column'
-              maxHeight={ 500 }
-              height='inherit'
-              paddingY='1em'
-              overflow='hidden'
+            //   justifyContent='space-between'
+            //     /* position: relative; */
+            //   alignItems='center'
+            //   flexDirection='column'
+            //   maxHeight={ 500 }
+            //   height='inherit'
+            //   paddingY='1em'
+            //   overflow='hidden'
               display='flex'
               flexDirection='column'
             >

@@ -236,16 +236,16 @@ export const initEthWallet = mnemonic => (dispatch, getState) => {
 onApplicationStart((browserState, dispatch) => {
     dispatch(initEthWallet(browserState.ethAccount, browserState.mnemonic));
     console.log(browserState);
-    // let password = '';
-    // ({ password } = browserState);
+    let password = '';
+    ({ password } = browserState);
 
 
-    // if (password) {
-    //     dispatch({
-    //         type: 'SET_ETH_PASSWORD',
-    //         payload: password,
-    //     });
-    // }
+    if (password) {
+        dispatch({
+            type: 'SET_ETH_PASSWORD',
+            payload: password,
+        });
+    }
 
     // initProvider('https://kovan.infura.io', browserState.ethAccount);
     //

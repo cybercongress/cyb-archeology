@@ -91,7 +91,7 @@ const Application = (props) => {
             <AppContent>
                 {children}
                 { dura.match(/\.cyb\b/gi) && ( 
-                    <Pane position='fixed' top={0} right='5px' height='inherit' marginTop={60} display='flex' alignItems='center'>
+                    <Pane position='fixed' top={0} right='5px' height='inherit' marginTop={60} display='flex' alignItems='center' className='BntGroupFull'>
                         <BntGroupFull />
                     </Pane>)
                 } 

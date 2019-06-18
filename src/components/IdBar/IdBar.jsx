@@ -1,7 +1,7 @@
 import React from 'react';
 import './IdBar.css';
 import {
-    Pane, TextEv as Text, Tooltip, Button, SkillBar,
+    Pane, TextEv as Text, Tooltip, Button, Battery,
 } from '@cybercongress/ui';
 import CybLink from '../CybLink';
 
@@ -249,7 +249,7 @@ export const CurrentUser = (props) => {
             {defaultEthAccount && (
                 <div className={ `user_popup ${open ? 'user_popup__open' : ''}` }>
                     <Pane width='100%' marginBottom='1.5em' paddingX='1em'>
-                        <SkillBar
+                        <Battery
                           maxHeight={ 16 }
                           bwPercent={ 10 }
                           bwPercent={ ((bwRemained / bwMaxValue) * 100).toFixed(0) }

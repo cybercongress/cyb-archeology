@@ -71,12 +71,12 @@ class ConnectionsContainer extends Component {
         return (
             <Pane width='100%'>
                 <Table>
-                    <Table.Head>
-                        <Table.TextHeaderCell>Provider</Table.TextHeaderCell>
-                        <Table.TextHeaderCell>Endpoint</Table.TextHeaderCell>
+                    <Table.Head style={ { backgroundColor: '#000', borderBottom: '1px solid #ffffff80', marginBottom: 10 } }>
+                        <Table.TextHeaderCell><span style={{color: '#fff', fontSize: 14 }}>Provider</span></Table.TextHeaderCell>
+                        <Table.TextHeaderCell><span style={{color: '#fff', fontSize: 14 }}>Endpoint</span></Table.TextHeaderCell>
                     </Table.Head>
-                    <Table.Body style={ { backgroundColor: '#fff', overflowY: 'hidden' } }>
-                        <Table.Row isSelectable>
+                    <Table.Body style={ { backgroundColor: '#000', overflowY: 'hidden' } }>
+                        <Table.Row isSelectable borderBottom='none'>
                             <Table.TextCell>
                                 <Pill
                                     height={ 8 }
@@ -88,13 +88,13 @@ class ConnectionsContainer extends Component {
                                     marginRight={ 25 }
                                     color={ getColorByStatus(ipfsStatus) }
                                 />
-                                <Text>IPFS read</Text>
+                                <Text color='#fff'>IPFS read</Text>
                             </Table.TextCell>
                             <Table.TextCell>
-                                <TextInput value={ ipfsUrl } onChange={ e => this.onIpfsChange(e) } width='80%' />
+                                <TextInput value={ ipfsUrl } onChange={ e => this.onIpfsChange(e) } backgroundColor='transparent' fontSize='18px' width='80%' className='input-green-no-focus' />
                             </Table.TextCell>
                         </Table.Row>
-                        <Table.Row isSelectable>
+                        <Table.Row isSelectable borderBottom='none'>
                             <Table.TextCell>
                                 <Pill
                                     height={ 8 }
@@ -106,13 +106,13 @@ class ConnectionsContainer extends Component {
                                     marginRight={ 25 }
                                     color={ getColorByStatus(ipfsWriteStatus) }
                                 />
-                                <Text>IPFS write</Text>
+                                <Text color='#fff'>IPFS write</Text>
                             </Table.TextCell>
                             <Table.TextCell>
-                                <TextInput value={ ipfsWriteUrl } onChange={ e => this.onIpfsWriteChange(e) } width='80%' />
+                                <TextInput value={ ipfsWriteUrl } onChange={ e => this.onIpfsWriteChange(e) } backgroundColor='transparent' fontSize='18px' width='80%' className='input-green-no-focus' />
                             </Table.TextCell>
                         </Table.Row>
-                        <Table.Row isSelectable>
+                        <Table.Row isSelectable borderBottom='none'>
                             <Table.TextCell>
                                 <Pill
                                     height={ 8 }
@@ -124,13 +124,13 @@ class ConnectionsContainer extends Component {
                                     marginRight={ 25 }
                                     color={ getColorByStatus(ethStatus) }
                                 />
-                                <Text>Ethereum HTTP</Text>
+                                <Text color='#fff'>Ethereum HTTP</Text>
                             </Table.TextCell>
                             <Table.TextCell>
-                                <TextInput value={ ethUrl } onChange={ e => this.onEthChange(e) } width='80%' />
+                                <TextInput value={ ethUrl } onChange={ e => this.onEthChange(e) } backgroundColor='transparent' fontSize='18px' width='80%' className='input-green-no-focus' />
                             </Table.TextCell>
                         </Table.Row>
-                        <Table.Row isSelectable>
+                        <Table.Row isSelectable borderBottom='none'>
                             <Table.TextCell>
                                 <Pill
                                     height={ 8 }
@@ -142,13 +142,13 @@ class ConnectionsContainer extends Component {
                                     marginRight={ 25 }
                                     color={ getColorByStatus(cyberdStatus) }
                                 />
-                                <Text>Cyberd HTTP</Text>
+                                <Text color='#fff'>Cyberd HTTP</Text>
                             </Table.TextCell>
                             <Table.TextCell>
-                                <TextInput value={ cyberdUrl } onChange={ e => this.onCyberdChange(e) } width='80%' />
+                                <TextInput value={ cyberdUrl } onChange={ e => this.onCyberdChange(e) } backgroundColor='transparent' fontSize='18px' width='80%' className='input-green-no-focus' />
                             </Table.TextCell>
                         </Table.Row>
-                        <Table.Row>
+                        <Table.Row isSelectable borderBottom='none'>
                             <Table.TextCell>
                                 <Pill
                                     height={ 8 }
@@ -160,10 +160,10 @@ class ConnectionsContainer extends Component {
                                     marginRight={ 25 }
                                     color={ getColorByStatus(cyberdWsStatus) }
                                 />
-                                <Text>Cyberd Ws</Text>
+                                <Text color='#fff'>Cyberd Ws</Text>
                             </Table.TextCell>
                             <Table.TextCell>
-                                <TextInput value={ cyberdWsUrl } onChange={ e => this.onCyberdWsChange(e) } width='80%' />
+                                <TextInput value={ cyberdWsUrl } onChange={ e => this.onCyberdWsChange(e) } backgroundColor='transparent' fontSize='18px' width='80%' className='input-green-no-focus' />
                             </Table.TextCell>
                         </Table.Row>
                     </Table.Body>

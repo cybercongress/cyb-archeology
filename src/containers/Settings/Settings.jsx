@@ -24,30 +24,75 @@ class Settings extends Component {
 
     render() {
         return (
-            <HelloContainer height='calc(100% - 60px)' marginTop={ 60 }>
-                <HelloContainerLeftCol>
-                    <BigImg srcBigImg={ idRobot } />
-                </HelloContainerLeftCol>
+            <div>
+                <HelloContainer
+                  customClassContainer='connectionContainer'
+                  customClassGrig='connectionContainerGrid'
+                >
+                    <HelloContainerLeftCol customClass='connectionContainer-left-col'>
+                        <BigImg srcBigImg={ idRobot } />
+                    </HelloContainerLeftCol>
 
-                <HelloContainerRightCol>
-                    <HelloContainerRightColContent>
-                        <ConnectionsContainer />
-                        <Pane
-                          width='100%'
-                          display='flex'
-                          justifyContent='space-between'
-                          marginTop='2em'
-                        >
-                            <Button className='btn' onClick={ this.onExportSettings }>
-                                EXPORT SETTINGS
-                            </Button>
-                            <Button className='btn' onClick={ this.props.resetAllSettings }>
-                                RESET SETTINGS
-                            </Button>
-                        </Pane>
-                    </HelloContainerRightColContent>
-                </HelloContainerRightCol>
-            </HelloContainer>
+                    <HelloContainerRightCol>
+                        <HelloContainerRightColContent customClass='connectionContainer-right-col-content'>
+                            <ConnectionsContainer />
+                            {/* <Pane
+                            width='100%'
+                            display='flex'
+                            justifyContent='space-between'
+                            marginTop='2em'
+                            >
+                                <Button className='btn' onClick={ this.onExportSettings }>
+                                    EXPORT SETTINGS
+                                </Button>
+                                <Button className='btn' onClick={ this.props.resetAllSettings }>
+                                    RESET SETTINGS
+                                </Button>
+                            </Pane> */}
+                        </HelloContainerRightColContent>
+                    </HelloContainerRightCol>
+                </HelloContainer>
+                <Pane
+                  className='connectionContainer-footer'
+                  display='flex'
+                  position='absolute'
+                  bottom={ 0 }
+                  paddingY={ 20 }
+                  width='100%'
+                  justifyContent='center'
+                  alignItems='center'
+                  zIndex={ 2 }
+                  backgroundColor='#000'
+                >
+                    <Pane
+                      maxWidth={ 1000 }
+                      display='flex'
+                      alignItems='center'
+                      justifyContent='center'
+                      flexDirection='row'
+                      paddingX='3vw'
+                      className='connectionContainer-footer-container'
+                    />
+                    <Button
+                      paddingX={ 30 }
+                      marginX={ 10 }
+                      fontSize='14px'
+                      className='btn'
+                      onClick={ this.onExportSettings }
+                    >
+                        EXPORT SETTINGS
+                    </Button>
+                    <Button
+                      paddingX={ 30 }
+                      marginX={ 10 }
+                      fontSize='14px'
+                      className='btn'
+                      onClick={ this.props.resetAllSettings }
+                    >
+                        RESET SETTINGS
+                    </Button>
+                </Pane>
+            </div>
         );
     }
 }
