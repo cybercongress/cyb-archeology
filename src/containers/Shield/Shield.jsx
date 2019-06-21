@@ -20,11 +20,72 @@ import { changePassword } from '../../redux/wallet';
 const idrobot = require('../Hello/img/idrobot.png');
 
 class ShieldCyb extends Component {
+    state = {
+        password: '',
+        currentPassword: '',
+        confirmPassword: '',
+        newPassword: '',
+        emptyPassword: false,
+        passwordDontMatch: false,
+        notification: null,
+    };
+
+    setNotification = (message) => {
+        this.setState({
+            notification: {
+                message,
+            },
+        });
+    };
+
+    onPasswordChange = (event) => {
+        this.setState({
+            currentPassword: event.target.value,
+            emptyPassword: false,
+            passwordDontMatch: false,
+        });
+    };
+
+    onPasswordNewPassword = (event) => {
+        this.setState({
+            newPassword: event.target.value,
+            emptyPassword: false,
+            passwordDontMatch: false,
+        });
+    };
+
+    onPasswordConfirmationChange = (event) => {
+        this.setState({
+            confirmPassword: event.target.value,
+            emptyPassword: false,
+            passwordDontMatch: false,
+        });
+    };
+
+    savePass = () => {
+        const { password } = this.props;
+        const { currentPassword, confirmPassword, newPassword } = this.state;
+        console.log(currentPassword, confirmPassword, newPassword);
+
+        if (password !== currentPassword) {
+            this.setNotification('Incorrect current password');
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            this.setNotification('New passwords do not match');
+            return;
+        }
+
+        this.props.changePassword(newPassword);
+        this.setNotification('Password successfully changed');
+    }
 
     render() {
         const { password } = this.props;
+        const { notification } = this.state;
       console.log(password);
-
+      console.log(notification);
       
         return (
             <div>
@@ -59,7 +120,7 @@ class ShieldCyb extends Component {
                                 >
                                     Current password
                                 </Text>
-                                <TextInputError />
+                                <TextInputError onChange={ e => this.onPasswordChange(e) } />
                             </Pane>
                             <Pane width='100%'>
                                 <Text
@@ -70,7 +131,7 @@ class ShieldCyb extends Component {
                                 >
                                     New password
                                 </Text>
-                                <TextInputError />
+                                <TextInputError onChange={ e => this.onPasswordNewPassword(e) } />
                             </Pane>
                         </Pane>
                         <Pane width='100%'>
@@ -82,7 +143,7 @@ class ShieldCyb extends Component {
                             >
                                 Confirm new password
                             </Text>
-                            <TextInputError />
+                            <TextInputError onChange={ e => this.onPasswordConfirmationChange(e) } />
                         </Pane>
                     </Card>
                     </HelloContainerRightColContent>
@@ -108,7 +169,7 @@ class ShieldCyb extends Component {
               flexDirection='row'
               paddingX='3vw'
             >
-                <Button paddingX={ 30 } fontSize='16px' className='btn'>
+                <Button paddingX={ 30 } fontSize='16px' className='btn' onClick={ e => this.savePass(e) }>
                     Save Password
                 </Button>
             </Pane>
