@@ -140,13 +140,13 @@ margin-top: 10vw;
 .row-xs {
   width: 100%;
   position: absolute;
-  top: 67%;
+  bottom: 6vh;
   left: 50%;
   transform: translate(-50%, 0);
 }
 
 .full-height{
-  height: 100%;
+  height: 100vh;
 }
 
 .features-xs {
