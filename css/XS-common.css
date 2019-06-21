@@ -33,7 +33,7 @@
 }
 
 .title-txt-xs {
-  font-size: calc(2vw + 2vh + 6vmin);
+  font-size: calc(1.5vw + 1.5vh + 4vmin);
   color: #ffffff;
 }
 
@@ -47,7 +47,7 @@
 }
 
 .btn-xs {
-  width: 30.33333%;
+  min-width: 50%;
   padding: 2.3%;
   margin-top: 1.4%;
   margin-left: -1%;
@@ -135,4 +135,20 @@ margin-top: 10vw;
   color: #ffffff;
   margin-top: 10vw;
   font-size: calc(0.4vw + 0.4vh + 0.4vmin);
+}
+
+.row-xs {
+  width: 100%;
+  position: absolute;
+  top: 67%;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.full-height{
+  height: 100%;
+}
+
+.features-xs {
+  margin-top: 0;
 }

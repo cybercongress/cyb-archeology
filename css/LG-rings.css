@@ -14,7 +14,7 @@
 }
 
 .loaded #big-ring-top {
-  display: block;
+  display: none;
 }
 
 #small-ring-top {
@@ -34,7 +34,7 @@
 }
 
 .loaded #small-ring-top {
-  display: block;
+  display: none;
 }
 
 #big-ring-bottom {
@@ -55,7 +55,7 @@
 }
 
 .loaded #big-ring-bottom {
-  display: block;
+  display: none;
 }
 
 #small-ring-bottom {
@@ -76,5 +76,5 @@
 }
 
 .loaded #small-ring-bottom {
-  display: block;
+  display: none;
 }

@@ -17,7 +17,7 @@
     <link href="css/LG-rings.css" rel="stylesheet">
     <link href="css/SM-rings.css" rel="stylesheet">
     <link href="css/XS-rings.css" rel="stylesheet">
-    <link href="css/animate.css" rel="stylesheet">
+    <!-- <link href="css/animate.css" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Play" rel="stylesheet">
 
     <!--Sphere animation-->
@@ -48,13 +48,22 @@
         <div class="col-lg-12 sphere-lg">
           <canvas id="nCanvasRender"></canvas>
         </div>
-        <div class="col-lg-2 logo-lg wow fadeIn" data-wow-duration="3s" data-wow-delay="1s">
-          <img src="img/logo-lg.png" class="img-responsive">
+        <div class='container-header-text'>
+          <div class='flex-container'>
+              <div class="col-lg-2 logo-lg wow fadeIn" data-wow-duration="3s" data-wow-delay="1s">
+                  <img src="img/logo-lg.png" class="img-responsive">
+                </div>
+                <div class="col-lg-5 title-lg text-uppercase wow fadeIn" data-wow-duration="3s" data-wow-delay="2s">
+                  <h1 class="title-txt-lg no-margin"><p>ROBOT</p> TRANSFORMER</h1>
+                  <div class='btn-get'>
+                    <a class="btn-lg btn btn-default text-uppercase wow fadeIn margin-right-15" data-wow-duration="3s" data-wow-delay="3s" href="https://github.com/cybercongress/cyb/releases" role="button">Get browser</a>
+                    <a class="btn-lg btn btn-default text-uppercase wow fadeIn" data-wow-duration="3s" data-wow-delay="3s" href="https://github.com/cybercongress/cyb-virus/releases" role="button">WEB3 EXTENSION</a>          
+                  </div>
+                </div>
+          </div>
+           
         </div>
-        <div class="col-lg-5 title-lg text-uppercase wow fadeIn" data-wow-duration="3s" data-wow-delay="2s">
-          <h1 class="title-txt-lg"><p>Web3</p> browser</h1>
-          <a class="btn-get btn-lg btn btn-default text-uppercase wow fadeIn" data-wow-duration="3s" data-wow-delay="3s" href="https://github.com/cybercongress/cyb/releases" role="button">Get browser</a>
-        </div>
+        
       </div>
     </div>
 
@@ -72,21 +81,23 @@
       </div>
       <div class="row row-rel">
         <div class="col-sm-6 title-web3-sm">
-          <h1 class="title-txt-sm text-uppercase">Web3</h1>
+          <h1 class="title-txt-sm text-uppercase">ROBOT</h1>
         </div>
         <div class="col-sm-6 title-browser-sm">
-          <h1 class="title-txt-sm text-uppercase">browser</h1>
+          <h1 class="title-txt-sm text-uppercase">TRANSFORMER</h1>
         </div>
       </div>
-      <div class="row">
+      <div class="row-sm">
         <div class="col-sm-12">
-          <a class="btn-get-sm btn-sm btn btn-default text-uppercase" href="https://github.com/cybercongress/cyb/releases" role="button">Get browser</a>
+          <a class="btn-sm btn btn-default text-uppercase" href="https://github.com/cybercongress/cyb/releases" role="button">Get browser</a>
+          <a class="btn-sm btn btn-default text-uppercase wow fadeIn" data-wow-duration="3s" data-wow-delay="3s" href="https://github.com/cybercongress/cyb-virus/releases" role="button">WEB3 EXTENSION</a>          
+       
         </div>
       </div>
     </div>
 
     <!--XS visible header-->
-    <div class="container-fluid visible-xs">
+    <div class="container-fluid visible-xs full-height">
       <div class="row">
         <div class="col-xs-12 sphere-xs">
           <img src="img/sphere-xs.png" alt="sphere" class="img-responsive">
@@ -99,15 +110,16 @@
       </div>
       <div class="row row-rel">
         <div class="col-xs-4 title-web3-xs">
-          <h1 class="title-txt-xs text-uppercase">Web3</h1>
+          <h1 class="title-txt-xs text-uppercase">ROBOT</h1>
         </div>
         <div class="col-xs-4 title-browser-xs">
-          <h1 class="title-txt-xs text-uppercase">browser</h1>
+          <h1 class="title-txt-xs text-uppercase">TRANSFORMER</h1>
         </div>
       </div>
-      <div class="row">
+      <div class="row-xs">
         <div class="col-xs-12">
-          <a class="btn-get-xs btn-xs btn btn-default text-uppercase" href="https://github.com/cybercongress/cyb/releases" role="button">Get browser</a>
+          <a class="btn-xs btn btn-default text-uppercase" href="https://github.com/cybercongress/cyb/releases" role="button">Get browser</a>
+          <a class="btn-xs btn btn-default text-uppercase wow fadeIn" data-wow-duration="3s" data-wow-delay="3s" href="https://github.com/cybercongress/cyb-virus/releases" role="button">WEB3 EXTENSION</a>                    
         </div>
       </div>
     </div>
@@ -115,8 +127,8 @@
     <!--XS visible features-->
     <div class="container-fluid visible-xs features-xs">
       <div class="row row-rel">
-        <div id="big-ring-top-xs"></div>
-        <div id="small-ring-top-xs"></div>
+        <!-- <div id="big-ring-top-xs"></div>
+        <div id="small-ring-top-xs"></div> -->
         <div class="col-xs-12 text-center text-uppercase k-feat-xs">
           Key features
         </div>
@@ -127,16 +139,15 @@
           Key features
         </div>
       </div><!--FEATURES-->
-      <!--Web3 integration-->
+      <!--IPFS INTEGRATION-->
       <div class="row row-rel feat-box-xs">
         <div class="col-xs-12 text-center">
           <img src="img/web-3.svg" alt="web3-integration" class="feat-img-xs">
         </div>
         <div class="col-xs-10 col-xs-offset-2 feat-xs">
-          <p class="feat-name-xs text-uppercase">Web3 integration </p>
-          <p class="feat-text-xs">Convenient, secure and fast tool for exploring the new web</p>
-          <p class="feat-text-xs">Fully transparent tokenized ecomonics</p>
-          <p class="feat-text-xs">Decentralized backend powered by Cybernodes</p>
+          <p class="feat-name-xs text-uppercase">IPFS INTEGRATION </p>
+          <p class="feat-text-xs">Link IPFS hashes and make an influence to search results</p>
+          <p class="feat-text-xs">Search and discover content via IPFS</p>
         </div>
       </div>
       <!---------------------->
@@ -146,15 +157,9 @@
           <img src="img/dapp.png" alt="dapp-store" class="feat-img-xs">
         </div>
         <div class="col-xs-10 col-xs-offset-2 feat-xs">
-          <p class="feat-name-xs text-uppercase">App store</p>
-          <p class="feat-text-xs">Discover apps integrated into the browser:  </p>
-          <p class="feat-text-xs">Ethereum Wallet</p>
-          <p class="feat-text-xs">Chaingear</p>
-          <p class="feat-text-xs">Cyber Explorer</p>
-          <p class="feat-text-xs">Smart Contract Development Tool</p>
-          <p class="feat-text-xs">Cybernode Connection Manager</p>
-          <p class="feat-text-xs">App Permission Manager</p>
-          <p class="feat-text-xs">Help App</p>
+          <p class="feat-name-xs text-uppercase">ETHEREUM INTEGRATION (soon)</p>
+          <p class="feat-text-xs">Explore .eth entities and send transactions </p>
+          <p class="feat-text-xs">Develop smart contracts</p>
         </div>
       </div>
       <!----------------------->
@@ -164,21 +169,19 @@
           <img src="img/app.png" alt="dapp development" class="feat-img-xs">
         </div>
         <div class="col-xs-10 col-xs-offset-2 feat-xs">
-          <p class="feat-name-xs text-uppercase">App development</p>
-          <p class="feat-text-xs">Create your own apps via App Developer Tool</p>
-          <p class="feat-text-xs">and publish them into the App Store</p>
+          <p class="feat-name-xs text-uppercase">COSMOS INTEGRATION (soon)</p>
+          <p class="feat-text-xs">Explore Cosmos Network, make transactions and maintain you delegator account</p>
         </div>
       </div>
       <!-------------------->
-      <!--IPFS support-->
+      <!--YOUR PERSONAL ROBOT (soon)-->
       <div class="row row-rel feat-box-xs">
         <div class="col-xs-12 text-center">
           <img src="img/ipfs-xs.png" alt="dapp-store" class="feat-img-xs">
         </div>
         <div class="col-xs-10 col-xs-offset-2 feat-xs">
-          <p class="feat-name-xs text-uppercase">IPFS support</p>
-          <p class="feat-text-xs">Store and share data using decentralized technologies</p>
-          <p class="feat-text-xs">Search and discover content via IPFS </p>
+          <p class="feat-name-xs text-uppercase">YOUR PERSONAL ROBOT (soon)</p>
+          <p class="feat-text-xs">Send tokens to the robot and create tasks for it</p>
         </div>
       </div>
       <!------------------->
@@ -189,7 +192,7 @@
         </div>
         <div class="col-xs-10 col-xs-offset-2 feat-xs">
           <p class="feat-name-xs text-uppercase">Open source</p>
-          <p class="feat-text-xs">Take part in improvement  of CYB infrastructure</p>
+          <p class="feat-text-xs">Take part in the improvement of CYB infrastructure</p>
         </div>
       </div>
       <!--------------->
@@ -197,9 +200,9 @@
 
     <!--SM MD visible features-->
     <div class="container-fluid features-sm visible-md visible-sm">
-      <div class="row row-rel">
-        <div id="big-ring-top-sm"></div>
-        <div id="small-ring-top-sm"></div>
+      <div class="row row-rel margin-bottom-60">
+        <!-- <div id="big-ring-top-sm"></div>
+        <div id="small-ring-top-sm"></div> -->
         <div class="col-sm-12 text-center text-uppercase k-feat-sm">
           Key features
         </div>
@@ -210,13 +213,12 @@
           Key features
         </div>
       </div>
-      <!--Web3 integration-->
+      <!--IPFS INTEGRATION-->
       <div class="row feat-box-sm">
         <div class="col-sm-7 text-right web3-sm">
-          <p class="feat-name-sm text-uppercase">Web3 integration </p>
-          <p class="feat-text-sm">Convenient, secure and fast tool for exploring the new web</p>
-          <p class="feat-text-sm">Fully transparent tokenized ecomonics</p>
-          <p class="feat-text-sm">Decentralized backend powered by Cybernodes</p>
+          <p class="feat-name-sm text-uppercase">IPFS INTEGRATION </p>
+          <p class="feat-text-sm">Link IPFS hashes and make an influence to search results</p>
+          <p class="feat-text-sm">Search and discover content via IPFS</p>
         </div>
         <div class="col-sm-5">
           <img src="img/web-3.svg" alt="web3-integration" class="web3-img-sm">
@@ -229,25 +231,17 @@
           <img src="img/dapp-sm.png" alt="dapp-store" class="dapp-st-img-sm">
         </div>
         <div class="col-sm-8 dapp-st-sm te">
-          <p class="feat-name-sm text-uppercase">App store</p>
-          <p class="feat-text-sm">Discover apps integrated into the browser:  </p>
-          <p class="feat-text-sm">Ethereum Wallet</p>
-          <p class="feat-text-sm">Chaingear</p>
-          <p class="feat-text-sm">Cyber Explorer</p>
-          <p class="feat-text-sm">Smart Contract Development Tool</p>
-          <p class="feat-text-sm">Cybernode Connection Manager</p>
-          <p class="feat-text-sm">App Permission Manager</p>
-          <p class="feat-text-sm">Help App</p>
-
+          <p class="feat-name-sm text-uppercase">ETHEREUM INTEGRATION (soon)</p>
+          <p class="feat-text-sm">Explore .eth entities and send transactions</p>
+          <p class="feat-text-sm">Develop smart contracts</p>
         </div>
         <!------------------>
       </div>
       <!--Dapp development-->
       <div class="row feat-box-sm">
         <div class="col-sm-7 text-right dapp-dev-sm">
-          <p class="feat-name-sm text-uppercase">App development</p>
-          <p class="feat-text-sm">Create your own apps via App Developer Tool</p>
-          <p class="feat-text-sm">and publish them into the App Store</p>
+          <p class="feat-name-sm text-uppercase">COSMOS INTEGRATION (soon)</p>
+          <p class="feat-text-sm">Explore Cosmos Network, make transactions and maintain you delegator account</p>
         </div>
         <div class="col-sm-5">
           <img src="img/app-sm.png" alt="dapp-development" class="dapp-dev-img-sm">
@@ -260,9 +254,8 @@
           <img src="img/ipfs-sm.png" alt="ipfs-support" class="ipfs-img-sm">
         </div>
         <div class="col-sm-8 ipfs-sm ">
-          <p class="feat-name-sm text-uppercase">IPFS support</p>
-          <p class="feat-text-sm">Store and share data using decentralized technologies</p>
-          <p class="feat-text-sm">Search and discover content via IPFS </p>
+          <p class="feat-name-sm text-uppercase">YOUR PERSONAL ROBOT (soon)</p>
+          <p class="feat-text-sm">Send tokens to the robot and create tasks for it</p>
         </div>
       </div>
       <!---------->
@@ -270,7 +263,7 @@
       <div class="row feat-box-sm">
         <div class="col-sm-7 text-right open-s-sm ">
           <p class="feat-name-sm text-uppercase">Open source</p>
-          <p class="feat-text-sm">Take part in improvement  of CYB infrastructure</p>
+          <p class="feat-text-sm">Take part in the improvement of CYB infrastructure</p>
         </div>
         <div class="col-sm-5">
           <img src="img/open-source-sm.png" alt="open source" class="open-s-img-sm">
@@ -281,7 +274,7 @@
 
     <!--LG visible features-->
     <div class="container-fluid visible-lg features">
-      <div class="row row-rel">
+      <div class="row row-rel margin-bottom-60">
         <div class="col-lg-12 wow fadeIn" id="big-ring-top" data-wow-delay="5s"></div>
         <div class="wow fadeIn" id="small-ring-top" data-wow-delay="5s"></div>
         <div class="col-lg-12 text-center text-uppercase k-feat-lg">
@@ -294,13 +287,12 @@
           Key features
         </div>
       </div><!--FEATURES-->
-      <!--Web3 integration-->
+      <!--IPFS INTEGRATION-->
       <div class="row feat-box">
         <div class="col-lg-5 col-lg-offset-1 text-right web3">
-          <p class="feat-name text-uppercase">Web3 integration </p>
-          <p class="feat-text">Convenient, secure and fast tool for exploring the new web</p>
-          <p class="feat-text">Fully transparent tokenized ecomonics</p>
-          <p class="feat-text">Decentralized backend powered by Cybernodes</p>
+          <p class="feat-name text-uppercase">IPFS INTEGRATION </p>
+          <p class="feat-text">Link IPFS hashes and make an influence to search results</p>
+          <p class="feat-text">Search and discover content via IPFS</p>
         </div>
         <div class="col-lg-4">
           <img src="img/web-3.svg" alt="web3-integration" class="feat-img">
@@ -313,39 +305,31 @@
           <img src="img/dapp-lg.png" alt="dapp-store" class="feat-img">
         </div>
         <div class="col-lg-5">
-          <p class="feat-name text-uppercase">App store</p>
-          <p class="feat-text">Discover apps integrated into the browser:  </p>
-          <p class="feat-text">Ethereum Wallet</p>
-          <p class="feat-text">Chaingear</p>
-          <p class="feat-text">Cyber Explorer</p>
-          <p class="feat-text">Smart Contract Development Tool</p>
-          <p class="feat-text">Cybernode Connection Manager</p>
-          <p class="feat-text">App Permission Manager</p>
-          <p class="feat-text">Help App</p>
+          <p class="feat-name text-uppercase">ETHEREUM INTEGRATION (soon)</p>
+          <p class="feat-text">Explore .eth entities and send transactions</p>
+          <p class="feat-text">Develop smart contracts</p>
         </div>
       </div>
       <!----------------------->
       <!--Dapp development-->
       <div class="row feat-box">
         <div class="col-lg-5 col-lg-offset-1 text-right dapp-dev">
-          <p class="feat-name text-uppercase">App development</p>
-          <p class="feat-text">Create your own apps via App Developer Tool</p>
-          <p class="feat-text">and publish them into the App Store</p>
+          <p class="feat-name text-uppercase">COSMOS INTEGRATION (soon)</p>
+          <p class="feat-text">Explore Cosmos Network, make transactions and maintain you delegator account</p>
         </div>
         <div class="col-lg-4">
           <img src="img/app-lg.png" alt="web3-integration" class="feat-img">
         </div>
       </div>
       <!-------------------->
-      <!--IPFS support-->
+      <!--YOUR PERSONAL ROBOT (soon)-->
       <div class="row feat-box">
         <div class="col-lg-4 col-lg-offset-2">
           <img src="img/ipfs-lg.png" alt="dapp-store" class="feat-img">
         </div>
         <div class="col-lg-5 ipfs">
-          <p class="feat-name text-uppercase">IPFS support</p>
-          <p class="feat-text">Store and share data using decentralized technologies</p>
-          <p class="feat-text">Search and discover content via IPFS </p>
+          <p class="feat-name text-uppercase">YOUR PERSONAL ROBOT (soon)</p>
+          <p class="feat-text">Send tokens to the robot and create tasks for it</p>
         </div>
       </div>
       <!------------------->
@@ -353,7 +337,7 @@
       <div class="row row-rel feat-box">
         <div class="col-lg-5 col-lg-offset-1 text-right dapp-dev">
           <p class="feat-name text-uppercase">Open source</p>
-          <p class="feat-text">Take part in improvement  of CYB infrastructure</p>
+          <p class="feat-text">Take part in the improvement of CYB infrastructure</p>
         </div>
         <div class="col-lg-4">
           <img src="img/open-source-lg.png" alt="web3-integration" class="feat-img">
@@ -377,12 +361,12 @@
     <div class="container-fluid visible-sm visible-md footer-sm">
       <div class="row row-rel">
         <div class="col-lg-12">
-          <div id="big-ring-bottom-sm"></div>
+          <!-- <div id="big-ring-bottom-sm"></div> -->
         </div>
       </div>
       <div class="row row-rel">
         <div class="col-lg-12">
-          <div id="small-ring-bottom-sm"></div>
+          <!-- <div id="small-ring-bottom-sm"></div> -->
         </div>
       </div>
       <div class="row row-rel">
@@ -395,8 +379,8 @@
     <!--XS visible footer-->
     <div class="container-fluid visible-xs">
       <div class="row row-rel">
-        <div id="big-ring-bottom-xs"></div>
-        <div id="small-ring-bottom-xs"></div>
+        <!-- <div id="big-ring-bottom-xs"></div>
+        <div id="small-ring-bottom-xs"></div> -->
         <div class="col-xs-12 text-center footer-xs">
           <p>Cyber License. Don’t believe, don’t fear, don’t ask.</p>
         </div>

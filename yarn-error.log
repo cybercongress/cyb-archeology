@@ -1,0 +1,26 @@
+Arguments: 
+  /usr/bin/node /usr/share/yarn/bin/yarn.js
+
+PATH: 
+  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+Yarn version: 
+  1.13.0
+
+Node version: 
+  10.15.1
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: EACCES: permission denied, unlink '/home/dima/git/cyb/node_modules/.yarn-integrity'
+
+npm manifest: 
+  No manifest
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

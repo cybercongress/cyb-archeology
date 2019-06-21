@@ -240,7 +240,7 @@
     }).call(this);
     fnRender = function() {
       var iCount, p;
-      ctxRender.fillStyle = "#2b3239";
+      ctxRender.fillStyle = "#000";
       ctxRender.fillRect(0, 0, w, h);
       p = oRender.pFirst;
       iCount = 0;

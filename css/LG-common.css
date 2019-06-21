@@ -1,32 +1,32 @@
 html {
   overflow-x: hidden;
-  width: 100vw;
+  width: 100%;
   height: 100%;
 }
 
 body {
-  width: 100vw;
+  width: 100%;
   height: 100%;
   margin: 0;
   font-family: Play;
-  background-color: #2b3239;
-  overflow-x: hidden;
+  background-color: #000;
+  /* overflow-x: hidden; */
 }
 
 .row-rel {
   position: relative;
-  width: 100vw;
+  width: 100%;
 }
 
 .sphere-lg {
-  width: 100vw;
+  width: 100%;
 }
 
 .title-lg {
   display: none;
-  position: absolute;
+  /* position: absolute;
   top: 27vh;
-  left: 53vw;
+  left: 53vw; */
 }
 
 .loaded .title-lg {
@@ -41,14 +41,15 @@ body {
 
 .logo-lg {
   display: none;
-  width: 17vw;
+  /* width: 17vw;
   position: absolute;
   top: 30vh;
-  left: 33vw;
+  left: 33vw; */
 }
 
 .loaded .logo-lg {
   display: block;
+  width: 20%;
 }
 
 .head-box {
@@ -56,13 +57,13 @@ body {
 }
 
 .btn-lg {
-  width: 30.33333%;
+  min-width: 30.33333%;
   padding: 2.3%;
   margin-top: 2vw;
   margin-left: -1%;
   border-radius: 0;
   color: #2e2d2d;
-  font-size: calc(0.5vw + 0.5vh + 0.25vmin);
+  font-size: calc(0.6vw + 0.6vh + 0.25vmin);
   line-height: 1.5;
   border: none;
   z-index: 1;
@@ -72,6 +73,7 @@ body {
   position: absolute;
   top: 18vh;
   left: 1.5vw;
+  width: 100%;
 }
 
 .k-feat-lg {
@@ -147,7 +149,7 @@ body {
 
 .feat-text {
   padding-bottom: 1vw;
-  font-size: calc(0.6vw + 0.6vh + 0.1vmin);
+  font-size: calc(0.8vw + 0.8vh + 0.1vmin);
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -184,4 +186,59 @@ body {
 
 .loaded .footer {
   display: block;
+}
+
+.margin-right-15 {
+  margin-right: 15px;
+}
+
+.container-header-text{
+  position: absolute;
+  top: 35%;
+  left: 33vw;
+    /* justify-content: center; */
+    /* width: 100%;
+    height: 100%; */
+    /* transform: translate(-35%, 0%)  */
+    /* justify-content: center; */
+   
+
+}
+
+.flex-container{
+  display: flex;
+  align-items: center;
+}
+
+.no-margin{
+  margin: 0;
+}
+
+#nCanvasRender {
+  /* max-width: 1900px; */
+  width: 100%;
+}
+
+.row{
+  margin: 0;
+}
+
+.container-fluid{
+  padding: 0;
+}
+
+.margin-bottom-60 {
+  margin-bottom: 60px;
+}
+
+.row-sm .col-sm-12{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.row-xs .col-xs-12{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
