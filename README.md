@@ -28,11 +28,18 @@ pure web3 browser
 </div>
 
 
-## Getting Start Useful Links
+## Project state
 
-* [Whitepaper](./docs/cyb.md)
-* [What is web3](docs/web3-vision.md)
-* [App development guidelines](./docs/app-guidelines.md)
+The project is at concept stage at the moment.
+
+For us it is clear that:
+1. an idea of addresing the stuff using content addresses in browser is make sense so it is worth working further and
+2. an idea of using cyber instead of google right in browser search bar is also amazing.
+
+That is why our current focus is [cyber network launch](https://github.com/cybercongress/launch-kit). Once we do it we can shift more focus into browser development. For now you can:
+- [experiment with a software](https://github.com/cybercongress/cyb/releases)
+- dive deeper into [DURA scheme](https://cybercongress.ai/docs/cyb/dura/)
+- discuss on the forum [the future of Cyb](https://ai.cybercongress.ai/t/the-vision-of-cyb/24)
 
 ## How to release
 Build local release
