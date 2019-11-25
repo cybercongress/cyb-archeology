@@ -41,6 +41,18 @@ That is why our current focus is [the launch of cyber network](https://github.co
 - dive deeper into [DURA scheme](https://cybercongress.ai/docs/cyb/dura/)
 - discuss it on our forum [the future of Cyb](https://ai.cybercongress.ai/t/the-vision-of-cyb/24)
 
+
+## Dev environment (Node v10.13.0)
+```
+yarn run start
+```
+
+## Make build (Node v10.13.0)
+```
+yarn run build
+```
+
+
 ## How to release
 Build local release
 ```
