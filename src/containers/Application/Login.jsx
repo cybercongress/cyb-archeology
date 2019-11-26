@@ -7,12 +7,19 @@ import {
 } from '@cybercongress/ui';
 import connect from 'react-redux/es/connect/connect';
 
-const CybMatrix = require('../Hello/img/cyb_animation.gif');
+import {
+    checkStatus,
+} from '../../redux/settings';
 
+const CybMatrix = require('../Hello/img/cyb_animation.gif');
 class Login extends React.Component {
     state = {
         password: '',
     };
+
+    componentWillMount() {
+        this.props.checkStatus();
+    }
 
     handleKeyPress = (e) => {
         if (e.key === 'Enter') {
@@ -133,4 +140,6 @@ class Login extends React.Component {
 
 export default connect(state => ({
     username: state.settings.username,
-}), null)(Login);
+}), {
+    checkStatus,
+})(Login);

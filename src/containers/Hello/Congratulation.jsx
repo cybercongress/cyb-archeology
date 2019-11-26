@@ -1,32 +1,52 @@
-import React from 'react';
+import React from "react";
 import {
-    HelloContainerLeftCol, HelloContainer, HelloContainerRightCol,
-    HelloContainerRightColContent, TextIlineBlock, HelloContainerRightColBtn,
-    ButtonEverGreen, BigImg, BntGroup,
-} from '@cybercongress/ui';
+  HelloContainerLeftCol,
+  HelloContainer,
+  HelloContainerRightCol,
+  HelloContainerRightColContent,
+  TextIlineBlock,
+  HelloContainerRightColBtn,
+  ButtonEverGreen,
+  BigImg,
+  BntGroup
+} from "@cybercongress/ui";
+import {
+    checkStatus,
+} from '../../redux/settings';
+import connect from 'react-redux/es/connect/connect';
 
-const CybMatrix = require('../Hello/img/cyb_animation.gif');
+const CybMatrix = require("../Hello/img/cyb_animation.gif");
 
-const Congratulation = ({ onNext }) => (
-    <HelloContainer>
+class Congratulation extends React.Component {
+    componentWillMount() {
+        this.props.checkStatus();
+    }
+
+  render() {
+      const { onNext } = this.props;
+
+    return (
+      <HelloContainer>
         <HelloContainerLeftCol>
-            <BigImg srcBigImg={ CybMatrix } />
+          <BigImg srcBigImg={CybMatrix} />
         </HelloContainerLeftCol>
-        <HelloContainerRightCol bntGroup={ <BntGroup /> }>
-            <HelloContainerRightColContent>
-                <TextIlineBlock>
-                    Well, now you are ready to enjoy your web3 experience!
-                </TextIlineBlock>
-            </HelloContainerRightColContent>
-            <HelloContainerRightColBtn center>
-                <ButtonEverGreen
-                    onClick={ onNext }
-                >
-                    Get off the matrix
-                </ButtonEverGreen>
-            </HelloContainerRightColBtn>
+        <HelloContainerRightCol bntGroup={<BntGroup />}>
+          <HelloContainerRightColContent>
+            <TextIlineBlock>
+              Well, now you are ready to enjoy your web3 experience!
+            </TextIlineBlock>
+          </HelloContainerRightColContent>
+          <HelloContainerRightColBtn center>
+            <ButtonEverGreen onClick={onNext}>
+              Get off the matrix
+            </ButtonEverGreen>
+          </HelloContainerRightColBtn>
         </HelloContainerRightCol>
-    </HelloContainer>
-);
+      </HelloContainer>
+    );
+  }
+}
 
-export default Congratulation;
+export default connect(state => ({}), {
+    checkStatus,
+})(Congratulation);
