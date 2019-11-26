@@ -248,7 +248,7 @@ export const CurrentUser = (props) => {
             )}
             {defaultEthAccount && (
                 <div className={ `user_popup ${open ? 'user_popup__open' : ''}` }>
-                    <Pane width='100%' marginBottom='1.5em' paddingX='1em'>
+                    {/* <Pane width='100%' marginBottom='1.5em' paddingX='1em'>
                         <Battery
                           maxHeight={ 16 }
                           bwPercent={ 10 }
@@ -261,7 +261,7 @@ export const CurrentUser = (props) => {
                               />
 ) }
                         />
-                    </Pane>
+                    </Pane> */}
                     <WaleetAppMenu
                       marginBottom={ 46 }
                       ethBalance={ ethBalance }

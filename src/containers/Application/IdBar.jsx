@@ -68,7 +68,7 @@ class IdBar extends Component {
         return (
             <IdBarComponent>
                 <ClickOutside onClickOutside={ this.close }>
-                    {/* <CurrentUser
+                    <CurrentUser
                       defaultEthAccount={ defaultEthAccount }
                       defaultCyberAccount={ defaultCyberAccount }
                       toggle={ this.toggle }
@@ -81,7 +81,7 @@ class IdBar extends Component {
                       bwRemained={ bwRemained }
                       bwMaxValue={ bwMaxValue }
                       linkPrice={ linkPrice }
-                    /> */}
+                    />
                 </ClickOutside>
                 {/* <SettingsLink />
                 {defaultEthAccount && (
