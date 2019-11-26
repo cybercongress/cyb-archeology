@@ -88,15 +88,20 @@ const Application = (props) => {
                     </NavigationRight>
                 </Navigation>
             </AppHeader>
-            <AppContent>
+            <Pane
+            height='calc(100% - 60px)'
+            position="relative"
+            flex="1 auto"
+            backgroundColor="#000"
+            >
                 {children}
                 { dura.match(/\.cyb\b/gi) && ( 
                     <Pane position='fixed' top={0} right='5px' height='inherit' marginTop={60} display='flex' alignItems='center' className='BntGroupFull'>
                         <BntGroupFull />
                     </Pane>)
-                } 
+                }
                 
-            </AppContent>
+            </Pane>
         </App>
     );
 };
