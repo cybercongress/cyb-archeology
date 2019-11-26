@@ -3,10 +3,10 @@ import { getEthStatus, initEthWallet } from './wallet';
 import { initCyber, loadCyberdAccounts } from './cyber';
 
 export const initSettingsState = {
-    ipfsUrl: 'http://earth.cybernode.ai:34402',
-    ethUrl: 'http://earth.cybernode.ai:34645',
-    cyberdUrl: 'http://earth.cybernode.ai:34657',
-    cyberdWsUrl: 'ws://earth.cybernode.ai:34657/websocket',
+    ipfsUrl: 'http://localhost:8080',
+    ethUrl: 'http://titan.cybernode.ai:38645',
+    cyberdUrl: 'https://titan.cybernode.ai/api/',
+    cyberdWsUrl: 'wss://titan.cybernode.ai/websocket',
     ipfsWrite: {
         host: 'localhost',
         port: 5001,

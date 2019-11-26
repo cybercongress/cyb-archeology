@@ -118,7 +118,7 @@ class Intro extends React.Component {
     }
 
     goToSettings = (password) => {
-        this.setState({ password, step: 'settings' });
+        this.setState({ password, step: 'congratulation' });
     }
 
     goToCongratulation = () => {
@@ -282,17 +282,17 @@ class Intro extends React.Component {
             );
         }
 
-        if (step === 'settings') {
-            return (
-                <ImportSettings onNext={ this.goToConnections } />
-            );
-        }
+        // if (step === 'settings') {
+        //     return (
+        //         <ImportSettings onNext={ this.goToConnections } />
+        //     );
+        // }
 
-        if (step === 'connections') {
-            return (
-                <Connections onNext={ this.goToCongratulation } />
-            );
-        }
+        // if (step === 'connections') {
+        //     return (
+        //         <Connections onNext={ this.goToCongratulation } />
+        //     );
+        // }
 
         if (step === 'congratulation') {
             return (
