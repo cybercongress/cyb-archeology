@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import bip39 from 'bip39';
 import Login from './Login';
 import { startBrowsing } from '../../redux/intro';
-import { create as createCyberdAccount, recover } from '../../cyber/crypto';
+import { create, recover } from '../../cyber/crypto';
 import ShowMeTheMatrix from '../Hello/ShowMeTheMatrix';
 import AccountImported from '../Hello/AccountImported';
 import ShowMyIdentity from '../Hello/ShowMyIdentity';
@@ -69,7 +69,7 @@ class Intro extends React.Component {
         const ethKey = rootKey.derivePath("m/44'/60'/0'/0/0");
         const ethAddress = ethKey.getWallet().getAddressString();
         const ethPrivateKey = ethKey.getWallet().getPrivateKey().toString('hex');
-        const account = createCyberdAccount(entropy);
+        const account = recover(mnemonic);
 
         this.setState({
             step: 'accountCreated',
