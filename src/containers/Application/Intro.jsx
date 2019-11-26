@@ -93,7 +93,7 @@ class Intro extends React.Component {
         const ethKey = rootKey.derivePath("m/44'/60'/0'/0/0");
         const ethAddress = ethKey.getWallet().getAddressString();
         const ethPrivateKey = ethKey.getWallet().getPrivateKey().toString('hex');
-        const account = recover(entropy);
+        const account = recover(mnemonic);
 
         // TODO: calculate balance
         this.setState({

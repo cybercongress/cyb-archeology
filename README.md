@@ -28,11 +28,30 @@ pure web3 browser
 </div>
 
 
-## Getting Start Useful Links
+## Project state
 
-* [Whitepaper](./docs/cyb.md)
-* [What is web3](docs/web3-vision.md)
-* [App development guidelines](./docs/app-guidelines.md)
+The project is currently at a concept stage.
+
+It is clear to us that:
+1. the idea of addresing things using content addresses in browser makes sense, so it is worth working further on, and
+2. the idea of using cyber instead of google right in the browser search bar is also amazing.
+
+That is why our current focus is [the launch of cyber network](https://github.com/cybercongress/launch-kit). Once we achieve that, we can shift more focus into the development of the browser. For now you can:
+- [experiment with the software](https://github.com/cybercongress/cyb/releases)
+- dive deeper into [DURA scheme](https://cybercongress.ai/docs/cyb/dura/)
+- discuss it on our forum [the future of Cyb](https://ai.cybercongress.ai/t/the-vision-of-cyb/24)
+
+
+## Dev environment (Node v10.13.0)
+```
+yarn run start
+```
+
+## Make build (Node v10.13.0)
+```
+yarn run build
+```
+
 
 ## How to release
 Build local release
@@ -48,7 +67,7 @@ git push origin <branch_name> --tags
 
 ## Issues
 
-If you have any problems with or questions about CYB, please contact us through a
+If you have any problems with, or questions about CYB, please contact us through a
 [GitHub issue](https://github.com/cybercongress/cyb/issues).
 
 ## Gitcoin Tasks
@@ -58,7 +77,7 @@ If you have any problems with or questions about CYB, please contact us through 
 
 ## Contribute
 
-You are invited to contribute new features, fixes, or updates, large or small; We are always thrilled to receive pull
+You are invited to contribute new features, fixes or updates, large or small; We are always thrilled to receive pull
 requests, and do our best to process them as fast as We can. You can find detailed information in our
 [contribution guide](./CONTRIBUTION.md).
 
