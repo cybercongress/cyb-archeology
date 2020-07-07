@@ -57,7 +57,7 @@
     "concurrently": "4.0.1",
     "copy-webpack-plugin": "4.6.0",
     "css-loader": "1.0.1",
-    "electron": "3.0.2",
+    "electron": "7.2.4",
     "electron-builder": "20.28.4",
     "eslint": "5.8.0",
     "eslint-config-airbnb": "17.1.0",
